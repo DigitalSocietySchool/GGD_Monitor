@@ -20,7 +20,6 @@
   <!-- end CSS-->
 
   <script src="js/libs/modernizr-2.0.6.min.js"></script>
-  <script src="https://d3js.org/d3.v4.js"></script>
 </head>
 
 <body>
@@ -28,9 +27,6 @@
   <div id="container" class="container">
       <select id="text-select">
         <option value="sherlock">Sherlock Holmes</option>
-        <option value="aesop">Aesop's Fables</option>
-        <option value="alice">Alice in Wonderland</option>
-        <option value="gulliver">Gulliver's Travels</option>
       </select>
     <header>
     <h1>GGD Data Monitor - Sprint 1</h1>
@@ -40,6 +36,7 @@
     <div id="main" role="main">
       <div id="vis"></div>
       <div id="vis2"></div>
+      <div id="vis3"></div>
       <div id="status"></div>
       <div id="controls">
         <h3>Jitter</h3>
@@ -54,19 +51,12 @@
     </footer>
   </div> <!--! end of #container -->
 
-
-  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
-  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')</script>
-
+ <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')</script>
 
   <script src="js/libs/d3.min.js"></script>
-  <script src="https://d3js.org/d3-scale.v3.min.js"></script>
-<script src="https://d3js.org/d3-path.v1.min.js"></script>
-<script src="https://d3js.org/d3-shape.v1.min.js"></script>
-<!--script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.1.3"> 
-  <script src="https://d3js.org/d3.v4.js"></script>
-  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.geom.js?2.1.3"></script>
-  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js?2.1.3"></script-->
+  <script src="js/libs/d3-scale.v3.min.js"></script>
+  <script src="js/libs/d3-path.v1.min.js"></script>
+  <script src="js/libs/d3-shape.v1.min.js"></script>
   
 <script defer src="js/plugins.js"></script>
 <script src="js/libs/coffee-script.js"></script>
@@ -74,112 +64,97 @@
 
   <script type="text/javascript">
 
-// set the dimensions and margins of the graph
-var width = 30
-    height = 30
-    margin = 0
+var margin = 0
+    padding = 0
+    radius = 100;
 
-// The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
-var radius = Math.min(width, height) / 2 - margin
+var color = d3.scale.ordinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-// append the svg object to the div called 'my_dataviz'
-// var svg = d3.select("#vis")
-//  .append("svg")
-//    .attr("width", width)
-//    .attr("height", height)
-//  .append("g")
-//    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+var arc = d3.svg.arc()
+    .outerRadius(function(d) { return (d.data.size)/4; })
+    .innerRadius(function(d) { return (d.data.size)/4 - 10; })
 
-// Create dummy data
+var arc_donut = d3.svg.arc()
+    .outerRadius(100)
+    .innerRadius(100)
 
-var data_donut = {a: 9, b: 20, c:30, d:8, e:12}
 
-// set the color scale
-var color = d3.scaleOrdinal()
-  //.domain(data_donut)
-  .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56"])
-
-// Compute the position of each group on the pie:
 var pie = d3.pie()
-  .value(function(d) {return d.value; })
-var data_ready = pie(d3.entries(data_donut))
+  .sort(null)
+  .value(function(d) {return d.time_band; });
+
+d3.csv("./data/dummy.csv", function(error, data) {
+  if (error) throw error;
+
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "name"; }));
+
+  data.forEach(function(d) {
+    d.time = color.domain().map(function(name) {
+      var band = d[name];
+      var test = {
+          name: d.name,
+          Y1970: d.Y1970,
+          Y1980: d.Y1980,
+          Y1990: d.Y1990,
+          Y2000: d.Y2000,
+          Y2010: d.Y2010,
+          Y2020: d.Y2020
+        };
+      var res = {name: name, 
+        time_band: test[name],
+        size: d.size};
+      //console.log(res);
+      return res;
+    });
+  });
+
+  var svg = d3.select('body').select("#vis2").selectAll(".pie")
+      .data(data)
+    .enter().append("svg")
+      .attr("class", "pie")
+      .attr("width", function(d) { return d.size / 2; })
+      .attr("height", function(d) { return d.size / 2; })
+    .append("g")
+      .attr("transform", function(d) { return "translate(" + d.size/4 + "," + d.size/4 + ")"; } );
+      //.attr("transform", "translate(" + radius + "," + radius + ")");
+
+  svg.selectAll(".arc")
+      .data(function(d) { return pie(d.time); })
+    .enter().append("path")
+      .attr("class", "arc")
+      .attr("d", arc)
+      .style("fill", function(d) { return color(d.data.name); });
+});
 
 
-var svg = d3
-  .select("#vis2")
-  //.select("#bubble-nodes")
-  //.selectAll('a')
-  //.selectAll('bubble-node')
-  .append("svg")
-  //.selectAll('a')
-  .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+data_donut = d3.csv("./data/dummy.csv", function(error, data) {
+  if (error) throw error;
 
-svg
-  .selectAll('whatever')
-  .data(data_ready)
-  .enter()
-  .append('path')
-  .attr('d', d3.arc()
-    .innerRadius(0)
-    .outerRadius(radius)
-  )
-  .attr('fill', function(d){ return(color(d.data.key)) })
-  .attr("stroke", "black")
-  .style("stroke-width", "2px")
-  .style("opacity", 0.7)
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "name"; }));
 
-  //var donut = document.getElementById("vis2") 
-    // d3
-    //.select("#vis2")
-    //.cloneNode(true)
+  data.forEach(function(d) {
+    d.time = color.domain().map(function(name) {
+      var band = d[name];
+      var test = {
+          name: d.name,
+          Y1970: d.Y1970,
+          Y1980: d.Y1980,
+          Y1990: d.Y1990,
+          Y2000: d.Y2000,
+          Y2010: d.Y2010,
+          Y2020: d.Y2020
+        };
+      var res = {name: name, 
+        time_band: test[name],
+        size: d.size};
+      //console.log(res);
+      return res;
+    });
+  });
+});
 
-//    .getElementById("myList2").lastChild;
-
-// Copy the <li> element and its child nodes
-//var cln = itm.cloneNode(true)
-
-/***
-// Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-box = d3.select("#bubble-node").selectAll('.bubble-node')
-
-box.append("rect")
-        .attr("fill", "#FF0000")
-        .attr("width", width)
-        .attr("height", height)
-/***
-box
-  //.enter()
-  // .append("g")
-  //  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-  .data(data_ready)
-  .enter()
-  .append('path')
-    .attr('d', d3.arc()
-      .innerRadius(0)
-      .outerRadius(radius)
-    )
-    .attr('fill', function(d){ return(color(d.data.key)) })
-    .attr("stroke", "black")
-  .style("stroke-width", "2px")
-  .style("opacity", 0.7);
-  /******/
 
   </script>
- 
-
-  <!--script> 
-    window._gaq = [['_setAccount','UA-17355070-1'],['_trackPageview'],['_trackPageLoadTime']];
-    Modernizr.load({
-      load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
-    });
-  </script-->
-
-
-  <!--[if lt IE 7 ]>
-    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
-    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
-  <![endif]-->
-  
 </body>
 </html>

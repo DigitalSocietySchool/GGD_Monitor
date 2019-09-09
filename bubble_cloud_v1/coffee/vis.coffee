@@ -19,7 +19,20 @@ Bubbles = () ->
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
-  rValue = (d) -> parseInt(d.count)
+  rValue = (d) -> parseInt(d.size)
+          
+  # EMMA
+  # Extractig values for donut charts
+  pie_bub = (d) -> d3.pie()([d.Y1970,
+          d.Y1980,
+          d.Y1990,
+          d.Y2000,
+          d.Y2010,
+          d.Y2020])
+
+  arc_bub = d3.svg.arc()
+    .outerRadius( 100 )
+    .innerRadius( 0 )
 
   # function to define the 'id' of a data element
   #  - used to bind the data uniquely to the force nodes
@@ -55,7 +68,7 @@ Bubbles = () ->
   # ---
   transformData = (rawData) ->
     rawData.forEach (d) ->
-      d.count = parseInt(d.count)
+      d.size = parseInt(d.size)
       rawData.sort(() -> 0.5 - Math.random())
     rawData
 
@@ -177,32 +190,40 @@ Bubbles = () ->
     # visualization as well
     node.exit().remove()
 
-    donut = document.getElementById("vis2")
-      .cloneNode(true)
-
     # nodes are just links with circles inside.
     # the styling comes from the css
     node.enter()
       .append("a")
-        .attr("class", "bubble-node")
-        .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
+      .attr("class", "bubble-node")
+      .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
       .call(force.drag)
       .call(connectEvents)
       .append("circle")
-        .attr("r", (d) -> rScale(rValue(d)));
+      .attr("r", (d) -> rScale(rValue(d)))
 
-    node.selectAll('whatever')
-      .data(data_ready)
-      .enter()
-      .append('path')
-        .attr('class','donut')
-        .attr('d', d3.arc()
-          .innerRadius(0)
-          .outerRadius(radius))
-        .attr('fill', (d) -> color(d.data.key))
-        .attr("stroke", "black")
-      .style("stroke-width", "2px")
-      .style("opacity", 0.7);
+    node.append("g")
+        .attr("class", "pie")
+        .attr('data_col', (d) -> [d.C1970,
+              d.C1980,
+              d.C1990,
+              d.C2000,
+              d.C2010,
+              d.C2020])
+        .attr("width",  (d) -> rScale(rValue(d)) * 2 )
+        .attr("height", (d) -> rScale(rValue(d)) * 2 )
+        .attr("transform", (d) -> "scale(" + rScale(rValue(d))/90 + "," + rScale(rValue(d))/90 + ")" )
+      .selectAll(".arc")
+        .data( (d) -> pie_bub(d) )
+      .enter().append("path")
+        .attr("class", "arc")
+       .attr("d", (d) -> arc_bub(d) )
+
+    node.append("circle")
+      .attr("r", (d) -> rScale(rValue(d)-10))
+
+    node.selectAll(".pie")
+      .selectAll(".arc")
+        .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
 
 
   # ---
@@ -354,9 +375,9 @@ Bubbles = () ->
     node.classed("bubble-selected", (d) -> id == idValue(d))
     # if no node is selected, id will be empty
     if id.length > 0
-      d3.select("#status").html("<h3>The word <span class=\"active\">#{id}</span> is now active</h3>")
+      d3.select("#status").html("<h3>The <span class=\"active\">#{id}</span> is now selected</h3>")
     else
-      d3.select("#status").html("<h3>No word is active</h3>")
+      d3.select("#status").html("<h3>No dataset is selected</h3>")
 
   # ---
   # hover event
@@ -422,10 +443,7 @@ root.plotData = (selector, data, plot) ->
     .call(plot)
 
 texts = [
-  {key:"sherlock",file:"top_sherlock.csv",name:"The Adventures of Sherlock Holmes"}
-  {key:"aesop",file:"top_aesop.csv",name:"Aesop's Fables"}
-  {key:"alice",file:"alice.csv",name:"Alice's Adventures in Wonderland"}
-  {key:"gulliver",file:"top_gulliver.csv",name:"Gulliver's Travels"}
+  {key:"sherlock",file:"dummy.csv",name:"GGD Monitor Test File"}
 ]
 
 # ---
@@ -440,6 +458,12 @@ $ ->
   # data is loaded
   # ---
   display = (data) ->
+    data.time = [data.Y1970,
+          data.Y1980,
+          data.Y1990,
+          data.Y2000,
+          data.Y2010,
+          data.Y2020]
     plotData("#vis", data, plot)
 
   # we are storing the current text in the search component
@@ -472,5 +496,5 @@ $ ->
   d3.select("#book-title").html(text.name)
 
   # load our data
-  d3.csv("data/#{text.file}", display)
+  d3.csv("data/dummy.csv", display)
 
