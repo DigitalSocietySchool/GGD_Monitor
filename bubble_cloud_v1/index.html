@@ -2,159 +2,127 @@
 <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>vis</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
+    <title>GGD Data Monitor - Sprint 1
+    </title>
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <!-- CSS concatenated and minified via ant build script-->
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/style.css">
-  <!-- end CSS-->
+    <!-- CSS concatenated and minified via ant build script-->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- end CSS-->
 
-  <script src="js/libs/modernizr-2.0.6.min.js"></script>
+    <script src="js/libs/modernizr-2.0.6.min.js"></script>
 </head>
 
 <body>
 
-  <div id="container" class="container">
-      <select id="text-select">
-        <option value="sherlock">Sherlock Holmes</option>
-      </select>
-    <header>
-    <h1>GGD Data Monitor - Sprint 1</h1>
-    <!--h2>Sprint 1</h2-->
-      <h2 id="book-title"></h2>
-    </header>
-    <div id="main" role="main">
-      <div id="vis"></div>
-      <div id="vis2"></div>
-      <div id="vis3"></div>
-      <div id="status"></div>
-      <div id="controls">
-        <h3>Jitter</h3>
-        <form id="jitter" oninput="output.value = (jitter_input.value / 200).toFixed(3)" >
-          <input id="jitter_input" type="range" min="0" max="400" value="100" style="width:240px;">
-          <output name="output" for="input">0.5</output>
-        </form>
-      </div>
+    <div id="container" class="container">
+
+        <header>
+            <h1>GGD Data Monitor - Sprint 1</h1>
+            <!--h2>Sprint 1</h2-->
+            <h2 id="book-title"></h2>
+        </header>
+        <div id="main" role="main">
+            <div id="vis"></div>
+            <div id="vis2"></div>
+            <div id="vis3"></div>
+            <div id="status"></div>
+            <!-- <div id="controls">
+                <h3>Jitter</h3>
+                <form id="jitter" oninput="output.value = (jitter_input.value / 200).toFixed(3)">
+                    <input id="jitter_input" type="range" min="0" max="400" value="100" style="width:240px;">
+                    <output name="output" for="input">0.5</output>
+                </form>
+            </div> -->
+        </div>
+        <footer>
+            <p><a href="http://vallandingham.me/building_a_bubble_cloud.html">Blog Post</a> | <a href="https://github.com/vlandham/bubble_cloud">Source Code</a> | <a href="http://www.nytimes.com/interactive/2012/09/04/us/politics/democratic-convention-words.html">Original Inspiration</a></p>
+        </footer>
     </div>
-    <footer>
-    <p><a href="http://vallandingham.me/building_a_bubble_cloud.html">Blog Post</a> | <a href="https://github.com/vlandham/bubble_cloud">Source Code</a> | <a href="http://www.nytimes.com/interactive/2012/09/04/us/politics/democratic-convention-words.html">Original Inspiration</a></p>
-    </footer>
-  </div> <!--! end of #container -->
+    <!--! end of #container -->
 
- <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')</script>
+    <script>
+        window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')
+    </script>
 
-  <script src="js/libs/d3.min.js"></script>
-  <script src="js/libs/d3-scale.v3.min.js"></script>
-  <script src="js/libs/d3-path.v1.min.js"></script>
-  <script src="js/libs/d3-shape.v1.min.js"></script>
-  
-<script defer src="js/plugins.js"></script>
-<script src="js/libs/coffee-script.js"></script>
-<script type="text/coffeescript" src="coffee/vis.coffee"></script>
+    <script src="js/libs/d3.min.js"></script>
+    <script src="js/libs/d3-scale.v3.min.js"></script>
+    <script src="js/libs/d3-path.v1.min.js"></script>
+    <script src="js/libs/d3-shape.v1.min.js"></script>
 
-  <script type="text/javascript">
+    <script defer src="js/plugins.js"></script>
+    <script src="js/libs/coffee-script.js"></script>
+    <script type="text/coffeescript" src="coffee/vis.coffee"></script>
 
-var margin = 0
-    padding = 0
-    radius = 100;
+    <script type="text/javascript">
+        var margin = 0
+        padding = 0
+        radius = 100;
 
-var color = d3.scale.ordinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+        var color = d3.scale.ordinal()
+            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-var arc = d3.svg.arc()
-    .outerRadius(function(d) { return (d.data.size)/4; })
-    .innerRadius(function(d) { return (d.data.size)/4 - 10; })
+        var arc = d3.svg.arc()
+            .outerRadius(function(d) {
+                return (d.data.size) / 4;
+            })
+            .innerRadius(function(d) {
+                return (d.data.size) / 4 - 10;
+            })
 
-var arc_donut = d3.svg.arc()
-    .outerRadius(100)
-    .innerRadius(100)
-
-
-var pie = d3.pie()
-  .sort(null)
-  .value(function(d) {return d.time_band; });
-
-d3.csv("./data/dummy.csv", function(error, data) {
-  if (error) throw error;
-
-  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "name"; }));
-
-  data.forEach(function(d) {
-    d.time = color.domain().map(function(name) {
-      var band = d[name];
-      var test = {
-          name: d.name,
-          Y1970: d.Y1970,
-          Y1980: d.Y1980,
-          Y1990: d.Y1990,
-          Y2000: d.Y2000,
-          Y2010: d.Y2010,
-          Y2020: d.Y2020
-        };
-      var res = {name: name, 
-        time_band: test[name],
-        size: d.size};
-      //console.log(res);
-      return res;
-    });
-  });
-
-  var svg = d3.select('body').select("#vis2").selectAll(".pie")
-      .data(data)
-    .enter().append("svg")
-      .attr("class", "pie")
-      .attr("width", function(d) { return d.size / 2; })
-      .attr("height", function(d) { return d.size / 2; })
-    .append("g")
-      .attr("transform", function(d) { return "translate(" + d.size/4 + "," + d.size/4 + ")"; } );
-      //.attr("transform", "translate(" + radius + "," + radius + ")");
-
-  svg.selectAll(".arc")
-      .data(function(d) { return pie(d.time); })
-    .enter().append("path")
-      .attr("class", "arc")
-      .attr("d", arc)
-      .style("fill", function(d) { return color(d.data.name); });
-});
+        var arc_donut = d3.svg.arc()
+            .outerRadius(100)
+            .innerRadius(100)
 
 
-data_donut = d3.csv("./data/dummy.csv", function(error, data) {
-  if (error) throw error;
+        var pie = d3.pie()
+            .sort(null)
+            .value(function(d) {
+                return d.time_band;
+            });
 
-  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "name"; }));
+        d3.csv("./data/dummy.csv", function(error, data) {
+                    if (error) throw error;
 
-  data.forEach(function(d) {
-    d.time = color.domain().map(function(name) {
-      var band = d[name];
-      var test = {
-          name: d.name,
-          Y1970: d.Y1970,
-          Y1980: d.Y1980,
-          Y1990: d.Y1990,
-          Y2000: d.Y2000,
-          Y2010: d.Y2010,
-          Y2020: d.Y2020
-        };
-      var res = {name: name, 
-        time_band: test[name],
-        size: d.size};
-      //console.log(res);
-      return res;
-    });
-  });
-});
+                    color.domain(d3.keys(data[0]).filter(function(key) {
+                        return key !== "name";
+                    }));
 
-
-  </script>
+                    data.forEach(function(d) {
+                        d.time = color.domain().map(function(name) {
+                            var band = d[name];
+                            var test = {
+                                name: d.name,
+                                Y1970: d.Y1970,
+                                Y1980: d.Y1980,
+                                Y1990: d.Y1990,
+                                Y2000: d.Y2000,
+                                Y2010: d.Y2010,
+                                Y2020: d.Y2020
+                            };
+                            var res = {
+                                name: name,
+                                time_band: test[name],
+                                size: d.size
+                            };
+                            //console.log(res);
+                            return res;
+                        });
+                    });
+    </script>
 </body>
+
 </html>

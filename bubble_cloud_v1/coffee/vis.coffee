@@ -46,6 +46,9 @@ Bubbles = () ->
   #  a different dataset if desired
   textValue = (d) -> d.name
 
+  # function to retrieve the department
+  department = (d) -> d.department
+
   # constants to control how
   # collision look and act
   collisionPadding = 4
@@ -196,6 +199,7 @@ Bubbles = () ->
       .append("a")
       .attr("class", "bubble-node")
       .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
+      .style("fill", (d) -> d.department)
       .call(force.drag)
       .call(connectEvents)
       .append("circle")
@@ -211,19 +215,23 @@ Bubbles = () ->
               d.C2020])
         .attr("width",  (d) -> rScale(rValue(d)) * 2 )
         .attr("height", (d) -> rScale(rValue(d)) * 2 )
-        .attr("transform", (d) -> "scale(" + rScale(rValue(d))/90 + "," + rScale(rValue(d))/90 + ")" )
+        .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
       .selectAll(".arc")
         .data( (d) -> pie_bub(d) )
       .enter().append("path")
         .attr("class", "arc")
        .attr("d", (d) -> arc_bub(d) )
+        .attr('stroke','#ffffff')
 
     node.append("circle")
-      .attr("r", (d) -> rScale(rValue(d)-10))
+      .attr("r", (d) -> rScale(rValue(d))-7)
+    
 
     node.selectAll(".pie")
       .selectAll(".arc")
         .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
+
+
 
 
   # ---
@@ -259,7 +267,7 @@ Bubbles = () ->
     # - remember to add the 'px' at the end as we are dealing with 
     #  styling divs
     label
-      .style("font-size", (d) -> Math.max(8, rScale(rValue(d) / 2)) + "px")
+      .style("font-size", (d) -> Math.max(4, rScale(rValue(d) / 12)) + "px")
       .style("width", (d) -> 2.5 * rScale(rValue(d)) + "px")
 
     # interesting hack to get the 'true' text width
