@@ -202,8 +202,6 @@ Bubbles = () ->
       .style("fill", (d) -> d.department)
       .call(force.drag)
       .call(connectEvents)
-      .append("circle")
-      .attr("r", (d) -> rScale(rValue(d)))
 
     node.append("g")
         .attr("class", "pie")
