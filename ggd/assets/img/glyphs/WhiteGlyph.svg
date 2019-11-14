@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 361.14 344.22">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <title>White Glyph</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <g>
+        <ellipse class="cls-1" cx="180.31" cy="97.59" rx="20.77" ry="97.59"/>
+        <ellipse class="cls-1" cx="93.04" cy="161.42" rx="20.77" ry="97.59" transform="translate(-89.23 200.03) rotate(-72)"/>
+        <ellipse class="cls-1" cx="126.63" cy="264.31" rx="97.59" ry="20.77" transform="translate(-161.64 211.4) rotate(-54)"/>
+        <ellipse class="cls-1" cx="234.46" cy="264.31" rx="20.77" ry="97.59" transform="translate(-110.58 188.29) rotate(-36)"/>
+        <ellipse class="cls-1" cx="268.11" cy="161.42" rx="97.59" ry="20.77" transform="translate(-36.76 90.75) rotate(-18)"/>
+      </g>
+    </g>
+  </g>
+</svg>
