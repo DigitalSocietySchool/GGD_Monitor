@@ -70,7 +70,7 @@
         }
 
         /* begin abdo import */
-                #text-select {
+        #text-select {
             float: right;
             margin-right: 10px;
         }
@@ -115,11 +115,11 @@
         }
         
         .active {
-            color: #A6BA92
+            color: #A6BA92;
         }
         
         a.bubble-label {
-            font-family: georgia, "times new roman", times, serif;
+            font-family: 'Open Sans', sans-serif;
             color: inherit;
             cursor: pointer;
             display: block;
@@ -142,27 +142,27 @@
         }
         
         .rotate-right {
-            transform: translate(-3%, -11%) rotate(55deg) scale(0.2)
+            transform: translate(-3%, -11%) rotate(55deg) scale(0.2);
         }
         
         .rotate-left {
-            transform: translate(-6%, -11%) rotate(55deg) scale(0.2)
+            transform: translate(-6%, -11%) rotate(55deg) scale(0.2);
         }
         
         .rotate-up {
-            transform: translate(-4%, -13%) rotate(145deg) scale(0.2)
+            transform: translate(-4%, -13%) rotate(145deg) scale(0.2);
         }
         
         .rotate-diagonal-right {
-            transform: translate(-3%, -8%) rotate(107deg) scale(0.2)
+            transform: translate(-3%, -8%) rotate(107deg) scale(0.2);
         }
         
         .rotate-diagonal-left {
-            transform: translate(-5%, -7%) rotate(185deg) scale(0.2)
+            transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
         }
         
         .rotate-white {
-            transform: translate(-5%, -7%) rotate(185deg) scale(0.2)
+            transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
         }
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
@@ -311,9 +311,9 @@
     <script type="text/coffeescript" src="assets/coffee/vis.coffee"></script>
     
     <script type="text/javascript">
-        var margin = 0
-        padding = 0
-        radius = 100;
+        /* var margin = 0;
+        var padding = 0;
+        var radius = 100;
 
         var color = d3.scale.ordinal()
             .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
@@ -324,11 +324,11 @@
             })
             .innerRadius(function (d) {
                 return (d.data.size) / 4 - 10;
-            })
+            });
 
         var arc_donut = d3.svg.arc()
             .outerRadius(100)
-            .innerRadius(100)
+            .innerRadius(100);
 
 
         var pie = d3.pie()
@@ -364,7 +364,7 @@
                     //console.log(res);
                     return res;
                 });
-            });
+            })}); */
     </script>
   </body>
 </html>

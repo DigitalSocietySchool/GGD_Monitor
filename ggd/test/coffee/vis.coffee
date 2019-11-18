@@ -19,20 +19,7 @@ Bubbles = () ->
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
-  rValue = (d) -> parseInt(d.size)
-          
-  # EMMA
-  # Extractig values for donut charts
-  pie_bub = (d) -> d3.pie()([d.Y1970,
-          d.Y1980,
-          d.Y1990,
-          d.Y2000,
-          d.Y2010,
-          d.Y2020])
-
-  arc_bub = d3.svg.arc()
-    .outerRadius( 100 )
-    .innerRadius( 0 )
+  rValue = (d) -> parseInt(d.count)
 
   # function to define the 'id' of a data element
   #  - used to bind the data uniquely to the force nodes
@@ -45,28 +32,6 @@ Bubbles = () ->
   #  again, abstracted to ease migration to 
   #  a different dataset if desired
   textValue = (d) -> d.name
-
-  # function to retrieve the department
-  department = (d) -> d.department
-
-
-  policy = (d) -> d.policy
-
-
-  keywords = (d) -> d.keywords
-
-  # Colors
-  colors =
-    EGZ: "#BB9BD1"
-    IZ: "#8FBCD8"
-    JGZ: "#ADC499"
-    VT: "#C69C6D"
-    MGGZ: "#C69C6D"
-    FGMA: "#EA948B"
-    GHOR: "#E3ACE5"
-    LO: "#B3B3B3"
-    AAGG: "#D9E021"
-
 
   # constants to control how
   # collision look and act
@@ -90,7 +55,7 @@ Bubbles = () ->
   # ---
   transformData = (rawData) ->
     rawData.forEach (d) ->
-      d.size = parseInt(d.size)
+      d.count = parseInt(d.count)
       rawData.sort(() -> 0.5 - Math.random())
     rawData
 
@@ -133,16 +98,12 @@ Bubbles = () ->
   #  for a explanation and rational behind this function design
   # ---
   chart = (selection) ->
-
     selection.each (rawData) ->
-      
-      console.log(rawData)
 
       # first, get the data in the right format
       data = transformData(rawData)
       # setup the radius scale's domain now that
       # we have some data
-
       maxDomainValue = d3.max(data, (d) -> rValue(d))
       rScale.domain([0, maxDomainValue])
 
@@ -172,8 +133,6 @@ Bubbles = () ->
         .append("div")
         .attr("id", "bubble-labels")
 
-        
-
       update()
 
       # see if url includes an id already 
@@ -183,34 +142,6 @@ Bubbles = () ->
       d3.select(window)
         .on("hashchange", hashchange)
 
-
-    # search function callback
-    $(".button").on "click", ->
-      # data = data.filter( (d) -> d.name == ("Dataset_3"||"Dataset_2"))
-      # updateNodes(data)
-      # updateLabels(data)
-      
-      input = $(".searchInput").val();
-      d3.select("#status").html("<h3>search results for <span class=\"active\"> " + String(input) + " </span> </h3>")
-
-      theNode = d3.selectAll(".bubble-node")
-                    .filter( (d,i) ->                                   
-                                      d.keywords.includes(input));
-      theLabel = d3.selectAll(".bubble-label")
-                    .filter( (d) -> d.keywords.includes(input))
-      console.log("theNode")
-      console.log(theNode)
-      d3.selectAll(".bubble-node").style("opacity","0");
-      theNode.style("opacity","1")
-      d3.selectAll(".bubble-label").style("opacity","0");
-      theLabel.style("opacity","1")
-
-  $(".reset").on "click", ->
-        d3.selectAll(".bubble-node").style("opacity","1");
-        d3.selectAll(".bubble-label").style("opacity","1");
-        d3.select("#status").html("<h3>No dataset is selected</h3>")
-
-  
   # ---
   # update starts up the force directed layout and then
   # updates the nodes and labels
@@ -221,7 +152,6 @@ Bubbles = () ->
     # the one used to size our bubbles, but it kicks up the minimum
     # size to make it so smaller bubbles have a slightly larger 
     # collision 'sphere'
-    
     data.forEach (d,i) ->
       d.forceR = Math.max(minCollisionRadius, rScale(rValue(d)))
 
@@ -229,27 +159,23 @@ Bubbles = () ->
     force.nodes(data).start()
 
     # call our update methods to do the creation and layout work
-    updateNodes(data)
-    updateLabels(data)
+    updateNodes()
+    updateLabels()
 
   # ---
   # updateNodes creates a new bubble for each node in our dataset
   # ---
-  updateNodes = (datas) ->
+  updateNodes = () ->
     # here we are using the idValue function to uniquely bind our
     # data to the (currently) empty 'bubble-node selection'.
     # if you want to use your own data, you just need to modify what
     # idValue returns
-    console.log("datas")
-    console.log(datas)
+    node = node.selectAll(".bubble-node").data(data, (d) -> idValue(d))
 
-    node = node.selectAll(".bubble-node").data(datas, (d) -> idValue(d))
-    console.log(node)  
     # we don't actually remove any nodes from our data in this example 
     # but if we did, this line of code would remove them from the
     # visualization as well
     node.exit().remove()
-    console.log(node)  
 
     # nodes are just links with circles inside.
     # the styling comes from the css
@@ -257,74 +183,19 @@ Bubbles = () ->
       .append("a")
       .attr("class", "bubble-node")
       .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
-      .style("fill", (d) -> d.department)
       .call(force.drag)
       .call(connectEvents)
       .append("circle")
       .attr("r", (d) -> rScale(rValue(d)))
 
-
-  # drawing the Pie chart ( timeline)
-    node.append("g")
-        .attr("class", "pie")
-        .attr('data_col', (d) -> [d.C1970,
-              d.C1980,
-              d.C1990,
-              d.C2000,
-              d.C2010,
-              d.C2020])
-        .attr("width",  (d) -> rScale(rValue(d)) * 2 )
-        .attr("height", (d) -> rScale(rValue(d)) * 2 )
-        .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
-      .selectAll(".arc")
-        .data( (d) -> pie_bub(d) )
-      .enter().append("path")
-        .attr("class", "arc")
-       .attr("d", (d) -> arc_bub(d) )
-        .attr('stroke','#ffffff')
-
-    # drawing the visible circle
-    node.append("circle")
-      .attr("r", (d) -> rScale(rValue(d)-10))
-
-    #adding svgs to the circle
-    node.append("image")
-    .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-    
-    petals = 
-      "Social Media": "right"
-      "Health Promotion": "diagonal-right"
-      "Registry": "diagonal-left"
-      "Monitor": "left"
-      "Questionaire": "top"
-
-    for p, dir of petals
-      node.append("image")
-        .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-
-    node.selectAll(".pie")
-      .selectAll(".arc")
-        .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
-
-
-
-
   # ---
   # updateLabels is more involved as we need to deal with getting the sizing
   # to work well with the font size
   # ---
-  updateLabels = (datas) ->
+  updateLabels = () ->
     # as in updateNodes, we use idValue to define what the unique id for each data 
     # point is
-    label = label.selectAll(".bubble-label").data(datas, (d) -> idValue(d))
+    label = label.selectAll(".bubble-label").data(data, (d) -> idValue(d))
 
     label.exit().remove()
 
@@ -350,7 +221,7 @@ Bubbles = () ->
     # - remember to add the 'px' at the end as we are dealing with 
     #  styling divs
     label
-      .style("font-size", (d) -> Math.max(4, rScale(rValue(d) / 12)) + "px")
+      .style("font-size", (d) -> Math.max(8, rScale(rValue(d) / 2)) + "px")
       .style("width", (d) -> 2.5 * rScale(rValue(d)) + "px")
 
     # interesting hack to get the 'true' text width
@@ -466,9 +337,9 @@ Bubbles = () ->
     node.classed("bubble-selected", (d) -> id == idValue(d))
     # if no node is selected, id will be empty
     if id.length > 0
-      d3.select("#status").html("<h3>The <span class=\"active\">#{id}</span> is now selected</h3>")
+      d3.select("#status").html("<h3>The word <span class=\"active\">#{id}</span> is now active</h3>")
     else
-      d3.select("#status").html("<h3>No dataset is selected</h3>")
+      d3.select("#status").html("<h3>No word is active</h3>")
 
   # ---
   # hover event
@@ -534,7 +405,10 @@ root.plotData = (selector, data, plot) ->
     .call(plot)
 
 texts = [
-  {key:"sherlock",file:"dummy.csv",name:"GGD Monitor Test File"}
+  {key:"sherlock",file:"top_sherlock.csv",name:"The Adventures of Sherlock Holmes"}
+  {key:"aesop",file:"top_aesop.csv",name:"Aesop's Fables"}
+  {key:"alice",file:"alice.csv",name:"Alice's Adventures in Wonderland"}
+  {key:"gulliver",file:"top_gulliver.csv",name:"Gulliver's Travels"}
 ]
 
 # ---
@@ -549,12 +423,6 @@ $ ->
   # data is loaded
   # ---
   display = (data) ->
-    data.time = [data.Y1970,
-          data.Y1980,
-          data.Y1990,
-          data.Y2000,
-          data.Y2010,
-          data.Y2020]
     plotData("#vis", data, plot)
 
   # we are storing the current text in the search component
@@ -587,5 +455,5 @@ $ ->
   d3.select("#book-title").html(text.name)
 
   # load our data
-  d3.csv("data/ggd.csv", display)
+  d3.csv("data/#{text.file}", display)
 
