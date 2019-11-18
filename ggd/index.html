@@ -200,16 +200,16 @@
     <div class="container toolbar">
         <div class="row toolbar-header" onmouseup="$('#toolbar-top').collapse('toggle');">
             <div class="col">
-                <img class="eyecon" src="assets/img/eye.svg"> Geo. Coverage
+                <img class="eyecon" onClick="toggleGeo()" id="Geo" src="assets/img/eye.svg"> Geo. Coverage
             </div>
             <div class="col">
-                <img class="eyecon" src="assets/img/eye.svg"> Population
+                <img class="eyecon" onClick="togglePopulation()" id="population" src="assets/img/eye.svg"> Population
             </div>
             <div class="col">
-                <img class="eyecon" src="assets/img/eye_open.svg"> Type of Dataset
+                <img class="eyecon show" onClick="toggleDatasetType()" id="datasetType" src="assets/img/eye_open.svg"> Type of Dataset
             </div>
             <div class="col">
-                <img class="eyecon" src="assets/img/eye.svg"> Level
+                <img class="eyecon" onClick="toggleLevel()" id="level" src="assets/img/eye.svg"> Level
             </div>
         </div>
         <div class="row collapse" id="toolbar-top">
@@ -261,13 +261,13 @@
     <div class="container toolbar">
         <div class="row toolbar-header" onmouseup="$('#toolbar-bottom').collapse('toggle');">
             <div class="col">
-                <img class="eyecon" id="casesToggle" onClick="toggleCases()" src="assets/img/eye_open.svg"> Number of Cases
+                <img class="eyecon show" id="casesToggle" onClick="toggleCases()" src="assets/img/eye_open.svg"> Number of Cases
             </div>
             <div class="col">
-                <img class="eyecon" id="ownershipToggle" onclick="toggleOwnership()" src="assets/img/eye_open.svg"> Ownership
+                <img class="eyecon show" id="ownershipToggle" onClick="toggleOwnership()" src="assets/img/eye_open.svg"> Ownership
             </div>
             <div class="col">
-                <img class="eyecon" src="assets/img/eye_open.svg"> Temporal Coverage
+                <img class="eyecon show" id="temporalCoverageToggle" onClick=" toggleTemporalCoverage();" src="assets/img/eye_open.svg"> Temporal Coverage
             </div>
         </div>
         <div class="row collapse" id="toolbar-bottom">
@@ -305,7 +305,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
+
     <!-- D3 JS -->
     <script src="assets/js/libs/d3.min.js"></script>
     <script src="assets/js/libs/d3-scale.v3.min.js"></script>
@@ -319,36 +319,120 @@
     <script type="text/javascript"></script>
     <script>
         /*
-                                                Function to toggle Ownership Icons
-                                                */
+                                                                                                                                                                                                                                                                                                                                                                                                Function to toggle Ownership Icons
+                                                                                                                                                                                                                                                                                                                                                                                                */
         function toggleOwnership() {
             console.log("ownership Toggle")
-            var x = document.getElementById("ownership");
-            if (x.style.display === "none") {
-                document.getElementById("ownershipToggle").src = "assets/img/eye_open.svg";
-                //filter
-            } else {
+            x = document.getElementById("ownership");
+            console.log(document.getElementById("casesToggle").src)
+            if (x.classList.contains("show")) {
+                x.classList.toggle("show");
                 document.getElementById("ownershipToggle").src = "assets/img/eye.svg";
                 //filter
+            } else {
+                x.classList.toggle("show")
+                document.getElementById("ownershipToggle").src = "assets/img/eye_open.svg"
+                    //filter
+            }
+        }
+
+        /*
+        Function to Toggle # of cases Icon
+        */
+        function toggleCases(event) {
+            console.log("case Toggle")
+
+            x = document.getElementById("casesToggle")
+            console.log(document.getElementById("casesToggle").src)
+            if (x.classList.contains("show")) {
+                x.classList.toggle("show")
+                document.getElementById("casesToggle").src = "assets/img/eye.svg";
+                //filter
+
+            } else {
+                x.classList.toggle("show")
+
+                document.getElementById("casesToggle").src = "assets/img/eye_open.svg"
+                    //filter
             }
         }
 
 
         /*
-        Function to Toggle # of cases Icon
+        Function to Toggle Temporal Coverage
         */
-        function toggleCases() {
-            console.log("case Toggle")
-            var x = document.getElementById("cases");
-            if (x.style.display === "none") {
-                document.getElementById("casesToggle").src = "assets/img/eye_open.svg";
+        function toggleTemporalCoverage(event) {
+
+            x = document.getElementById("temporalCoverageToggle")
+            if (x.classList.contains("show")) {
+                x.classList.toggle("show")
+                document.getElementById("temporalCoverageToggle").src = "assets/img/eye.svg";
                 //filter
 
             } else {
-                document.getElementById("casesToggle").src = "assets/img/eye.svg";
-                //filter
+                x.classList.toggle("show")
+
+                document.getElementById("temporalCoverageToggle").src = "assets/img/eye_open.svg"
+                    //filter
             }
         }
+
+        /*
+        Function to Toggle Geographical coverage
+        */
+        function toggleGeo(event) {
+            console.log("Geo Toggle")
+
+            document.getElementById("Geo").src = "assets/img/eye_open.svg";
+            document.getElementById("datasetType").src = "assets/img/eye.svg"
+            document.getElementById("level").src = "assets/img/eye.svg";
+            document.getElementById("population").src = "assets/img/eye.svg";
+            //filter
+        }
+
+        /*
+        Function to Toggle Population
+        */
+        function togglePopulation(event) {
+            console.log("Population Toggle")
+
+            document.getElementById("Geo").src = "assets/img/eye.svg";
+            document.getElementById("datasetType").src = "assets/img/eye.svg"
+            document.getElementById("level").src = "assets/img/eye.svg";
+            document.getElementById("population").src = "assets/img/eye_open.svg";
+            //filter
+        }
+
+        /*
+        Function to Toggle level
+        */
+        function toggleLevel(event) {
+            console.log("level Toggle")
+
+            document.getElementById("Geo").src = "assets/img/eye.svg";
+            document.getElementById("datasetType").src = "assets/img/eye.svg"
+            document.getElementById("level").src = "assets/img/eye_open.svg";
+            document.getElementById("population").src = "assets/img/eye.svg";
+            //filter
+        }
+
+        /*
+        Function to DatasetTypes
+        */
+        function toggleDatasetType(event) {
+            console.log("dataset Toggle")
+
+            document.getElementById("Geo").src = "assets/img/eye.svg";
+            document.getElementById("datasetType").src = "assets/img/eye_open.svg"
+            document.getElementById("level").src = "assets/img/eye.svg";
+            document.getElementById("population").src = "assets/img/eye.svg";
+            //filter
+        }
+
+
+
+
+
 
         var margin = 0
         padding = 0
