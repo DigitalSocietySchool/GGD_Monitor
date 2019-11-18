@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,25 +14,29 @@
         body {
             font-family: 'Open Sans', sans-serif;
         }
+        
         .header {
-            padding-top:50px;
+            padding-top: 50px;
         }
+        
         .toolbar {
             font-weight: 700;
             background-color: #F7F7F7;
             border: 1px solid #4D4D4D;
             border-radius: 50px;
-            margin-top:25px;
+            margin-top: 25px;
             text-align: center;
-            box-shadow: 2px 4px 20px 4px rgb(0,0,0,0.18);
-            margin-bottom:25px;
+            box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
+            margin-bottom: 25px;
         }
+        
         .toolbar-header {
             border-radius: 50px;
             padding: 15px;
             border: 2px solid #000000;
             background-color: #E6E6E6;
         }
+        
         .toolbar-items {
             display: flex;
             align-items: center;
@@ -39,19 +44,24 @@
             width: 100%;
             padding: 30px;
         }
+        
         .toolbar-items div {
             width: 50%;
         }
+        
         img.eyecon {
             height: 63.942px;
             width: 63.942px;
         }
+        
         img.icon {
-            width:60px;
+            width: 60px;
         }
+        
         .level div div {
             padding: 10px;
         }
+        
         .circle {
             height: 25px;
             width: 25px;
@@ -60,16 +70,18 @@
             position: relative;
             top: 6px;
         }
+        
         .ownership {
             text-align: left;
         }
+        
         .ownership div {
             width: 100%;
             padding: 5px;
         }
-
         /* begin abdo import */
-                #text-select {
+        
+        #text-select {
             float: right;
             margin-right: 10px;
         }
@@ -165,8 +177,9 @@
         }
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="container">
         <div class="row">
             <div class="col header">
@@ -186,20 +199,16 @@
     <div class="container toolbar">
         <div class="row toolbar-header">
             <div class="col">
-                <img class="eyecon" src="assets/img/eye.svg">
-                Geo. Coverage
+                <img class="eyecon" src="assets/img/eye.svg"> Geo. Coverage
             </div>
             <div class="col">
-                <img class="eyecon" src="assets/img/eye.svg">
-                Population
+                <img class="eyecon" src="assets/img/eye.svg"> Population
             </div>
             <div class="col">
-                <img class="eyecon" src="assets/img/eye_open.svg">
-                Type of Dataset
+                <img class="eyecon" src="assets/img/eye_open.svg"> Type of Dataset
             </div>
             <div class="col">
-                <img class="eyecon" src="assets/img/eye.svg">
-                Level
+                <img class="eyecon" src="assets/img/eye.svg"> Level
             </div>
         </div>
         <div class="row">
@@ -251,26 +260,23 @@
     <div class="container toolbar">
         <div class="row toolbar-header">
             <div class="col">
-                <img class="eyecon" src="assets/img/eye_open.svg">
-                Number of Cases
+                <img class="eyecon" id="casesToggle" onClick="toggleCases()" src="assets/img/eye_open.svg"> Number of Cases
             </div>
             <div class="col">
-                <img class="eyecon" src="assets/img/eye_open.svg">
-                Ownership
+                <img class="eyecon" id="ownershipToggle" onclick="toggleOwnership()" src="assets/img/eye_open.svg"> Ownership
             </div>
             <div class="col">
-                <img class="eyecon" src="assets/img/eye_open.svg">
-                Temporal Coverage
+                <img class="eyecon" src="assets/img/eye_open.svg"> Temporal Coverage
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <div class="toolbar-items">
+                <div class="toolbar-items" id='cases'>
                     <img src="assets/img/cases.svg" width="100%">
                 </div>
             </div>
             <div class="col">
-                <div class="toolbar-items ownership">
+                <div class="toolbar-items ownership" id="ownership">
                     <div style="float:left;">
                         <div><span style="background-color: purple;" class="circle"></span> EGZ</div>
                         <div><span style="background-color: blue;" class="circle"></span> IZ</div>
@@ -302,12 +308,45 @@
     <script src="assets/js/libs/d3-scale.v3.min.js"></script>
     <script src="assets/js/libs/d3-path.v1.min.js"></script>
     <script src="assets/js/libs/d3-shape.v1.min.js"></script>
-    
+
     <script defer src="assets/js/plugins.js"></script>
     <script src="assets/js/libs/coffee-script.js"></script>
     <script type="text/coffeescript" src="assets/coffee/vis.coffee"></script>
-    
-    <script type="text/javascript">
+
+    <script type="text/javascript"></script>
+    <script>
+        /*
+                                                Function to toggle Ownership Icons
+                                                */
+        function toggleOwnership() {
+            console.log("ownership Toggle")
+            var x = document.getElementById("ownership");
+            if (x.style.display === "none") {
+                document.getElementById("ownershipToggle").src = "assets/img/eye_open.svg";
+                //filter
+            } else {
+                document.getElementById("ownershipToggle").src = "assets/img/eye.svg";
+                //filter
+            }
+        }
+
+
+        /*
+        Function to Toggle # of cases Icon
+        */
+        function toggleCases() {
+            console.log("case Toggle")
+            var x = document.getElementById("cases");
+            if (x.style.display === "none") {
+                document.getElementById("casesToggle").src = "assets/img/eye_open.svg";
+                //filter
+
+            } else {
+                document.getElementById("casesToggle").src = "assets/img/eye.svg";
+                //filter
+            }
+        }
+
         var margin = 0
         padding = 0
         radius = 100;
@@ -316,10 +355,10 @@
             .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
         var arc = d3.svg.arc()
-            .outerRadius(function (d) {
+            .outerRadius(function(d) {
                 return (d.data.size) / 4;
             })
-            .innerRadius(function (d) {
+            .innerRadius(function(d) {
                 return (d.data.size) / 4 - 10;
             })
 
@@ -330,19 +369,19 @@
 
         var pie = d3.pie()
             .sort(null)
-            .value(function (d) {
+            .value(function(d) {
                 return d.time_band;
             });
 
-        d3.csv("data/dummy.csv", function (error, data) {
+        d3.csv("data/dummy.csv", function(error, data) {
             if (error) throw error;
 
-            color.domain(d3.keys(data[0]).filter(function (key) {
+            color.domain(d3.keys(data[0]).filter(function(key) {
                 return key !== "name";
             }));
 
-            data.forEach(function (d) {
-                d.time = color.domain().map(function (name) {
+            data.forEach(function(d) {
+                d.time = color.domain().map(function(name) {
                     var band = d[name];
                     var test = {
                         name: d.name,
@@ -362,6 +401,8 @@
                     return res;
                 });
             });
+        })
     </script>
-  </body>
+</body>
+
 </html>

@@ -1,6 +1,17 @@
 
 root = exports ? this
 
+console.log "started Script"
+
+# hideOwnership = ->
+#   console.log 'hide ownership'
+#   x = document.getElementsByClassName('ownership')
+#   if x.style.display == 'none'
+#     x.style.display = 'block'
+#   else
+#     x.style.display = 'none'
+#   return
+
 Bubbles = () ->
   # standard variables accessible to
   # the rest of the functions inside Bubbles
@@ -171,12 +182,18 @@ Bubbles = () ->
       d3.select(window)
         .on("hashchange", hashchange)
 
+    #hide Ownership function callback
+
+    $(".ownershipToggle").on "click", ->
+      x = $('.ownership').attr "style"
+
+      console.log x
+
+      # x.style.display = 'none'
+
 
     # search function callback
     $(".button").on "click", ->
-      # data = data.filter( (d) -> d.name == ("Dataset_3"||"Dataset_2"))
-      # updateNodes(data)
-      # updateLabels(data)
       
       input = $(".searchInput").val();
       d3.select("#status").html("<h3>search results for <span class=\"active\"> " + String(input) + " </span> </h3>")
