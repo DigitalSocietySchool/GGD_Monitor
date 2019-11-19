@@ -267,12 +267,7 @@ Bubbles = () ->
   # drawing the Pie chart ( timeline)
     node.append("g")
         .attr("class", "pie")
-        .attr('data_col', (d) -> [d.C1970,
-              d.C1980,
-              d.C1990,
-              d.C2000,
-              d.C2010,
-              d.C2020])
+        .attr('data_col', "#D31145,#D31145,#D31145,#D31145,#D31145")
         .attr("width",  (d) -> rScale(rValue(d)) * 2 )
         .attr("height", (d) -> rScale(rValue(d)) * 2 )
         .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
