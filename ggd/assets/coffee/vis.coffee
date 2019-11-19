@@ -1,6 +1,19 @@
 
 root = exports ? this
 
+#Years for outline
+years = {}
+for x in [1970..2020] by 10
+    years[x] = "#FFFFFF"
+console.log years
+
+getBorderColors = (year) ->
+  arcFill = years
+  for y in year.split(";")
+    arcFill[Math.trunc(y/10)*10] = "#000000"
+  console.log arcFill
+  return (val for key, val of arcFill)
+
 Bubbles = () ->
   # standard variables accessible to
   # the rest of the functions inside Bubbles
@@ -23,12 +36,7 @@ Bubbles = () ->
           
   # EMMA
   # Extractig values for donut charts
-  pie_bub = (d) -> d3.pie()([d.Y1970,
-          d.Y1980,
-          d.Y1990,
-          d.Y2000,
-          d.Y2010,
-          d.Y2020])
+  pie_bub = (d) -> d3.pie()([1,1,1,1,1,1])
 
   arc_bub = d3.svg.arc()
     .outerRadius( 100 )
@@ -55,7 +63,7 @@ Bubbles = () ->
 
   keywords = (d) -> d.keywords
 
-  # Colors
+  # Fill Colors by department
   colors =
     EGZ: "#BB9BD1"
     IZ: "#8FBCD8"
@@ -66,7 +74,6 @@ Bubbles = () ->
     GHOR: "#E3ACE5"
     LO: "#B3B3B3"
     AAGG: "#D9E021"
-
 
   # constants to control how
   # collision look and act
@@ -257,17 +264,17 @@ Bubbles = () ->
       .append("a")
       .attr("class", "bubble-node")
       .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
-      .style("fill", (d) -> d.department)
+      .style("fill", (d) -> colors[d.department])
       .call(force.drag)
       .call(connectEvents)
       .append("circle")
       .attr("r", (d) -> rScale(rValue(d)))
 
+    # drawing the Pie chart ( timeline)
 
-  # drawing the Pie chart ( timeline)
     node.append("g")
         .attr("class", "pie")
-        .attr('data_col', "#D31145,#D31145,#D31145,#D31145,#D31145")
+        .attr('data_col', (d) -> getBorderColors(d.years))
         .attr("width",  (d) -> rScale(rValue(d)) * 2 )
         .attr("height", (d) -> rScale(rValue(d)) * 2 )
         .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
@@ -280,7 +287,7 @@ Bubbles = () ->
 
     # drawing the visible circle
     node.append("circle")
-      .attr("r", (d) -> rScale(rValue(d)-10))
+      .attr("r", (d) -> rScale(rValue(d)-20))
 
     #adding svgs to the circle
     node.append("image")

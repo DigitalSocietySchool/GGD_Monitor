@@ -4,14 +4,12 @@
         <meta name="charset" content="utf-8">
         <script src="js/libs/coffee-script.js"></script>
         <script type="text/coffeescript">
-            petals = 
-                "Social Media": "right"
-                "Health Promotion": "diagonal-right"
-                "Registry": "diagonal-left"
-                "Monitor": "left"
-                "Questionaire": "top"
-            for p, d of petals
-                console.log p, d
+            years = {}
+            for x in [1970..2020] by 10
+                console.log x.toString()
+                years[x] = "#FFFFFF"
+            console.log (val for key, val of years)
+            console.log Math.trunc(1979/10)*10
         </script>
     </head>
     <body>

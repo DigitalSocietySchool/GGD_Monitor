@@ -1,6 +1,6 @@
 ID,name,size,department,years,keywords,type
-1,Dataset 1,500,LO,1970;1980;1990,Metro;Gebied;Family,Monitor
-2,Dataset 2,500,VT,1960;1980;1990,Metro;Gebied;Family,Social Media
+1,Dataset 1,500,LO,1970;1980;1990;2000;2010,Metro;Gebied;Family,Monitor
+2,Dataset 2,500,VT,2000;1980;1990,Metro;Gebied;Family,Social Media
 3,Dataset 3,300,LO,1980;2000,City;Family,Social Media;Health Promotion
 4,Dataset 4,700,AAGG,1990,Metro;Gebied;Family,Registry
 5,Dataset 5,100,LO,1980;1990,Street;Individual,Monitor
