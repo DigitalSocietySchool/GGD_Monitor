@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome --><script src="https://dss.cloud/fa/js/all.min.js"></script>
     <title>GGD Dashboard</title>
     <style>
         body {
@@ -167,12 +168,29 @@
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
-        function changeView(view) {
-            $('.cat' + view).toggle();
+        function changeView(view, c = false) {
+            if (c) {
+                $(c).toggle();
+            } else {
+                $('.cat' + view).toggle();
+            }
             if ($('#eye' + view).attr('src') == 'assets/img/eye_open.svg') {
                 $('#eye' + view).attr('src', 'assets/img/eye.svg');
             } else {
                 $('#eye' + view).attr('src', 'assets/img/eye_open.svg');
+            }
+        }
+        function collapseToolbar(toolbar) {
+            $('#toolbar-' + toolbar).collapse('toggle');
+            //console.log($('#toolbar-icon-' + toolbar).attr('collapsed'));
+            if ($('#toolbar-icon-' + toolbar).attr('collapsed') == 'true') {
+                $('#toolbar-icon-' + toolbar).removeClass('fa-plus');
+                $('#toolbar-icon-' + toolbar).addClass('fa-minus');
+                $('#toolbar-icon-' + toolbar).attr('collapsed', 'false'); 
+            } else {
+                $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
+                $('#toolbar-icon-' + toolbar).addClass('fa-plus');
+                $('#toolbar-icon-' + toolbar).attr('collapsed', 'true'); 
             }
         }
     </script>
@@ -195,7 +213,7 @@
     </div>
     <!-- begin first toolbar -->
     <div class="container toolbar">
-        <div class="row toolbar-header" onmouseup="$('#toolbar-top').collapse('toggle');">
+        <div class="row toolbar-header">
             <div class="col">
                 <img class="eyecon" src="assets/img/eye.svg">
                 Geo. Coverage
@@ -211,6 +229,9 @@
             <div class="col">
                 <img class="eyecon" src="assets/img/eye.svg">
                 Level
+            </div>
+            <div class="col-auto">
+                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
             </div>
         </div>
         <div class="row collapse" id="toolbar-top">
@@ -260,9 +281,9 @@
     </div>
     <!-- begin second toolbar -->
     <div class="container toolbar">
-        <div class="row toolbar-header" onmouseup="$('#toolbar-bottom').collapse('toggle');">
-            <div class="col">
-                <img class="eyecon" src="assets/img/eye_open.svg">
+        <div class="row toolbar-header">
+            <div class="col" onmouseup="changeView('Cases','.bubble-label .bubble-label-value');">
+                <img class="eyecon" id="eyeCases" src="assets/img/eye_open.svg">
                 Number of Cases
             </div>
             <div class="col">
@@ -272,6 +293,9 @@
             <div class="col">
                 <img class="eyecon" src="assets/img/eye_open.svg">
                 Temporal Coverage
+            </div>
+            <div class="col-auto">
+                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
             </div>
         </div>
         <div class="row collapse" id="toolbar-bottom">
