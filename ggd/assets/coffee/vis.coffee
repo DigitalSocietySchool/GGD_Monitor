@@ -292,6 +292,7 @@ Bubbles = () ->
     #adding svgs to the circle
     node.append("image")
     .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
+    .attr("class", "catDataset")
         .attr("width",  (d) -> rScale(rValue(d)) / 2 )
         .attr("height", (d) -> rScale(rValue(d)) / 2 )
         .style("transform", "translate(-1%, -3%)")
@@ -307,6 +308,7 @@ Bubbles = () ->
     for p, dir of petals
       node.append("image")
         .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
+        .attr("class", "catDataset")
         .attr("width",  (d) -> rScale(rValue(d)) / 2 )
         .attr("height", (d) -> rScale(rValue(d)) / 2 )
         .style("transform", "translate(-1%, -3%)")

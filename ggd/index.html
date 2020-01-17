@@ -166,6 +166,16 @@
         }
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
+    <script>
+        function changeView(view) {
+            $('.cat' + view).toggle();
+            if ($('#eye' + view).attr('src') == 'assets/img/eye_open.svg') {
+                $('#eye' + view).attr('src', 'assets/img/eye.svg');
+            } else {
+                $('#eye' + view).attr('src', 'assets/img/eye_open.svg');
+            }
+        }
+    </script>
   </head>
   <body>
     <div class="container">
@@ -194,8 +204,8 @@
                 <img class="eyecon" src="assets/img/eye.svg">
                 Population
             </div>
-            <div class="col">
-                <img class="eyecon" src="assets/img/eye_open.svg">
+            <div class="col" onmouseup="changeView('Dataset');">
+                <img class="eyecon" id="eyeDataset" src="assets/img/eye_open.svg">
                 Type of Dataset
             </div>
             <div class="col">
