@@ -165,15 +165,34 @@
         .rotate-white {
             transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
         }
+
+        .catPopulation {
+            display:none;
+        }
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
+        var categories = ["Population", "Dataset"];
         function changeView(view, c = false) {
             if (c) {
                 $(c).toggle();
+                toggleEye(view);
             } else {
-                $('.cat' + view).toggle();
+                for (category in categories) {
+                    cat = categories[category]
+                    if (cat == view) {
+                        $('.cat' + cat).show();
+                        toggleEye(cat);
+                        console.log("Showing" + categories[category]);
+                    } else {
+                        $('.cat' + cat).hide();
+                        console.log("Hiding" + categories[category]);
+                        toggleEye(cat);
+                    }
+                }
             }
+        }
+        function toggleEye(view) {
             if ($('#eye' + view).attr('src') == 'assets/img/eye_open.svg') {
                 $('#eye' + view).attr('src', 'assets/img/eye.svg');
             } else {
@@ -218,8 +237,8 @@
                 <img class="eyecon" src="assets/img/eye.svg">
                 Geo. Coverage
             </div>
-            <div class="col">
-                <img class="eyecon" src="assets/img/eye.svg">
+            <div class="col" onmouseup="changeView('Population');">
+                <img class="eyecon" id="eyePopulation" src="assets/img/eye.svg">
                 Population
             </div>
             <div class="col" onmouseup="changeView('Dataset');">

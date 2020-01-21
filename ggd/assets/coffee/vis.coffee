@@ -314,6 +314,21 @@ Bubbles = () ->
         .style("transform", "translate(-1%, -3%)")
         .style("transform-origin","6px 56px;")
 
+    population = 
+      "Youth" : "youth.svg"
+      "Young adult" : "young_adult.svg"
+      "Adult" : "adult.svg"
+      "Elderly" : "old_person.svg"
+
+    for p, img of population
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.keywords.indexOf(p) != -1 then "assets/img/" + img)
+        .attr("class", "catPopulation")
+        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
+        .attr("height", (d) -> rScale(rValue(d)) / 2 )
+        .style("transform", "translate(-1%, -3%)")
+        .style("transform-origin","6px 56px;")
+
     node.selectAll(".pie")
       .selectAll(".arc")
         .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
