@@ -169,6 +169,14 @@
         .catPopulation {
             display:none;
         }
+
+        .bubble-label-name {
+            margin-bottom: 30px;
+        }
+        .bubble-label-value {
+            font-weight:bold;
+        }
+        
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
@@ -182,21 +190,33 @@
                     cat = categories[category]
                     if (cat == view) {
                         $('.cat' + cat).show();
-                        toggleEye(cat);
+                        toggleEye(cat, 'show');
                         console.log("Showing" + categories[category]);
                     } else {
                         $('.cat' + cat).hide();
                         console.log("Hiding" + categories[category]);
-                        toggleEye(cat);
+                        toggleEye(cat, 'hide');
                     }
                 }
             }
         }
-        function toggleEye(view) {
-            if ($('#eye' + view).attr('src') == 'assets/img/eye_open.svg') {
-                $('#eye' + view).attr('src', 'assets/img/eye.svg');
+        function toggleEye(view, showhide=false) {
+            if (!showhide) {
+                if ($('#eye' + view).attr('collapsed') == 'false') {
+                    $('#eye' + view).attr('src', 'assets/img/eye.svg');
+                    $('#eye' + view).attr('collapsed', 'true');
+                } else {
+                    $('#eye' + view).attr('src', 'assets/img/eye_open.svg');
+                    $('#eye' + view).attr('collapsed', 'false');
+                }
             } else {
-                $('#eye' + view).attr('src', 'assets/img/eye_open.svg');
+                if (showhide == 'show' && $('#eye' + view).attr('collapsed') == 'true') {
+                    $('#eye' + view).attr('src', 'assets/img/eye_open.svg');
+                    $('#eye' + view).attr('collapsed', 'false');
+                } else if (showhide == 'hide' && $('#eye' + view).attr('collapsed') == 'false') {
+                    $('#eye' + view).attr('src', 'assets/img/eye.svg');
+                    $('#eye' + view).attr('collapsed', 'true');
+                }
             }
         }
         function collapseToolbar(toolbar) {
@@ -238,11 +258,11 @@
                 Geo. Coverage
             </div>
             <div class="col" onmouseup="changeView('Population');">
-                <img class="eyecon" id="eyePopulation" src="assets/img/eye.svg">
+                <img class="eyecon" collapsed="true" id="eyePopulation" src="assets/img/eye.svg">
                 Population
             </div>
             <div class="col" onmouseup="changeView('Dataset');">
-                <img class="eyecon" id="eyeDataset" src="assets/img/eye_open.svg">
+                <img class="eyecon" collapsed="false" id="eyeDataset" src="assets/img/eye_open.svg">
                 Type of Dataset
             </div>
             <div class="col">
