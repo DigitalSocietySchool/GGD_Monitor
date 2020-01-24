@@ -5,13 +5,13 @@ root = exports ? this
 years = {}
 for x in [1970..2020] by 10
     years[x] = "#FFFFFF"
-console.log years
+#console.log years
 
 getBorderColors = (year) ->
   arcFill = years
   for y in year.split(";")
     arcFill[Math.trunc(y/10)*10] = "#000000"
-  console.log arcFill
+  #console.log arcFill
   return (val for key, val of arcFill)
 
 Bubbles = () ->
@@ -143,7 +143,7 @@ Bubbles = () ->
 
     selection.each (rawData) ->
       
-      console.log(rawData)
+      #console.log(rawData)
 
       # first, get the data in the right format
       data = transformData(rawData)
@@ -205,8 +205,8 @@ Bubbles = () ->
                                       d.keywords.includes(input));
       theLabel = d3.selectAll(".bubble-label")
                     .filter( (d) -> d.keywords.includes(input))
-      console.log("theNode")
-      console.log(theNode)
+      #console.log("theNode")
+      #console.log(theNode)
       d3.selectAll(".bubble-node").style("opacity","0");
       theNode.style("opacity","1")
       d3.selectAll(".bubble-label").style("opacity","0");
@@ -247,16 +247,16 @@ Bubbles = () ->
     # data to the (currently) empty 'bubble-node selection'.
     # if you want to use your own data, you just need to modify what
     # idValue returns
-    console.log("datas")
-    console.log(datas)
+    #console.log("datas")
+    #console.log(datas)
 
     node = node.selectAll(".bubble-node").data(datas, (d) -> idValue(d))
-    console.log(node)  
+    #console.log(node)  
     # we don't actually remove any nodes from our data in this example 
     # but if we did, this line of code would remove them from the
     # visualization as well
     node.exit().remove()
-    console.log(node)  
+    #console.log(node)  
 
     # nodes are just links with circles inside.
     # the styling comes from the css
@@ -324,6 +324,36 @@ Bubbles = () ->
       node.append("image")
         .attr("xlink:href", (d)-> if d.keywords.indexOf(p) != -1 then "assets/img/" + img)
         .attr("class", "catPopulation")
+        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
+        .attr("height", (d) -> rScale(rValue(d)) / 2 )
+        .style("transform", "translate(-1%, -3%)")
+        .style("transform-origin","6px 56px;")
+
+    coverage = 
+      "Street" : "street.svg"
+      "City" : "city.svg"
+      "Metro" : "metro.svg"
+
+    for c, img of coverage
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.keywords.indexOf(c) != -1 then "assets/img/" + img)
+        .attr("class", "catCoverage")
+        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
+        .attr("height", (d) -> rScale(rValue(d)) / 2 )
+        .style("transform", "translate(-1%, -3%)")
+        .style("transform-origin","6px 56px;")
+
+    level =
+      "Individual" : "individual.svg"
+      "Family" : "family.svg"
+      "Group" : "group.svg"
+      "Organization" : "organization.svg"
+      "Geography" : "geo.svg"
+
+    for l, img of level
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.keywords.indexOf(l) != -1 then "assets/img/" + img)
+        .attr("class", "catLevel")
         .attr("width",  (d) -> rScale(rValue(d)) / 2 )
         .attr("height", (d) -> rScale(rValue(d)) / 2 )
         .style("transform", "translate(-1%, -3%)")

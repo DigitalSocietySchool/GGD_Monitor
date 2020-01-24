@@ -169,7 +169,9 @@
         .catPopulation {
             display:none;
         }
-
+        .catCoverage, .catLevel {
+            display:none;
+        }
         .bubble-label-name {
             margin-bottom: 30px;
         }
@@ -180,7 +182,7 @@
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
-        var categories = ["Population", "Dataset"];
+        var categories = ["Population", "Dataset", "Coverage", "Level"];
         function changeView(view, c = false) {
             if (c) {
                 $(c).toggle();
@@ -253,8 +255,8 @@
     <!-- begin first toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col">
-                <img class="eyecon" src="assets/img/eye.svg">
+            <div class="col" onmouseup="changeView('Coverage');">
+                <img class="eyecon" id="eyeCoverage" collapsed="true" src="assets/img/eye.svg">
                 Geo. Coverage
             </div>
             <div class="col" onmouseup="changeView('Population');">
@@ -265,8 +267,8 @@
                 <img class="eyecon" collapsed="false" id="eyeDataset" src="assets/img/eye_open.svg">
                 Type of Dataset
             </div>
-            <div class="col">
-                <img class="eyecon" src="assets/img/eye.svg">
+            <div class="col" onmouseup="changeView('Level');">
+                <img class="eyecon" collapsed="true" id="eyeLevel" src="assets/img/eye.svg">
                 Level
             </div>
             <div class="col-auto">
@@ -322,15 +324,15 @@
     <div class="container toolbar">
         <div class="row toolbar-header">
             <div class="col" onmouseup="changeView('Cases','.bubble-label .bubble-label-value');">
-                <img class="eyecon" id="eyeCases" src="assets/img/eye_open.svg">
+                <img class="eyecon" collapsed="false" id="eyeCases" src="assets/img/eye_open.svg">
                 Number of Cases
             </div>
             <div class="col">
                 <img class="eyecon" src="assets/img/eye_open.svg">
                 Ownership
             </div>
-            <div class="col">
-                <img class="eyecon" src="assets/img/eye_open.svg">
+            <div class="col" onmouseup="changeView('Temporal','.arc');">
+                <img class="eyecon" id="eyeTemporal" collapsed="false" src="assets/img/eye_open.svg">
                 Temporal Coverage
             </div>
             <div class="col-auto">
