@@ -1,6 +1,17 @@
 
 root = exports ? this
 
+console.log "started Script"
+
+# hideOwnership = ->
+#   console.log 'hide ownership'
+#   x = document.getElementsByClassName('ownership')
+#   if x.style.display == 'none'
+#     x.style.display = 'block'
+#   else
+#     x.style.display = 'none'
+#   return
+
 Bubbles = () ->
   # standard variables accessible to
   # the rest of the functions inside Bubbles
@@ -171,12 +182,108 @@ Bubbles = () ->
       d3.select(window)
         .on("hashchange", hashchange)
 
+    #hide Ownership function callback
 
+    $(".ownershipToggle").on "click", ->
+      x = $('.ownership').attr "style"
+
+      console.log x
+
+    # on population click, hide existing glyphs and add population glyph
+    $(".population").on "click", ->
+      d3.selectAll('.glyph').style("display", "none");
+
+      d3.selectAll('.bubble-node').attr('display','flex')
+        .append("svg:image")
+        .attr("xlink:href", "assets/img/adultcomp.png")
+        .attr("width",  (d) -> rScale(rValue(d)) )
+        .attr("height", (d) -> rScale(rValue(d)) )
+        .style("transform", "translate(-2%, -3%)")
+        .classed("glyph", true);
+
+      d3.selectAll('.bubble-node')
+        .append("svg:image")
+        .attr("xlink:href", "assets/img/youngadultcomp.png")
+        .attr("width",  (d) -> rScale(rValue(d))  )
+        .attr("height", (d) -> rScale(rValue(d))  )
+        .style("transform", "translate(-2%, -3%)")
+        .classed("glyph", true);
+
+      d3.selectAll('.bubble-node')
+        .append("svg:image")
+        .attr("xlink:href", "assets/img/youthcomp.png")
+        .attr("width",  (d) -> rScale(rValue(d)) )
+        .attr("height", (d) -> rScale(rValue(d)) )
+        .style("transform", "translate(-2%, -3%)")
+        .classed("glyph", true);
+
+      d3.selectAll('.bubble-node')
+        .append("svg:image")
+        .attr("xlink:href", "assets/img/oldpersoncomp.png")
+        .attr("width",  (d) -> rScale(rValue(d)) )
+        .attr("height", (d) -> rScale(rValue(d)) )
+        .style("transform", "translate(-2%, -3%)")
+        .classed("glyph", true);
+    
+    # on dataset type click, hide existing glyphs and add dataset icons
+    $(".datasetType").on "click", ->
+      d3.selectAll('.glyph').style("display", "none");
+
+      node = d3.selectAll('.bubble-node').attr('display','flex')
+      node.append("image")
+        .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
+        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
+        .attr("height", (d) -> rScale(rValue(d)) / 2 )
+        .style("transform", "translate(-1%, -3%)")
+        .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
+
+    
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.policy == 'y' then "assets/img/glyphs/glyph-right.png")
+        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
+        .attr("height", (d) -> rScale(rValue(d)) / 2 )
+        .style("transform", "translate(-1%, -3%)")
+        .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
+
+
+
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.monitor == 'y' then "assets/img/glyphs/glyph-left.png")
+        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
+        .attr("height", (d) -> rScale(rValue(d)) / 2 )
+        .style("transform", "translate(-1%, -3%)")
+        .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
+
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.survey == 'y' then "assets/img/glyphs/glyph-top.png")
+        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
+        .attr("height", (d) -> rScale(rValue(d)) / 2 )
+        .style("transform", "translate(-1%, -3%)")
+        .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
+
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.promotion == 'y' then "assets/img/glyphs/glyph-diagonal-right.png")
+        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
+        .attr("height", (d) -> rScale(rValue(d)) / 2 )
+        .style("transform", "translate(-1%, -3%)")
+        .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
+
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.registration == 'y' then "assets/img/glyphs/glyph-diagonal-left.png")
+        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
+        .attr("height", (d) -> rScale(rValue(d)) / 2 )
+        .style("transform", "translate(-1%, -3%)")
+        .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
+
+  
     # search function callback
     $(".button").on "click", ->
-      # data = data.filter( (d) -> d.name == ("Dataset_3"||"Dataset_2"))
-      # updateNodes(data)
-      # updateLabels(data)
       
       input = $(".searchInput").val();
       d3.select("#status").html("<h3>search results for <span class=\"active\"> " + String(input) + " </span> </h3>")
@@ -275,13 +382,15 @@ Bubbles = () ->
     node.append("circle")
       .attr("r", (d) -> rScale(rValue(d)-10))
 
-    #adding svgs to the circle
+    #adding svgs to the circle to signify dataset types
     node.append("image")
     .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
         .attr("width",  (d) -> rScale(rValue(d)) / 2 )
         .attr("height", (d) -> rScale(rValue(d)) / 2 )
         .style("transform", "translate(-1%, -3%)")
         .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
+
     
     node.append("image")
     .attr("xlink:href", (d)-> if d.policy == 'y' then "assets/img/glyphs/glyph-right.png")
@@ -289,6 +398,8 @@ Bubbles = () ->
         .attr("height", (d) -> rScale(rValue(d)) / 2 )
         .style("transform", "translate(-1%, -3%)")
         .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
+
 
 
     node.append("image")
@@ -297,6 +408,7 @@ Bubbles = () ->
         .attr("height", (d) -> rScale(rValue(d)) / 2 )
         .style("transform", "translate(-1%, -3%)")
         .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
 
     node.append("image")
         .attr("xlink:href", (d)-> if d.survey == 'y' then "assets/img/glyphs/glyph-top.png")
@@ -304,6 +416,7 @@ Bubbles = () ->
         .attr("height", (d) -> rScale(rValue(d)) / 2 )
         .style("transform", "translate(-1%, -3%)")
         .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
 
     node.append("image")
         .attr("xlink:href", (d)-> if d.promotion == 'y' then "assets/img/glyphs/glyph-diagonal-right.png")
@@ -311,6 +424,7 @@ Bubbles = () ->
         .attr("height", (d) -> rScale(rValue(d)) / 2 )
         .style("transform", "translate(-1%, -3%)")
         .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
 
     node.append("image")
         .attr("xlink:href", (d)-> if d.registration == 'y' then "assets/img/glyphs/glyph-diagonal-left.png")
@@ -318,6 +432,7 @@ Bubbles = () ->
         .attr("height", (d) -> rScale(rValue(d)) / 2 )
         .style("transform", "translate(-1%, -3%)")
         .style("transform-origin","6px 56px;")
+        .classed("glyph", true);
 
 
 
