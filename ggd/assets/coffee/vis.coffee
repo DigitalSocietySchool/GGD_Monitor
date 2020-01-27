@@ -383,6 +383,8 @@ Bubbles = () ->
     labelEnter = label.enter().append("a")
       .attr("class", "bubble-label")
       .attr("href", (d) -> "##{encodeURIComponent(idValue(d))}")
+      #.attr("onmouseover", "$(this).find('.bubble-label-name').show();")
+      #.attr("onmouseout", "$(this).find('.bubble-label-name').hide();")
       .call(force.drag)
       .call(connectEvents)
 
