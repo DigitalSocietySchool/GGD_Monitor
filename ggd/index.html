@@ -235,6 +235,16 @@
                 $('#toolbar-icon-' + toolbar).attr('collapsed', 'true'); 
             }
         }
+
+        function toggleFill() {
+            if ($('#eyeOwnership').attr('collapsed') == 'true') {
+                $('a.bubble-node').each(function() { $(this).css("fill", $(this).attr("fill")); });
+                toggleEye('Ownership');
+            } else {
+                $('a.bubble-node').css("fill", "#D31145");
+                toggleEye('Ownership');
+            }
+        }
     </script>
   </head>
   <body>
@@ -328,8 +338,8 @@
                 <img class="eyecon" collapsed="false" id="eyeCases" src="assets/img/eye_open.svg">
                 Number of Cases
             </div>
-            <div class="col">
-                <img class="eyecon" src="assets/img/eye_open.svg">
+            <div class="col" onmouseup="toggleFill();">
+                <img class="eyecon" id="eyeOwnership" collapsed="false" src="assets/img/eye_open.svg">
                 Ownership
             </div>
             <div class="col" onmouseup="changeView('Temporal','.arc');">
