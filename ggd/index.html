@@ -245,6 +245,19 @@
                 toggleEye('Ownership');
             }
         }
+
+        function showSize(s) {
+            console.log("Checking..."); console.log(s);
+            $('a.bubble-node').each(function() {
+                console.log($(this).attr('size'));
+                if (Number($(this).attr('size')) < s) {
+                    console.log("Now hiding..." + s.toString());
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            });
+        }
     </script>
   </head>
   <body>
@@ -353,7 +366,34 @@
         <div class="row collapse" id="toolbar-bottom">
             <div class="col">
                 <div class="toolbar-items">
-                    <img src="assets/img/size_widget.svg" width="100%">
+                <svg width="100%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                viewBox="0 0 272.83 264.97" style="enable-background:new 0 0 272.83 264.97;" xml:space="preserve">
+               <style type="text/css">
+                   .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
+                   .st1{font-family:'OpenSans'; cursor: pointer;}
+                   .st2{font-size:22px;}
+               </style>
+               <g>
+                   <circle class="st0" cx="138.54" cy="131.83" r="125"/>
+                   <text transform="matrix(1 0 0 1 111.3019 36.1381)" class="st1 st2">More</text>
+               </g>
+               <g>
+                   <circle class="st0" cx="138.54" cy="158.6" r="100" id="size_2000" />
+                   <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2" onclick="showSize(2000);">2000</text>
+               </g>
+               <g>
+                   <circle class="st0" cx="138.54" cy="183.6" r="75" id="size_1000"/>
+                   <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2" onclick="showSize(1000);">1000</text>
+               </g>
+               <g>
+                   <circle class="st0" cx="138.54" cy="208.6" r="50" id="size_500"/>
+                   <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2" onclick="showSize(500);">500</text>
+               </g>
+               <g>
+                   <circle class="st0" cx="138.54" cy="226.83" r="30" id="size_100"/>
+                   <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2" onclick="showSize(100);">100</text>
+               </g>
+               </svg>
                 </div>
             </div>
             <div class="col">

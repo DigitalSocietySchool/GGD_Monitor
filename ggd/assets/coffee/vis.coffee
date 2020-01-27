@@ -266,6 +266,7 @@ Bubbles = () ->
       .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
       .style("fill", (d) -> colors[d.department])
       .attr("fill", (d) -> colors[d.department])
+      .attr("size", (d) -> d.size)
       .call(force.drag)
       .call(connectEvents)
       .append("circle")
