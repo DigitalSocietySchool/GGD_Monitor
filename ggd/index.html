@@ -7,6 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/custom_style.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
     <!-- Font Awesome --><script src="https://dss.cloud/fa/js/all.min.js"></script>
     <title>GGD Dashboard</title>
@@ -178,8 +179,7 @@
         }
         .bubble-label-value {
             font-weight:bold;
-        }
-        
+        }        
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
@@ -265,8 +265,6 @@
         <div class="row">
             <div class="col header">
                 <div id="vis"></div>
-                <div id="vis2"></div>
-                <div id="vis3"></div>
                 <div style="display: flex; justify-content: center;">
                     <input class="searchInput" name="targetNode" type="text" />
                     <button class="button">Search</button>
@@ -302,15 +300,15 @@
         <div class="row collapse" id="toolbar-top">
             <div class="col">
                 <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/street.svg" class="icon"></div>
+                    <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
                     <div style="float:right;">Straat<br>Buurt<br>Wijk</div>
                 </div>
                 <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/city.svg" class="icon"></div>
+                    <div style="float:left;"><img src="assets/img/icon/geo_2.png" class="icon"></div>
                     <div style="float:right;">Gebied<br>Stadsdeel<br>Stad</div>
                 </div>
                 <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/metro.svg" class="icon"></div>
+                    <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
                     <div style="float:right;">Amstelland<br>Metro. A'dam<br>G4<br>National</div>
                 </div>
             </div>
@@ -332,13 +330,13 @@
             <div class="col">
                 <div class="toolbar-items level">
                     <div style="float:left;">
-                        <div><img src="assets/img/individual.svg" class="icon"><br>Individual</div>
-                        <div><img src="assets/img/family.svg" class="icon"><br>Family</div>
-                        <div><img src="assets/img/group.svg" class="icon"><br>Group</div>
+                        <div><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
+                        <div><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
+                        <div><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
                     </div>
                     <div style="float:right;">
-                        <div><img src="assets/img/organization.svg" class="icon"><br>Organization</div>
-                        <div><img src="assets/img/geo.svg" class="icon"><br>Geography</div>
+                        <div><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
+                        <div><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
                     </div>
                 </div>
             </div>
@@ -436,61 +434,6 @@
     <script src="assets/js/libs/coffee-script.js"></script>
     <script type="text/coffeescript" src="assets/coffee/vis.coffee"></script>
     
-    <script type="text/javascript">
-        /* var margin = 0;
-        var padding = 0;
-        var radius = 100;
-
-        var color = d3.scale.ordinal()
-            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-        var arc = d3.svg.arc()
-            .outerRadius(function (d) {
-                return (d.data.size) / 4;
-            })
-            .innerRadius(function (d) {
-                return (d.data.size) / 4 - 10;
-            });
-
-        var arc_donut = d3.svg.arc()
-            .outerRadius(100)
-            .innerRadius(100);
-
-
-        var pie = d3.pie()
-            .sort(null)
-            .value(function (d) {
-                return d.time_band;
-            });
-
-        d3.csv("data/dummy.csv", function (error, data) {
-            if (error) throw error;
-
-            color.domain(d3.keys(data[0]).filter(function (key) {
-                return key !== "name";
-            }));
-
-            data.forEach(function (d) {
-                d.time = color.domain().map(function (name) {
-                    var band = d[name];
-                    var test = {
-                        name: d.name,
-                        Y1970: d.Y1970,
-                        Y1980: d.Y1980,
-                        Y1990: d.Y1990,
-                        Y2000: d.Y2000,
-                        Y2010: d.Y2010,
-                        Y2020: d.Y2020
-                    };
-                    var res = {
-                        name: name,
-                        time_band: test[name],
-                        size: d.size
-                    };
-                    //console.log(res);
-                    return res;
-                });
-            })}); */
-    </script>
+    
   </body>
 </html>
