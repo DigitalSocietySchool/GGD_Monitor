@@ -36,7 +36,7 @@ Bubbles = () ->
           
   # EMMA
   # Extractig values for donut charts
-  pie_bub = (d) -> d3.pie()([1,1,1,1,1,1])
+  pie_bub = (d) -> d3.pie()(Array(18).fill(1))
 
   arc_bub = d3.svg.arc()
     .outerRadius( 100 )
@@ -264,13 +264,16 @@ Bubbles = () ->
       .append("a")
       .attr("class", "bubble-node")
       .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
+      .attr("data-id", (d) -> d.ID)
+      .attr("id", (d) -> "node_" + d.ID.toString())
       .style("fill", (d) -> colors[d.department])
       .attr("fill", (d) -> colors[d.department])
       .attr("size", (d) -> d.size)
+      .attr("department", (d) -> d.department)
       .call(force.drag)
       .call(connectEvents)
-      .append("circle")
-      .attr("r", (d) -> rScale(rValue(d)))
+      #.append("circle")
+      #.attr("r", (d) -> rScale(rValue(d)))
 
     # drawing the Pie chart ( timeline)
 
@@ -289,17 +292,17 @@ Bubbles = () ->
 
     # drawing the visible circle
     node.append("circle")
-      .attr("r", (d) -> rScale(rValue(d)-20))
+      .attr("r", (d) -> rScale(rValue(d))-5)
 
     #adding svgs to the circle
     node.append("image")
-    .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
-    .attr("class", "catDataset")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-    
+      .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
+      .attr("class", "catDataset")
+      .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+      .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+      .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+      .style("transform-origin","50% 50%")
+
     petals = 
       "Social Media": "right"
       "Health Promotion": "diagonal-right"
@@ -311,56 +314,65 @@ Bubbles = () ->
       node.append("image")
         .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
         .attr("class", "catDataset")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
+        .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+        .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+        .style("transform-origin","50% 50%")
+
+    node.append("image")
+      .attr("xlink:href", "assets/img/icon/pop_empty.png")
+      .attr("class", "catPopulation")
+      .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+      .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+      .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+      .style("transform-origin","50% 50%")
 
     population = 
-      "Youth" : "youth.svg"
-      "Young adult" : "young_adult.svg"
-      "Adult" : "adult.svg"
-      "Elderly" : "old_person.svg"
+      "Youth" : "pop_1_youth.png"
+      "Young adult" : "pop_2_young_adult.png"
+      "Adult" : "pop_3_adult.png"
+      "Elderly" : "pop_4_elderly.png"
 
     for p, img of population
       node.append("image")
-        .attr("xlink:href", (d)-> if d.keywords.indexOf(p) != -1 then "assets/img/" + img)
+        .attr("xlink:href", (d)-> if d.keywords.indexOf(p) != -1 then "assets/img/icon/" + img)
         .attr("class", "catPopulation")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
+        .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+        .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+        .style("transform-origin","50% 50%")
 
     coverage = 
-      "Street" : "street.svg"
-      "City" : "city.svg"
-      "Metro" : "metro.svg"
+      "Street" : "icon/geo_1.png"
+      "City" : "icon/geo_2.png"
+      "Metro" : "icon/geo_3.png"
 
     for c, img of coverage
-      node.append("image")
-        .attr("xlink:href", (d)-> if d.keywords.indexOf(c) != -1 then "assets/img/" + img)
+      node.append('g')
+        .append("image")
+        .attr("xlink:href", (d) -> if d.keywords.indexOf(c) != -1 then "assets/img/" + img)
         .attr("class", "catCoverage")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-
+        .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+        .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+        .style("transform-origin","50% 50%")
+        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/1.8 +'px,-'+ rScale(rValue(d))/1.5 +'px)') 
+        
     level =
-      "Individual" : "individual.svg"
-      "Family" : "family.svg"
-      "Group" : "group.svg"
-      "Organization" : "organization.svg"
-      "Geography" : "geo.svg"
+      "Individual" : "icon/level_1_individual.png"
+      "Family" : "icon/level_2_family.png"
+      "Group" : "icon/level_3_group.png"
+      "Organization" : "icon/level_4_orga.png"
+      "Geography" : "icon/level_5_geo.png"
 
     for l, img of level
       node.append("image")
         .attr("xlink:href", (d)-> if d.keywords.indexOf(l) != -1 then "assets/img/" + img)
         .attr("class", "catLevel")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-
+        .attr("width",  (d) -> rScale(rValue(d))  )
+        .attr("height", (d) -> rScale(rValue(d))  )
+        .style("transform-origin","50% 50%")
+        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/2.1 +'px,-'+ rScale(rValue(d))/1.9 +'px)') 
+        
     node.selectAll(".pie")
       .selectAll(".arc")
         .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
@@ -385,6 +397,7 @@ Bubbles = () ->
     labelEnter = label.enter().append("a")
       .attr("class", "bubble-label")
       .attr("href", (d) -> "##{encodeURIComponent(idValue(d))}")
+      .attr("id", (d) -> "label_" + d.ID.toString())
       #.attr("onmouseover", "$(this).find('.bubble-label-name').show();")
       #.attr("onmouseout", "$(this).find('.bubble-label-name').hide();")
       .call(force.drag)

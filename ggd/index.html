@@ -8,6 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/custom_style.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <script src="https://dss.cloud/fa/js/all.min.js"></script>
@@ -312,13 +313,27 @@
         function showSize(s) {
             console.log("Checking...");
             console.log(s);
+            s = isNaN(s) ? s : Number(s);
             $('a.bubble-node').each(function() {
                 console.log($(this).attr('size'));
-                if (Number($(this).attr('size')) < s) {
+                if (Number($(this).attr('size')) <= s && $("#size_" + s).attr("filtered") != 'true') {
                     console.log("Now hiding..." + s.toString());
+                    //d3.select("#node_" + $(this).attr("data-id").toString()).remove();
+                    //d3.select("#label_" + $(this).attr("data-id").toString()).style("visibility", "hidden");
                     $(this).hide();
+                    $("#label_" + $(this).attr("data-id").toString()).hide()
                 } else {
                     $(this).show();
+                    $("#label_" + $(this).attr("data-id").toString()).show()
+                }
+            });
+            $('g.size').each(function() {
+                if ((Number($(this).attr("data-size")) == s && $(this).attr("filtered") != 'true') || (Number($(this).attr("data-size")) < s)) {
+                    $(this).find(".st0").css("fill", "yellow");
+                    $(this).attr("filtered", "true");
+                } else {
+                    $(this).find(".st0").css("fill", "white");
+                    $(this).attr("filtered", "false");
                 }
             });
         }
@@ -346,8 +361,6 @@
         <div class="row">
             <div class="col header">
                 <div id="vis"></div>
-                <div id="vis2"></div>
-                <div id="vis3"></div>
                 <div style="display: flex; justify-content: center;">
                     <input class="searchInput" name="targetNode" type="text" />
                     <button class="button">Search</button>
@@ -420,30 +433,16 @@
         <div class="row collapse" id="toolbar-top">
             <div class="col">
                 <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/street.svg" class="icon"></div>
-                    <div style="float:right;">
-                        <span id="straat">Straat</span><br>
-                        <span id="buurt">Buurt</span><br>
-                        <span id="wijk">Wijk</span>
-
-                    </div>
+                    <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
+                    <div style="float:right;">Straat<br>Buurt<br>Wijk</div>
                 </div>
                 <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/city.svg" class="icon"></div>
-                    <div style="float:right;">
-                        <span id="gebied">Gebied<br></span>
-                        <span id="stadsdeel">Stadsdeel<br></span>
-                        <span id="stad">Stad</span>
-                    </div>
+                    <div style="float:left;"><img src="assets/img/icon/geo_2.png" class="icon"></div>
+                    <div style="float:right;">Gebied<br>Stadsdeel<br>Stad</div>
                 </div>
                 <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/metro.svg" class="icon"></div>
-                    <div style="float:right;">
-                        <span id="amstelland">Amstelland<br></span>
-                        <span id="metro">Metro.A'dam<br></span>
-                        <span id="g4">G4<br></span>
-                        <span id="National">National</span>
-                    </div>
+                    <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
+                    <div style="float:right;">Amstelland<br>Metro. A'dam<br>G4<br>National</div>
                 </div>
             </div>
             <div class="col">
@@ -464,13 +463,13 @@
             <div class="col">
                 <div class="toolbar-items level">
                     <div style="float:left;">
-                        <div><img src="assets/img/individual.svg" class="icon"><br>Individual</div>
-                        <div><img src="assets/img/family.svg" class="icon"><br>Family</div>
-                        <div><img src="assets/img/group.svg" class="icon"><br>Group</div>
+                        <div><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
+                        <div><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
+                        <div><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
                     </div>
                     <div style="float:right;">
-                        <div><img src="assets/img/organization.svg" class="icon"><br>Organization</div>
-                        <div><img src="assets/img/geo.svg" class="icon"><br>Geography</div>
+                        <div><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
+                        <div><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
                     </div>
                 </div>
             </div>
@@ -497,29 +496,29 @@
                 <div class="toolbar-items">
                     <svg width="100%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97" style="enable-background:new 0 0 272.83 264.97;" xml:space="preserve">
                <style type="text/css">
-                   .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
-                   .st1{font-family:'OpenSans'; cursor: pointer;}
+                   .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;cursor: pointer;}
+                   .st1{font-family:'OpenSans';cursor: pointer;}
                    .st2{font-size:22px;}
                </style>
-               <g>
+               <g class="size" data-size="more" id="size-more">
                    <circle class="st0" cx="138.54" cy="131.83" r="125"/>
                    <text transform="matrix(1 0 0 1 111.3019 36.1381)" class="st1 st2">More</text>
                </g>
-               <g>
-                   <circle class="st0" cx="138.54" cy="158.6" r="100" id="size_2000" />
-                   <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2" onclick="showSize(2000);">2000</text>
+               <g class="size" data-size="2000" id="size_2000">
+                   <circle class="st0" cx="138.54" cy="158.6" r="100" />
+                   <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2" onclick="//showSize(2000);">2000</text>
                </g>
-               <g>
-                   <circle class="st0" cx="138.54" cy="183.6" r="75" id="size_1000"/>
-                   <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2" onclick="showSize(1000);">1000</text>
+               <g class="size" data-size="1000" id="size_1000">
+                   <circle class="st0" cx="138.54" cy="183.6" r="75" />
+                   <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2" onclick="//showSize(1000);">1000</text>
                </g>
-               <g>
-                   <circle class="st0" cx="138.54" cy="208.6" r="50" id="size_500"/>
-                   <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2" onclick="showSize(500);">500</text>
+               <g class="size" data-size="500" id="size_500">
+                   <circle class="st0" cx="138.54" cy="208.6" r="50" />
+                   <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2" onclick="//showSize(500);">500</text>
                </g>
-               <g>
-                   <circle class="st0" cx="138.54" cy="226.83" r="30" id="size_100"/>
-                   <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2" onclick="showSize(100);">100</text>
+               <g class="size" data-size="100" id="size_100">
+                   <circle class="st0" cx="138.54" cy="226.83" r="30" />
+                   <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2" onclick="//showSize(100);">100</text>
                </g>
                </svg>
                 </div>
@@ -565,6 +564,17 @@
     <script type="text/coffeescript" src="assets/coffee/vis.coffee"></script>
 
     <script type="text/javascript">
+        $(".size").each(function() {
+            $(this).mouseover(function() {
+                $(this).find(".st0").css("fill", "beige");
+            });
+            $(this).mouseout(function() {
+                $(this).find(".st0").css("fill", $(this).attr("filtered") == "true" ? "yellow" : "white");
+            });
+            $(this).click(function() {
+                showSize($(this).attr("data-size"));
+            });
+        });
         /* var margin = 0;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             var padding = 0;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             var radius = 100;
