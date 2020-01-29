@@ -213,12 +213,24 @@
         .opaque {
             opacity: 1;
         }
+        
+        .shown {
+            display: block;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .radio {
+            float: left;
+        }
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
         var categories = ["Population", "Dataset", "Coverage", "Level"];
         var editMode = false;
-        // Toggle edit mode by making input fields Editable
+        // Toggle edit mode by making input fields Editable and showing relevant fields
         function toggleEdit() {
             if (!editMode) {
                 document.getElementById("edit-top-bar").style.display = "block";
@@ -227,10 +239,27 @@
                 document.getElementById("description-input").contentEditable = true;
                 document.getElementById("keywords-input").contentEditable = true;
 
-                $('#straat, #buurtx', '#wijk', '#Gebied', '#stadsteel', '#stad', '#amstelland', '#Metro', '#adam', '#g4', '#national').click(function() {
-                    $(this).toggleClass('faded opaque');
+                //show case input fields
+                document.getElementById("caseGraph").style.display = "none";
+                document.getElementById("caseInput").style.display = "block";
+
+
+                //blurs all geo levels
+                var buttons = document.getElementsByClassName('geolevel');
+                for (var i = 0; i < buttons.length; i++) {
+                    console.log(buttons[i].style.opacity);
+                    buttons[i].classList.add("faded")
+                }
+
+                $('.geoLevel').click(function(e) {
+                    $(this).toggleClass('faded'); //you can list several class names 
+                    e.preventDefault();
                 });
+
+
+
                 editMode = true;
+
             } else if (editMode) {
                 document.getElementById("edit-top-bar").style.display = "none";
                 document.getElementById("title-input").contentEditable = false;
@@ -238,6 +267,9 @@
                 document.getElementById("description-input").contentEditable = false;
                 document.getElementById("keywords-input").contentEditable = false;
 
+                //hide case input fields
+                document.getElementById("caseGraph").style.display = "block";
+                document.getElementById("caseInput").style.display = "none";
                 editMode = false;
 
             }
@@ -432,48 +464,58 @@
         </div>
         <div class="row collapse" id="toolbar-top">
             <div class="col">
-                <div class="toolbar-items">
+                <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
-                    <div style="float:right;">Straat<br>Buurt<br>Wijk</div>
-                </div>
-                <div class="toolbar-items">
+                    <div style="float:right;">
+                <span id="straat">
+                       <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                    Straat</span>
+                <span id="buurt">
+                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                    Buurt<br></span>
+                <span id="wijk">
+                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                    Wijk<br></span>
+            </div>
+            </span>
+            <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_2.png" class="icon"></div>
                     <div style="float:right;">Gebied<br>Stadsdeel<br>Stad</div>
-                </div>
-                <div class="toolbar-items">
+                </span>
+            <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
                     <div style="float:right;">Amstelland<br>Metro. A'dam<br>G4<br>National</div>
-                </div>
+                </span>
+        </div>
+        <div class="col">
+            <div class="toolbar-items">
+                <div style="float:left;"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
+                <div style="float:right;"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
             </div>
-            <div class="col">
-                <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
-                    <div style="float:right;"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
-                </div>
-                <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
-                    <div style="float:right;"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
-                </div>
+            <div class="toolbar-items">
+                <div style="float:left;"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
+                <div style="float:right;"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
             </div>
-            <div class="col">
-                <div class="toolbar-items">
-                    <img src="assets/img/star.svg" width="100%">
-                </div>
+        </div>
+        <div class="col">
+            <div class="toolbar-items">
+                <img src="assets/img/star.svg" width="100%">
             </div>
-            <div class="col">
-                <div class="toolbar-items level">
-                    <div style="float:left;">
-                        <div><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
-                        <div><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
-                        <div><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
-                    </div>
-                    <div style="float:right;">
-                        <div><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
-                        <div><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
-                    </div>
+        </div>
+        <div class="col">
+            <div class="toolbar-items level">
+                <div style="float:left;">
+                    <div><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
+                    <div><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
+                    <div><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
+                </div>
+                <div style="float:right;">
+                    <div><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
+                    <div><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!-- begin second toolbar -->
     <div class="container toolbar">
@@ -493,7 +535,7 @@
         </div>
         <div class="row collapse" id="toolbar-bottom">
             <div class="col">
-                <div class="toolbar-items">
+                <div id="caseGraph" style="display: block" class="toolbar-items">
                     <svg width="100%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97" style="enable-background:new 0 0 272.83 264.97;" xml:space="preserve">
                <style type="text/css">
                    .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;cursor: pointer;}
@@ -521,6 +563,20 @@
                    <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2" onclick="//showSize(100);">100</text>
                </g>
                </svg>
+                </div>
+                <div id="caseInput" style="display: none" class="toolbar-items">
+                    <span>
+                        <form>
+                                <label for="cases">Cases</label>
+                                <input type="number" id="cases" name="age">
+                              </form>
+                </span>
+                    <span>
+                        <form>
+                                <label for="unit">Unit</label>
+                                <input  id="unit" name="age">
+                              </form>
+                            </span>
                 </div>
             </div>
             <div class="col">
