@@ -84,7 +84,7 @@
             padding: 5px;
         }
 
-        div.ownership div div {
+        div.ownership div div, #population div div {
             cursor: pointer;
             font-weight: 400;
         }
@@ -234,7 +234,7 @@
             float: left;
         }
 
-        .hidden_size, .hidden_department {
+        .hidden_size, .hidden_department, .hidden_population {
             display:none;
         }
     </style>
@@ -382,16 +382,17 @@
             });
         }
 
-        function filterByTag(category, tag) {
-            var hide = $("#" + category + tag).attr("filtered") == "true";
+        function filterByTag(category, tag, isInKeywords=false) {
+            var hide = $("#" + category + tag.replace(" ", "-")).attr("filtered") == "true";
             $('a.bubble-node').each(function() {
-                var obj = $("#" + category + $(this).attr(category));
-                if($(this).attr(category) == tag && !hide) {
+                var obj = $("#" + category + (isInKeywords ? tag : $(this).attr(category)));
+                var foundTag = isInKeywords ? $(this).attr("keywords").indexOf(tag.split(";")) > -1 : $(this).attr(category) == tag;
+                if(foundTag && !hide) {
                     $(this).removeClass("hidden_" + category);
                     $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_" + category);
                     obj.attr("filtered", "true");
                     obj.addClass("selected");
-                } else if ( ( $(this).attr(category) != tag && obj.attr("filtered") != "true" )|| ( hide && $(this).attr(category) == tag ) ) {
+                } else if ( ( !foundTag && obj.attr("filtered") != "true" )|| ( hide && foundTag ) ) {
                     $(this).addClass("hidden_" + category);
                     $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_" + category);
                     obj.attr("filtered", "false");
@@ -517,14 +518,14 @@
                     <div style="float:right;">Amstelland<br>Metro. A'dam<br>G4<br>National</div>
                 </span>
         </div>
-        <div class="col">
+        <div class="col" id="population">
             <div class="toolbar-items">
-                <div style="float:left;"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
-                <div style="float:right;"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
+                <div style="float:left;" id="populationYouth"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
+                <div style="float:right;" id="populationYoung-Adult"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
             </div>
             <div class="toolbar-items">
-                <div style="float:left;"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
-                <div style="float:right;"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
+                <div style="float:left;" id="populationAdult"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
+                <div style="float:right;" id="populationElderly"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
             </div>
         </div>
         <div class="col">
@@ -670,6 +671,12 @@
             });
         });
 
+        //Population
+        $("#population div div").each(function() {
+            $(this).click(function() {
+                filterByTag("population", $(this).text().trim(), true);  
+            });
+        });
         /* var margin = 0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       })}); */
     </script>
 </body>
