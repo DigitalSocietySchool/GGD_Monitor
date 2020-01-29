@@ -207,7 +207,7 @@
         }
         
         .faded {
-            opacity: 0.6;
+            opacity: 0.2;
         }
         
         .opaque {
@@ -230,6 +230,32 @@
     <script>
         var categories = ["Population", "Dataset", "Coverage", "Level"];
         var editMode = false;
+
+        function fadeIcons(classname, active) {
+
+            if (active == undefined) active = '';
+            active = active.textContent;
+
+            console.log("logging items with classname" + classname)
+            var ownership_icons = document.getElementsByClassName(classname);
+            for (var i = 0; i < ownership_icons.length; i++) {
+                ownership_icons[i].style.opacity = 0.2;
+
+                if ((ownership_icons[i].textContent.replace(/\s/g, "")) == active) {
+                    ownership_icons[i].style.opacity = 1;
+
+                }
+            }
+        }
+
+        function unfadeIcons(classname) {
+            console.log("logging items with classname" + classname)
+            var ownership_icons = document.getElementsByClassName(classname);
+            for (var i = 0; i < ownership_icons.length; i++) {
+                ownership_icons[i].style.opacity = 1;
+            }
+        }
+
         // Toggle edit mode by making input fields Editable and showing relevant fields
         function toggleEdit() {
             if (!editMode) {
@@ -243,17 +269,54 @@
                 document.getElementById("caseGraph").style.display = "none";
                 document.getElementById("caseInput").style.display = "block";
 
+                //fade all
+                fadeIcons("ownership_icon", activeDept);
 
-                //blurs all geo levels
-                var buttons = document.getElementsByClassName('geolevel');
-                for (var i = 0; i < buttons.length; i++) {
-                    console.log(buttons[i].style.opacity);
-                    buttons[i].classList.add("faded")
-                }
+                //find current selection and activate it
+                activeDept = document.getElementById("activeDept").textContent;
 
-                $('.geoLevel').click(function(e) {
-                    $(this).toggleClass('faded'); //you can list several class names 
-                    e.preventDefault();
+                $('.ownership_icon').click(function(e) {
+                    fadeIcons("ownership_icon");
+                    $(this).toggleClass('active');
+                    $(this).css({
+                        opacity: 1
+                    });
+                });
+
+
+
+                fadeIcons("geolevel");
+                $('.geolevel').click(function(e) {
+                    fadeIcons("geolevel");
+                    $(this).toggleClass('active');
+                    $(this).css({
+                        opacity: 1
+                    });
+                });
+
+
+
+                fadeIcons("populationOption");
+                $('.populationOption').click(function(e) {
+                    $(this).toggleClass('active');
+                    if ($(this).css("opacity") == 1) {
+                        $(this).css({
+                            opacity: 0.2
+                        });
+                    } else {
+                        $(this).css({
+                            opacity: 1
+                        });
+                    }
+                });
+
+                fadeIcons("levelOption");
+                $('.levelOption').click(function(e) {
+                    fadeIcons("levelOption");
+                    $(this).toggleClass('active');
+                    $(this).css({
+                        opacity: 1
+                    });
                 });
 
 
@@ -270,6 +333,13 @@
                 //hide case input fields
                 document.getElementById("caseGraph").style.display = "block";
                 document.getElementById("caseInput").style.display = "none";
+
+                //unfade icons
+                unfadeIcons('ownership_icon')
+                unfadeIcons("geolevel");
+                unfadeIcons("populationOption");
+                unfadeIcons("levelOption");
+
                 editMode = false;
 
             }
@@ -464,57 +534,73 @@
         </div>
         <div class="row collapse" id="toolbar-top">
             <div class="col">
-                <span id="" class="geolevel toolbar-items">
+                <span id="" class="toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
                     <div style="float:right;">
-                <span id="straat">
-                       <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                <span  class="geolevel" id="straat">
                     Straat</span>
-                <span id="buurt">
-                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
-                    Buurt<br></span>
-                <span id="wijk">
-                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                <span class="geolevel" id="buurt">
+                    Buurt<br>
+                </span>
+                <span class="geolevel" id="wijk">
                     Wijk<br></span>
             </div>
             </span>
-            <span id="" class="geolevel toolbar-items">
+            <span id="" class="toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_2.png" class="icon"></div>
-                    <div style="float:right;">Gebied<br>Stadsdeel<br>Stad</div>
-                </span>
-            <span id="" class="geolevel toolbar-items">
+                    <div style="float:right;">
+                        <span  class="geolevel" id="gebied">
+                        Gebied<br></span>
+            <span class="geolevel" id="stadsteel">
+                        Stadsdeel<br></span>
+            <span class="geolevel" id="stad">
+                        Stad</div>
+                        </span>
+
+            </span>
+            <span id="" class=" toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
-                    <div style="float:right;">Amstelland<br>Metro. A'dam<br>G4<br>National</div>
-                </span>
+                    <div style="float:right;">
+                        <span  class="geolevel" id="amstelland">
+                        Amstelland<br></span>
+            <span class="geolevel" id="metro">
+                        Metro. A'dam<br></span>
+            <span class="geolevel" id="g4">
+                        G4<br></span>
+            <span class="geolevel" id="national">
+                        National
+                        </span>
         </div>
-        <div class="col">
-            <div class="toolbar-items">
-                <div style="float:left;"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
-                <div style="float:right;"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
+        </span>
+    </div>
+    <div class="col">
+        <div class="toolbar-items">
+            <div class="populationOption" style="float:left;"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
+            <div class="populationOption" style="float:right;"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
+        </div>
+        <div class="toolbar-items">
+            <div class="populationOption" style="float:left;"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
+            <div class="populationOption" style="float:right;"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="toolbar-items">
+            <img src="assets/img/star.svg" width="100%">
+        </div>
+    </div>
+    <div class="col">
+        <div class="toolbar-items level">
+            <div style="float:left;">
+                <div class="levelOption"><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
+                <div class="levelOption"><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
+                <div class="levelOption"><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
             </div>
-            <div class="toolbar-items">
-                <div style="float:left;"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
-                <div style="float:right;"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
+            <div style="float:right;">
+                <div class="levelOption"><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
+                <div class="levelOption"><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
             </div>
         </div>
-        <div class="col">
-            <div class="toolbar-items">
-                <img src="assets/img/star.svg" width="100%">
-            </div>
-        </div>
-        <div class="col">
-            <div class="toolbar-items level">
-                <div style="float:left;">
-                    <div><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
-                    <div><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
-                    <div><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
-                </div>
-                <div style="float:right;">
-                    <div><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
-                    <div><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
-                </div>
-            </div>
-        </div>
+    </div>
     </div>
     </div>
     <!-- begin second toolbar -->
@@ -580,19 +666,22 @@
                 </div>
             </div>
             <div class="col">
+                <div id="activeDept" style="display: none">
+
+                </div>
                 <div class="toolbar-items ownership">
                     <div style="float:left;">
-                        <div><span style="background-color: purple;" class="circle"></span> EGZ</div>
-                        <div><span style="background-color: blue;" class="circle"></span> IZ</div>
-                        <div><span style="background-color: green;" class="circle"></span> JGZ</div>
-                        <div><span style="background-color: brown;" class="circle"></span> VT</div>
-                        <div><span style="background-color: yellow;" class="circle"></span> MGZ</div>
+                        <div class="ownership_icon"><span style="background-color: purple;" class="circle"></span> EGZ</div>
+                        <div class="ownership_icon"><span style="background-color: blue;" class="circle"></span> IZ</div>
+                        <div class="ownership_icon"><span style="background-color: green;" class="circle"></span> JGZ</div>
+                        <div class="ownership_icon"><span style="background-color: brown;" class="circle"></span> VT</div>
+                        <div class="ownership_icon"><span style="background-color: yellow;" class="circle"></span> MGZ</div>
                     </div>
                     <div style="float:right;">
-                        <div><span style="background-color: red;" class="circle"></span> FGMA</div>
-                        <div><span style="background-color: violet;" class="circle"></span> GHOR</div>
-                        <div><span style="background-color: gray;" class="circle"></span> LO</div>
-                        <div><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
+                        <div class="ownership_icon"><span style="background-color: red;" class="circle"></span> FGMA</div>
+                        <div class="ownership_icon"><span style="background-color: violet;" class="circle"></span> GHOR</div>
+                        <div class="ownership_icon"><span style="background-color: gray;" class="circle"></span> LO</div>
+                        <div class="ownership_icon"><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
                     </div>
                 </div>
             </div>
