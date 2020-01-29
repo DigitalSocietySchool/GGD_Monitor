@@ -80,6 +80,13 @@ img.icon {
 .ownership div {
     width: 100%;
     padding: 5px;
+} 
+div.ownership div div, #population div div {
+    cursor: pointer;
+    font-weight: 400;
+}
+.selected {
+    font-weight: 800!important;
 }
 /* begin abdo import */
 
@@ -93,6 +100,10 @@ img.icon {
     position: relative;
 }
 
+#status {
+    padding: 0 0 20px 20px;
+}
+        
 #controls {
     padding: 20px;
     background-color: #eee;
@@ -203,6 +214,21 @@ footer p {
 .opaque {
     opacity: 1;
 }
+.shown {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+.radio {
+    float: left;
+}
+
+.hidden_size, .hidden_department, .hidden_population {
+    display:none;
+}
 
 #bubble-labels{
     opacity: 0.5;
@@ -225,4 +251,4 @@ footer p {
 	color: #000;
     text-align: left;
     font-weight: normal;
-}
+}       
