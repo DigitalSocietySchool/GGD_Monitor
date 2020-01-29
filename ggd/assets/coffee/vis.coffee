@@ -270,6 +270,7 @@ Bubbles = () ->
       .attr("fill", (d) -> colors[d.department])
       .attr("size", (d) -> d.size)
       .attr("department", (d) -> d.department)
+      .attr("keywords", (d) -> d.keywords)
       .call(force.drag)
       .call(connectEvents)
       #.append("circle")
