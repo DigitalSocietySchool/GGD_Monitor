@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,25 +10,29 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/custom_style.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
-    <!-- Font Awesome --><script src="https://dss.cloud/fa/js/all.min.js"></script>
+    <!-- Font Awesome -->
+    <script src="https://dss.cloud/fa/js/all.min.js"></script>
     <title>GGD Dashboard</title>
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
         }
+        
         .header {
-            padding-top:50px;
+            padding-top: 50px;
         }
+        
         .toolbar {
             font-weight: 700;
             background-color: #F7F7F7;
             border: 1px solid #4D4D4D;
             border-radius: 50px;
-            margin-top:25px;
+            margin-top: 25px;
             text-align: center;
-            box-shadow: 2px 4px 20px 4px rgb(0,0,0,0.18);
-            margin-bottom:25px;
+            box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
+            margin-bottom: 25px;
         }
+        
         .toolbar-header {
             border-radius: 50px;
             padding: 15px;
@@ -35,6 +40,7 @@
             background-color: #E6E6E6;
             cursor: pointer;
         }
+        
         .toolbar-items {
             display: flex;
             align-items: center;
@@ -42,19 +48,24 @@
             width: 100%;
             padding: 30px;
         }
+        
         .toolbar-items div {
             width: 50%;
         }
+        
         img.eyecon {
             height: 63.942px;
             width: 63.942px;
         }
+        
         img.icon {
-            width:60px;
+            width: 60px;
         }
+        
         .level div div {
             padding: 10px;
         }
+        
         .circle {
             height: 25px;
             width: 25px;
@@ -63,15 +74,17 @@
             position: relative;
             top: 6px;
         }
+        
         .ownership {
             text-align: left;
         }
+        
         .ownership div {
             width: 100%;
             padding: 5px;
         }
-
         /* begin abdo import */
+        
         #text-select {
             float: right;
             margin-right: 10px;
@@ -166,24 +179,103 @@
         .rotate-white {
             transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
         }
-
+        
         .catPopulation {
-            display:none;
+            display: none;
         }
-        .catCoverage, .catLevel {
-            display:none;
+        
+        .catCoverage,
+        .catLevel {
+            display: none;
         }
+        
         .bubble-label-name {
             margin-bottom: 30px;
             /* display:none; */
         }
+        
         .bubble-label-value {
-            font-weight:bold;
-        }        
+            font-weight: bold;
+        }
+        
+        *[contenteditable="true"] {
+            background-color: rgba(230, 230, 230, 1);
+        }
+        
+        .toolbar-header {
+            background: #D8A38D;
+        }
+        
+        .faded {
+            opacity: 0.6;
+        }
+        
+        .opaque {
+            opacity: 1;
+        }
+        
+        .shown {
+            display: block;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .radio {
+            float: left;
+        }
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
         var categories = ["Population", "Dataset", "Coverage", "Level"];
+        var editMode = false;
+        // Toggle edit mode by making input fields Editable and showing relevant fields
+        function toggleEdit() {
+            if (!editMode) {
+                document.getElementById("edit-top-bar").style.display = "block";
+                document.getElementById("title-input").contentEditable = true;
+                document.getElementById("contact-input").contentEditable = true;
+                document.getElementById("description-input").contentEditable = true;
+                document.getElementById("keywords-input").contentEditable = true;
+
+                //show case input fields
+                document.getElementById("caseGraph").style.display = "none";
+                document.getElementById("caseInput").style.display = "block";
+
+
+                //blurs all geo levels
+                var buttons = document.getElementsByClassName('geolevel');
+                for (var i = 0; i < buttons.length; i++) {
+                    console.log(buttons[i].style.opacity);
+                    buttons[i].classList.add("faded")
+                }
+
+                $('.geoLevel').click(function(e) {
+                    $(this).toggleClass('faded'); //you can list several class names 
+                    e.preventDefault();
+                });
+
+
+
+                editMode = true;
+
+            } else if (editMode) {
+                document.getElementById("edit-top-bar").style.display = "none";
+                document.getElementById("title-input").contentEditable = false;
+                document.getElementById("contact-input").contentEditable = false;
+                document.getElementById("description-input").contentEditable = false;
+                document.getElementById("keywords-input").contentEditable = false;
+
+                //hide case input fields
+                document.getElementById("caseGraph").style.display = "block";
+                document.getElementById("caseInput").style.display = "none";
+                editMode = false;
+
+            }
+
+        }
+
         function changeView(view, c = false) {
             if (c) {
                 $(c).toggle();
@@ -203,7 +295,8 @@
                 }
             }
         }
-        function toggleEye(view, showhide=false) {
+
+        function toggleEye(view, showhide = false) {
             if (!showhide) {
                 if ($('#eye' + view).attr('collapsed') == 'false') {
                     $('#eye' + view).attr('src', 'assets/img/eye.svg');
@@ -222,23 +315,26 @@
                 }
             }
         }
+
         function collapseToolbar(toolbar) {
             $('#toolbar-' + toolbar).collapse('toggle');
             //console.log($('#toolbar-icon-' + toolbar).attr('collapsed'));
             if ($('#toolbar-icon-' + toolbar).attr('collapsed') == 'true') {
                 $('#toolbar-icon-' + toolbar).removeClass('fa-plus');
                 $('#toolbar-icon-' + toolbar).addClass('fa-minus');
-                $('#toolbar-icon-' + toolbar).attr('collapsed', 'false'); 
+                $('#toolbar-icon-' + toolbar).attr('collapsed', 'false');
             } else {
                 $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
                 $('#toolbar-icon-' + toolbar).addClass('fa-plus');
-                $('#toolbar-icon-' + toolbar).attr('collapsed', 'true'); 
+                $('#toolbar-icon-' + toolbar).attr('collapsed', 'true');
             }
         }
 
         function toggleFill() {
             if ($('#eyeOwnership').attr('collapsed') == 'true') {
-                $('a.bubble-node').each(function() { $(this).css("fill", $(this).attr("fill")); });
+                $('a.bubble-node').each(function() {
+                    $(this).css("fill", $(this).attr("fill"));
+                });
                 toggleEye('Ownership');
             } else {
                 $('a.bubble-node').css("fill", "#D31145");
@@ -247,7 +343,8 @@
         }
 
         function showSize(s) {
-            console.log("Checking..."); console.log(s);
+            console.log("Checking...");
+            console.log(s);
             s = isNaN(s) ? s : Number(s);
             $('a.bubble-node').each(function() {
                 console.log($(this).attr('size'));
@@ -263,7 +360,7 @@
                 }
             });
             $('g.size').each(function() {
-                if( (Number($(this).attr("data-size")) == s && $(this).attr("filtered") != 'true') || (Number($(this).attr("data-size")) < s) ) {
+                if ((Number($(this).attr("data-size")) == s && $(this).attr("filtered") != 'true') || (Number($(this).attr("data-size")) < s)) {
                     $(this).find(".st0").css("fill", "yellow");
                     $(this).attr("filtered", "true");
                 } else {
@@ -273,9 +370,26 @@
             });
         }
     </script>
-  </head>
-  <body>
+</head>
+
+<body>
+    <div id="edit-top-bar" class="container toolbar" style="display:none">
+        <div style="position: fixed;z-index:1000000;opacity: 0.8;max-width: 960px;" class="row toolbar-header">
+            <div class="col">
+                EDIT MODE: You are editing the details of this dataset.
+            </div>
+            <div class="col">
+                <img class="eyecon" onmouseup="toggleEdit()" style="height: 55%; padding-left:12%" id="cancel" src="assets/img/cancel.svg"> Cancel
+            </div>
+            <div class="col">
+                <img class="eyecon" style="height: 55%; padding-left:12%" id="save" src="assets/img/save.svg"> Save
+            </div>
+
+        </div>
+    </div>
+
     <div class="container">
+
         <div class="row">
             <div class="col header">
                 <div id="vis"></div>
@@ -288,24 +402,61 @@
             </div>
         </div>
     </div>
+    <!-- begin conditional toolbar -->
+    <div class="container toolbar">
+        <div class="row toolbar-header">
+            <div class="col">
+                Title
+            </div>
+            <div class="col" style="font-weight: 100" id="title-input" contenteditable="false">
+            </div>
+            <div class="col">
+                Contact
+            </div>
+            <div id="contact-input" class="col" contenteditable="false" style="font-weight: 100">
+                Sample Email
+            </div>
+            <div class="col" onmouseup="toggleEdit();">
+                Edit
+            </div>
+            <div class="col">
+                <input class="searchInput" name="targetNode" type="text">
+                <button class="button">Search</button> </div>
+            <div class="col">
+                New
+            </div>
+            <div class="col-auto">
+                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
+            </div>
+        </div>
+        <div class="row collapse" id="toolbar-meta">
+            <div class="row">
+                <div class="col-md-7 toolbar-items">
+                    <div style="width:25%;">Description</div>
+                    <div style="font-weight: 100" contentEditable="false" id="description-input">This dataset was created in 2012 to track the smoking habits of young adults over time</div>
+                </div>
+                <div class="col-md-4 toolbar-items">
+                    <div>Keywords</div>
+                    <div contentEditable="false" style="font-weight: 100" id="keywords-input">smoking, youngadults, 2012</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <!-- begin first toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
             <div class="col" onmouseup="changeView('Coverage');">
-                <img class="eyecon" id="eyeCoverage" collapsed="true" src="assets/img/eye.svg">
-                Geo. Coverage
+                <img class="eyecon" id="eyeCoverage" collapsed="true" src="assets/img/eye.svg"> Geo. Coverage
             </div>
             <div class="col" onmouseup="changeView('Population');">
-                <img class="eyecon" collapsed="true" id="eyePopulation" src="assets/img/eye.svg">
-                Population
+                <img class="eyecon" collapsed="true" id="eyePopulation" src="assets/img/eye.svg"> Population
             </div>
             <div class="col" onmouseup="changeView('Dataset');">
-                <img class="eyecon" collapsed="false" id="eyeDataset" src="assets/img/eye_open.svg">
-                Type of Dataset
+                <img class="eyecon" collapsed="false" id="eyeDataset" src="assets/img/eye_open.svg"> Type of Dataset
             </div>
             <div class="col" onmouseup="changeView('Level');">
-                <img class="eyecon" collapsed="true" id="eyeLevel" src="assets/img/eye.svg">
-                Level
+                <img class="eyecon" collapsed="true" id="eyeLevel" src="assets/img/eye.svg"> Level
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
@@ -313,63 +464,70 @@
         </div>
         <div class="row collapse" id="toolbar-top">
             <div class="col">
-                <div class="toolbar-items">
+                <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
-                    <div style="float:right;">Straat<br>Buurt<br>Wijk</div>
-                </div>
-                <div class="toolbar-items">
+                    <div style="float:right;">
+                <span id="straat">
+                       <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                    Straat</span>
+                <span id="buurt">
+                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                    Buurt<br></span>
+                <span id="wijk">
+                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                    Wijk<br></span>
+            </div>
+            </span>
+            <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_2.png" class="icon"></div>
                     <div style="float:right;">Gebied<br>Stadsdeel<br>Stad</div>
-                </div>
-                <div class="toolbar-items">
+                </span>
+            <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
                     <div style="float:right;">Amstelland<br>Metro. A'dam<br>G4<br>National</div>
-                </div>
+                </span>
+        </div>
+        <div class="col">
+            <div class="toolbar-items">
+                <div style="float:left;"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
+                <div style="float:right;"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
             </div>
-            <div class="col">
-                <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
-                    <div style="float:right;"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
-                </div>
-                <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
-                    <div style="float:right;"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
-                </div>
+            <div class="toolbar-items">
+                <div style="float:left;"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
+                <div style="float:right;"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
             </div>
-            <div class="col">
-                <div class="toolbar-items">
-                    <img src="assets/img/star.svg" width="100%">
-                </div>
+        </div>
+        <div class="col">
+            <div class="toolbar-items">
+                <img src="assets/img/star.svg" width="100%">
             </div>
-            <div class="col">
-                <div class="toolbar-items level">
-                    <div style="float:left;">
-                        <div><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
-                        <div><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
-                        <div><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
-                    </div>
-                    <div style="float:right;">
-                        <div><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
-                        <div><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
-                    </div>
+        </div>
+        <div class="col">
+            <div class="toolbar-items level">
+                <div style="float:left;">
+                    <div><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
+                    <div><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
+                    <div><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
+                </div>
+                <div style="float:right;">
+                    <div><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
+                    <div><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!-- begin second toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
             <div class="col" onmouseup="changeView('Cases','.bubble-label .bubble-label-value');">
-                <img class="eyecon" collapsed="false" id="eyeCases" src="assets/img/eye_open.svg">
-                Number of Cases
+                <img class="eyecon" collapsed="false" id="eyeCases" src="assets/img/eye_open.svg"> Number of Cases
             </div>
             <div class="col" onmouseup="toggleFill();">
-                <img class="eyecon" id="eyeOwnership" collapsed="false" src="assets/img/eye_open.svg">
-                Ownership
+                <img class="eyecon" id="eyeOwnership" collapsed="false" src="assets/img/eye_open.svg"> Ownership
             </div>
             <div class="col" onmouseup="changeView('Temporal','.arc');">
-                <img class="eyecon" id="eyeTemporal" collapsed="false" src="assets/img/eye_open.svg">
-                Temporal Coverage
+                <img class="eyecon" id="eyeTemporal" collapsed="false" src="assets/img/eye_open.svg"> Temporal Coverage
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
@@ -377,9 +535,8 @@
         </div>
         <div class="row collapse" id="toolbar-bottom">
             <div class="col">
-                <div class="toolbar-items">
-                <svg width="100%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                viewBox="0 0 272.83 264.97" style="enable-background:new 0 0 272.83 264.97;" xml:space="preserve">
+                <div id="caseGraph" style="display: block" class="toolbar-items">
+                    <svg width="100%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97" style="enable-background:new 0 0 272.83 264.97;" xml:space="preserve">
                <style type="text/css">
                    .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;cursor: pointer;}
                    .st1{font-family:'OpenSans';cursor: pointer;}
@@ -406,6 +563,20 @@
                    <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2" onclick="//showSize(100);">100</text>
                </g>
                </svg>
+                </div>
+                <div id="caseInput" style="display: none" class="toolbar-items">
+                    <span>
+                        <form>
+                                <label for="cases">Cases</label>
+                                <input type="number" id="cases" name="age">
+                              </form>
+                </span>
+                    <span>
+                        <form>
+                                <label for="unit">Unit</label>
+                                <input  id="unit" name="age">
+                              </form>
+                            </span>
                 </div>
             </div>
             <div class="col">
@@ -437,77 +608,84 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
+
     <!-- D3 JS -->
     <script src="assets/js/libs/d3.min.js"></script>
     <script src="assets/js/libs/d3-scale.v3.min.js"></script>
     <script src="assets/js/libs/d3-path.v1.min.js"></script>
     <script src="assets/js/libs/d3-shape.v1.min.js"></script>
-    
+
     <script defer src="assets/js/plugins.js"></script>
     <script src="assets/js/libs/coffee-script.js"></script>
     <script type="text/coffeescript" src="assets/coffee/vis.coffee"></script>
-    
+
     <script type="text/javascript">
         $(".size").each(function() {
-            $(this).mouseover(function() { $(this).find(".st0").css("fill", "beige"); });
-            $(this).mouseout(function() { $(this).find(".st0").css("fill", $(this).attr("filtered") == "true" ? "yellow" : "white"); });
-            $(this).click(function() { showSize($(this).attr("data-size"));});
+            $(this).mouseover(function() {
+                $(this).find(".st0").css("fill", "beige");
+            });
+            $(this).mouseout(function() {
+                $(this).find(".st0").css("fill", $(this).attr("filtered") == "true" ? "yellow" : "white");
+            });
+            $(this).click(function() {
+                showSize($(this).attr("data-size"));
+            });
         });
         /* var margin = 0;
-        var padding = 0;
-        var radius = 100;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var padding = 0;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var radius = 100;
 
-        var color = d3.scale.ordinal()
-            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var color = d3.scale.ordinal()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-        var arc = d3.svg.arc()
-            .outerRadius(function (d) {
-                return (d.data.size) / 4;
-            })
-            .innerRadius(function (d) {
-                return (d.data.size) / 4 - 10;
-            });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var arc = d3.svg.arc()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .outerRadius(function (d) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return (d.data.size) / 4;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .innerRadius(function (d) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return (d.data.size) / 4 - 10;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                });
 
-        var arc_donut = d3.svg.arc()
-            .outerRadius(100)
-            .innerRadius(100);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var arc_donut = d3.svg.arc()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .outerRadius(100)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .innerRadius(100);
 
 
-        var pie = d3.pie()
-            .sort(null)
-            .value(function (d) {
-                return d.time_band;
-            });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var pie = d3.pie()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .sort(null)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .value(function (d) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return d.time_band;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                });
 
-        d3.csv("data/dummy.csv", function (error, data) {
-            if (error) throw error;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            d3.csv("data/dummy.csv", function (error, data) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (error) throw error;
 
-            color.domain(d3.keys(data[0]).filter(function (key) {
-                return key !== "name";
-            }));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                color.domain(d3.keys(data[0]).filter(function (key) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return key !== "name";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }));
 
-            data.forEach(function (d) {
-                d.time = color.domain().map(function (name) {
-                    var band = d[name];
-                    var test = {
-                        name: d.name,
-                        Y1970: d.Y1970,
-                        Y1980: d.Y1980,
-                        Y1990: d.Y1990,
-                        Y2000: d.Y2000,
-                        Y2010: d.Y2010,
-                        Y2020: d.Y2020
-                    };
-                    var res = {
-                        name: name,
-                        time_band: test[name],
-                        size: d.size
-                    };
-                    //console.log(res);
-                    return res;
-                });
-            })}); */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                data.forEach(function (d) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    d.time = color.domain().map(function (name) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var band = d[name];
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var test = {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            name: d.name,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y1970: d.Y1970,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y1980: d.Y1980,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y1990: d.Y1990,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y2000: d.Y2000,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y2010: d.Y2010,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y2020: d.Y2020
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        };
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var res = {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            name: name,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            time_band: test[name],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            size: d.size
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        };
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        //console.log(res);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        return res;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })}); */
     </script>
-  </body>
+</body>
+
 </html>

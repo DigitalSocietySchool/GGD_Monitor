@@ -381,7 +381,9 @@ Bubbles = () ->
     node.classed("bubble-selected", (d) -> id == idValue(d))
     # if no node is selected, id will be empty
     if id.length > 0
-      d3.select("#status").html("<h3>The <span class=\"active\">#{id}</span> is now selected</h3>")
+      # d3.select("#status").html("<h3>The <span class=\"active\">#{id}</span> is now selected</h3>")
+      d3.select("#sample-title").html(#{id})
+
     else
       d3.select("#status").html("<h3>No dataset is selected</h3>")
 
