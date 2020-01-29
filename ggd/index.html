@@ -88,6 +88,9 @@
             cursor: pointer;
             font-weight: 400;
         }
+        .selected {
+            font-weight: 800!important;
+        }
         /* begin abdo import */
         
         #text-select {
@@ -230,6 +233,10 @@
         .radio {
             float: left;
         }
+
+        .hidden_size, .hidden_department {
+            display:none;
+        }
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
@@ -346,7 +353,7 @@
                 toggleEye('Ownership');
             }
         }
-        //Number of Cases
+        //Filter Number of Cases
         function showSize(s) {
             console.log("Checking...");
             console.log(s);
@@ -357,11 +364,11 @@
                     console.log("Now hiding..." + s.toString());
                     //d3.select("#node_" + $(this).attr("data-id").toString()).remove();
                     //d3.select("#label_" + $(this).attr("data-id").toString()).style("visibility", "hidden");
-                    $(this).hide();
-                    $("#label_" + $(this).attr("data-id").toString()).hide();
+                    $(this).addClass("hidden_size");
+                    $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_size");
                 } else {
-                    $(this).show();
-                    $("#label_" + $(this).attr("data-id").toString()).show();
+                    $(this).removeClass("hidden_size");
+                    $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_size");
                 }
             });
             $('g.size').each(function() {
@@ -376,13 +383,19 @@
         }
 
         function filterByTag(category, tag) {
+            var hide = $("#" + category + tag).attr("filtered") == "true";
             $('a.bubble-node').each(function() {
-                if($(this).attr(category) == tag) {
-                    $(this).show();
-                    $("#label_" + $(this).attr("data-id").toString()).show();
-                } else {
-                    $(this).hide();
-                    $("#label_" + $(this).attr("data-id").toString()).hide();
+                var obj = $("#" + category + $(this).attr(category));
+                if($(this).attr(category) == tag && !hide) {
+                    $(this).removeClass("hidden_" + category);
+                    $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_" + category);
+                    obj.attr("filtered", "true");
+                    obj.addClass("selected");
+                } else if ( ( $(this).attr(category) != tag && obj.attr("filtered") != "true" )|| ( hide && $(this).attr(category) == tag ) ) {
+                    $(this).addClass("hidden_" + category);
+                    $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_" + category);
+                    obj.attr("filtered", "false");
+                    obj.removeClass("selected");
                 }
             });
         }
@@ -599,17 +612,17 @@
             <div class="col">
                 <div class="toolbar-items ownership">
                     <div style="float:left;">
-                        <div><span style="background-color: purple;" class="circle"></span> EGZ</div>
-                        <div><span style="background-color: blue;" class="circle"></span> IZ</div>
-                        <div><span style="background-color: green;" class="circle"></span> JGZ</div>
-                        <div><span style="background-color: brown;" class="circle"></span> VT</div>
-                        <div><span style="background-color: yellow;" class="circle"></span> MGZ</div>
+                        <div id="departmentEGZ"><span style="background-color: purple;" class="circle"></span> EGZ</div>
+                        <div id="departmentIZ"><span style="background-color: blue;" class="circle"></span> IZ</div>
+                        <div id="departmentJGZ"><span style="background-color: green;" class="circle"></span> JGZ</div>
+                        <div id="departmentVT"><span style="background-color: brown;" class="circle"></span> VT</div>
+                        <div id="departmentMGZ"><span style="background-color: yellow;" class="circle"></span> MGZ</div>
                     </div>
                     <div style="float:right;">
-                        <div><span style="background-color: red;" class="circle"></span> FGMA</div>
-                        <div><span style="background-color: violet;" class="circle"></span> GHOR</div>
-                        <div><span style="background-color: gray;" class="circle"></span> LO</div>
-                        <div><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
+                        <div id="departmentFGMA"><span style="background-color: red;" class="circle"></span> FGMA</div>
+                        <div id="departmentGHOR"><span style="background-color: violet;" class="circle"></span> GHOR</div>
+                        <div id="departmentLO"><span style="background-color: gray;" class="circle"></span> LO</div>
+                        <div id="departmentAAGG"><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
                     </div>
                 </div>
             </div>
@@ -650,10 +663,10 @@
             });
         });
         
-        //Ownership
+        //Ownership/Department
         $("div.ownership div div").each(function() {
             $(this).click(function() {
-                filterByTag("department", $(this).text().trim());
+                filterByTag("department", $(this).text().trim());  
             });
         });
 
