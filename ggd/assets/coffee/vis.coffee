@@ -517,9 +517,39 @@ Bubbles = () ->
   # ---
   updateActive = (id) ->
     node.classed("bubble-selected", (d) -> id == idValue(d))
+    dept = ''
+    keywords = ''
+    # size = ''
+    image = ''
+    coverage = 
+      "Street" : "street.svg"
+      "City" : "city.svg"
+      "Metro" : "metro.svg"
+
+
+    # #retrieve data elements from active node
+    activeNode = d3.selectAll(".bubble-selected")
+                    .filter( (d) -> 
+                      dept = d.department
+                      keywords = d.keywords
+
+                      for c, img of coverage
+                        if d.keywords.indexOf(c) != -1 then image = img
+                        console.log image
+                      console.log image
+
+                      
+
+                      # todo add contact email field
+                    )
+
     # if no node is selected, id will be empty
     if id.length > 0
       d3.select("#status").html("<h3>The <span class=\"active\">#{id}</span> is now selected</h3>")
+      d3.select("#title-input").html("#{id}")
+      d3.select("#keywords-input").html("#{keywords}")
+
+
     else
       d3.select("#status").html("<h3>No dataset is selected</h3>")
 
