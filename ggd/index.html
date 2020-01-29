@@ -5,240 +5,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/custom_style.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <script src="https://dss.cloud/fa/js/all.min.js"></script>
-    <title>GGD Dashboard</title>
-    <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-        }
-        
-        .header {
-            padding-top: 50px;
-        }
-        
-        .toolbar {
-            font-weight: 700;
-            background-color: #F7F7F7;
-            border: 1px solid #4D4D4D;
-            border-radius: 50px;
-            margin-top: 25px;
-            text-align: center;
-            box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
-            margin-bottom: 25px;
-        }
-        
-        .toolbar-header {
-            border-radius: 50px;
-            padding: 15px;
-            border: 2px solid #000000;
-            background-color: #E6E6E6;
-            cursor: pointer;
-        }
-        
-        .toolbar-items {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            width: 100%;
-            padding: 30px;
-        }
-        
-        .toolbar-items div {
-            width: 50%;
-        }
-        
-        img.eyecon {
-            height: 63.942px;
-            width: 63.942px;
-        }
-        
-        img.icon {
-            width: 60px;
-        }
-        
-        .level div div {
-            padding: 10px;
-        }
-        
-        .circle {
-            height: 25px;
-            width: 25px;
-            border-radius: 50%;
-            display: inline-block;
-            position: relative;
-            top: 6px;
-        }
-        
-        .ownership {
-            text-align: left;
-        }
-        
-        .ownership div {
-            width: 100%;
-            padding: 5px;
-        }
-
-        div.ownership div div, #population div div {
-            cursor: pointer;
-            font-weight: 400;
-        }
-        .selected {
-            font-weight: 800!important;
-        }
-        /* begin abdo import */
-        
-        #text-select {
-            float: right;
-            margin-right: 10px;
-        }
-        
-        #vis {
-            overflow: hidden;
-            position: relative;
-        }
-        
-        #status {
-            padding: 0 0 20px 20px;
-        }
-        
-        #controls {
-            padding: 20px;
-            background-color: #eee;
-            margin: 10px;
-            width: 350px;
-        }
-        
-        #bubble-background {
-            fill: none;
-            pointer-events: all;
-        }
-        
-        .bubble-node {
-            /* fill: #d1e0f3; */
-            fill: #DCE9BE;
-        }
-        
-        .bubble-hover {
-            /* fill: #b8c7d9; */
-            fill: #E8E9E7;
-        }
-        
-        .bubble-selected {
-            /* fill: #a8c8ee;  */
-            fill: #CEE98F;
-            /* stroke: #6081a3; */
-            stroke: #A6BA92;
-            stroke-width: 1.5px;
-        }
-        
-        .active {
-            color: #A6BA92;
-        }
-        
-        a.bubble-label {
-            font-family: 'Open Sans', sans-serif;
-            color: inherit;
-            cursor: pointer;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            line-height: 1em;
-            position: absolute;
-        }
-        
-        .bubble-label .bubble-label-value {
-            font: 11px sans-serif;
-            white-space: nowrap;
-        }
-        
-        footer p {
-            text-align: center;
-            padding-top: 20px;
-            padding-bottom: 20px;
-            font: 13px sans-serif;
-        }
-        
-        .rotate-right {
-            transform: translate(-3%, -11%) rotate(55deg) scale(0.2);
-        }
-        
-        .rotate-left {
-            transform: translate(-6%, -11%) rotate(55deg) scale(0.2);
-        }
-        
-        .rotate-up {
-            transform: translate(-4%, -13%) rotate(145deg) scale(0.2);
-        }
-        
-        .rotate-diagonal-right {
-            transform: translate(-3%, -8%) rotate(107deg) scale(0.2);
-        }
-        
-        .rotate-diagonal-left {
-            transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
-        }
-        
-        .rotate-white {
-            transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
-        }
-        
-        .catPopulation {
-            display: none;
-        }
-        
-        .catCoverage,
-        .catLevel {
-            display: none;
-        }
-        
-        .bubble-label-name {
-            margin-bottom: 30px;
-            /* display:none; */
-        }
-        
-        .bubble-label-value {
-            font-weight: bold;
-        }
-        
-        *[contenteditable="true"] {
-            background-color: rgba(230, 230, 230, 1);
-        }
-        
-        .toolbar-header {
-            background: #D8A38D;
-        }
-        
-        .faded {
-            opacity: 0.6;
-        }
-        
-        .opaque {
-            opacity: 1;
-        }
-        
-        .shown {
-            display: block;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .radio {
-            float: left;
-        }
-
-        .hidden_size, .hidden_department, .hidden_population {
-            display:none;
-        }
-    </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
+    <link rel="stylesheet" type="text/css"  href="./assets/css/custom_style.css">
+    <title>GGD Dashboard</title>
     <script>
         var categories = ["Population", "Dataset", "Coverage", "Level"];
         var editMode = false;
@@ -423,39 +198,38 @@
 
         <div class="row">
             <div class="col header">
-                <div id="vis"></div>
                 <div style="display: flex; justify-content: center;">
                     <input class="searchInput" name="targetNode" type="text" />
                     <button class="button">Search</button>
                     <button class="reset">reset</button>
+                    <div id="status"></div>
                 </div>
-                <div style="display: flex;justify-content: center;" id="status"></div>
+                <div id="vis"></div>
             </div>
         </div>
     </div>
     <!-- begin conditional toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col">
-                Title
+            <div class="col dim_label" style="flex-grow:2;">
+                <span class="dim_val">Title:</span>
+                <span class="" id="title-input" contenteditable="false">
+                </span>
             </div>
-            <div class="col" style="font-weight: 100" id="title-input" contenteditable="false">
-            </div>
-            <div class="col">
-                Contact
-            </div>
-            <div id="contact-input" class="col" contenteditable="false" style="font-weight: 100">
+            <div class="col dim_label" style="flex-grow:1;">
+                <span class="dim_val">Contact:</span> 
+                <span id="contact-input" class="" contenteditable="false">
                 Sample Email
+                </span>
             </div>
-            <div class="col" onmouseup="toggleEdit();">
-                Edit
+            <div class="col dim_label" onmouseup="toggleEdit();" style="flex-grow:0.5;">
+                <span class="">Edit</span> &nbsp; &nbsp;
+                <span class="">New</span> 
             </div>
-            <div class="col">
+            <!--div class="col">
                 <input class="searchInput" name="targetNode" type="text">
-                <button class="button">Search</button> </div>
-            <div class="col">
-                New
-            </div>
+                <button class="button">Search</button> 
+            </div-->
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
             </div>
@@ -477,17 +251,17 @@
     <!-- begin first toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col" onmouseup="changeView('Coverage');">
-                <img class="eyecon" id="eyeCoverage" collapsed="true" src="assets/img/eye.svg"> Geo. Coverage
+            <div class="col dim_label" onmouseup="changeView('Coverage');">
+                <img class="eyecon" id="eyeCoverage" collapsed="true" src="assets/img/icon/eye_hide.png"> Geo. Coverage
             </div>
-            <div class="col" onmouseup="changeView('Population');">
-                <img class="eyecon" collapsed="true" id="eyePopulation" src="assets/img/eye.svg"> Population
+            <div class="col dim_label" onmouseup="changeView('Population');">
+                <img class="eyecon" collapsed="true" id="eyePopulation" src="assets/img/icon/eye_hide.png"> Population
             </div>
-            <div class="col" onmouseup="changeView('Dataset');">
-                <img class="eyecon" collapsed="false" id="eyeDataset" src="assets/img/eye_open.svg"> Type of Dataset
+            <div class="col dim_label" onmouseup="changeView('Dataset');">
+                <img class="eyecon" collapsed="false" id="eyeDataset" src="assets/img/icon/eye_show.png"> Type of Dataset
             </div>
-            <div class="col" onmouseup="changeView('Level');">
-                <img class="eyecon" collapsed="true" id="eyeLevel" src="assets/img/eye.svg"> Level
+            <div class="col dim_label" onmouseup="changeView('Level');" style="flex-grow:0.5;">
+                <img class="eyecon" collapsed="true" id="eyeLevel" src="assets/img/icon/eye_hide.png"> Level
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
@@ -551,14 +325,14 @@
     <!-- begin second toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col" onmouseup="changeView('Cases','.bubble-label .bubble-label-value');">
-                <img class="eyecon" collapsed="false" id="eyeCases" src="assets/img/eye_open.svg"> Number of Cases
+            <div class="col dim_label" onmouseup="changeView('Cases','.bubble-label .bubble-label-value');" style="flex-grow:1.4;">
+                <img class="eyecon" collapsed="false" id="eyeCases" src="assets/img/icon/eye_show.png"> Number of Cases
             </div>
-            <div class="col" onmouseup="toggleFill();">
-                <img class="eyecon" id="eyeOwnership" collapsed="false" src="assets/img/eye_open.svg"> Ownership
+            <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.4;">
+                <img class="eyecon" id="eyeOwnership" collapsed="false" src="assets/img/icon/eye_show.png"> Ownership
             </div>
-            <div class="col" onmouseup="changeView('Temporal','.arc');">
-                <img class="eyecon" id="eyeTemporal" collapsed="false" src="assets/img/eye_open.svg"> Temporal Coverage
+            <div class="col dim_label" onmouseup="changeView('Temporal','.arc');">
+                <img class="eyecon" id="eyeTemporal" collapsed="false" src="assets/img/icon/eye_show.png"> Temporal Coverage
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
