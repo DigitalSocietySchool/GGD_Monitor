@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/custom_style.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <script src="https://dss.cloud/fa/js/all.min.js"></script>
     <title>GGD Dashboard</title>
@@ -82,6 +82,16 @@
         .ownership div {
             width: 100%;
             padding: 5px;
+        }
+        
+        div.ownership div div,
+        #population div div {
+            cursor: pointer;
+            font-weight: 400;
+        }
+        
+        .selected {
+            font-weight: 800!important;
         }
         /* begin abdo import */
         
@@ -225,37 +235,17 @@
         .radio {
             float: left;
         }
+        
+        .hidden_size,
+        .hidden_department,
+        .hidden_population {
+            display: none;
+        }
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
         var categories = ["Population", "Dataset", "Coverage", "Level"];
         var editMode = false;
-
-        function fadeIcons(classname, active) {
-
-            if (active == undefined) active = '';
-            active = active.textContent;
-
-            console.log("logging items with classname" + classname)
-            var ownership_icons = document.getElementsByClassName(classname);
-            for (var i = 0; i < ownership_icons.length; i++) {
-                ownership_icons[i].style.opacity = 0.2;
-
-                if ((ownership_icons[i].textContent.replace(/\s/g, "")) == active) {
-                    ownership_icons[i].style.opacity = 1;
-
-                }
-            }
-        }
-
-        function unfadeIcons(classname) {
-            console.log("logging items with classname" + classname)
-            var ownership_icons = document.getElementsByClassName(classname);
-            for (var i = 0; i < ownership_icons.length; i++) {
-                ownership_icons[i].style.opacity = 1;
-            }
-        }
-
         // Toggle edit mode by making input fields Editable and showing relevant fields
         function toggleEdit() {
             if (!editMode) {
@@ -422,11 +412,11 @@
                     console.log("Now hiding..." + s.toString());
                     //d3.select("#node_" + $(this).attr("data-id").toString()).remove();
                     //d3.select("#label_" + $(this).attr("data-id").toString()).style("visibility", "hidden");
-                    $(this).hide();
-                    $("#label_" + $(this).attr("data-id").toString()).hide()
+                    $(this).addClass("hidden_size");
+                    $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_size");
                 } else {
-                    $(this).show();
-                    $("#label_" + $(this).attr("data-id").toString()).show()
+                    $(this).removeClass("hidden_size");
+                    $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_size");
                 }
             });
             $('g.size').each(function() {
@@ -436,6 +426,25 @@
                 } else {
                     $(this).find(".st0").css("fill", "white");
                     $(this).attr("filtered", "false");
+                }
+            });
+        }
+
+        function filterByTag(category, tag, isInKeywords = false) {
+            var hide = $("#" + category + tag.replace(" ", "-")).attr("filtered") == "true";
+            $('a.bubble-node').each(function() {
+                var obj = $("#" + category + (isInKeywords ? tag : $(this).attr(category)));
+                var foundTag = isInKeywords ? $(this).attr("keywords").indexOf(tag.split(";")) > -1 : $(this).attr(category) == tag;
+                if (foundTag && !hide) {
+                    $(this).removeClass("hidden_" + category);
+                    $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_" + category);
+                    obj.attr("filtered", "true");
+                    obj.addClass("selected");
+                } else if ((!foundTag && obj.attr("filtered") != "true") || (hide && foundTag)) {
+                    $(this).addClass("hidden_" + category);
+                    $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_" + category);
+                    obj.attr("filtered", "false");
+                    obj.removeClass("selected");
                 }
             });
         }
@@ -534,16 +543,55 @@
         </div>
         <div class="row collapse" id="toolbar-top">
             <div class="col">
-                <span id="" class="toolbar-items">
+                <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
                     <div style="float:right;">
-                <span  class="geolevel" id="straat">
+                <span id="straat">
+                       <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
                     Straat</span>
-                <span class="geolevel" id="buurt">
-                    Buurt<br>
-                </span>
-                <span class="geolevel" id="wijk">
+                <span id="buurt">
+                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                    Buurt<br></span>
+                <span id="wijk">
+                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
                     Wijk<br></span>
+            </div>
+            </span>
+            <span id="" class="geolevel toolbar-items">
+                    <div style="float:left;"><img src="assets/img/icon/geo_2.png" class="icon"></div>
+                    <div style="float:right;">Gebied<br>Stadsdeel<br>Stad</div>
+                </span>
+            <span id="" class="geolevel toolbar-items">
+                    <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
+                    <div style="float:right;">Amstelland<br>Metro. A'dam<br>G4<br>National</div>
+                </span>
+        </div>
+        <div class="col" id="population">
+            <div class="toolbar-items">
+                <div style="float:left;" id="populationYouth"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
+                <div style="float:right;" id="populationYoung-Adult"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
+            </div>
+            <div class="toolbar-items">
+                <div style="float:left;" id="populationAdult"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
+                <div style="float:right;" id="populationElderly"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="toolbar-items">
+                <img src="assets/img/star.svg" width="100%">
+            </div>
+        </div>
+        <div class="col">
+            <div class="toolbar-items level">
+                <div style="float:left;">
+                    <div><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
+                    <div><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
+                    <div><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
+                </div>
+                <div style="float:right;">
+                    <div><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
+                    <div><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
+                </div>
             </div>
             </span>
             <span id="" class="toolbar-items">
@@ -634,19 +682,19 @@
                </g>
                <g class="size" data-size="2000" id="size_2000">
                    <circle class="st0" cx="138.54" cy="158.6" r="100" />
-                   <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2" onclick="//showSize(2000);">2000</text>
+                   <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2">2000</text>
                </g>
                <g class="size" data-size="1000" id="size_1000">
                    <circle class="st0" cx="138.54" cy="183.6" r="75" />
-                   <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2" onclick="//showSize(1000);">1000</text>
+                   <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2">1000</text>
                </g>
                <g class="size" data-size="500" id="size_500">
                    <circle class="st0" cx="138.54" cy="208.6" r="50" />
-                   <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2" onclick="//showSize(500);">500</text>
+                   <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2">500</text>
                </g>
                <g class="size" data-size="100" id="size_100">
                    <circle class="st0" cx="138.54" cy="226.83" r="30" />
-                   <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2" onclick="//showSize(100);">100</text>
+                   <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2">100</text>
                </g>
                </svg>
                 </div>
@@ -671,17 +719,17 @@
                 </div>
                 <div class="toolbar-items ownership">
                     <div style="float:left;">
-                        <div class="ownership_icon"><span style="background-color: purple;" class="circle"></span> EGZ</div>
-                        <div class="ownership_icon"><span style="background-color: blue;" class="circle"></span> IZ</div>
-                        <div class="ownership_icon"><span style="background-color: green;" class="circle"></span> JGZ</div>
-                        <div class="ownership_icon"><span style="background-color: brown;" class="circle"></span> VT</div>
-                        <div class="ownership_icon"><span style="background-color: yellow;" class="circle"></span> MGZ</div>
+                        <div class="ownership_icon" id="departmentEGZ"><span style="background-color: purple;" class="circle"></span> EGZ</div>
+                        <div class="ownership_icon" id="departmentIZ"><span style="background-color: blue;" class="circle"></span> IZ</div>
+                        <div class="ownership_icon" id="departmentJGZ"><span style="background-color: green;" class="circle"></span> JGZ</div>
+                        <div class="ownership_icon" id="departmentVT"><span style="background-color: brown;" class="circle"></span> VT</div>
+                        <div class="ownership_icon" id="departmentMGZ"><span style="background-color: yellow;" class="circle"></span> MGZ</div>
                     </div>
                     <div style="float:right;">
-                        <div class="ownership_icon"><span style="background-color: red;" class="circle"></span> FGMA</div>
-                        <div class="ownership_icon"><span style="background-color: violet;" class="circle"></span> GHOR</div>
-                        <div class="ownership_icon"><span style="background-color: gray;" class="circle"></span> LO</div>
-                        <div class="ownership_icon"><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
+                        <div class="ownership_icon" id="departmentFGMA"><span style="background-color: red;" class="circle"></span> FGMA</div>
+                        <div class="ownership_icon" id="departmentGHOR"><span style="background-color: violet;" class="circle"></span> GHOR</div>
+                        <div class="ownership_icon" id="departmentLO"><span style="background-color: gray;" class="circle"></span> LO</div>
+                        <div class="ownership_icon" id="departmentAAGG"><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
                     </div>
                 </div>
             </div>
@@ -709,6 +757,7 @@
     <script type="text/coffeescript" src="assets/coffee/vis.coffee"></script>
 
     <script type="text/javascript">
+        //Number of Cases
         $(".size").each(function() {
             $(this).mouseover(function() {
                 $(this).find(".st0").css("fill", "beige");
@@ -720,60 +769,21 @@
                 showSize($(this).attr("data-size"));
             });
         });
-        /* var margin = 0;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var padding = 0;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var radius = 100;
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var color = d3.scale.ordinal()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+        //Ownership/Department
+        $("div.ownership div div").each(function() {
+            $(this).click(function() {
+                filterByTag("department", $(this).text().trim());
+            });
+        });
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var arc = d3.svg.arc()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .outerRadius(function (d) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return (d.data.size) / 4;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .innerRadius(function (d) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return (d.data.size) / 4 - 10;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                });
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var arc_donut = d3.svg.arc()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .outerRadius(100)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .innerRadius(100);
-
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var pie = d3.pie()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .sort(null)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .value(function (d) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return d.time_band;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                });
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            d3.csv("data/dummy.csv", function (error, data) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (error) throw error;
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                color.domain(d3.keys(data[0]).filter(function (key) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return key !== "name";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }));
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                data.forEach(function (d) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    d.time = color.domain().map(function (name) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var band = d[name];
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var test = {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            name: d.name,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y1970: d.Y1970,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y1980: d.Y1980,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y1990: d.Y1990,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y2000: d.Y2000,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y2010: d.Y2010,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y2020: d.Y2020
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        };
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var res = {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            name: name,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            time_band: test[name],
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            size: d.size
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        };
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        //console.log(res);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        return res;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    });
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })}); */
+        //Population
+        $("#population div div").each(function() {
+            $(this).click(function() {
+                filterByTag("population", $(this).text().trim(), true);
+            });
+        });
+        /* var margin = 0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       })}); */
     </script>
 </body>
 
