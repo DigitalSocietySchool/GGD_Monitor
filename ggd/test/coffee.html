@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta name="charset" content="utf-8">
+        <script src="js/libs/coffee-script.js"></script>
+        <script type="text/coffeescript">
+            years = {}
+            for x in [1970..2020] by 10
+                console.log x.toString()
+                years[x] = "#FFFFFF"
+            console.log (val for key, val of years)
+            console.log Math.trunc(1979/10)*10
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>

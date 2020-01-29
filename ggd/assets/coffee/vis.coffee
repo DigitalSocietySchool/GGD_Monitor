@@ -1,16 +1,18 @@
 
 root = exports ? this
 
-console.log "started Script"
+#Years for outline
+years = {}
+for x in [1970..2020] by 10
+    years[x] = "#FFFFFF"
+#console.log years
 
-# hideOwnership = ->
-#   console.log 'hide ownership'
-#   x = document.getElementsByClassName('ownership')
-#   if x.style.display == 'none'
-#     x.style.display = 'block'
-#   else
-#     x.style.display = 'none'
-#   return
+getBorderColors = (year) ->
+  arcFill = years
+  for y in year.split(";")
+    arcFill[Math.trunc(y/10)*10] = "#000000"
+  #console.log arcFill
+  return (val for key, val of arcFill)
 
 Bubbles = () ->
   # standard variables accessible to
@@ -34,12 +36,7 @@ Bubbles = () ->
           
   # EMMA
   # Extractig values for donut charts
-  pie_bub = (d) -> d3.pie()([d.Y1970,
-          d.Y1980,
-          d.Y1990,
-          d.Y2000,
-          d.Y2010,
-          d.Y2020])
+  pie_bub = (d) -> d3.pie()(Array(18).fill(1))
 
   arc_bub = d3.svg.arc()
     .outerRadius( 100 )
@@ -66,6 +63,17 @@ Bubbles = () ->
 
   keywords = (d) -> d.keywords
 
+  # Fill Colors by department
+  colors =
+    EGZ: "#BB9BD1"
+    IZ: "#8FBCD8"
+    JGZ: "#ADC499"
+    VT: "#C69C6D"
+    MGGZ: "#C69C6D"
+    FGMA: "#EA948B"
+    GHOR: "#E3ACE5"
+    LO: "#B3B3B3"
+    AAGG: "#D9E021"
 
   # constants to control how
   # collision look and act
@@ -135,7 +143,7 @@ Bubbles = () ->
 
     selection.each (rawData) ->
       
-      console.log(rawData)
+      #console.log(rawData)
 
       # first, get the data in the right format
       data = transformData(rawData)
@@ -182,108 +190,12 @@ Bubbles = () ->
       d3.select(window)
         .on("hashchange", hashchange)
 
-    #hide Ownership function callback
 
-    $(".ownershipToggle").on "click", ->
-      x = $('.ownership').attr "style"
-
-      console.log x
-
-    # on population click, hide existing glyphs and add population glyph
-    $(".population").on "click", ->
-      d3.selectAll('.glyph').style("display", "none");
-
-      d3.selectAll('.bubble-node').attr('display','flex')
-        .append("svg:image")
-        .attr("xlink:href", "assets/img/adultcomp.png")
-        .attr("width",  (d) -> rScale(rValue(d)) )
-        .attr("height", (d) -> rScale(rValue(d)) )
-        .style("transform", "translate(-2%, -3%)")
-        .classed("glyph", true);
-
-      d3.selectAll('.bubble-node')
-        .append("svg:image")
-        .attr("xlink:href", "assets/img/youngadultcomp.png")
-        .attr("width",  (d) -> rScale(rValue(d))  )
-        .attr("height", (d) -> rScale(rValue(d))  )
-        .style("transform", "translate(-2%, -3%)")
-        .classed("glyph", true);
-
-      d3.selectAll('.bubble-node')
-        .append("svg:image")
-        .attr("xlink:href", "assets/img/youthcomp.png")
-        .attr("width",  (d) -> rScale(rValue(d)) )
-        .attr("height", (d) -> rScale(rValue(d)) )
-        .style("transform", "translate(-2%, -3%)")
-        .classed("glyph", true);
-
-      d3.selectAll('.bubble-node')
-        .append("svg:image")
-        .attr("xlink:href", "assets/img/oldpersoncomp.png")
-        .attr("width",  (d) -> rScale(rValue(d)) )
-        .attr("height", (d) -> rScale(rValue(d)) )
-        .style("transform", "translate(-2%, -3%)")
-        .classed("glyph", true);
-    
-    # on dataset type click, hide existing glyphs and add dataset icons
-    $(".datasetType").on "click", ->
-      d3.selectAll('.glyph').style("display", "none");
-
-      node = d3.selectAll('.bubble-node').attr('display','flex')
-      node.append("image")
-        .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
-
-    
-      node.append("image")
-        .attr("xlink:href", (d)-> if d.policy == 'y' then "assets/img/glyphs/glyph-right.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
-
-
-
-      node.append("image")
-        .attr("xlink:href", (d)-> if d.monitor == 'y' then "assets/img/glyphs/glyph-left.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
-
-      node.append("image")
-        .attr("xlink:href", (d)-> if d.survey == 'y' then "assets/img/glyphs/glyph-top.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
-
-      node.append("image")
-        .attr("xlink:href", (d)-> if d.promotion == 'y' then "assets/img/glyphs/glyph-diagonal-right.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
-
-      node.append("image")
-        .attr("xlink:href", (d)-> if d.registration == 'y' then "assets/img/glyphs/glyph-diagonal-left.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
-
-  
     # search function callback
     $(".button").on "click", ->
+      # data = data.filter( (d) -> d.name == ("Dataset_3"||"Dataset_2"))
+      # updateNodes(data)
+      # updateLabels(data)
       
       input = $(".searchInput").val();
       d3.select("#status").html("<h3>search results for <span class=\"active\"> " + String(input) + " </span> </h3>")
@@ -293,8 +205,8 @@ Bubbles = () ->
                                       d.keywords.includes(input));
       theLabel = d3.selectAll(".bubble-label")
                     .filter( (d) -> d.keywords.includes(input))
-      console.log("theNode")
-      console.log(theNode)
+      #console.log("theNode")
+      #console.log(theNode)
       d3.selectAll(".bubble-node").style("opacity","0");
       theNode.style("opacity","1")
       d3.selectAll(".bubble-label").style("opacity","0");
@@ -335,16 +247,16 @@ Bubbles = () ->
     # data to the (currently) empty 'bubble-node selection'.
     # if you want to use your own data, you just need to modify what
     # idValue returns
-    console.log("datas")
-    console.log(datas)
+    #console.log("datas")
+    #console.log(datas)
 
     node = node.selectAll(".bubble-node").data(datas, (d) -> idValue(d))
-    console.log(node)  
+    #console.log(node)  
     # we don't actually remove any nodes from our data in this example 
     # but if we did, this line of code would remove them from the
     # visualization as well
     node.exit().remove()
-    console.log(node)  
+    #console.log(node)  
 
     # nodes are just links with circles inside.
     # the styling comes from the css
@@ -352,22 +264,23 @@ Bubbles = () ->
       .append("a")
       .attr("class", "bubble-node")
       .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
-      .style("fill", (d) -> d.department)
+      .attr("data-id", (d) -> d.ID)
+      .attr("id", (d) -> "node_" + d.ID.toString())
+      .style("fill", (d) -> colors[d.department])
+      .attr("fill", (d) -> colors[d.department])
+      .attr("size", (d) -> d.size)
+      .attr("department", (d) -> d.department)
+      .attr("keywords", (d) -> d.keywords)
       .call(force.drag)
       .call(connectEvents)
-      .append("circle")
-      .attr("r", (d) -> rScale(rValue(d)))
+      #.append("circle")
+      #.attr("r", (d) -> rScale(rValue(d)))
 
+    # drawing the Pie chart ( timeline)
 
-  # drawing the Pie chart ( timeline)
     node.append("g")
         .attr("class", "pie")
-        .attr('data_col', (d) -> [d.C1970,
-              d.C1980,
-              d.C1990,
-              d.C2000,
-              d.C2010,
-              d.C2020])
+        .attr('data_col', (d) -> getBorderColors(d.years))
         .attr("width",  (d) -> rScale(rValue(d)) * 2 )
         .attr("height", (d) -> rScale(rValue(d)) * 2 )
         .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
@@ -380,63 +293,87 @@ Bubbles = () ->
 
     # drawing the visible circle
     node.append("circle")
-      .attr("r", (d) -> rScale(rValue(d)-10))
+      .attr("r", (d) -> rScale(rValue(d))-5)
 
-    #adding svgs to the circle to signify dataset types
+    #adding svgs to the circle
     node.append("image")
-    .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
+      .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
+      .attr("class", "catDataset")
+      .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+      .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+      .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+      .style("transform-origin","50% 50%")
 
-    
-    node.append("image")
-    .attr("xlink:href", (d)-> if d.policy == 'y' then "assets/img/glyphs/glyph-right.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
+    petals = 
+      "Social Media": "right"
+      "Health Promotion": "diagonal-right"
+      "Registry": "diagonal-left"
+      "Monitor": "left"
+      "Questionaire": "top"
 
-
-
-    node.append("image")
-        .attr("xlink:href", (d)-> if d.monitor == 'y' then "assets/img/glyphs/glyph-left.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
+    for p, dir of petals
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
+        .attr("class", "catDataset")
+        .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+        .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+        .style("transform-origin","50% 50%")
 
     node.append("image")
-        .attr("xlink:href", (d)-> if d.survey == 'y' then "assets/img/glyphs/glyph-top.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
+      .attr("xlink:href", "assets/img/icon/pop_empty.png")
+      .attr("class", "catPopulation")
+      .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+      .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+      .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+      .style("transform-origin","50% 50%")
 
-    node.append("image")
-        .attr("xlink:href", (d)-> if d.promotion == 'y' then "assets/img/glyphs/glyph-diagonal-right.png")
-       .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
+    population = 
+      "Youth" : "pop_1_youth.png"
+      "Young adult" : "pop_2_young_adult.png"
+      "Adult" : "pop_3_adult.png"
+      "Elderly" : "pop_4_elderly.png"
 
-    node.append("image")
-        .attr("xlink:href", (d)-> if d.registration == 'y' then "assets/img/glyphs/glyph-diagonal-left.png")
-        .attr("width",  (d) -> rScale(rValue(d)) / 2 )
-        .attr("height", (d) -> rScale(rValue(d)) / 2 )
-        .style("transform", "translate(-1%, -3%)")
-        .style("transform-origin","6px 56px;")
-        .classed("glyph", true);
+    for p, img of population
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.keywords.indexOf(p) != -1 then "assets/img/icon/" + img)
+        .attr("class", "catPopulation")
+        .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+        .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+        .style("transform-origin","50% 50%")
 
+    coverage = 
+      "Street" : "icon/geo_1.png"
+      "City" : "icon/geo_2.png"
+      "Metro" : "icon/geo_3.png"
 
+    for c, img of coverage
+      node.append('g')
+        .append("image")
+        .attr("xlink:href", (d) -> if d.keywords.indexOf(c) != -1 then "assets/img/" + img)
+        .attr("class", "catCoverage")
+        .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+        .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+        .style("transform-origin","50% 50%")
+        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/1.8 +'px,-'+ rScale(rValue(d))/1.5 +'px)') 
+        
+    level =
+      "Individual" : "icon/level_1_individual.png"
+      "Family" : "icon/level_2_family.png"
+      "Group" : "icon/level_3_group.png"
+      "Organization" : "icon/level_4_orga.png"
+      "Geography" : "icon/level_5_geo.png"
 
-
+    for l, img of level
+      node.append("image")
+        .attr("xlink:href", (d)-> if d.keywords.indexOf(l) != -1 then "assets/img/" + img)
+        .attr("class", "catLevel")
+        .attr("width",  (d) -> rScale(rValue(d))  )
+        .attr("height", (d) -> rScale(rValue(d))  )
+        .style("transform-origin","50% 50%")
+        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/2.1 +'px,-'+ rScale(rValue(d))/1.9 +'px)') 
+        
     node.selectAll(".pie")
       .selectAll(".arc")
         .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
@@ -461,6 +398,9 @@ Bubbles = () ->
     labelEnter = label.enter().append("a")
       .attr("class", "bubble-label")
       .attr("href", (d) -> "##{encodeURIComponent(idValue(d))}")
+      .attr("id", (d) -> "label_" + d.ID.toString())
+      #.attr("onmouseover", "$(this).find('.bubble-label-name').show();")
+      #.attr("onmouseout", "$(this).find('.bubble-label-name').hide();")
       .call(force.drag)
       .call(connectEvents)
 
@@ -591,9 +531,39 @@ Bubbles = () ->
   # ---
   updateActive = (id) ->
     node.classed("bubble-selected", (d) -> id == idValue(d))
+    dept = ''
+    keywords = ''
+    # size = ''
+    image = ''
+    coverage = 
+      "Street" : "street.svg"
+      "City" : "city.svg"
+      "Metro" : "metro.svg"
+
+
+    # #retrieve data elements from active node
+    activeNode = d3.selectAll(".bubble-selected")
+                    .filter( (d) -> 
+                      dept = d.department
+                      keywords = d.keywords
+
+                      for c, img of coverage
+                        if d.keywords.indexOf(c) != -1 then image = img
+                        console.log image
+                      console.log image
+
+                      
+
+                      # todo add contact email field
+                    )
+
     # if no node is selected, id will be empty
     if id.length > 0
       d3.select("#status").html("<h3>The <span class=\"active\">#{id}</span> is now selected</h3>")
+      d3.select("#title-input").html("#{id}")
+      d3.select("#keywords-input").html("#{keywords}")
+
+
     else
       d3.select("#status").html("<h3>No dataset is selected</h3>")
 
@@ -714,5 +684,5 @@ $ ->
   d3.select("#book-title").html(text.name)
 
   # load our data
-  d3.csv("data/dummy.csv", display)
+  d3.csv("data/ggd.csv", display)
 

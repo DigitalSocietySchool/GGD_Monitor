@@ -8,7 +8,10 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/custom_style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <script src="https://dss.cloud/fa/js/all.min.js"></script>
     <title>GGD Dashboard</title>
     <style>
         body {
@@ -80,6 +83,14 @@
             width: 100%;
             padding: 5px;
         }
+
+        div.ownership div div, #population div div {
+            cursor: pointer;
+            font-weight: 400;
+        }
+        .selected {
+            font-weight: 800!important;
+        }
         /* begin abdo import */
         
         #text-select {
@@ -127,11 +138,11 @@
         }
         
         .active {
-            color: #A6BA92
+            color: #A6BA92;
         }
         
         a.bubble-label {
-            font-family: georgia, "times new roman", times, serif;
+            font-family: 'Open Sans', sans-serif;
             color: inherit;
             cursor: pointer;
             display: block;
@@ -154,39 +165,265 @@
         }
         
         .rotate-right {
-            transform: translate(-3%, -11%) rotate(55deg) scale(0.2)
+            transform: translate(-3%, -11%) rotate(55deg) scale(0.2);
         }
         
         .rotate-left {
-            transform: translate(-6%, -11%) rotate(55deg) scale(0.2)
+            transform: translate(-6%, -11%) rotate(55deg) scale(0.2);
         }
         
         .rotate-up {
-            transform: translate(-4%, -13%) rotate(145deg) scale(0.2)
+            transform: translate(-4%, -13%) rotate(145deg) scale(0.2);
         }
         
         .rotate-diagonal-right {
-            transform: translate(-3%, -8%) rotate(107deg) scale(0.2)
+            transform: translate(-3%, -8%) rotate(107deg) scale(0.2);
         }
         
         .rotate-diagonal-left {
-            transform: translate(-5%, -7%) rotate(185deg) scale(0.2)
+            transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
         }
         
         .rotate-white {
-            transform: translate(-5%, -7%) rotate(185deg) scale(0.2)
+            transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
+        }
+        
+        .catPopulation {
+            display: none;
+        }
+        
+        .catCoverage,
+        .catLevel {
+            display: none;
+        }
+        
+        .bubble-label-name {
+            margin-bottom: 30px;
+            /* display:none; */
+        }
+        
+        .bubble-label-value {
+            font-weight: bold;
+        }
+        
+        *[contenteditable="true"] {
+            background-color: rgba(230, 230, 230, 1);
+        }
+        
+        .toolbar-header {
+            background: #D8A38D;
+        }
+        
+        .faded {
+            opacity: 0.6;
+        }
+        
+        .opaque {
+            opacity: 1;
+        }
+        
+        .shown {
+            display: block;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .radio {
+            float: left;
+        }
+
+        .hidden_size, .hidden_department, .hidden_population {
+            display:none;
         }
     </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
+    <script>
+        var categories = ["Population", "Dataset", "Coverage", "Level"];
+        var editMode = false;
+        // Toggle edit mode by making input fields Editable and showing relevant fields
+        function toggleEdit() {
+            if (!editMode) {
+                document.getElementById("edit-top-bar").style.display = "block";
+                document.getElementById("title-input").contentEditable = true;
+                document.getElementById("contact-input").contentEditable = true;
+                document.getElementById("description-input").contentEditable = true;
+                document.getElementById("keywords-input").contentEditable = true;
+
+                //show case input fields
+                document.getElementById("caseGraph").style.display = "none";
+                document.getElementById("caseInput").style.display = "block";
+
+
+                //blurs all geo levels
+                var buttons = document.getElementsByClassName('geolevel');
+                for (var i = 0; i < buttons.length; i++) {
+                    console.log(buttons[i].style.opacity);
+                    buttons[i].classList.add("faded")
+                }
+
+                $('.geoLevel').click(function(e) {
+                    $(this).toggleClass('faded'); //you can list several class names 
+                    e.preventDefault();
+                });
+
+
+
+                editMode = true;
+
+            } else if (editMode) {
+                document.getElementById("edit-top-bar").style.display = "none";
+                document.getElementById("title-input").contentEditable = false;
+                document.getElementById("contact-input").contentEditable = false;
+                document.getElementById("description-input").contentEditable = false;
+                document.getElementById("keywords-input").contentEditable = false;
+
+                //hide case input fields
+                document.getElementById("caseGraph").style.display = "block";
+                document.getElementById("caseInput").style.display = "none";
+                editMode = false;
+
+            }
+
+        }
+
+        function changeView(view, c = false) {
+            if (c) {
+                $(c).toggle();
+                toggleEye(view);
+            } else {
+                for (category in categories) {
+                    cat = categories[category]
+                    if (cat == view) {
+                        $('.cat' + cat).show();
+                        toggleEye(cat, 'show');
+                        console.log("Showing" + categories[category]);
+                    } else {
+                        $('.cat' + cat).hide();
+                        console.log("Hiding" + categories[category]);
+                        toggleEye(cat, 'hide');
+                    }
+                }
+            }
+        }
+
+        function toggleEye(view, showhide = false) {
+            if (!showhide) {
+                if ($('#eye' + view).attr('collapsed') == 'false') {
+                    $('#eye' + view).attr('src', 'assets/img/eye.svg');
+                    $('#eye' + view).attr('collapsed', 'true');
+                } else {
+                    $('#eye' + view).attr('src', 'assets/img/eye_open.svg');
+                    $('#eye' + view).attr('collapsed', 'false');
+                }
+            } else {
+                if (showhide == 'show' && $('#eye' + view).attr('collapsed') == 'true') {
+                    $('#eye' + view).attr('src', 'assets/img/eye_open.svg');
+                    $('#eye' + view).attr('collapsed', 'false');
+                } else if (showhide == 'hide' && $('#eye' + view).attr('collapsed') == 'false') {
+                    $('#eye' + view).attr('src', 'assets/img/eye.svg');
+                    $('#eye' + view).attr('collapsed', 'true');
+                }
+            }
+        }
+
+        function collapseToolbar(toolbar) {
+            $('#toolbar-' + toolbar).collapse('toggle');
+            //console.log($('#toolbar-icon-' + toolbar).attr('collapsed'));
+            if ($('#toolbar-icon-' + toolbar).attr('collapsed') == 'true') {
+                $('#toolbar-icon-' + toolbar).removeClass('fa-plus');
+                $('#toolbar-icon-' + toolbar).addClass('fa-minus');
+                $('#toolbar-icon-' + toolbar).attr('collapsed', 'false');
+            } else {
+                $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
+                $('#toolbar-icon-' + toolbar).addClass('fa-plus');
+                $('#toolbar-icon-' + toolbar).attr('collapsed', 'true');
+            }
+        }
+
+        function toggleFill() {
+            if ($('#eyeOwnership').attr('collapsed') == 'true') {
+                $('a.bubble-node').each(function() {
+                    $(this).css("fill", $(this).attr("fill"));
+                });
+                toggleEye('Ownership');
+            } else {
+                $('a.bubble-node').css("fill", "#D31145");
+                toggleEye('Ownership');
+            }
+        }
+        //Filter Number of Cases
+        function showSize(s) {
+            console.log("Checking...");
+            console.log(s);
+            s = isNaN(s) ? s : Number(s);
+            $('a.bubble-node').each(function() {
+                console.log($(this).attr('size'));
+                if (Number($(this).attr('size')) <= s && $("#size_" + s).attr("filtered") != 'true') {
+                    console.log("Now hiding..." + s.toString());
+                    //d3.select("#node_" + $(this).attr("data-id").toString()).remove();
+                    //d3.select("#label_" + $(this).attr("data-id").toString()).style("visibility", "hidden");
+                    $(this).addClass("hidden_size");
+                    $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_size");
+                } else {
+                    $(this).removeClass("hidden_size");
+                    $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_size");
+                }
+            });
+            $('g.size').each(function() {
+                if ((Number($(this).attr("data-size")) == s && $(this).attr("filtered") != 'true') || (Number($(this).attr("data-size")) < s)) {
+                    $(this).find(".st0").css("fill", "yellow");
+                    $(this).attr("filtered", "true");
+                } else {
+                    $(this).find(".st0").css("fill", "white");
+                    $(this).attr("filtered", "false");
+                }
+            });
+        }
+
+        function filterByTag(category, tag, isInKeywords=false) {
+            var hide = $("#" + category + tag.replace(" ", "-")).attr("filtered") == "true";
+            $('a.bubble-node').each(function() {
+                var obj = $("#" + category + (isInKeywords ? tag : $(this).attr(category)));
+                var foundTag = isInKeywords ? $(this).attr("keywords").indexOf(tag.split(";")) > -1 : $(this).attr(category) == tag;
+                if(foundTag && !hide) {
+                    $(this).removeClass("hidden_" + category);
+                    $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_" + category);
+                    obj.attr("filtered", "true");
+                    obj.addClass("selected");
+                } else if ( ( !foundTag && obj.attr("filtered") != "true" )|| ( hide && foundTag ) ) {
+                    $(this).addClass("hidden_" + category);
+                    $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_" + category);
+                    obj.attr("filtered", "false");
+                    obj.removeClass("selected");
+                }
+            });
+        }
+    </script>
 </head>
 
 <body>
+    <div id="edit-top-bar" class="container toolbar" style="display:none">
+        <div style="position: fixed;z-index:1000000;opacity: 0.8;max-width: 960px;" class="row toolbar-header">
+            <div class="col">
+                EDIT MODE: You are editing the details of this dataset.
+            </div>
+            <div class="col">
+                <img class="eyecon" onmouseup="toggleEdit()" style="height: 55%; padding-left:12%" id="cancel" src="assets/img/cancel.svg"> Cancel
+            </div>
+            <div class="col">
+                <img class="eyecon" style="height: 55%; padding-left:12%" id="save" src="assets/img/save.svg"> Save
+            </div>
+
+        </div>
+    </div>
+
     <div class="container">
+
         <div class="row">
             <div class="col header">
                 <div id="vis"></div>
-                <div id="vis2"></div>
-                <div id="vis3"></div>
                 <div style="display: flex; justify-content: center;">
                     <input class="searchInput" name="targetNode" type="text" />
                     <button class="button">Search</button>
@@ -196,106 +433,203 @@
             </div>
         </div>
     </div>
+    <!-- begin conditional toolbar -->
+    <div class="container toolbar">
+        <div class="row toolbar-header">
+            <div class="col">
+                Title
+            </div>
+            <div class="col" style="font-weight: 100" id="title-input" contenteditable="false">
+            </div>
+            <div class="col">
+                Contact
+            </div>
+            <div id="contact-input" class="col" contenteditable="false" style="font-weight: 100">
+                Sample Email
+            </div>
+            <div class="col" onmouseup="toggleEdit();">
+                Edit
+            </div>
+            <div class="col">
+                <input class="searchInput" name="targetNode" type="text">
+                <button class="button">Search</button> </div>
+            <div class="col">
+                New
+            </div>
+            <div class="col-auto">
+                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
+            </div>
+        </div>
+        <div class="row collapse" id="toolbar-meta">
+            <div class="row">
+                <div class="col-md-7 toolbar-items">
+                    <div style="width:25%;">Description</div>
+                    <div style="font-weight: 100" contentEditable="false" id="description-input">This dataset was created in 2012 to track the smoking habits of young adults over time</div>
+                </div>
+                <div class="col-md-4 toolbar-items">
+                    <div>Keywords</div>
+                    <div contentEditable="false" style="font-weight: 100" id="keywords-input">smoking, youngadults, 2012</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <!-- begin first toolbar -->
     <div class="container toolbar">
-        <div class="row toolbar-header" onmouseup="$('#toolbar-top').collapse('toggle');">
-            <div class="col">
-                <img class="eyecon" onClick="toggleGeo()" id="Geo" src="assets/img/eye.svg"> Geo. Coverage
+        <div class="row toolbar-header">
+            <div class="col" onmouseup="changeView('Coverage');">
+                <img class="eyecon" id="eyeCoverage" collapsed="true" src="assets/img/eye.svg"> Geo. Coverage
             </div>
-            <div class="col population">
-                <img class="eyecon" onClick="togglePopulation()" id="population" src="assets/img/eye.svg"> Population
+            <div class="col" onmouseup="changeView('Population');">
+                <img class="eyecon" collapsed="true" id="eyePopulation" src="assets/img/eye.svg"> Population
             </div>
-            <div class="col datasetType">
-                <img class="eyecon show" onClick="toggleDatasetType()" id="datasetType" src="assets/img/eye_open.svg"> Type of Dataset
+            <div class="col" onmouseup="changeView('Dataset');">
+                <img class="eyecon" collapsed="false" id="eyeDataset" src="assets/img/eye_open.svg"> Type of Dataset
             </div>
-            <div class="col">
-                <img class="eyecon" onClick="toggleLevel()" id="level" src="assets/img/eye.svg"> Level
+            <div class="col" onmouseup="changeView('Level');">
+                <img class="eyecon" collapsed="true" id="eyeLevel" src="assets/img/eye.svg"> Level
+            </div>
+            <div class="col-auto">
+                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
             </div>
         </div>
         <div class="row collapse" id="toolbar-top">
             <div class="col">
-                <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/street.svg" class="icon"></div>
-                    <div style="float:right;">Straat<br>Buurt<br>Wijk</div>
-                </div>
-                <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/city.svg" class="icon"></div>
-                    <div style="float:right;">Gebied<br>Stadsdeel<br>Stad</div>
-                </div>
-                <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/metro.svg" class="icon"></div>
-                    <div style="float:right;">Amstelland<br>Metro. A'dam<br>G4<br>National</div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
-                    <div style="float:right;"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
-                </div>
-                <div class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
-                    <div style="float:right;"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="toolbar-items">
-                    <img src="assets/img/star.svg" width="100%">
-                </div>
-            </div>
-            <div class="col">
-                <div class="toolbar-items level">
-                    <div style="float:left;">
-                        <div><img src="assets/img/individual.svg" class="icon"><br>Individual</div>
-                        <div><img src="assets/img/family.svg" class="icon"><br>Family</div>
-                        <div><img src="assets/img/group.svg" class="icon"><br>Group</div>
-                    </div>
+                <span id="" class="geolevel toolbar-items">
+                    <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
                     <div style="float:right;">
-                        <div><img src="assets/img/organization.svg" class="icon"><br>Organization</div>
-                        <div><img src="assets/img/geo.svg" class="icon"><br>Geography</div>
-                    </div>
+                <span id="straat">
+                       <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                    Straat</span>
+                <span id="buurt">
+                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                    Buurt<br></span>
+                <span id="wijk">
+                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                    Wijk<br></span>
+            </div>
+            </span>
+            <span id="" class="geolevel toolbar-items">
+                    <div style="float:left;"><img src="assets/img/icon/geo_2.png" class="icon"></div>
+                    <div style="float:right;">Gebied<br>Stadsdeel<br>Stad</div>
+                </span>
+            <span id="" class="geolevel toolbar-items">
+                    <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
+                    <div style="float:right;">Amstelland<br>Metro. A'dam<br>G4<br>National</div>
+                </span>
+        </div>
+        <div class="col" id="population">
+            <div class="toolbar-items">
+                <div style="float:left;" id="populationYouth"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
+                <div style="float:right;" id="populationYoung-Adult"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
+            </div>
+            <div class="toolbar-items">
+                <div style="float:left;" id="populationAdult"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
+                <div style="float:right;" id="populationElderly"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="toolbar-items">
+                <img src="assets/img/star.svg" width="100%">
+            </div>
+        </div>
+        <div class="col">
+            <div class="toolbar-items level">
+                <div style="float:left;">
+                    <div><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
+                    <div><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
+                    <div><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
+                </div>
+                <div style="float:right;">
+                    <div><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
+                    <div><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
     <!-- begin second toolbar -->
     <div class="container toolbar">
-        <div class="row toolbar-header" onmouseup="$('#toolbar-bottom').collapse('toggle');">
-            <div class="col">
-                <img class="eyecon show" id="casesToggle" onClick="toggleCases()" src="assets/img/eye_open.svg"> Number of Cases
+        <div class="row toolbar-header">
+            <div class="col" onmouseup="changeView('Cases','.bubble-label .bubble-label-value');">
+                <img class="eyecon" collapsed="false" id="eyeCases" src="assets/img/eye_open.svg"> Number of Cases
             </div>
-            <div class="col">
-                <img class="eyecon show" id="ownershipToggle" onClick="toggleOwnership()" src="assets/img/eye_open.svg"> Ownership
+            <div class="col" onmouseup="toggleFill();">
+                <img class="eyecon" id="eyeOwnership" collapsed="false" src="assets/img/eye_open.svg"> Ownership
             </div>
-            <div class="col">
-                <img class="eyecon show" id="temporalCoverageToggle" onClick=" toggleTemporalCoverage();" src="assets/img/eye_open.svg"> Temporal Coverage
+            <div class="col" onmouseup="changeView('Temporal','.arc');">
+                <img class="eyecon" id="eyeTemporal" collapsed="false" src="assets/img/eye_open.svg"> Temporal Coverage
+            </div>
+            <div class="col-auto">
+                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
             </div>
         </div>
         <div class="row collapse" id="toolbar-bottom">
             <div class="col">
-                <div class="toolbar-items" id='cases'>
-                    <img src="assets/img/cases.svg" width="100%">
+                <div id="caseGraph" style="display: block" class="toolbar-items">
+                    <svg width="100%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97" style="enable-background:new 0 0 272.83 264.97;" xml:space="preserve">
+               <style type="text/css">
+                   .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;cursor: pointer;}
+                   .st1{font-family:'OpenSans';cursor: pointer;}
+                   .st2{font-size:22px;}
+               </style>
+               <g class="size" data-size="more" id="size-more">
+                   <circle class="st0" cx="138.54" cy="131.83" r="125"/>
+                   <text transform="matrix(1 0 0 1 111.3019 36.1381)" class="st1 st2">More</text>
+               </g>
+               <g class="size" data-size="2000" id="size_2000">
+                   <circle class="st0" cx="138.54" cy="158.6" r="100" />
+                   <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2">2000</text>
+               </g>
+               <g class="size" data-size="1000" id="size_1000">
+                   <circle class="st0" cx="138.54" cy="183.6" r="75" />
+                   <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2">1000</text>
+               </g>
+               <g class="size" data-size="500" id="size_500">
+                   <circle class="st0" cx="138.54" cy="208.6" r="50" />
+                   <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2">500</text>
+               </g>
+               <g class="size" data-size="100" id="size_100">
+                   <circle class="st0" cx="138.54" cy="226.83" r="30" />
+                   <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2">100</text>
+               </g>
+               </svg>
+                </div>
+                <div id="caseInput" style="display: none" class="toolbar-items">
+                    <span>
+                        <form>
+                                <label for="cases">Cases</label>
+                                <input type="number" id="cases" name="age">
+                              </form>
+                </span>
+                    <span>
+                        <form>
+                                <label for="unit">Unit</label>
+                                <input  id="unit" name="age">
+                              </form>
+                            </span>
                 </div>
             </div>
             <div class="col">
-                <div class="toolbar-items ownership" id="ownership">
+                <div class="toolbar-items ownership">
                     <div style="float:left;">
-                        <div><span style="background-color: purple;" class="circle"></span> EGZ</div>
-                        <div><span style="background-color: blue;" class="circle"></span> IZ</div>
-                        <div><span style="background-color: green;" class="circle"></span> JGZ</div>
-                        <div><span style="background-color: brown;" class="circle"></span> VT</div>
-                        <div><span style="background-color: yellow;" class="circle"></span> MGZ</div>
+                        <div id="departmentEGZ"><span style="background-color: purple;" class="circle"></span> EGZ</div>
+                        <div id="departmentIZ"><span style="background-color: blue;" class="circle"></span> IZ</div>
+                        <div id="departmentJGZ"><span style="background-color: green;" class="circle"></span> JGZ</div>
+                        <div id="departmentVT"><span style="background-color: brown;" class="circle"></span> VT</div>
+                        <div id="departmentMGZ"><span style="background-color: yellow;" class="circle"></span> MGZ</div>
                     </div>
                     <div style="float:right;">
-                        <div><span style="background-color: red;" class="circle"></span> FGMA</div>
-                        <div><span style="background-color: violet;" class="circle"></span> GHOR</div>
-                        <div><span style="background-color: gray;" class="circle"></span> LO</div>
-                        <div><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
+                        <div id="departmentFGMA"><span style="background-color: red;" class="circle"></span> FGMA</div>
+                        <div id="departmentGHOR"><span style="background-color: violet;" class="circle"></span> GHOR</div>
+                        <div id="departmentLO"><span style="background-color: gray;" class="circle"></span> LO</div>
+                        <div id="departmentAAGG"><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="toolbar-items">
-                    <img src="assets/img/temporal.svg" width="100%">
+                    <img src="assets/img/time_widget.svg" width="100%">
                 </div>
             </div>
         </div>
@@ -316,179 +650,34 @@
     <script src="assets/js/libs/coffee-script.js"></script>
     <script type="text/coffeescript" src="assets/coffee/vis.coffee"></script>
 
-    <script type="text/javascript"></script>
-    <script>
-        /*
-                                                                                                                                                                                                                                                                                                                                                                                                                Function to toggle Ownership Icons
-                                                                                                                                                                                                                                                                                                                                                                                                                */
-        function toggleOwnership() {
-            console.log("ownership Toggle")
-            x = document.getElementById("ownership");
-            console.log(document.getElementById("casesToggle").src)
-            if (x.classList.contains("show")) {
-                x.classList.toggle("show");
-                document.getElementById("ownershipToggle").src = "assets/img/eye.svg";
-                //filter
-            } else {
-                x.classList.toggle("show")
-                document.getElementById("ownershipToggle").src = "assets/img/eye_open.svg"
-                    //filter
-            }
-        }
-
-        /*
-        Function to Toggle # of cases Icon
-        */
-        function toggleCases(event) {
-            console.log("case Toggle")
-
-            x = document.getElementById("casesToggle")
-            console.log(document.getElementById("casesToggle").src)
-            if (x.classList.contains("show")) {
-                x.classList.toggle("show")
-                document.getElementById("casesToggle").src = "assets/img/eye.svg";
-                //filter
-
-            } else {
-                x.classList.toggle("show")
-
-                document.getElementById("casesToggle").src = "assets/img/eye_open.svg"
-                    //filter
-            }
-        }
-
-
-        /*
-        Function to Toggle Temporal Coverage
-        */
-        function toggleTemporalCoverage(event) {
-
-            x = document.getElementById("temporalCoverageToggle")
-            if (x.classList.contains("show")) {
-                x.classList.toggle("show")
-                document.getElementById("temporalCoverageToggle").src = "assets/img/eye.svg";
-                //filter
-
-            } else {
-                x.classList.toggle("show")
-
-                document.getElementById("temporalCoverageToggle").src = "assets/img/eye_open.svg"
-                    //filter
-            }
-        }
-
-        /*
-        Function to Toggle Geographical coverage
-        */
-        function toggleGeo(event) {
-            console.log("Geo Toggle")
-
-            document.getElementById("Geo").src = "assets/img/eye_open.svg";
-            document.getElementById("datasetType").src = "assets/img/eye.svg"
-            document.getElementById("level").src = "assets/img/eye.svg";
-            document.getElementById("population").src = "assets/img/eye.svg";
-            //filter
-        }
-
-        /*
-        Function to Toggle Population
-        */
-        function togglePopulation(event) {
-            console.log("Population Toggle")
-
-            document.getElementById("Geo").src = "assets/img/eye.svg";
-            document.getElementById("datasetType").src = "assets/img/eye.svg"
-            document.getElementById("level").src = "assets/img/eye.svg";
-            document.getElementById("population").src = "assets/img/eye_open.svg";
-            //filter
-        }
-
-        /*
-        Function to Toggle level
-        */
-        function toggleLevel(event) {
-            console.log("level Toggle")
-
-            document.getElementById("Geo").src = "assets/img/eye.svg";
-            document.getElementById("datasetType").src = "assets/img/eye.svg"
-            document.getElementById("level").src = "assets/img/eye_open.svg";
-            document.getElementById("population").src = "assets/img/eye.svg";
-            //filter
-        }
-
-        /*
-        Function to DatasetTypes
-        */
-        function toggleDatasetType(event) {
-            console.log("dataset Toggle")
-
-            document.getElementById("Geo").src = "assets/img/eye.svg";
-            document.getElementById("datasetType").src = "assets/img/eye_open.svg"
-            document.getElementById("level").src = "assets/img/eye.svg";
-            document.getElementById("population").src = "assets/img/eye.svg";
-            //filter
-        }
-
-
-
-
-
-
-        var margin = 0
-        padding = 0
-        radius = 100;
-
-        var color = d3.scale.ordinal()
-            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-        var arc = d3.svg.arc()
-            .outerRadius(function(d) {
-                return (d.data.size) / 4;
-            })
-            .innerRadius(function(d) {
-                return (d.data.size) / 4 - 10;
-            })
-
-        var arc_donut = d3.svg.arc()
-            .outerRadius(100)
-            .innerRadius(100)
-
-
-        var pie = d3.pie()
-            .sort(null)
-            .value(function(d) {
-                return d.time_band;
+    <script type="text/javascript">
+        //Number of Cases
+        $(".size").each(function() {
+            $(this).mouseover(function() {
+                $(this).find(".st0").css("fill", "beige");
             });
-
-        d3.csv("data/dummy.csv", function(error, data) {
-            if (error) throw error;
-
-            color.domain(d3.keys(data[0]).filter(function(key) {
-                return key !== "name";
-            }));
-
-            data.forEach(function(d) {
-                d.time = color.domain().map(function(name) {
-                    var band = d[name];
-                    var test = {
-                        name: d.name,
-                        Y1970: d.Y1970,
-                        Y1980: d.Y1980,
-                        Y1990: d.Y1990,
-                        Y2000: d.Y2000,
-                        Y2010: d.Y2010,
-                        Y2020: d.Y2020
-                    };
-                    var res = {
-                        name: name,
-                        time_band: test[name],
-                        size: d.size
-                    };
-                    //console.log(res);
-                    return res;
-                });
+            $(this).mouseout(function() {
+                $(this).find(".st0").css("fill", $(this).attr("filtered") == "true" ? "yellow" : "white");
             });
-        })
+            $(this).click(function() {
+                showSize($(this).attr("data-size"));
+            });
+        });
+        
+        //Ownership/Department
+        $("div.ownership div div").each(function() {
+            $(this).click(function() {
+                filterByTag("department", $(this).text().trim());  
+            });
+        });
+
+        //Population
+        $("#population div div").each(function() {
+            $(this).click(function() {
+                filterByTag("population", $(this).text().trim(), true);  
+            });
+        });
+        /* var margin = 0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       })}); */
     </script>
 </body>
 
