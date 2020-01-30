@@ -269,55 +269,137 @@
                 <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
                     <div style="float:right;">
-                <span id="straat">
-                       <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
-                    Straat</span>
-                <span id="buurt">
-                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
-                    Buurt<br></span>
-                <span id="wijk">
-                        <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
-                    Wijk<br></span>
-            </div>
-            </span>
-            <span id="" class="geolevel toolbar-items">
-                    <div style="float:left;"><img src="assets/img/icon/geo_2.png" class="icon"></div>
-                    <div style="float:right;">Gebied<br>Stadsdeel<br>Stad</div>
+                        <div id="straat" class="item_geo">
+                            <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                            Straat<br>
+                        </div>
+                        <div id="buurt" class="item_geo">
+                            <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                            Buurt<br>
+                        </div>
+                        <div id="wijk" class="item_geo">
+                            <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                            Wijk<br>
+                        </div>
+                    </div>
                 </span>
-            <span id="" class="geolevel toolbar-items">
+                <span id="" class="geolevel toolbar-items">
+                    <div style="float:left;">
+                        <img src="assets/img/icon/geo_2.png" class="icon" style="width:70px;height:70px;margin-right:-10px;margin-top:-10px">
+                    </div>
+                    <div style="float:right;">
+                        <div id="gebied" class="item_geo">
+                            Gebied<br>
+                        </div>
+                        <div id="stadsdeel" class="item_geo">
+                            Stadsdeel<br>
+                        </div>
+                        <div id="stad" class="item_geo">
+                            Stad
+                        </div>
+                    </div>
+                </span>
+                <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
-                    <div style="float:right;">Amstelland<br>Metro. A'dam<br>G4<br>National</div>
+                    <div style="float:right;">
+                        <div id="amstelland" class="item_geo">
+                            Amstelland<br>
+                        </div>
+                        <div id="metroadam" class="item_geo">
+                            Metro. A'dam<br>
+                        </div>
+                        <div id="g4" class="item_geo">
+                            G4<br>
+                        </div>
+                        <div id="national" class="item_geo">
+                            National
+                        </div>
+                    </div>  
                 </span>
-        </div>
-        <div class="col" id="population">
-            <div class="toolbar-items">
-                <div style="float:left;" id="populationYouth"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
-                <div style="float:right;" id="populationYoung-Adult"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
             </div>
-            <div class="toolbar-items">
-                <div style="float:left;" id="populationAdult"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
-                <div style="float:right;" id="populationElderly"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="toolbar-items">
-                <img src="assets/img/star.svg" width="100%">
-            </div>
-        </div>
-        <div class="col">
-            <div class="toolbar-items level">
-                <div style="float:left;">
-                    <div><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
-                    <div><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
-                    <div><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
+            <div class="col" id="population" style="flex-grow:1.5;margin-left:20px">
+                <div class="toolbar-items">
+                    <div style="float:left;" id="populationYouth" class="item_population">
+                        <img src="assets/img/youth.svg" class="icon">
+                        <br>Youth
+                    </div>
+                    <div style="float:right;" id="populationYoung-Adult" class="item_population">
+                        <img src="assets/img/young_adult.svg" class="icon">
+                        <br>Young Adult
+                    </div>
                 </div>
-                <div style="float:right;">
-                    <div><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
-                    <div><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
+                <div class="toolbar-items">
+                    <div style="float:left;" id="populationAdult" class="item_population">
+                        <img src="assets/img/adult.svg" class="icon">
+                        <br>Adult
+                    </div>
+                    <div style="float:right;" id="populationElderly" class="item_population">
+                        <img src="assets/img/old_person.svg" class="icon">
+                        <br>Elderly
+                    </div>
                 </div>
             </div>
+            <div class="col">
+                <div class="toolbar-items" style="display:block;margin-right:-50px;margin-top:-30px;" >
+                    <svg style="transform:scale(0.6);margin-left:-90px;" height="300px" width="390px">
+                       <g id="Layer_2" data-name="Layer 2">
+                          <g id="Overview_rollover" data-name="Overview rollover">
+                             <ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07" />
+                             <ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)" />
+                             <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" />
+                             <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" />
+                             <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" />
+                             <text transform="translate(100 25.95)">
+                                <tspan>Questionnaire</tspan>
+                             </text>
+                             <text transform="translate(286.87 84.56)">
+                                <tspan>Social</tspan>
+                                <tspan x="0" y="30">Media</tspan>
+                             </text>
+                             <text transform="translate(258.9 183.13)">
+                                <tspan>Health</tspan>
+                                <tspan x="0" y="30">Promotion</tspan>
+                             </text>
+                             <text transform="translate(44.52 212.13)">
+                                <tspan>Registry</tspan>
+                             </text>
+                             <text transform="translate(0 102.58)">
+                                <tspan>Monitor</tspan>
+                             </text>
+                          </g>
+                       </g>
+                    </svg>
+                </div>
+            </div>
+            <div class="col" style="flex-grow:0.5;">
+                <div class="toolbar-items level">
+                    <div style="float:left;">
+                        <div class="item_level">
+                            <img src="assets/img/icon/level_1_individual.png" class="icon">
+                            <br>Individual
+                        </div>
+                        <div class="item_level">
+                            <img src="assets/img/icon/level_2_family.png" class="icon">
+                            <br>Family
+                        </div>
+                        <div class="item_level">
+                            <img src="assets/img/icon/level_3_group.png" class="icon">
+                            <br>Group
+                        </div>
+                    </div>
+                    <div style="float:right;margin-left:10px">
+                        <div class="item_level">
+                            <img src="assets/img/icon/level_4_orga.png" class="icon">
+                            <br>Organization
+                        </div>
+                        <div class="item_level">
+                            <img src="assets/img/icon/level_5_geo.png" class="icon">
+                            <br>Geography
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
     </div>
     <!-- begin second toolbar -->
     <div class="container toolbar">
@@ -369,16 +451,16 @@
                 <div id="caseInput" style="display: none" class="toolbar-items">
                     <span>
                         <form>
-                                <label for="cases">Cases</label>
-                                <input type="number" id="cases" name="age">
-                              </form>
-                </span>
+                            <label for="cases">Cases</label>
+                            <input type="number" id="cases" name="age">
+                        </form>
+                    </span>
                     <span>
                         <form>
-                                <label for="unit">Unit</label>
-                                <input  id="unit" name="age">
-                              </form>
-                            </span>
+                            <label for="unit">Unit</label>
+                            <input  id="unit" name="age">
+                        </form>
+                    </span>
                 </div>
             </div>
             <div class="col">
