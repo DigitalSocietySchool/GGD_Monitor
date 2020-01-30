@@ -270,12 +270,10 @@
                 document.getElementById("caseGraph").style.display = "none";
                 document.getElementById("caseInput").style.display = "block";
 
-                //fade all
+                //ownership options
                 fadeIcons("ownership_icon", activeDept);
-
                 //find current selection and activate it
                 activeDept = document.getElementById("activeDept").textContent;
-
                 $('.ownership_icon').click(function(e) {
                     fadeIcons("ownership_icon");
                     $(this).toggleClass('active');
@@ -285,7 +283,7 @@
                 });
 
 
-
+                //Geographical Level options
                 fadeIcons("geolevel");
                 $('.geolevel').click(function(e) {
                     fadeIcons("geolevel");
@@ -296,7 +294,7 @@
                 });
 
 
-
+                //population options
                 fadeIcons("populationOption");
                 $('.populationOption').click(function(e) {
                     $(this).toggleClass('active');
@@ -311,9 +309,35 @@
                     }
                 });
 
-                fadeIcons("levelOption");
-                $('.levelOption').click(function(e) {
-                    fadeIcons("levelOption");
+                //time options
+                fadeIcons("timeOption");
+                $('.timeOption').click(function(e) {
+                    $(this).toggleClass('active');
+                    if ($(this).css("opacity") == 1) {
+                        $(this).css({
+                            opacity: 0.2
+                        });
+                    } else {
+                        $(this).css({
+                            opacity: 1
+                        });
+                    }
+                });
+
+                //level options
+                fadeIcons("item_level");
+                $('.item_level').click(function(e) {
+                    fadeIcons("item_level");
+                    $(this).toggleClass('active');
+                    $(this).css({
+                        opacity: 1
+                    });
+                });
+
+                //type options
+                fadeIcons("typeOption");
+                $('.typeOption').click(function(e) {
+                    fadeIcons("typeOption");
                     $(this).toggleClass('active');
                     $(this).css({
                         opacity: 1
@@ -340,6 +364,8 @@
                 unfadeIcons("geolevel");
                 unfadeIcons("populationOption");
                 unfadeIcons("levelOption");
+                unfadeIcons("typeOption");
+                unfadeIcons("timeOption");
 
                 editMode = false;
 
@@ -533,7 +559,7 @@
                 <span id="" class="toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
                     <div style="float:right;">
-                        <div id="straat" class="item_geo">
+                        <div id="straat" class="geolevel item_geo">
                             <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
                             Straat<br>
                         </div>
@@ -583,21 +609,21 @@
             </div>
             <div class="col" id="population" style="flex-grow:1.5;margin-left:20px">
                 <div class="toolbar-items">
-                    <div style="float:left;" id="populationYouth" class="levelOption item_population">
+                    <div style="float:left;" id="populationYouth" class="populationOption item_population">
                         <img src="assets/img/youth.svg" class="icon">
                         <br>Youth
                     </div>
-                    <div style="float:right;" id="populationYoung-Adult" class="levelOption item_population">
+                    <div style="float:right;" id="populationYoung-Adult" class="populationOption item_population">
                         <img src="assets/img/young_adult.svg" class="icon">
                         <br>Young Adult
                     </div>
                 </div>
                 <div class="toolbar-items">
-                    <div style="float:left;" id="populationAdult" class="levelOption item_population">
+                    <div style="float:left;" id="populationAdult" class="populationOption item_population">
                         <img src="assets/img/adult.svg" class="icon">
                         <br>Adult
                     </div>
-                    <div style="float:right;" id="populationElderly" class="levelOption item_population">
+                    <div style="float:right;" id="populationElderly" class="populationOption item_population">
                         <img src="assets/img/old_person.svg" class="icon">
                         <br>Elderly
                     </div>
@@ -613,21 +639,21 @@
                              <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" />
                              <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" />
                              <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" />
-                             <text transform="translate(100 25.95)">
-                                <tspan>Questionnaire</tspan>
+                             <text id="questionnaire" class="typeOption" transform="translate(100 25.95)">
+                                <tspan >Questionnaire</tspan>
                              </text>
-                             <text transform="translate(286.87 84.56)">
-                                <tspan>Social</tspan>
-                                <tspan x="0" y="30">Media</tspan>
+                             <text class="typeOption" id="social media" transform="translate(286.87 84.56)">
+                                <tspan >Social</tspan>
+                                <tspan  x="0" y="30">Media</tspan>
                              </text>
-                             <text transform="translate(258.9 183.13)">
-                                <tspan>Health</tspan>
+                             <text class="typeOption" id="health" transform="translate(258.9 183.13)">
+                                <tspan >Health</tspan>
                                 <tspan x="0" y="30">Promotion</tspan>
                              </text>
-                             <text transform="translate(44.52 212.13)">
+                             <text class="typeOption" id="registry" transform="translate(44.52 212.13)">
                                 <tspan>Registry</tspan>
                              </text>
-                             <text transform="translate(0 102.58)">
+                             <text class="typeOption" id="monitor" transform="translate(0 102.58)">
                                 <tspan>Monitor</tspan>
                              </text>
                           </g>
@@ -638,25 +664,25 @@
             <div class="col" style="flex-grow:0.5;">
                 <div class="toolbar-items level">
                     <div style="float:left;">
-                        <div class="item_level">
+                        <div class="levelOption item_level">
                             <img src="assets/img/icon/level_1_individual.png" class="icon">
                             <br>Individual
                         </div>
-                        <div class="item_level">
+                        <div class="levelOption item_level">
                             <img src="assets/img/icon/level_2_family.png" class="icon">
                             <br>Family
                         </div>
-                        <div class="item_level">
+                        <div class="levelOption item_level">
                             <img src="assets/img/icon/level_3_group.png" class="icon">
                             <br>Group
                         </div>
                     </div>
                     <div style="float:right;margin-left:10px">
-                        <div class="item_level">
+                        <div class="levelOption item_level">
                             <img src="assets/img/icon/level_4_orga.png" class="icon">
                             <br>Organization
                         </div>
-                        <div class="item_level">
+                        <div class="levelOption item_level">
                             <img src="assets/img/icon/level_5_geo.png" class="icon">
                             <br>Geography
                         </div>
@@ -749,7 +775,95 @@
             </div>
             <div class="col">
                 <div class="toolbar-items">
-                    <img src="assets/img/time_widget.svg" width="100%">
+                    <svg style="width:100%" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 432.43 351.27" style="enable-background:new 0 0 432.43 351.27;" xml:space="preserve">
+               <style type="text/css">
+                   .st0{fill:none;}
+                   .st1{fill:none;stroke:#231F20;stroke-width:5;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                   .st2{fill:none;stroke:#231F20;stroke-width:4.694;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                   .st3{fill:none;stroke:#231F20;stroke-width:4.388;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                   .st4{fill:none;stroke:#231F20;stroke-width:4.083;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                   .st5{fill:none;stroke:#231F20;stroke-width:3.777;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                   .st6{fill:none;stroke:#231F20;stroke-width:3.472;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                   .st7{fill:none;stroke:#231F20;stroke-width:3.166;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                   .st8{fill:none;stroke:#231F20;stroke-width:2.861;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                   .st9{fill:none;stroke:#231F20;stroke-width:2.555;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                   .st10{fill:none;stroke:#231F20;stroke-width:2.25;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                   .st11{display:none;}
+                   .st12{display:inline;fill:none;stroke:#000000;stroke-width:24;stroke-miterlimit:10;}
+                   .st13{display:inline;fill:none;stroke:#FFFFFF;stroke-width:6;stroke-miterlimit:10;}
+                   .st14{display:inline;fill:none;stroke:#FFFFFF;stroke-width:11;stroke-miterlimit:10;}
+                   .st15{fill:url(#Undulating_Coarse_Dots);}
+                   .st16{fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
+                   .st17{font-family:'OpenSans';}
+                   .st18{font-size:22px;}
+               </style>
+               <pattern  x="-647.91" y="-473.44" width="83" height="65" patternUnits="userSpaceOnUse" id="Undulating_Coarse_Dots" viewBox="2.5 -133 83 65" style="overflow:visible;">
+                   <g>
+                       <g>
+                           <line class="st1" x1="2.5" y1="-133" x2="2.5" y2="-67.5"/>
+                           <line class="st2" x1="7.11" y1="-136.25" x2="7.11" y2="-67.5"/>
+                           <line class="st3" x1="11.72" y1="-133" x2="11.72" y2="-67.5"/>
+                           <line class="st4" x1="16.33" y1="-136.25" x2="16.33" y2="-67.5"/>
+                           <line class="st5" x1="20.94" y1="-133" x2="20.94" y2="-67.5"/>
+                           <line class="st6" x1="25.56" y1="-136.25" x2="25.56" y2="-67.5"/>
+                           <line class="st7" x1="30.17" y1="-133" x2="30.17" y2="-67.5"/>
+                           <line class="st8" x1="34.78" y1="-136.25" x2="34.78" y2="-67.5"/>
+                           <line class="st9" x1="39.39" y1="-133" x2="39.39" y2="-67.5"/>
+                           <line class="st10" x1="44" y1="-136.25" x2="44" y2="-67.5"/>
+                           <line class="st1" x1="85.5" y1="-133" x2="85.5" y2="-67.5"/>
+                           <line class="st2" x1="80.89" y1="-136.25" x2="80.89" y2="-67.5"/>
+                           <line class="st3" x1="76.28" y1="-133" x2="76.28" y2="-67.5"/>
+                           <line class="st4" x1="71.67" y1="-136.25" x2="71.67" y2="-67.5"/>
+                           <line class="st5" x1="67.06" y1="-133" x2="67.06" y2="-67.5"/>
+                           <line class="st6" x1="62.44" y1="-136.25" x2="62.44" y2="-67.5"/>
+                           <line class="st7" x1="57.83" y1="-133" x2="57.83" y2="-67.5"/>
+                           <line class="st8" x1="53.22" y1="-136.25" x2="53.22" y2="-67.5"/>
+                           <line class="st9" x1="48.61" y1="-133" x2="48.61" y2="-67.5"/>
+                       </g>
+                   </g>
+               </pattern>
+               <g id="Layer_2">
+                   <path class="year_1" d="M251.97,68.36l8.21-22.57c-12.84-4.34-26.53-6.82-40.75-7.13v24C230.77,62.97,241.7,64.95,251.97,68.36z"/>
+                   <path class="year_2"  d="M286.28,86.86l15.42-18.38c-10.76-8.58-22.84-15.58-35.88-20.64l-8.21,22.55C268.01,74.48,277.65,80.06,286.28,86.86z"/>
+                   <path class="year_3"  d="M312.34,115.94l20.79-12c-7.31-11.85-16.36-22.51-26.81-31.61L290.89,90.7C299.21,98.01,306.45,106.51,312.34,115.94z"/>
+                   <path class="year_4"  d="M326.99,152.23l23.66-4.17c-2.84-13.86-7.79-26.95-14.48-38.95l-20.78,12C320.7,130.72,324.66,141.18,326.99,152.23z"/>
+                   <path class="year_5"  d="M329.44,175.63c0,5.37-0.39,10.65-1.11,15.82l23.65,4.17c0.96-6.53,1.46-13.2,1.46-19.99c0-7.37-0.59-14.61-1.72-21.67
+                       l-23.64,4.17C328.97,163.84,329.44,169.68,329.44,175.63z"/>
+                   <path class="year_6"  d="M316.1,228.84l20.79,12.01c6.59-12.12,11.39-25.35,14.08-39.31l-23.64-4.17C325.15,208.53,321.31,219.11,316.1,228.84z"/>
+                   <path class="year_7"  d="M291.72,259.82l15.42,18.38c10.47-9.27,19.52-20.11,26.76-32.15l-20.78-12C307.29,243.68,300.06,252.36,291.72,259.82z"/>
+                   <path class="year_8"  d="M258.16,280.64l8.21,22.56c13.18-5.18,25.36-12.34,36.19-21.12l-15.42-18.38C278.45,270.7,268.69,276.44,258.16,280.64z"/>
+                   <path class="year_9"  d="M219.44,288.59v24c14.42-0.31,28.3-2.86,41.31-7.32l-8.21-22.56C242.1,286.25,230.98,288.29,219.44,288.59z"/>
+                   <path class="year_10"  d="M180.34,282.72l-8.21,22.56c13,4.46,26.88,7.01,41.31,7.32v-24C201.89,288.29,190.78,286.25,180.34,282.72z"/>
+                   <path class="year_11"  d="M145.73,263.7l-15.42,18.38c10.83,8.78,23.01,15.95,36.19,21.12l8.21-22.56C164.18,276.45,154.43,270.7,145.73,263.7z"/>
+                   <path class="year_12"  d="M119.75,234.06l-20.78,12c7.25,12.04,16.29,22.88,26.76,32.15l15.42-18.38C132.81,252.36,125.58,243.68,119.75,234.06z"/>
+                   <path class="year_13"  d="M105.54,197.37l-23.64,4.17c2.68,13.97,7.49,27.19,14.08,39.31l20.79-12.01C111.56,219.11,107.73,208.53,105.54,197.37z"/>
+                   <path class="year_14"  d="M103.44,175.63c0-5.95,0.47-11.8,1.36-17.5l-23.64-4.17c-1.13,7.06-1.72,14.3-1.72,21.67c0,6.79,0.5,13.46,1.46,19.99
+                       l23.65-4.17C103.82,186.28,103.44,181,103.44,175.63z"/>
+                   <path class="year_15"  d="M117.49,121.11l-20.78-12c-6.69,12-11.64,25.09-14.48,38.95l23.66,4.17C108.22,141.18,112.17,130.72,117.49,121.11z"/>
+                   <path class="year_16"  d="M141.98,90.7l-15.42-18.38c-10.45,9.1-19.51,19.76-26.81,31.61l20.79,12C126.42,106.51,133.66,98.01,141.98,90.7z"/>
+                   <path class="year_17"  d="M175.26,70.4l-8.21-22.55c-13.04,5.06-25.12,12.05-35.88,20.64l15.42,18.38C155.22,80.06,164.87,74.48,175.26,70.4z"/>
+                   <path class="st15 year_18" d="M213.44,62.67v-24c-14.22,0.31-27.91,2.79-40.75,7.13l8.21,22.57C191.18,64.95,202.1,62.97,213.44,62.67z"/>
+                   <path class="st16" d="M172.69,45.79l8.21,22.57"/>
+                   <text class="timeOption" transform="matrix(1 0 0 1 226.8767 34.4286)" class="st17 st18 year_1" id='year_1'>2020</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 288.203 55.0738)" class="st17 st18 year_2" id='year_2'>2019</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 324.1019 86.1158)" class="st17 st18 year_3" id='year_3'>2018</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 350.9763 129.6168)" class="st17 st18 year_4" id='year_4'>2017</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 360.2678 181.1421)" class="st17 st18 year_5" id='year_5'>2016</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 351.2869 232.2453)" class="st17 st18 year_6" id='year_6'>2015</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 329.8593 277.4357)" class="st17 st18 year_7" id='year_7'>2014</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 291.1594 312.4897)" class="st17 st18 year_8" id='year_8'>2013</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 225.2744 333.184)" class="st17 st18 year_9" id='year_9'>2012</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 158.9091 333.1849)" class="st17 st18 year_10" id='year_10'>2011</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 94.0241 312.4899)" class="st17 st18 year_11" id='year_11'>2010</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 55.0136 277.4355)" class="st17 st18 year_12" id='year_12'>2009</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 31.3626 232.2451)" class="st17 st18 year_13" id='year_13'>2008</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 22.0711 181.1423)" class="st17 st18 year_14" id='year_14'>2007</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 33.0519 129.6168)" class="st17 st18 year_15" id='year_15'>2006</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 59.3923 86.1158)" class="st17 st18 year_16" id='year_16'>2005</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 97.2475 55.0739)" class="st17 st18 year_17" id='year_17'>2004</text>
+                   <text class="timeOption" transform="matrix(1 0 0 1 146.6807 34.4285)" class="st17 st18 year_18">earlier</text>
+               </g>
+               </svg>
                 </div>
             </div>
         </div>
