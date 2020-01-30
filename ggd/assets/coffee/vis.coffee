@@ -330,13 +330,13 @@ Bubbles = () ->
 
     population = 
       "Youth" : "pop_1_youth.png"
-      "Young adult" : "pop_2_young_adult.png"
+      "Young Adult" : "pop_2_young_adult.png"
       "Adult" : "pop_3_adult.png"
       "Elderly" : "pop_4_elderly.png"
 
     for p, img of population
       node.append("image")
-        .attr("xlink:href", (d)-> if d.keywords.indexOf(p) != -1 then "assets/img/icon/" + img)
+        .attr("xlink:href", (d)-> if d.keywords.split(";").indexOf(p) != -1 then "assets/img/icon/" + img)
         .attr("class", "catPopulation")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
         .attr("height", (d) -> rScale(rValue(d)) * 1.15 )

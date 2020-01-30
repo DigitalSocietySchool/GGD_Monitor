@@ -17,6 +17,7 @@
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
         var categories = ["Population", "Dataset", "Coverage", "Level"];
+        var tagsInCategories = []; 
         var editMode = false;
         // Toggle edit mode by making input fields Editable and showing relevant fields
         function toggleEdit() {
@@ -158,21 +159,32 @@
             });
         }
 
-        function filterByTag(category, tag, isInKeywords=false) {
+        function filterByTag(category, tag, isInKeywords=false) { console.log("#" + category + tag.replace(" ", "-"));
             var hide = $("#" + category + tag.replace(" ", "-")).attr("filtered") == "true";
             $('a.bubble-node').each(function() {
-                var obj = $("#" + category + (isInKeywords ? tag : $(this).attr(category)));
-                var foundTag = isInKeywords ? $(this).attr("keywords").indexOf(tag.split(";")) > -1 : $(this).attr(category) == tag;
+                var obj = $("#" + category + (isInKeywords ? tag.replace(" ", "-") : $(this).attr(category)));
+                var foundTag = isInKeywords ? $(this).attr("keywords").split(";").includes(tag) : $(this).attr(category) == tag;
+                if (isInKeywords) { console.log($(this).attr("keywords").split(";").includes(tag) );}
                 if(foundTag && !hide) {
                     $(this).removeClass("hidden_" + category);
                     $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_" + category);
                     obj.attr("filtered", "true");
                     obj.addClass("selected");
                 } else if ( ( !foundTag && obj.attr("filtered") != "true" )|| ( hide && foundTag ) ) {
-                    $(this).addClass("hidden_" + category);
-                    $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_" + category);
                     obj.attr("filtered", "false");
                     obj.removeClass("selected");
+                    var hideBubble = true;
+                    if (isInKeywords) {
+                        for (tagInCategory in tagsInCategories[category]) {
+                            if ($("#" + category + tagsInCategories[category][tagInCategory].replace(" ", "-")).attr("filtered") == "true") {
+                                hideBubble = false;
+                            }
+                        }
+                    }
+                    if (hideBubble) {
+                        $(this).addClass("hidden_" + category);
+                        $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_" + category);
+                    }
                 }
             });
         }
@@ -525,11 +537,15 @@
         });
 
         //Population
+        tagsInCategories["population"] = [];
         $("#population div div").each(function() {
+            var tag = $(this).text().trim();
+            tagsInCategories["population"].push(tag);
             $(this).click(function() {
-                filterByTag("population", $(this).text().trim(), true);  
+                filterByTag("population", tag, true);  
             });
         });
+        console.log(tagsInCategories);
     </script>
 </body>
 

@@ -229,7 +229,7 @@ footer p {
 
 #bubble-labels{
     opacity: 0.5;
-    font-color: #cccccc;
+    color: #cccccc;
     display:none;
 }
 .fa-plus{
