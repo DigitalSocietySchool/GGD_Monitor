@@ -1,1 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396.36 220.88"><defs><style>.cls-1{font-size:31px;font-family:OpenSans, OpenSans;}.cls-2{letter-spacing:0em;}.cls-3{letter-spacing:0em;}.cls-4{letter-spacing:-0.01em;}.cls-5{letter-spacing:0.01em;}.cls-6{letter-spacing:-0.02em;}.cls-7{letter-spacing:0em;}.cls-8{letter-spacing:-0.01em;}.cls-9{letter-spacing:0.02em;}.cls-10{letter-spacing:0em;}</style></defs><title>star</title><g id="Layer_2" data-name="Layer 2"><g id="Overview_rollover" data-name="Overview rollover"><ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07"/><ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)"/><ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)"/><ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)"/><ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)"/><text class="cls-1" transform="translate(105.5 25.95)"><tspan class="cls-2">Q</tspan><tspan class="cls-3" x="21.45" y="0">uestionnai</tspan><tspan class="cls-4" x="157.48" y="0">r</tspan><tspan x="167.3" y="0">e</tspan></text><text class="cls-1" transform="translate(286.87 84.56)"><tspan class="cls-5">S</tspan><tspan x="15.47" y="0">ocial</tspan><tspan class="cls-5" x="0" y="30">M</tspan><tspan x="25.11" y="30">edia</tspan></text><text class="cls-1" transform="translate(258.9 183.13)">Health <tspan class="cls-6" x="0" y="30">P</tspan><tspan class="cls-4" x="16" y="30">r</tspan><tspan x="25.82" y="30">omotion</tspan></text><text class="cls-1" transform="translate(44.52 212.13)"><tspan class="cls-7">R</tspan><tspan x="16.8" y="0">e</tspan><tspan class="cls-8" x="32.33" y="0">g</tspan><tspan x="49.48" y="0">ist</tspan><tspan class="cls-9" x="79.27" y="0">r</tspan><tspan class="cls-10" x="90.18" y="0">y</tspan></text><text class="cls-1" transform="translate(0 102.58)"><tspan class="cls-5">M</tspan><tspan x="25.11" y="0">oni</tspan><tspan class="cls-8" x="66.59" y="0">t</tspan><tspan x="76.66" y="0">or</tspan></text></g></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396.36 220.88">
+   <defs>
+      <style>
+      	text{
+      		font-size:6px;
+      		font-family: OpenSans;
+      		letter-spacing:0em;
+      	}
+      </style>
+   </defs>
+   <g id="Layer_2" data-name="Layer 2">
+      <g id="Overview_rollover" data-name="Overview rollover">
+         <ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07" />
+         <ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)" />
+         <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" />
+         <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" />
+         <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" />
+         <text transform="translate(100 25.95)">
+            <tspan>Questionnaire</tspan>
+         </text>
+         <text transform="translate(286.87 84.56)">
+            <tspan>Social</tspan>
+            <tspan x="0" y="30">Media</tspan>
+         </text>
+         <text transform="translate(258.9 183.13)">
+            <tspan>Health</tspan>
+            <tspan x="0" y="30">Promotion</tspan>
+         </text>
+         <text transform="translate(44.52 212.13)">
+            <tspan>Registry</tspan>
+         </text>
+         <text transform="translate(0 102.58)">
+            <tspan>Monitor</tspan>
+         </text>
+      </g>
+   </g>
+</svg>
+
+

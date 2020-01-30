@@ -1,5 +1,274 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #000000;
+    font-size: 15px;
+}
+
+.header {
+    padding-top: 50px;
+}
+
+.toolbar {
+    font-weight: 700;
+    background-color: #F7F7F7;
+    border: 1px solid #4D4D4D;
+    border-radius:20px;
+    margin-top: 5px;
+    text-align: center;
+    box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
+    margin-bottom: 25px;
+}
+
+.toolbar-header {
+    border-radius: 20px;
+    padding: 6px;
+    border: 1px solid #666;
+    background-color: #E6E6E6;
+    cursor: pointer;
+    margin-top: -1px;
+    margin-bottom: -1px;
+    margin-right: -16px;
+    margin-left: -16px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.toolbar-header-edit {
+    background: #D8A38D;
+}
+
+
+.toolbar-items {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    padding-top:20px;
+}
+
+img.eyecon {
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
+}
+
+img.icon {
+    width: 60px;
+}
+
+.level div div {
+    padding: 10px;
+}
+
+.circle {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    top: 6px;
+}
+
+.ownership {
+    text-align: left;
+}
+
+.ownership div {
+    width: 100%;
+    padding: 5px;
+} 
+div.ownership div div, #population div div {
+    cursor: pointer;
+    font-weight: 400;
+}
+.selected {
+    font-weight: 800!important;
+}
+/* begin abdo import */
+
+#text-select {
+    float: right;
+    margin-right: 10px;
+}
+
+#vis {
+    overflow: hidden;
+    position: relative;
+}
+
+#status {
+    padding: 0 0 20px 20px;
+}
+        
+#controls {
+    padding: 20px;
+    background-color: #eee;
+    margin: 10px;
+    width: 350px;
+}
+
+#bubble-background {
+    fill: none;
+    pointer-events: all;
+}
+
+.bubble-node {
+    /* fill: #d1e0f3; */
+    fill: #DCE9BE;
+}
+
+.bubble-hover {
+    /* fill: #b8c7d9; */
+    fill: #E8E9E7;
+}
+
+.bubble-selected {
+    /* fill: #a8c8ee;  */
+    fill: #CEE98F;
+    /* stroke: #6081a3; */
+    stroke: #A6BA92;
+    stroke-width: 1.5px;
+}
+
+.active {
+    color: #A6BA92;
+}
+
+a.bubble-label {
+    font-family: 'Open Sans', sans-serif;
+    color: inherit;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1em;
+    position: absolute;
+}
+
+.bubble-label .bubble-label-value {
+    font: 11px sans-serif;
+    white-space: nowrap;
+}
+
+footer p {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font: 13px sans-serif;
+}
+
+.rotate-right {
+    transform: translate(-3%, -11%) rotate(55deg) scale(0.2);
+}
+
+.rotate-left {
+    transform: translate(-6%, -11%) rotate(55deg) scale(0.2);
+}
+
+.rotate-up {
+    transform: translate(-4%, -13%) rotate(145deg) scale(0.2);
+}
+
+.rotate-diagonal-right {
+    transform: translate(-3%, -8%) rotate(107deg) scale(0.2);
+}
+
+.rotate-diagonal-left {
+    transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
+}
+
+.rotate-white {
+    transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
+}
+
+.catPopulation {
+    display: none;
+}
+
+.catCoverage,
+.catLevel {
+    display: none;
+}
+
+.bubble-label-name {
+    margin-bottom: 30px;
+    /* display:none; */
+}
+
+.bubble-label-value {
+    font-weight: bold;
+}
+
+*[contenteditable="true"] {
+    background-color: rgba(230, 230, 230, 1);
+}
+
+.faded {
+    opacity: 0.6;
+}
+
+.opaque {
+    opacity: 1;
+}
+.shown {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+.radio {
+    float: left;
+}
+
+.hidden_size, .hidden_department, .hidden_population {
+    display:none;
+}
+
 #bubble-labels{
     opacity: 0.5;
     font-color: #cccccc;
     display:none;
+}
+.fa-plus{
+    margin-top:5px;
+}
+.fa-plus path, .fa-minus path{
+    fill: #666
+}
+.dim_label{
+	color: #333;
+    text-align: left;
+    margin-left: 20px;
+    font-weight: bold;
+}
+.dim_val{
+	color: #000;
+    text-align: left;
+    font-weight: normal;
+}       
+.geolevel{
+	text-align:left;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.item_geo {
+    width: 100%;
+    padding-left:30px;
+    text-align:left;
+    padding-bottom:4px;
+}
+.item_population {
+    width: 40%;
+    text-align: center;
+}
+.item_level {
+    text-align: center;
+    margin-left: -10px;
+}
+tspan{
+	font-size:25px;
+	font-family: OpenSans;
 }

@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <script src="https://dss.cloud/fa/js/all.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./assets/css/custom_style.css">
     <title>GGD Dashboard</title>
     <style>
         body {
@@ -462,38 +463,33 @@
 
         <div class="row">
             <div class="col header">
-                <div id="vis"></div>
                 <div style="display: flex; justify-content: center;">
                     <input class="searchInput" name="targetNode" type="text" />
                     <button class="button">Search</button>
                     <button class="reset">reset</button>
+                    <div id="status"></div>
                 </div>
-                <div style="display: flex;justify-content: center;" id="status"></div>
+                <div id="vis"></div>
             </div>
         </div>
     </div>
     <!-- begin conditional toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col">
-                Title
+            <div class="col dim_label" style="flex-grow:2;">
+                <span class="dim_val">Title:</span>
+                <span class="" id="title-input" contenteditable="false">
+                </span>
             </div>
-            <div class="col" style="font-weight: 100" id="title-input" contenteditable="false">
-            </div>
-            <div class="col">
-                Contact
-            </div>
-            <div id="contact-input" class="col" contenteditable="false" style="font-weight: 100">
+            <div class="col dim_label" style="flex-grow:1;">
+                <span class="dim_val">Contact:</span>
+                <span id="contact-input" class="" contenteditable="false">
                 Sample Email
+                </span>
             </div>
-            <div class="col" onmouseup="toggleEdit();">
-                Edit
-            </div>
-            <div class="col">
-                <input class="searchInput" name="targetNode" type="text">
-                <button class="button">Search</button> </div>
-            <div class="col">
-                New
+            <div class="col dim_label" onmouseup="toggleEdit();" style="flex-grow:0.5;">
+                <span class="">Edit</span> &nbsp; &nbsp;
+                <span class="">New</span>
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
@@ -516,17 +512,17 @@
     <!-- begin first toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col" onmouseup="changeView('Coverage');">
-                <img class="eyecon" id="eyeCoverage" collapsed="true" src="assets/img/eye.svg"> Geo. Coverage
+            <div class="col dim_label" onmouseup="changeView('Coverage');">
+                <img class="eyecon" id="eyeCoverage" collapsed="true" src="assets/img/icon/eye_hide.png"> Geo. Coverage
             </div>
-            <div class="col" onmouseup="changeView('Population');">
-                <img class="eyecon" collapsed="true" id="eyePopulation" src="assets/img/eye.svg"> Population
+            <div class="col dim_label" onmouseup="changeView('Population');">
+                <img class="eyecon" collapsed="true" id="eyePopulation" src="assets/img/icon/eye_hide.png"> Population
             </div>
-            <div class="col" onmouseup="changeView('Dataset');">
-                <img class="eyecon" collapsed="false" id="eyeDataset" src="assets/img/eye_open.svg"> Type of Dataset
+            <div class="col dim_label" onmouseup="changeView('Dataset');">
+                <img class="eyecon" collapsed="false" id="eyeDataset" src="assets/img/icon/eye_show.png"> Type of Dataset
             </div>
-            <div class="col" onmouseup="changeView('Level');">
-                <img class="eyecon" collapsed="true" id="eyeLevel" src="assets/img/eye.svg"> Level
+            <div class="col dim_label" onmouseup="changeView('Level');" style="flex-grow:0.5;">
+                <img class="eyecon" collapsed="true" id="eyeLevel" src="assets/img/icon/eye_hide.png"> Level
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
@@ -537,83 +533,149 @@
                 <span id="" class="toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
                     <div style="float:right;">
-                <span  class="geolevel" id="straat">
-                    Straat</span>
-                <span class="geolevel" id="buurt">
-                    Buurt<br>
+                        <div id="straat" class="item_geo">
+                            <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                            Straat<br>
+                        </div>
+                        <div id="buurt" class="geolevel item_geo">
+                            <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                            Buurt<br>
+                        </div>
+                        <div id="wijk" class="geolevel item_geo">
+                            <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
+                            Wijk<br>
+                        </div>
+                    </div>
                 </span>
-                <span class="geolevel" id="wijk">
-                    Wijk<br></span>
-            </div>
-            </span>
-            <span id="" class="toolbar-items">
-                    <div style="float:left;"><img src="assets/img/icon/geo_2.png" class="icon"></div>
+                <span id="" class="toolbar-items">
+                    <div style="float:left;">
+                        <img src="assets/img/icon/geo_2.png" class="icon" style="width:70px;height:70px;margin-right:-10px;margin-top:-10px">
+                    </div>
                     <div style="float:right;">
-                        <span  class="geolevel" id="gebied">
-                        Gebied<br></span>
-            <span class="geolevel" id="stadsteel">
-                        Stadsdeel<br></span>
-            <span class="geolevel" id="stad">
-                        Stad</div>
-                        </span>
-
-            </span>
-            <span id="" class=" toolbar-items">
+                        <div id="gebied" class="geolevel item_geo">
+                            Gebied<br>
+                        </div>
+                        <div id="stadsdeel" class="geolevel item_geo">
+                            Stadsdeel<br>
+                        </div>
+                        <div id="stad" class="geolevel item_geo">
+                            Stad
+                        </div>
+                    </div>
+                </span>
+                <span id="" class="toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
                     <div style="float:right;">
-                        <span  class="geolevel" id="amstelland">
-                        Amstelland<br></span>
-            <span class="geolevel" id="metro">
-                        Metro. A'dam<br></span>
-            <span class="geolevel" id="g4">
-                        G4<br></span>
-            <span class="geolevel" id="national">
-                        National
-                        </span>
-        </div>
-        </span>
-    </div>
-    <div class="col">
-        <div class="toolbar-items">
-            <div class="populationOption" style="float:left;"><img src="assets/img/youth.svg" class="icon"><br>Youth</div>
-            <div class="populationOption" style="float:right;"><img src="assets/img/young_adult.svg" class="icon"><br>Young Adult</div>
-        </div>
-        <div class="toolbar-items">
-            <div class="populationOption" style="float:left;"><img src="assets/img/adult.svg" class="icon"><br>Adult</div>
-            <div class="populationOption" style="float:right;"><img src="assets/img/old_person.svg" class="icon"><br>Elderly</div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="toolbar-items">
-            <img src="assets/img/star.svg" width="100%">
-        </div>
-    </div>
-    <div class="col">
-        <div class="toolbar-items level">
-            <div style="float:left;">
-                <div class="levelOption"><img src="assets/img/icon/level_1_individual.png" class="icon"><br>Individual</div>
-                <div class="levelOption"><img src="assets/img/icon/level_2_family.png" class="icon"><br>Family</div>
-                <div class="levelOption"><img src="assets/img/icon/level_3_group.png" class="icon"><br>Group</div>
+                        <div id="amstelland" class="geolevel item_geo">
+                            Amstelland<br>
+                        </div>
+                        <div id="metroadam" class="geolevel item_geo">
+                            Metro. A'dam<br>
+                        </div>
+                        <div id="g4" class="geolevel item_geo">
+                            G4<br>
+                        </div>
+                        <div id="national" class="geolevel item_geo">
+                            National
+                        </div>
+                    </div>  
+                </span>
             </div>
-            <div style="float:right;">
-                <div class="levelOption"><img src="assets/img/icon/level_4_orga.png" class="icon"><br>Organization</div>
-                <div class="levelOption"><img src="assets/img/icon/level_5_geo.png" class="icon"><br>Geography</div>
+            <div class="col" id="population" style="flex-grow:1.5;margin-left:20px">
+                <div class="toolbar-items">
+                    <div style="float:left;" id="populationYouth" class="levelOption item_population">
+                        <img src="assets/img/youth.svg" class="icon">
+                        <br>Youth
+                    </div>
+                    <div style="float:right;" id="populationYoung-Adult" class="levelOption item_population">
+                        <img src="assets/img/young_adult.svg" class="icon">
+                        <br>Young Adult
+                    </div>
+                </div>
+                <div class="toolbar-items">
+                    <div style="float:left;" id="populationAdult" class="levelOption item_population">
+                        <img src="assets/img/adult.svg" class="icon">
+                        <br>Adult
+                    </div>
+                    <div style="float:right;" id="populationElderly" class="levelOption item_population">
+                        <img src="assets/img/old_person.svg" class="icon">
+                        <br>Elderly
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="toolbar-items" style="display:block;margin-right:-50px;margin-top:-30px;">
+                    <svg style="transform:scale(0.6);margin-left:-90px;" height="300px" width="390px">
+                       <g id="Layer_2" data-name="Layer 2">
+                          <g id="Overview_rollover" data-name="Overview rollover">
+                             <ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07" />
+                             <ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)" />
+                             <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" />
+                             <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" />
+                             <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" />
+                             <text transform="translate(100 25.95)">
+                                <tspan>Questionnaire</tspan>
+                             </text>
+                             <text transform="translate(286.87 84.56)">
+                                <tspan>Social</tspan>
+                                <tspan x="0" y="30">Media</tspan>
+                             </text>
+                             <text transform="translate(258.9 183.13)">
+                                <tspan>Health</tspan>
+                                <tspan x="0" y="30">Promotion</tspan>
+                             </text>
+                             <text transform="translate(44.52 212.13)">
+                                <tspan>Registry</tspan>
+                             </text>
+                             <text transform="translate(0 102.58)">
+                                <tspan>Monitor</tspan>
+                             </text>
+                          </g>
+                       </g>
+                    </svg>
+                </div>
+            </div>
+            <div class="col" style="flex-grow:0.5;">
+                <div class="toolbar-items level">
+                    <div style="float:left;">
+                        <div class="item_level">
+                            <img src="assets/img/icon/level_1_individual.png" class="icon">
+                            <br>Individual
+                        </div>
+                        <div class="item_level">
+                            <img src="assets/img/icon/level_2_family.png" class="icon">
+                            <br>Family
+                        </div>
+                        <div class="item_level">
+                            <img src="assets/img/icon/level_3_group.png" class="icon">
+                            <br>Group
+                        </div>
+                    </div>
+                    <div style="float:right;margin-left:10px">
+                        <div class="item_level">
+                            <img src="assets/img/icon/level_4_orga.png" class="icon">
+                            <br>Organization
+                        </div>
+                        <div class="item_level">
+                            <img src="assets/img/icon/level_5_geo.png" class="icon">
+                            <br>Geography
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    </div>
     </div>
     <!-- begin second toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col" onmouseup="changeView('Cases','.bubble-label .bubble-label-value');">
-                <img class="eyecon" collapsed="false" id="eyeCases" src="assets/img/eye_open.svg"> Number of Cases
+            <div class="col dim_label" onmouseup="changeView('Cases','.bubble-label .bubble-label-value');" style="flex-grow:1.7;">
+                <img class="eyecon" collapsed="false" id="eyeCases" src="assets/img/icon/eye_show.png"> Number of Cases
             </div>
-            <div class="col" onmouseup="toggleFill();">
-                <img class="eyecon" id="eyeOwnership" collapsed="false" src="assets/img/eye_open.svg"> Ownership
+            <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.4;">
+                <img class="eyecon" id="eyeOwnership" collapsed="false" src="assets/img/icon/eye_show.png"> Ownership
             </div>
-            <div class="col" onmouseup="changeView('Temporal','.arc');">
-                <img class="eyecon" id="eyeTemporal" collapsed="false" src="assets/img/eye_open.svg"> Temporal Coverage
+            <div class="col dim_label" onmouseup="changeView('Temporal','.arc');">
+                <img class="eyecon" id="eyeTemporal" collapsed="false" src="assets/img/icon/eye_show.png"> Temporal Coverage
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
@@ -622,11 +684,11 @@
         <div class="row collapse" id="toolbar-bottom">
             <div class="col">
                 <div id="caseGraph" style="display: block" class="toolbar-items">
-                    <svg width="100%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97" style="enable-background:new 0 0 272.83 264.97;" xml:space="preserve">
+                    <svg width="80%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97" xml:space="preserve">
                <style type="text/css">
                    .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;cursor: pointer;}
                    .st1{font-family:'OpenSans';cursor: pointer;}
-                   .st2{font-size:22px;}
+                   .st2{font-size:18px;margin-left:4px;}
                </style>
                <g class="size" data-size="more" id="size-more">
                    <circle class="st0" cx="138.54" cy="131.83" r="125"/>
@@ -653,16 +715,16 @@
                 <div id="caseInput" style="display: none" class="toolbar-items">
                     <span>
                         <form>
-                                <label for="cases">Cases</label>
-                                <input type="number" id="cases" name="age">
-                              </form>
-                </span>
+                            <label for="cases">Cases</label>
+                            <input type="number" id="cases" name="age">
+                        </form>
+                    </span>
                     <span>
                         <form>
-                                <label for="unit">Unit</label>
-                                <input  id="unit" name="age">
-                              </form>
-                            </span>
+                            <label for="unit">Unit</label>
+                            <input  id="unit" name="age">
+                        </form>
+                    </span>
                 </div>
             </div>
             <div class="col">
@@ -671,11 +733,11 @@
                 </div>
                 <div class="toolbar-items ownership">
                     <div style="float:left;">
-                        <div class="ownership_icon"><span style="background-color: purple;" class="circle"></span> EGZ</div>
-                        <div class="ownership_icon"><span style="background-color: blue;" class="circle"></span> IZ</div>
-                        <div class="ownership_icon"><span style="background-color: green;" class="circle"></span> JGZ</div>
-                        <div class="ownership_icon"><span style="background-color: brown;" class="circle"></span> VT</div>
-                        <div class="ownership_icon"><span style="background-color: yellow;" class="circle"></span> MGZ</div>
+                        <div class="ownership_icon" id="departmentEGZ"><span style="background-color: purple;" class="circle"></span> EGZ</div>
+                        <div class="ownership_icon" id="departmentIZ"><span style="background-color: blue;" class="circle"></span> IZ</div>
+                        <div class="ownership_icon" id="departmentJGZ"><span style="background-color: green;" class="circle"></span> JGZ</div>
+                        <div class="ownership_icon" id="departmentVT"><span style="background-color: brown;" class="circle"></span> VT</div>
+                        <div class="ownership_icon" id="departmentMGZ"><span style="background-color: #ffc107;" class="circle"></span> MGZ</div>
                     </div>
                     <div style="float:right;">
                         <div class="ownership_icon"><span style="background-color: red;" class="circle"></span> FGMA</div>
