@@ -270,6 +270,7 @@ Bubbles = () ->
       .attr("fill", (d) -> colors[d.department])
       .attr("size", (d) -> d.size)
       .attr("department", (d) -> d.department)
+      .attr("keywords", (d) -> d.keywords)
       .call(force.drag)
       .call(connectEvents)
       #.append("circle")
@@ -538,19 +539,20 @@ Bubbles = () ->
       "Street" : "street.svg"
       "City" : "city.svg"
       "Metro" : "metro.svg"
-    size = ''
+
 
     # #retrieve data elements from active node
     activeNode = d3.selectAll(".bubble-selected")
                     .filter( (d) -> 
                       dept = d.department
                       keywords = d.keywords
-                      size = d.size
-                      console.log size
 
                       for c, img of coverage
                         if d.keywords.indexOf(c) != -1 then image = img
                         console.log image
+                      console.log image
+
+                      
 
                       # todo add contact email field
                     )
@@ -560,9 +562,6 @@ Bubbles = () ->
       d3.select("#status").html("<h3>The <span class=\"active\">#{id}</span> is now selected</h3>")
       d3.select("#title-input").html("#{id}")
       d3.select("#keywords-input").html("#{keywords}")
-      d3.select("#cases").node().value = size;  
-      console.log d3.select("#cases").node().value;
-      d3.select("#activeDept").html("#{dept}");
 
 
     else

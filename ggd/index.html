@@ -9,267 +9,17 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/custom_style.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <script src="https://dss.cloud/fa/js/all.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="./assets/css/custom_style.css">
+    <link rel="stylesheet" type="text/css"  href="./assets/css/custom_style.css">
     <title>GGD Dashboard</title>
-    <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-        }
-        
-        .header {
-            padding-top: 50px;
-        }
-        
-        .toolbar {
-            font-weight: 700;
-            background-color: #F7F7F7;
-            border: 1px solid #4D4D4D;
-            border-radius: 50px;
-            margin-top: 25px;
-            text-align: center;
-            box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
-            margin-bottom: 25px;
-        }
-        
-        .toolbar-header {
-            border-radius: 50px;
-            padding: 15px;
-            border: 2px solid #000000;
-            background-color: #E6E6E6;
-            cursor: pointer;
-        }
-        
-        .toolbar-items {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            width: 100%;
-            padding: 30px;
-        }
-        
-        .toolbar-items div {
-            width: 50%;
-        }
-        
-        img.eyecon {
-            height: 63.942px;
-            width: 63.942px;
-        }
-        
-        img.icon {
-            width: 60px;
-        }
-        
-        .level div div {
-            padding: 10px;
-        }
-        
-        .circle {
-            height: 25px;
-            width: 25px;
-            border-radius: 50%;
-            display: inline-block;
-            position: relative;
-            top: 6px;
-        }
-        
-        .ownership {
-            text-align: left;
-        }
-        
-        .ownership div {
-            width: 100%;
-            padding: 5px;
-        }
-        /* begin abdo import */
-        
-        #text-select {
-            float: right;
-            margin-right: 10px;
-        }
-        
-        #vis {
-            overflow: hidden;
-            position: relative;
-        }
-        
-        #status {
-            padding: 0 0 20px 20px;
-        }
-        
-        #controls {
-            padding: 20px;
-            background-color: #eee;
-            margin: 10px;
-            width: 350px;
-        }
-        
-        #bubble-background {
-            fill: none;
-            pointer-events: all;
-        }
-        
-        .bubble-node {
-            /* fill: #d1e0f3; */
-            fill: #DCE9BE;
-        }
-        
-        .bubble-hover {
-            /* fill: #b8c7d9; */
-            fill: #E8E9E7;
-        }
-        
-        .bubble-selected {
-            /* fill: #a8c8ee;  */
-            fill: #CEE98F;
-            /* stroke: #6081a3; */
-            stroke: #A6BA92;
-            stroke-width: 1.5px;
-        }
-        
-        .active {
-            color: #A6BA92;
-        }
-        
-        a.bubble-label {
-            font-family: 'Open Sans', sans-serif;
-            color: inherit;
-            cursor: pointer;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            line-height: 1em;
-            position: absolute;
-        }
-        
-        .bubble-label .bubble-label-value {
-            font: 11px sans-serif;
-            white-space: nowrap;
-        }
-        
-        footer p {
-            text-align: center;
-            padding-top: 20px;
-            padding-bottom: 20px;
-            font: 13px sans-serif;
-        }
-        
-        .rotate-right {
-            transform: translate(-3%, -11%) rotate(55deg) scale(0.2);
-        }
-        
-        .rotate-left {
-            transform: translate(-6%, -11%) rotate(55deg) scale(0.2);
-        }
-        
-        .rotate-up {
-            transform: translate(-4%, -13%) rotate(145deg) scale(0.2);
-        }
-        
-        .rotate-diagonal-right {
-            transform: translate(-3%, -8%) rotate(107deg) scale(0.2);
-        }
-        
-        .rotate-diagonal-left {
-            transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
-        }
-        
-        .rotate-white {
-            transform: translate(-5%, -7%) rotate(185deg) scale(0.2);
-        }
-        
-        .catPopulation {
-            display: none;
-        }
-        
-        .catCoverage,
-        .catLevel {
-            display: none;
-        }
-        
-        .bubble-label-name {
-            margin-bottom: 30px;
-            /* display:none; */
-        }
-        
-        .bubble-label-value {
-            font-weight: bold;
-        }
-        
-        *[contenteditable="true"] {
-            background-color: rgba(230, 230, 230, 1);
-        }
-        
-        .toolbar-header {
-            background: #D8A38D;
-        }
-        
-        .faded {
-            opacity: 0.2;
-        }
-        
-        .opaque {
-            opacity: 1;
-        }
-        
-        .shown {
-            display: block;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .radio {
-            float: left;
-        }
-    </style>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
     <script>
         var categories = ["Population", "Dataset", "Coverage", "Level"];
         var editMode = false;
-
-        function fadeIcons(classname, active) {
-
-            if (active == undefined) active = '';
-            active = active.textContent;
-
-            console.log("logging items with classname" + classname)
-            var ownership_icons = document.getElementsByClassName(classname);
-            for (var i = 0; i < ownership_icons.length; i++) {
-                ownership_icons[i].style.opacity = 0.2;
-
-                if ((ownership_icons[i].textContent.replace(/\s/g, "")) == active) {
-                    ownership_icons[i].style.opacity = 1;
-
-                }
-            }
-        }
-
-        function unfadeIcons(classname) {
-            console.log("logging items with classname" + classname)
-            var ownership_icons = document.getElementsByClassName(classname);
-            for (var i = 0; i < ownership_icons.length; i++) {
-                ownership_icons[i].style.opacity = 1;
-            }
-        }
-
-        // Toggle edit mode by making input fields Editable and showing relevant fields. New Entry is a flag to determine if EditMode is there to update an exising record or to create a new one.
-        function toggleEdit(newEntry) {
-
-
-            if (newEntry) {
-                document.getElementById("description-input").textContent = 'Enter description of Dataset here';
-                document.getElementById("title-input").textContent = 'Add title';
-                document.getElementById("contact-input").textContent = 'Add contact Email';
-                document.getElementById("keywords-input").textContent = 'add keywords, seperated by semicolons';
-                document.getElementById("cases").textContent = '';
-            }
-
-
+        // Toggle edit mode by making input fields Editable and showing relevant fields
+        function toggleEdit() {
             if (!editMode) {
                 document.getElementById("edit-top-bar").style.display = "block";
                 document.getElementById("title-input").contentEditable = true;
@@ -281,78 +31,17 @@
                 document.getElementById("caseGraph").style.display = "none";
                 document.getElementById("caseInput").style.display = "block";
 
-                //ownership options
-                fadeIcons("ownership_icon", activeDept);
-                //find current selection and activate it
-                activeDept = document.getElementById("activeDept").textContent;
-                $('.ownership_icon').click(function(e) {
-                    fadeIcons("ownership_icon");
-                    $(this).toggleClass('active');
-                    $(this).css({
-                        opacity: 1
-                    });
-                });
 
+                //blurs all geo levels
+                var buttons = document.getElementsByClassName('geolevel');
+                for (var i = 0; i < buttons.length; i++) {
+                    console.log(buttons[i].style.opacity);
+                    buttons[i].classList.add("faded")
+                }
 
-                //Geographical Level options
-                fadeIcons("geolevel");
-                $('.geolevel').click(function(e) {
-                    fadeIcons("geolevel");
-                    $(this).toggleClass('active');
-                    $(this).css({
-                        opacity: 1
-                    });
-                });
-
-
-                //population options
-                fadeIcons("populationOption");
-                $('.populationOption').click(function(e) {
-                    $(this).toggleClass('active');
-                    if ($(this).css("opacity") == 1) {
-                        $(this).css({
-                            opacity: 0.2
-                        });
-                    } else {
-                        $(this).css({
-                            opacity: 1
-                        });
-                    }
-                });
-
-                //time options
-                fadeIcons("timeOption");
-                $('.timeOption').click(function(e) {
-                    $(this).toggleClass('active');
-                    if ($(this).css("opacity") == 1) {
-                        $(this).css({
-                            opacity: 0.2
-                        });
-                    } else {
-                        $(this).css({
-                            opacity: 1
-                        });
-                    }
-                });
-
-                //level options
-                fadeIcons("item_level");
-                $('.item_level').click(function(e) {
-                    fadeIcons("item_level");
-                    $(this).toggleClass('active');
-                    $(this).css({
-                        opacity: 1
-                    });
-                });
-
-                //type options
-                fadeIcons("typeOption");
-                $('.typeOption').click(function(e) {
-                    fadeIcons("typeOption");
-                    $(this).toggleClass('active');
-                    $(this).css({
-                        opacity: 1
-                    });
+                $('.geoLevel').click(function(e) {
+                    $(this).toggleClass('faded'); //you can list several class names 
+                    e.preventDefault();
                 });
 
 
@@ -369,15 +58,6 @@
                 //hide case input fields
                 document.getElementById("caseGraph").style.display = "block";
                 document.getElementById("caseInput").style.display = "none";
-
-                //unfade icons
-                unfadeIcons('ownership_icon')
-                unfadeIcons("geolevel");
-                unfadeIcons("populationOption");
-                unfadeIcons("levelOption");
-                unfadeIcons("typeOption");
-                unfadeIcons("timeOption");
-
                 editMode = false;
 
             }
@@ -449,7 +129,7 @@
                 toggleEye('Ownership');
             }
         }
-
+        //Filter Number of Cases
         function showSize(s) {
             console.log("Checking...");
             console.log(s);
@@ -460,11 +140,11 @@
                     console.log("Now hiding..." + s.toString());
                     //d3.select("#node_" + $(this).attr("data-id").toString()).remove();
                     //d3.select("#label_" + $(this).attr("data-id").toString()).style("visibility", "hidden");
-                    $(this).hide();
-                    $("#label_" + $(this).attr("data-id").toString()).hide()
+                    $(this).addClass("hidden_size");
+                    $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_size");
                 } else {
-                    $(this).show();
-                    $("#label_" + $(this).attr("data-id").toString()).show()
+                    $(this).removeClass("hidden_size");
+                    $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_size");
                 }
             });
             $('g.size').each(function() {
@@ -474,6 +154,25 @@
                 } else {
                     $(this).find(".st0").css("fill", "white");
                     $(this).attr("filtered", "false");
+                }
+            });
+        }
+
+        function filterByTag(category, tag, isInKeywords=false) {
+            var hide = $("#" + category + tag.replace(" ", "-")).attr("filtered") == "true";
+            $('a.bubble-node').each(function() {
+                var obj = $("#" + category + (isInKeywords ? tag : $(this).attr(category)));
+                var foundTag = isInKeywords ? $(this).attr("keywords").indexOf(tag.split(";")) > -1 : $(this).attr(category) == tag;
+                if(foundTag && !hide) {
+                    $(this).removeClass("hidden_" + category);
+                    $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_" + category);
+                    obj.attr("filtered", "true");
+                    obj.addClass("selected");
+                } else if ( ( !foundTag && obj.attr("filtered") != "true" )|| ( hide && foundTag ) ) {
+                    $(this).addClass("hidden_" + category);
+                    $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_" + category);
+                    obj.attr("filtered", "false");
+                    obj.removeClass("selected");
                 }
             });
         }
@@ -487,7 +186,7 @@
                 EDIT MODE: You are editing the details of this dataset.
             </div>
             <div class="col">
-                <img class="eyecon" onmouseup="toggleEdit(false)" style="height: 55%; padding-left:12%" id="cancel" src="assets/img/cancel.svg"> Cancel
+                <img class="eyecon" onmouseup="toggleEdit()" style="height: 55%; padding-left:12%" id="cancel" src="assets/img/cancel.svg"> Cancel
             </div>
             <div class="col">
                 <img class="eyecon" style="height: 55%; padding-left:12%" id="save" src="assets/img/save.svg"> Save
@@ -515,18 +214,18 @@
         <div class="row toolbar-header">
             <div class="col dim_label" style="flex-grow:2;">
                 <span class="dim_val">Title:</span>
-                <span class="" style="" id="title-input" contenteditable="false">
+                <span class="" id="title-input" contenteditable="false">
                 </span>
             </div>
             <div class="col dim_label" style="flex-grow:1;">
-                <span class="dim_val">Contact:</span>
+                <span class="dim_val">Contact:</span> 
                 <span id="contact-input" class="" contenteditable="false">
                 Sample Email
                 </span>
             </div>
-            <div class="col dim_label" style="flex-grow:0.5;">
-                <span onmouseup="toggleEdit(false)" class="">Edit</span> &nbsp; &nbsp;
-                <span onmouseup="toggleEdit(true)" class="">New</span>
+            <div class="col dim_label" onmouseup="toggleEdit();" style="flex-grow:0.5;">
+                <span class="">Edit</span> &nbsp; &nbsp;
+                <span class="">New</span> 
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
@@ -536,11 +235,11 @@
             <div class="row">
                 <div class="col-md-7 toolbar-items">
                     <div style="width:25%;">Description</div>
-                    <div style="font-weight: 100;font-weight: 100;margin-left: 70px;min-width: 200px;" contentEditable="false" id="description-input">This dataset was created in 2012 to track the smoking habits of young adults over time</div>
+                    <div style="font-weight: 100" contentEditable="false" id="description-input">This dataset was created in 2012 to track the smoking habits of young adults over time</div>
                 </div>
                 <div class="col-md-4 toolbar-items">
                     <div>Keywords</div>
-                    <div contentEditable="false" style="font-weight: 100;font-weight: 100;min-width: 100px;margin-left: 50px;" id="keywords-input">smoking, youngadults, 2012</div>
+                    <div contentEditable="false" style="font-weight: 100" id="keywords-input">smoking, youngadults, 2012</div>
                 </div>
 
             </div>
@@ -567,52 +266,52 @@
         </div>
         <div class="row collapse" id="toolbar-top">
             <div class="col">
-                <span id="" class="toolbar-items">
+                <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
                     <div style="float:right;">
-                        <div id="straat" class="geolevel item_geo">
+                        <div id="straat" class="item_geo">
                             <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
                             Straat<br>
                         </div>
-                        <div id="buurt" class="geolevel item_geo">
+                        <div id="buurt" class="item_geo">
                             <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
                             Buurt<br>
                         </div>
-                        <div id="wijk" class="geolevel item_geo">
+                        <div id="wijk" class="item_geo">
                             <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
                             Wijk<br>
                         </div>
                     </div>
                 </span>
-                <span id="" class="toolbar-items">
+                <span id="" class="geolevel toolbar-items">
                     <div style="float:left;">
                         <img src="assets/img/icon/geo_2.png" class="icon" style="width:70px;height:70px;margin-right:-10px;margin-top:-10px">
                     </div>
                     <div style="float:right;">
-                        <div id="gebied" class="geolevel item_geo">
+                        <div id="gebied" class="item_geo">
                             Gebied<br>
                         </div>
-                        <div id="stadsdeel" class="geolevel item_geo">
+                        <div id="stadsdeel" class="item_geo">
                             Stadsdeel<br>
                         </div>
-                        <div id="stad" class="geolevel item_geo">
+                        <div id="stad" class="item_geo">
                             Stad
                         </div>
                     </div>
                 </span>
-                <span id="" class="toolbar-items">
+                <span id="" class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
                     <div style="float:right;">
-                        <div id="amstelland" class="geolevel item_geo">
+                        <div id="amstelland" class="item_geo">
                             Amstelland<br>
                         </div>
-                        <div id="metroadam" class="geolevel item_geo">
+                        <div id="metroadam" class="item_geo">
                             Metro. A'dam<br>
                         </div>
-                        <div id="g4" class="geolevel item_geo">
+                        <div id="g4" class="item_geo">
                             G4<br>
                         </div>
-                        <div id="national" class="geolevel item_geo">
+                        <div id="national" class="item_geo">
                             National
                         </div>
                     </div>  
@@ -620,28 +319,28 @@
             </div>
             <div class="col" id="population" style="flex-grow:1.5;margin-left:20px">
                 <div class="toolbar-items">
-                    <div style="float:left;" id="populationYouth" class="populationOption item_population">
+                    <div style="float:left;" id="populationYouth" class="item_population">
                         <img src="assets/img/youth.svg" class="icon">
                         <br>Youth
                     </div>
-                    <div style="float:right;" id="populationYoung-Adult" class="populationOption item_population">
+                    <div style="float:right;" id="populationYoung-Adult" class="item_population">
                         <img src="assets/img/young_adult.svg" class="icon">
                         <br>Young Adult
                     </div>
                 </div>
                 <div class="toolbar-items">
-                    <div style="float:left;" id="populationAdult" class="populationOption item_population">
+                    <div style="float:left;" id="populationAdult" class="item_population">
                         <img src="assets/img/adult.svg" class="icon">
                         <br>Adult
                     </div>
-                    <div style="float:right;" id="populationElderly" class="populationOption item_population">
+                    <div style="float:right;" id="populationElderly" class="item_population">
                         <img src="assets/img/old_person.svg" class="icon">
                         <br>Elderly
                     </div>
                 </div>
             </div>
             <div class="col">
-                <div class="toolbar-items" style="display:block;margin-right:-50px;margin-top:-30px;">
+                <div class="toolbar-items" style="display:block;margin-right:-50px;margin-top:-30px;" >
                     <svg style="transform:scale(0.6);margin-left:-90px;" height="300px" width="390px">
                        <g id="Layer_2" data-name="Layer 2">
                           <g id="Overview_rollover" data-name="Overview rollover">
@@ -650,21 +349,21 @@
                              <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" />
                              <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" />
                              <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" />
-                             <text id="questionnaire" class="typeOption" transform="translate(100 25.95)">
-                                <tspan >Questionnaire</tspan>
+                             <text transform="translate(100 25.95)">
+                                <tspan>Questionnaire</tspan>
                              </text>
-                             <text class="typeOption" id="social media" transform="translate(286.87 84.56)">
-                                <tspan >Social</tspan>
-                                <tspan  x="0" y="30">Media</tspan>
+                             <text transform="translate(286.87 84.56)">
+                                <tspan>Social</tspan>
+                                <tspan x="0" y="30">Media</tspan>
                              </text>
-                             <text class="typeOption" id="health" transform="translate(258.9 183.13)">
-                                <tspan >Health</tspan>
+                             <text transform="translate(258.9 183.13)">
+                                <tspan>Health</tspan>
                                 <tspan x="0" y="30">Promotion</tspan>
                              </text>
-                             <text class="typeOption" id="registry" transform="translate(44.52 212.13)">
+                             <text transform="translate(44.52 212.13)">
                                 <tspan>Registry</tspan>
                              </text>
-                             <text class="typeOption" id="monitor" transform="translate(0 102.58)">
+                             <text transform="translate(0 102.58)">
                                 <tspan>Monitor</tspan>
                              </text>
                           </g>
@@ -675,25 +374,25 @@
             <div class="col" style="flex-grow:0.5;">
                 <div class="toolbar-items level">
                     <div style="float:left;">
-                        <div class="levelOption item_level">
+                        <div class="item_level">
                             <img src="assets/img/icon/level_1_individual.png" class="icon">
                             <br>Individual
                         </div>
-                        <div class="levelOption item_level">
+                        <div class="item_level">
                             <img src="assets/img/icon/level_2_family.png" class="icon">
                             <br>Family
                         </div>
-                        <div class="levelOption item_level">
+                        <div class="item_level">
                             <img src="assets/img/icon/level_3_group.png" class="icon">
                             <br>Group
                         </div>
                     </div>
                     <div style="float:right;margin-left:10px">
-                        <div class="levelOption item_level">
+                        <div class="item_level">
                             <img src="assets/img/icon/level_4_orga.png" class="icon">
                             <br>Organization
                         </div>
-                        <div class="levelOption item_level">
+                        <div class="item_level">
                             <img src="assets/img/icon/level_5_geo.png" class="icon">
                             <br>Geography
                         </div>
@@ -721,7 +420,7 @@
         <div class="row collapse" id="toolbar-bottom">
             <div class="col">
                 <div id="caseGraph" style="display: block" class="toolbar-items">
-                    <svg width="80%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97" xml:space="preserve">
+                    <svg width="80%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97"xml:space="preserve">
                <style type="text/css">
                    .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;cursor: pointer;}
                    .st1{font-family:'OpenSans';cursor: pointer;}
@@ -733,19 +432,19 @@
                </g>
                <g class="size" data-size="2000" id="size_2000">
                    <circle class="st0" cx="138.54" cy="158.6" r="100" />
-                   <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2" onclick="//showSize(2000);">2000</text>
+                   <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2">2000</text>
                </g>
                <g class="size" data-size="1000" id="size_1000">
                    <circle class="st0" cx="138.54" cy="183.6" r="75" />
-                   <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2" onclick="//showSize(1000);">1000</text>
+                   <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2">1000</text>
                </g>
                <g class="size" data-size="500" id="size_500">
                    <circle class="st0" cx="138.54" cy="208.6" r="50" />
-                   <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2" onclick="//showSize(500);">500</text>
+                   <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2">500</text>
                </g>
                <g class="size" data-size="100" id="size_100">
                    <circle class="st0" cx="138.54" cy="226.83" r="30" />
-                   <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2" onclick="//showSize(100);">100</text>
+                   <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2">100</text>
                </g>
                </svg>
                 </div>
@@ -765,116 +464,25 @@
                 </div>
             </div>
             <div class="col">
-                <div id="activeDept" style="display: none">
-
-                </div>
                 <div class="toolbar-items ownership">
                     <div style="float:left;">
-                        <div class="ownership_icon" id="departmentEGZ"><span style="background-color: purple;" class="circle"></span> EGZ</div>
-                        <div class="ownership_icon" id="departmentIZ"><span style="background-color: blue;" class="circle"></span> IZ</div>
-                        <div class="ownership_icon" id="departmentJGZ"><span style="background-color: green;" class="circle"></span> JGZ</div>
-                        <div class="ownership_icon" id="departmentVT"><span style="background-color: brown;" class="circle"></span> VT</div>
-                        <div class="ownership_icon" id="departmentMGZ"><span style="background-color: #ffc107;" class="circle"></span> MGZ</div>
+                        <div id="departmentEGZ"><span style="background-color: purple;" class="circle"></span> EGZ</div>
+                        <div id="departmentIZ"><span style="background-color: blue;" class="circle"></span> IZ</div>
+                        <div id="departmentJGZ"><span style="background-color: green;" class="circle"></span> JGZ</div>
+                        <div id="departmentVT"><span style="background-color: brown;" class="circle"></span> VT</div>
+                        <div id="departmentMGZ"><span style="background-color: #ffc107;" class="circle"></span> MGZ</div>
                     </div>
                     <div style="float:right;">
-                        <div class="ownership_icon"><span style="background-color: red;" class="circle"></span> FGMA</div>
-                        <div class="ownership_icon"><span style="background-color: violet;" class="circle"></span> GHOR</div>
-                        <div class="ownership_icon"><span style="background-color: gray;" class="circle"></span> LO</div>
-                        <div class="ownership_icon"><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
+                        <div id="departmentFGMA"><span style="background-color: red;" class="circle"></span> FGMA</div>
+                        <div id="departmentGHOR"><span style="background-color: violet;" class="circle"></span> GHOR</div>
+                        <div id="departmentLO"><span style="background-color: gray;" class="circle"></span> LO</div>
+                        <div id="departmentAAGG"><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="toolbar-items">
-                    <svg style="width:100%" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 432.43 351.27" style="enable-background:new 0 0 432.43 351.27;" xml:space="preserve">
-               <style type="text/css">
-                   .st0{fill:none;}
-                   .st1{fill:none;stroke:#231F20;stroke-width:5;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                   .st2{fill:none;stroke:#231F20;stroke-width:4.694;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                   .st3{fill:none;stroke:#231F20;stroke-width:4.388;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                   .st4{fill:none;stroke:#231F20;stroke-width:4.083;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                   .st5{fill:none;stroke:#231F20;stroke-width:3.777;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                   .st6{fill:none;stroke:#231F20;stroke-width:3.472;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                   .st7{fill:none;stroke:#231F20;stroke-width:3.166;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                   .st8{fill:none;stroke:#231F20;stroke-width:2.861;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                   .st9{fill:none;stroke:#231F20;stroke-width:2.555;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                   .st10{fill:none;stroke:#231F20;stroke-width:2.25;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                   .st11{display:none;}
-                   .st12{display:inline;fill:none;stroke:#000000;stroke-width:24;stroke-miterlimit:10;}
-                   .st13{display:inline;fill:none;stroke:#FFFFFF;stroke-width:6;stroke-miterlimit:10;}
-                   .st14{display:inline;fill:none;stroke:#FFFFFF;stroke-width:11;stroke-miterlimit:10;}
-                   .st15{fill:url(#Undulating_Coarse_Dots);}
-                   .st16{fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
-                   .st17{font-family:'OpenSans';}
-                   .st18{font-size:22px;}
-               </style>
-               <pattern  x="-647.91" y="-473.44" width="83" height="65" patternUnits="userSpaceOnUse" id="Undulating_Coarse_Dots" viewBox="2.5 -133 83 65" style="overflow:visible;">
-                   <g>
-                       <g>
-                           <line class="st1" x1="2.5" y1="-133" x2="2.5" y2="-67.5"/>
-                           <line class="st2" x1="7.11" y1="-136.25" x2="7.11" y2="-67.5"/>
-                           <line class="st3" x1="11.72" y1="-133" x2="11.72" y2="-67.5"/>
-                           <line class="st4" x1="16.33" y1="-136.25" x2="16.33" y2="-67.5"/>
-                           <line class="st5" x1="20.94" y1="-133" x2="20.94" y2="-67.5"/>
-                           <line class="st6" x1="25.56" y1="-136.25" x2="25.56" y2="-67.5"/>
-                           <line class="st7" x1="30.17" y1="-133" x2="30.17" y2="-67.5"/>
-                           <line class="st8" x1="34.78" y1="-136.25" x2="34.78" y2="-67.5"/>
-                           <line class="st9" x1="39.39" y1="-133" x2="39.39" y2="-67.5"/>
-                           <line class="st10" x1="44" y1="-136.25" x2="44" y2="-67.5"/>
-                           <line class="st1" x1="85.5" y1="-133" x2="85.5" y2="-67.5"/>
-                           <line class="st2" x1="80.89" y1="-136.25" x2="80.89" y2="-67.5"/>
-                           <line class="st3" x1="76.28" y1="-133" x2="76.28" y2="-67.5"/>
-                           <line class="st4" x1="71.67" y1="-136.25" x2="71.67" y2="-67.5"/>
-                           <line class="st5" x1="67.06" y1="-133" x2="67.06" y2="-67.5"/>
-                           <line class="st6" x1="62.44" y1="-136.25" x2="62.44" y2="-67.5"/>
-                           <line class="st7" x1="57.83" y1="-133" x2="57.83" y2="-67.5"/>
-                           <line class="st8" x1="53.22" y1="-136.25" x2="53.22" y2="-67.5"/>
-                           <line class="st9" x1="48.61" y1="-133" x2="48.61" y2="-67.5"/>
-                       </g>
-                   </g>
-               </pattern>
-               <g id="Layer_2">
-                   <path class="year_1" d="M251.97,68.36l8.21-22.57c-12.84-4.34-26.53-6.82-40.75-7.13v24C230.77,62.97,241.7,64.95,251.97,68.36z"/>
-                   <path class="year_2"  d="M286.28,86.86l15.42-18.38c-10.76-8.58-22.84-15.58-35.88-20.64l-8.21,22.55C268.01,74.48,277.65,80.06,286.28,86.86z"/>
-                   <path class="year_3"  d="M312.34,115.94l20.79-12c-7.31-11.85-16.36-22.51-26.81-31.61L290.89,90.7C299.21,98.01,306.45,106.51,312.34,115.94z"/>
-                   <path class="year_4"  d="M326.99,152.23l23.66-4.17c-2.84-13.86-7.79-26.95-14.48-38.95l-20.78,12C320.7,130.72,324.66,141.18,326.99,152.23z"/>
-                   <path class="year_5"  d="M329.44,175.63c0,5.37-0.39,10.65-1.11,15.82l23.65,4.17c0.96-6.53,1.46-13.2,1.46-19.99c0-7.37-0.59-14.61-1.72-21.67
-                       l-23.64,4.17C328.97,163.84,329.44,169.68,329.44,175.63z"/>
-                   <path class="year_6"  d="M316.1,228.84l20.79,12.01c6.59-12.12,11.39-25.35,14.08-39.31l-23.64-4.17C325.15,208.53,321.31,219.11,316.1,228.84z"/>
-                   <path class="year_7"  d="M291.72,259.82l15.42,18.38c10.47-9.27,19.52-20.11,26.76-32.15l-20.78-12C307.29,243.68,300.06,252.36,291.72,259.82z"/>
-                   <path class="year_8"  d="M258.16,280.64l8.21,22.56c13.18-5.18,25.36-12.34,36.19-21.12l-15.42-18.38C278.45,270.7,268.69,276.44,258.16,280.64z"/>
-                   <path class="year_9"  d="M219.44,288.59v24c14.42-0.31,28.3-2.86,41.31-7.32l-8.21-22.56C242.1,286.25,230.98,288.29,219.44,288.59z"/>
-                   <path class="year_10"  d="M180.34,282.72l-8.21,22.56c13,4.46,26.88,7.01,41.31,7.32v-24C201.89,288.29,190.78,286.25,180.34,282.72z"/>
-                   <path class="year_11"  d="M145.73,263.7l-15.42,18.38c10.83,8.78,23.01,15.95,36.19,21.12l8.21-22.56C164.18,276.45,154.43,270.7,145.73,263.7z"/>
-                   <path class="year_12"  d="M119.75,234.06l-20.78,12c7.25,12.04,16.29,22.88,26.76,32.15l15.42-18.38C132.81,252.36,125.58,243.68,119.75,234.06z"/>
-                   <path class="year_13"  d="M105.54,197.37l-23.64,4.17c2.68,13.97,7.49,27.19,14.08,39.31l20.79-12.01C111.56,219.11,107.73,208.53,105.54,197.37z"/>
-                   <path class="year_14"  d="M103.44,175.63c0-5.95,0.47-11.8,1.36-17.5l-23.64-4.17c-1.13,7.06-1.72,14.3-1.72,21.67c0,6.79,0.5,13.46,1.46,19.99
-                       l23.65-4.17C103.82,186.28,103.44,181,103.44,175.63z"/>
-                   <path class="year_15"  d="M117.49,121.11l-20.78-12c-6.69,12-11.64,25.09-14.48,38.95l23.66,4.17C108.22,141.18,112.17,130.72,117.49,121.11z"/>
-                   <path class="year_16"  d="M141.98,90.7l-15.42-18.38c-10.45,9.1-19.51,19.76-26.81,31.61l20.79,12C126.42,106.51,133.66,98.01,141.98,90.7z"/>
-                   <path class="year_17"  d="M175.26,70.4l-8.21-22.55c-13.04,5.06-25.12,12.05-35.88,20.64l15.42,18.38C155.22,80.06,164.87,74.48,175.26,70.4z"/>
-                   <path class="st15 year_18" d="M213.44,62.67v-24c-14.22,0.31-27.91,2.79-40.75,7.13l8.21,22.57C191.18,64.95,202.1,62.97,213.44,62.67z"/>
-                   <path class="st16" d="M172.69,45.79l8.21,22.57"/>
-                   <text class="timeOption" transform="matrix(1 0 0 1 226.8767 34.4286)" class="st17 st18 year_1" id='year_1'>2020</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 288.203 55.0738)" class="st17 st18 year_2" id='year_2'>2019</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 324.1019 86.1158)" class="st17 st18 year_3" id='year_3'>2018</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 350.9763 129.6168)" class="st17 st18 year_4" id='year_4'>2017</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 360.2678 181.1421)" class="st17 st18 year_5" id='year_5'>2016</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 351.2869 232.2453)" class="st17 st18 year_6" id='year_6'>2015</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 329.8593 277.4357)" class="st17 st18 year_7" id='year_7'>2014</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 291.1594 312.4897)" class="st17 st18 year_8" id='year_8'>2013</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 225.2744 333.184)" class="st17 st18 year_9" id='year_9'>2012</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 158.9091 333.1849)" class="st17 st18 year_10" id='year_10'>2011</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 94.0241 312.4899)" class="st17 st18 year_11" id='year_11'>2010</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 55.0136 277.4355)" class="st17 st18 year_12" id='year_12'>2009</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 31.3626 232.2451)" class="st17 st18 year_13" id='year_13'>2008</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 22.0711 181.1423)" class="st17 st18 year_14" id='year_14'>2007</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 33.0519 129.6168)" class="st17 st18 year_15" id='year_15'>2006</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 59.3923 86.1158)" class="st17 st18 year_16" id='year_16'>2005</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 97.2475 55.0739)" class="st17 st18 year_17" id='year_17'>2004</text>
-                   <text class="timeOption" transform="matrix(1 0 0 1 146.6807 34.4285)" class="st17 st18 year_18">earlier</text>
-               </g>
-               </svg>
+                    <img src="assets/img/time_widget.svg" width="100%">
                 </div>
             </div>
         </div>
@@ -896,6 +504,7 @@
     <script type="text/coffeescript" src="assets/coffee/vis.coffee"></script>
 
     <script type="text/javascript">
+        //Number of Cases
         $(".size").each(function() {
             $(this).mouseover(function() {
                 $(this).find(".st0").css("fill", "beige");
@@ -907,60 +516,20 @@
                 showSize($(this).attr("data-size"));
             });
         });
-        /* var margin = 0;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var padding = 0;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var radius = 100;
+        
+        //Ownership/Department
+        $("div.ownership div div").each(function() {
+            $(this).click(function() {
+                filterByTag("department", $(this).text().trim());  
+            });
+        });
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var color = d3.scale.ordinal()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var arc = d3.svg.arc()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .outerRadius(function (d) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return (d.data.size) / 4;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .innerRadius(function (d) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return (d.data.size) / 4 - 10;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                });
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var arc_donut = d3.svg.arc()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .outerRadius(100)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .innerRadius(100);
-
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var pie = d3.pie()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .sort(null)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .value(function (d) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return d.time_band;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                });
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            d3.csv("data/dummy.csv", function (error, data) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (error) throw error;
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                color.domain(d3.keys(data[0]).filter(function (key) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    return key !== "name";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }));
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                data.forEach(function (d) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    d.time = color.domain().map(function (name) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var band = d[name];
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var test = {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            name: d.name,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y1970: d.Y1970,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y1980: d.Y1980,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y1990: d.Y1990,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y2000: d.Y2000,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y2010: d.Y2010,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Y2020: d.Y2020
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        };
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var res = {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            name: name,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            time_band: test[name],
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            size: d.size
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        };
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        //console.log(res);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        return res;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    });
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })}); */
+        //Population
+        $("#population div div").each(function() {
+            $(this).click(function() {
+                filterByTag("population", $(this).text().trim(), true);  
+            });
+        });
     </script>
 </body>
 
