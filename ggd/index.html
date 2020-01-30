@@ -257,8 +257,19 @@
             }
         }
 
-        // Toggle edit mode by making input fields Editable and showing relevant fields
-        function toggleEdit() {
+        // Toggle edit mode by making input fields Editable and showing relevant fields. New Entry is a flag to determine if EditMode is there to update an exising record or to create a new one.
+        function toggleEdit(newEntry) {
+
+
+            if (newEntry) {
+                document.getElementById("description-input").textContent = 'Enter description of Dataset here';
+                document.getElementById("title-input").textContent = 'Add title';
+                document.getElementById("contact-input").textContent = 'Add contact Email';
+                document.getElementById("keywords-input").textContent = 'add keywords, seperated by semicolons';
+                document.getElementById("cases").textContent = '';
+            }
+
+
             if (!editMode) {
                 document.getElementById("edit-top-bar").style.display = "block";
                 document.getElementById("title-input").contentEditable = true;
@@ -476,7 +487,7 @@
                 EDIT MODE: You are editing the details of this dataset.
             </div>
             <div class="col">
-                <img class="eyecon" onmouseup="toggleEdit()" style="height: 55%; padding-left:12%" id="cancel" src="assets/img/cancel.svg"> Cancel
+                <img class="eyecon" onmouseup="toggleEdit(false)" style="height: 55%; padding-left:12%" id="cancel" src="assets/img/cancel.svg"> Cancel
             </div>
             <div class="col">
                 <img class="eyecon" style="height: 55%; padding-left:12%" id="save" src="assets/img/save.svg"> Save
@@ -504,7 +515,7 @@
         <div class="row toolbar-header">
             <div class="col dim_label" style="flex-grow:2;">
                 <span class="dim_val">Title:</span>
-                <span class="" id="title-input" contenteditable="false">
+                <span class="" style="" id="title-input" contenteditable="false">
                 </span>
             </div>
             <div class="col dim_label" style="flex-grow:1;">
@@ -513,9 +524,9 @@
                 Sample Email
                 </span>
             </div>
-            <div class="col dim_label" onmouseup="toggleEdit();" style="flex-grow:0.5;">
-                <span class="">Edit</span> &nbsp; &nbsp;
-                <span class="">New</span>
+            <div class="col dim_label" style="flex-grow:0.5;">
+                <span onmouseup="toggleEdit(false)" class="">Edit</span> &nbsp; &nbsp;
+                <span onmouseup="toggleEdit(true)" class="">New</span>
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
@@ -525,11 +536,11 @@
             <div class="row">
                 <div class="col-md-7 toolbar-items">
                     <div style="width:25%;">Description</div>
-                    <div style="font-weight: 100" contentEditable="false" id="description-input">This dataset was created in 2012 to track the smoking habits of young adults over time</div>
+                    <div style="font-weight: 100;font-weight: 100;margin-left: 70px;min-width: 200px;" contentEditable="false" id="description-input">This dataset was created in 2012 to track the smoking habits of young adults over time</div>
                 </div>
                 <div class="col-md-4 toolbar-items">
                     <div>Keywords</div>
-                    <div contentEditable="false" style="font-weight: 100" id="keywords-input">smoking, youngadults, 2012</div>
+                    <div contentEditable="false" style="font-weight: 100;font-weight: 100;min-width: 100px;margin-left: 50px;" id="keywords-input">smoking, youngadults, 2012</div>
                 </div>
 
             </div>
