@@ -3,16 +3,19 @@ root = exports ? this
 
 #Years for outline
 years = {}
-for x in [1970..2020] by 10
+for x in [0..17] by 1
     years[x] = "#FFFFFF"
 #console.log years
 
 getBorderColors = (year) ->
   arcFill = years
+  current_year = (new Date).getFullYear()
   for y in year.split(";")
-    arcFill[Math.trunc(y/10)*10] = "#000000"
-  #console.log arcFill
+    index = current_year - parseInt(y, 10)
+    index = Math.min index, 17
+    arcFill[index] = "#000000"
   return (val for key, val of arcFill)
+#console.log index
 
 Bubbles = () ->
   # standard variables accessible to
@@ -262,23 +265,20 @@ Bubbles = () ->
     # the styling comes from the css
     node.enter()
       .append("a")
-      .attr("class", "bubble-node")
-      .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
-      .attr("data-id", (d) -> d.ID)
-      .attr("id", (d) -> "node_" + d.ID.toString())
-      .style("fill", (d) -> colors[d.department])
-      .attr("fill", (d) -> colors[d.department])
-      .attr("size", (d) -> d.size)
-      .attr("department", (d) -> d.department)
-      .attr("keywords", (d) -> d.keywords)
-      .call(force.drag)
-      .call(connectEvents)
-      #.append("circle")
-      #.attr("r", (d) -> rScale(rValue(d)))
-
+        .attr("class", "bubble-node")
+        .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
+        .attr("data-id", (d) -> d.ID)
+        .attr("id", (d) -> "node_" + d.ID.toString())
+        .style("fill", (d) -> colors[d.department])
+        .attr("fill", (d) -> colors[d.department])
+        .attr("size", (d) -> d.size)
+        .attr("department", (d) -> d.department)
+        .attr("keywords", (d) -> d.keywords)
+        .call(force.drag)
+        .call(connectEvents)
     # drawing the Pie chart ( timeline)
-
-    node.append("g")
+    #node
+      .append("g")
         .attr("class", "pie")
         .attr('data_col', (d) -> getBorderColors(d.years))
         .attr("width",  (d) -> rScale(rValue(d)) * 2 )
