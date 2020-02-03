@@ -243,6 +243,7 @@ footer p {
     text-align: left;
     margin-left: 20px;
     font-weight: bold;
+    overflow: hidden;
 }
 .dim_val{
 	color: #000;
@@ -271,4 +272,13 @@ footer p {
 tspan{
 	font-size:25px;
 	font-family: OpenSans;
+}
+#timedimsvg{
+    transform: scale(0.7);
+    height: 340px;
+    transform-origin: top;
+    width: 420px;
+    margin-right: -50px;
+    margin-left: -100px;
+    margin-bottom: -100px;
 }
