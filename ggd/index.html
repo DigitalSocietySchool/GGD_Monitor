@@ -88,18 +88,18 @@
         function toggleEye(view, showhide = false) {
             if (!showhide) {
                 if ($('#eye' + view).attr('collapsed') == 'false') {
-                    $('#eye' + view).attr('src', 'assets/img/eye.svg');
+                    $('#eye' + view).attr('src', 'assets/img/icon/eye_hide.png');
                     $('#eye' + view).attr('collapsed', 'true');
                 } else {
-                    $('#eye' + view).attr('src', 'assets/img/eye_open.svg');
+                    $('#eye' + view).attr('src', 'assets/img/icon/eye_show.png');
                     $('#eye' + view).attr('collapsed', 'false');
                 }
             } else {
                 if (showhide == 'show' && $('#eye' + view).attr('collapsed') == 'true') {
-                    $('#eye' + view).attr('src', 'assets/img/eye_open.svg');
+                    $('#eye' + view).attr('src', 'assets/img/icon/eye_show.png');
                     $('#eye' + view).attr('collapsed', 'false');
                 } else if (showhide == 'hide' && $('#eye' + view).attr('collapsed') == 'false') {
-                    $('#eye' + view).attr('src', 'assets/img/eye.svg');
+                    $('#eye' + view).attr('src', 'assets/img/icon/eye_hide.png');
                     $('#eye' + view).attr('collapsed', 'true');
                 }
             }
