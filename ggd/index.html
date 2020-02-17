@@ -215,9 +215,8 @@
                 <div style="display: flex; justify-content: center;">
                     <input class="searchInput" name="targetNode" type="text" />
                     <button class="button">Search</button>
-                    <button class="reset">reset</button>
+                    <button class="reset">Reset</button>
                     <div id="status"></div>
-                    <svg><text id="test">Hello</text></svg>
                 </div>
                 <div id="vis"></div>
             </div>
@@ -246,14 +245,14 @@
             </div>
         </div>
         <div class="row collapse" id="toolbar-meta">
-            <div class="row">
+            <div class="row" style="padding-left:25px;">
                 <div class="col-md-7 toolbar-items">
-                    <div style="width:25%;">Description</div>
+                    <div>Description:&nbsp;&nbsp;&nbsp;</div>
                     <div style="font-weight: 100" contentEditable="false" id="description-input">This dataset was created in 2012 to track the smoking habits of young adults over time</div>
                 </div>
                 <div class="col-md-4 toolbar-items">
-                    <div>Keywords</div>
-                    <div contentEditable="false" style="font-weight: 100" id="keywords-input">smoking, youngadults, 2012</div>
+                    <div>Keywords:&nbsp;&nbsp;</div>
+                    <div contentEditable="false" style="font-weight: 100" id="keywords-input">Smoking, youngadults, 2012</div>
                 </div>
 
             </div>
@@ -279,134 +278,131 @@
             </div>
         </div>
         <div class="row collapse" id="toolbar-top">
-            <div class="col">
-                <span id="" class="geolevel toolbar-items">
-                    <div style="float:left;"><img src="assets/img/icon/geo_1.png" class="icon"></div>
+            <div class="col" id="geo_btn">
+                <span class="geolevel toolbar-items">
+                    <div style="float:left;">
+                        <img src="assets/img/icon/geo_1.png" class="icon">
+                    </div>
                     <div style="float:right;">
-                        <div id="straat" class="item_geo">
-                            <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
-                            Straat<br>
+                        <div id="geo_1" class="item_geo" value="straat">
+                            Straat
                         </div>
-                        <div id="buurt" class="item_geo">
-                            <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
-                            Buurt<br>
+                        <div id="geo_2" class="item_geo" value="buurt">
+                            Buurt
                         </div>
-                        <div id="wijk" class="item_geo">
-                            <input type="checkbox" class="geolevelInput hidden radio" value="1" name="fooby[1][]" />
-                            Wijk<br>
+                        <div id="geo_3" class="item_geo" value="wijk">
+                            Wijk
                         </div>
                     </div>
                 </span>
-                <span id="" class="geolevel toolbar-items">
+                <span class="geolevel toolbar-items">
                     <div style="float:left;">
                         <img src="assets/img/icon/geo_2.png" class="icon" style="width:70px;height:70px;margin-right:-10px;margin-top:-10px">
                     </div>
                     <div style="float:right;">
-                        <div id="gebied" class="item_geo">
-                            Gebied<br>
+                        <div id="geo_4" class="item_geo" value="gebied">
+                            Gebied
                         </div>
-                        <div id="stadsdeel" class="item_geo">
-                            Stadsdeel<br>
+                        <div id="geo_5" class="item_geo" value="stadsdeel">
+                            Stadsdeel
                         </div>
-                        <div id="stad" class="item_geo">
+                        <div id="geo_6" class="item_geo" value="stad">
                             Stad
                         </div>
                     </div>
                 </span>
-                <span id="" class="geolevel toolbar-items">
+                <span class="geolevel toolbar-items">
                     <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
                     <div style="float:right;">
-                        <div id="amstelland" class="item_geo">
-                            Amstelland<br>
+                        <div id="geo_7" class="item_geo" value="amstelland">
+                            Amstelland
                         </div>
-                        <div id="metroadam" class="item_geo">
-                            Metro. A'dam<br>
+                        <div id="geo_8" class="item_geo" value="adam">
+                            Metro. A'dam
                         </div>
-                        <div id="g4" class="item_geo">
-                            G4<br>
+                        <div id="geo_9" class="item_geo" value="g4">
+                            G4
                         </div>
-                        <div id="national" class="item_geo">
+                        <div id="geo_10" class="item_geo" value="national">
                             National
                         </div>
                     </div>  
                 </span>
             </div>
-            <div class="col" id="population" style="flex-grow:1.5;margin-left:20px">
+            <div class="col" id="pop_btn" style="flex-grow:1.5;margin-left:20px">
                 <div class="toolbar-items">
-                    <div style="float:left;" id="populationYouth" class="item_population">
+                    <div style="float:left;" id="pop_1" class="item_population" value="youth">
                         <img src="assets/img/youth.svg" class="icon">
                         <br>Youth
                     </div>
-                    <div style="float:right;" id="populationYoung-Adult" class="item_population">
+                    <div style="float:right;" id="pop_2" class="item_population" value="young">
                         <img src="assets/img/young_adult.svg" class="icon">
                         <br>Young Adult
                     </div>
                 </div>
                 <div class="toolbar-items">
-                    <div style="float:left;" id="populationAdult" class="item_population">
+                    <div style="float:left;" id="pop_3" class="item_population" value="adult">
                         <img src="assets/img/adult.svg" class="icon">
                         <br>Adult
                     </div>
-                    <div style="float:right;" id="populationElderly" class="item_population">
+                    <div style="float:right;" id="pop_4" class="item_population" value="elderly">
                         <img src="assets/img/old_person.svg" class="icon">
                         <br>Elderly
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="toolbar-items" style="display:block;margin-right:-50px;margin-top:-30px;" >
+            <div class="col" id="type_btn">
+                <div class="toolbar-items" style="display:block;margin-right:-50px;margin-top:-30px;">
                     <svg style="transform:scale(0.6);margin-left:-90px;" height="300px" width="390px">
-                       <g id="Layer_2" data-name="Layer 2">
-                          <g id="Overview_rollover" data-name="Overview rollover">
-                             <ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07" />
-                             <ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)" />
-                             <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" />
-                             <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" />
-                             <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" />
-                             <text transform="translate(100 25.95)">
-                                <tspan>Questionnaire</tspan>
-                             </text>
-                             <text transform="translate(286.87 84.56)">
-                                <tspan>Social</tspan>
-                                <tspan x="0" y="30">Media</tspan>
-                             </text>
-                             <text transform="translate(258.9 183.13)">
-                                <tspan>Health</tspan>
-                                <tspan x="0" y="30">Promotion</tspan>
-                             </text>
-                             <text transform="translate(44.52 212.13)">
-                                <tspan>Registry</tspan>
-                             </text>
-                             <text transform="translate(0 102.58)">
-                                <tspan>Monitor</tspan>
-                             </text>
-                          </g>
+                       <g>
+                         <ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07" />
+                         <ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)" />
+                         <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" />
+                         <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" />
+                         <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" />
+                         <text transform="translate(100 25.95)" id="type_1" value="questionnaire">
+                            <tspan>Questionnaire</tspan>
+                         </text>
+                         <text transform="translate(286.87 84.56)" id="type_2" value="socialmedia">
+                            <tspan>Social</tspan>
+                            <tspan x="0" y="30">Media</tspan>
+                         </text>
+                         <text transform="translate(258.9 183.13)" id="type_3" value="promotion">
+                            <tspan>Health</tspan>
+                            <tspan x="0" y="30">Promotion</tspan>
+                         </text>
+                         <text transform="translate(44.52 212.13)" id="type_4" value="registry">
+                            <tspan>Registry</tspan>
+                         </text>
+                         <text transform="translate(0 102.58)" id="type_5" value="monitor">
+                            <tspan>Monitor</tspan>
+                         </text>
                        </g>
                     </svg>
                 </div>
             </div>
-            <div class="col" style="flex-grow:0.5;">
+            <div class="col" id="level_btn" style="flex-grow:0.5;">
                 <div class="toolbar-items level">
                     <div style="float:left;">
-                        <div class="item_level">
-                            <img src="assets/img/icon/level_1_individual.png" class="icon">
+                        <div class="item_level" id="level_1" value="individual">
+                            <img src="assets/img/icon/level_1_individual.png" class="icon" id="type_1" value="questionnaire">
                             <br>Individual
                         </div>
-                        <div class="item_level">
+                        <div class="item_level" id="level_2" value="family">
                             <img src="assets/img/icon/level_2_family.png" class="icon">
                             <br>Family
                         </div>
-                        <div class="item_level">
+                        <div class="item_level" id="level_3" value="group">
                             <img src="assets/img/icon/level_3_group.png" class="icon">
                             <br>Group
                         </div>
                     </div>
                     <div style="float:right;margin-left:10px">
-                        <div class="item_level">
+                        <div class="item_level" id="level_4" value="orga">
                             <img src="assets/img/icon/level_4_orga.png" class="icon">
                             <br>Organization
                         </div>
-                        <div class="item_level">
+                        <div class="item_level" id="level_5" value="geographic">
                             <img src="assets/img/icon/level_5_geo.png" class="icon">
                             <br>Geography
                         </div>
@@ -432,31 +428,31 @@
             </div>
         </div>
         <div class="row collapse" id="toolbar-bottom">
-            <div class="col">
+            <div class="col" id="size_btn">
                 <div id="caseGraph" style="display: block" class="toolbar-items">
                     <svg width="80%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97"xml:space="preserve">
                        <style type="text/css">
-                           .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;cursor: pointer;}
-                           .st1{font-family:'OpenSans';cursor: pointer;}
+                           .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
+                           .st1{font-family:'OpenSans';}
                            .st2{font-size:18px;margin-left:4px;}
                        </style>
-                       <g class="size" data-size="more" id="size-more">
+                       <g class="size" data-size="more" id="size_5" value="more">
                            <circle class="st0" cx="138.54" cy="131.83" r="125"/>
                            <text transform="matrix(1 0 0 1 111.3019 36.1381)" class="st1 st2">More</text>
                        </g>
-                       <g class="size" data-size="2000" id="size_2000">
+                       <g class="size" data-size="2000" id="size_4" value="2000">
                            <circle class="st0" cx="138.54" cy="158.6" r="100" />
                            <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2">2000</text>
                        </g>
-                       <g class="size" data-size="1000" id="size_1000">
+                       <g class="size" data-size="1000" id="size_3" value="1000">
                            <circle class="st0" cx="138.54" cy="183.6" r="75" />
                            <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2">1000</text>
                        </g>
-                       <g class="size" data-size="500" id="size_500">
+                       <g class="size" data-size="500" id="size_2" value="500">
                            <circle class="st0" cx="138.54" cy="208.6" r="50" />
                            <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2">500</text>
                        </g>
-                       <g class="size" data-size="100" id="size_100">
+                       <g class="size" data-size="100" id="size_1" value="100">
                            <circle class="st0" cx="138.54" cy="226.83" r="30" />
                            <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2">100</text>
                        </g>
@@ -477,24 +473,51 @@
                     </span>
                 </div>
             </div>
-            <div class="col" style="flex-grow:1.2;">
+            <div class="col" id="dep_btn" style="flex-grow:1.2;">
                 <div class="toolbar-items ownership">
                     <div style="float:left;">
-                        <div id="departmentEGZ"><span style="background-color: purple;" class="circle"></span> EGZ</div>
-                        <div id="departmentIZ"><span style="background-color: blue;" class="circle"></span> IZ</div>
-                        <div id="departmentJGZ"><span style="background-color: green;" class="circle"></span> JGZ</div>
-                        <div id="departmentVT"><span style="background-color: brown;" class="circle"></span> VT</div>
-                        <div id="departmentMGZ"><span style="background-color: #ffc107;" class="circle"></span> MGZ</div>
+                        <div id="dep_1" value="EGZ">
+                            <span class="dep_circle dep_EGZ"></span> 
+                            EGZ
+                        </div>
+                        <div id="dep_2" value="IZ">
+                            <span class="dep_circle dep_IZ"></span> 
+                            IZ
+                        </div>
+                        <div id="dep_3" value="JGZ">
+                            <span class="dep_circle dep_JGZ"></span> 
+                            JGZ
+                        </div>
+                        <div id="dep_4" value="VT">
+                            <span class="dep_circle dep_VT"></span> 
+                            VT
+                        </div>
+                        <div id="dep_5" value="MGGZ">
+                            <span class="dep_circle dep_MGGZ"></span> 
+                            MGGZ
+                        </div>
                     </div>
                     <div style="float:right; margin-left:-20px">
-                        <div id="departmentFGMA"><span style="background-color: red;" class="circle"></span> FGMA</div>
-                        <div id="departmentGHOR"><span style="background-color: violet;" class="circle"></span> GHOR</div>
-                        <div id="departmentLO"><span style="background-color: gray;" class="circle"></span> LO</div>
-                        <div id="departmentAAGG"><span style="background-color: yellowgreen;" class="circle"></span> AAGG</div>
+                        <div id="dep_6" value="FGMA">
+                            <span class="dep_circle dep_FGMA"></span> 
+                            FGMA
+                        </div>
+                        <div id="dep_7" value="GHOR">
+                            <span class="dep_circle dep_GHOR"></span> 
+                            GHOR
+                        </div>
+                        <div id="dep_8" value="LO">
+                            <span class="dep_circle dep_LO"></span> 
+                            LO
+                        </div>
+                        <div id="dep_9" value="AAGG">
+                            <span class="dep_circle dep_AAGG"></span> 
+                            AAGG
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col" id="time_btn">
                 <div class="toolbar-items">
                     <svg id="timedimsvg">
                         <style type="text/css">
@@ -580,7 +603,7 @@
                             <text transform="matrix(1 0 0 1 33.0519 129.6168)" class="time_font year_15" id='year_15'>2006</text>
                             <text transform="matrix(1 0 0 1 59.3923 86.1158)" class="time_font year_16" id='year_16'>2005</text>
                             <text transform="matrix(1 0 0 1 97.2475 55.0739)" class="time_font year_17" id='year_17'>2004</text>
-                            <text transform="matrix(1 0 0 1 146.6807 34.4285)" class="time_font year_18" id='year_earlier'>earlier</text>
+                            <text transform="matrix(1 0 0 1 146.6807 34.4285)" class="time_font year_18" id='year_18'>earlier</text>
                         </g>
                     </svg>
                 </div>
@@ -626,8 +649,8 @@
 
         //Population
         tagsInCategories["population"] = [];
-        $("#population div div").each(function() {
-            var tag = $(this).text().trim();
+        $("#pop_btn div div").each(function() {
+            var tag = $(this).attr("value");
             tagsInCategories["population"].push(tag);
             $(this).click(function() {
                 filterByTag("population", tag, true);  
@@ -637,6 +660,11 @@
 
         function updateYears(xml_id, year_gap){
             document.getElementById(xml_id).textContent = new Date().getFullYear() - year_gap;
+            //document.getElementById(xml_id).setAttribute("value", new Date().getFullYear() - year_gap);
+            var class_elem = document.getElementsByClassName(xml_id);
+            for (var i = 0; i < class_elem.length; i++) {
+                class_elem[i].setAttribute("value", new Date().getFullYear() - year_gap);
+            }
         }
         updateYears('year_1', 0);
         updateYears('year_2', 1);
@@ -655,6 +683,12 @@
         updateYears('year_15', 14);
         updateYears('year_16', 15);
         updateYears('year_17', 16);
+
+        //document.getElementById("year_18").setAttribute("value", 0);
+        var class_earlier = document.getElementsByClassName("year_18");
+        for (var i = 0; i < class_earlier.length; i++) {
+            class_earlier[i].setAttribute("value", 0);
+        }
 
     </script>
 </body>

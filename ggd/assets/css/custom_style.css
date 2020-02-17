@@ -61,15 +61,6 @@ img.icon {
     padding: 10px;
 }
 
-.circle {
-    height: 25px;
-    width: 25px;
-    border-radius: 50%;
-    display: inline-block;
-    position: relative;
-    top: 6px;
-}
-
 .ownership {
     text-align: left;
 }
@@ -281,4 +272,51 @@ tspan{
     margin-right: -50px;
     margin-left: -100px;
     margin-bottom: -100px;
+}
+
+.dep_circle{
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    top: 6px;
+    margin-right: 5px;
+}
+.dep_EGZ{
+    background-color: #BB9BD1;
+}
+.dep_IZ{
+    background-color: #8FBCD8;
+}
+.dep_JGZ{
+    background-color: #ADC499;
+}
+.dep_VT{
+    background-color: #C69C6D;
+}
+.dep_MGGZ{
+    background-color: #f384a3;
+}
+.dep_FGMA{
+    background-color: #EA948B;
+}
+.dep_GHOR{
+    background-color: #E3ACE5;
+}
+.dep_LO{
+    background-color: #B3B3B3;
+}
+.dep_AAGG{
+    background-color: #D9E021;
+}
+
+#geo_btn span div div,
+#pop_btn div div,
+#type_btn div svg g ellipse, #type_btn div svg g text,
+#level_btn div div div, 
+#size_btn div svg g circle, #time_btn div svg g text,
+#dep_btn div div, 
+#time_btn div svg g path, #time_btn div svg g text{
+    cursor: pointer;
 }

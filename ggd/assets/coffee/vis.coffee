@@ -72,7 +72,7 @@ Bubbles = () ->
     IZ: "#8FBCD8"
     JGZ: "#ADC499"
     VT: "#C69C6D"
-    MGGZ: "#C69C6D"
+    MGGZ: "#f384a3"
     FGMA: "#EA948B"
     GHOR: "#E3ACE5"
     LO: "#B3B3B3"
