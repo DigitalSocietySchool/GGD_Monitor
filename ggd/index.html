@@ -45,8 +45,6 @@
                     e.preventDefault();
                 });
 
-
-
                 editMode = true;
 
             } else if (editMode) {
@@ -194,15 +192,17 @@
 
 <body>
     <div id="edit-top-bar" class="container toolbar" style="display:none">
-        <div style="position: fixed;z-index:1000000;opacity: 0.8;max-width: 960px;" class="row toolbar-header">
-            <div class="col">
+        <div class="row toolbar-header" id="edit_mode">
+            <div class="col"  style="flex-grow:3.5;">
                 EDIT MODE: You are editing the details of this dataset.
             </div>
             <div class="col">
-                <img class="eyecon" onmouseup="toggleEdit()" style="height: 55%; padding-left:12%" id="cancel" src="assets/img/cancel.svg"> Cancel
+                <img class="eyecon" onmouseup="toggleEdit()" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
+                Cancel
             </div>
             <div class="col">
-                <img class="eyecon" style="height: 55%; padding-left:12%" id="save" src="assets/img/save.svg"> Save
+                <img class="eyecon" style="height: 20px; margin-top:-5px" id="save" src="assets/img/save.svg"> 
+                Save
             </div>
 
         </div>
@@ -227,17 +227,17 @@
         <div class="row toolbar-header">
             <div class="col dim_label" style="flex-grow:2;">
                 <span class="dim_val">Title:</span>
-                <span class="" id="title-input" contenteditable="false">
+                <span id="title-input" contenteditable="false">
                 </span>
             </div>
             <div class="col dim_label" style="flex-grow:1;">
                 <span class="dim_val">Contact:</span> 
-                <span id="contact-input" class="" contenteditable="false">
+                <span id="contact-input" contenteditable="false">
                 Sample Email
                 </span>
             </div>
-            <div class="col dim_label" onmouseup="toggleEdit();" style="flex-grow:0.5;">
-                <span class="">Edit</span> &nbsp; &nbsp;
+            <div class="col dim_label" style="flex-grow:0.5;">
+                <span onmouseup="toggleEdit();" >Edit</span> &nbsp; &nbsp;
                 <span class="">New</span> 
             </div>
             <div class="col-auto">
@@ -627,7 +627,7 @@
     <script type="text/coffeescript" src="assets/coffee/vis.coffee"></script>
 
     <script type="text/javascript">
-        //Number of Cases
+        // Number of Cases
         $(".size").each(function() {
             $(this).mouseover(function() {
                 $(this).find(".st0").css("fill", "beige");
@@ -640,14 +640,14 @@
             });
         });
         
-        //Ownership/Department
+        // Department
         $("div.ownership div div").each(function() {
             $(this).click(function() {
-                filterByTag("department", $(this).text().trim());  
+                filterByTag("department", $(this).attr("value"));  
             });
         });
 
-        //Population
+        // Population
         tagsInCategories["population"] = [];
         $("#pop_btn div div").each(function() {
             var tag = $(this).attr("value");
@@ -658,6 +658,7 @@
         });
         console.log(tagsInCategories);
 
+        // Fill in years, starting with current year.
         function updateYears(xml_id, year_gap){
             document.getElementById(xml_id).textContent = new Date().getFullYear() - year_gap;
             //document.getElementById(xml_id).setAttribute("value", new Date().getFullYear() - year_gap);
