@@ -160,8 +160,10 @@
         function filterByTag(category, tag, isInKeywords=false) { console.log("#" + category + tag.replace(" ", "-"));
             var hide = $("#" + category + tag.replace(" ", "-")).attr("filtered") == "true";
             $('a.bubble-node').each(function() {
-                var obj = $("#" + category + (isInKeywords ? tag.replace(" ", "-") : $(this).attr(category)));
-                var foundTag = isInKeywords ? $(this).attr("keywords").split(";").includes(tag) : $(this).attr(category) == tag;
+                //var obj = $("#" + category + (isInKeywords ? tag.replace(" ", "-") : $(this).attr(category)));
+                //var foundTag = isInKeywords ? $(this).attr("keywords").split(";").includes(tag) : $(this).attr(category) == tag;
+                var obj = $("#" + category + (tag.replace(" ", "-")));
+                var foundTag = $(this).attr(category).split(";").includes(tag);
                 if (isInKeywords) { console.log($(this).attr("keywords").split(";").includes(tag) );}
                 if(foundTag && !hide) {
                     $(this).removeClass("hidden_" + category);
@@ -331,21 +333,21 @@
             </div>
             <div class="col" id="pop_btn" style="flex-grow:1.5;margin-left:20px">
                 <div class="toolbar-items">
-                    <div style="float:left;" id="pop_1" class="item_population" value="youth">
+                    <div style="float:left;" id="pop_1" class="item_population" value="Youth">
                         <img src="assets/img/youth.svg" class="icon">
                         <br>Youth
                     </div>
-                    <div style="float:right;" id="pop_2" class="item_population" value="young">
+                    <div style="float:right;" id="pop_2" class="item_population" value="Young Adult">
                         <img src="assets/img/young_adult.svg" class="icon">
                         <br>Young Adult
                     </div>
                 </div>
                 <div class="toolbar-items">
-                    <div style="float:left;" id="pop_3" class="item_population" value="adult">
+                    <div style="float:left;" id="pop_3" class="item_population" value="Adult">
                         <img src="assets/img/adult.svg" class="icon">
                         <br>Adult
                     </div>
-                    <div style="float:right;" id="pop_4" class="item_population" value="elderly">
+                    <div style="float:right;" id="pop_4" class="item_population" value="Elderly">
                         <img src="assets/img/old_person.svg" class="icon">
                         <br>Elderly
                     </div>
@@ -653,7 +655,7 @@
             var tag = $(this).attr("value");
             tagsInCategories["population"].push(tag);
             $(this).click(function() {
-                filterByTag("population", tag, true);  
+                filterByTag("population", tag);  
             });
         });
         console.log(tagsInCategories);

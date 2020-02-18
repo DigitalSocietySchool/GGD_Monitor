@@ -273,6 +273,10 @@ Bubbles = () ->
         .attr("fill", (d) -> colors[d.department])
         .attr("size", (d) -> d.size)
         .attr("department", (d) -> d.department)
+        .attr("level", (d) -> d.level)
+        .attr("geo", (d) -> d.geo)
+        .attr("type", (d) -> d.type)
+        .attr("population", (d) -> d.population)
         .attr("keywords", (d) -> d.keywords)
         .call(force.drag)
         .call(connectEvents)
@@ -280,7 +284,7 @@ Bubbles = () ->
     #node
       .append("g")
         .attr("class", "pie")
-        .attr('data_col', (d) -> getBorderColors(d.years))
+        .attr('data_col', (d) -> getBorderColors(d.time))
         .attr("width",  (d) -> rScale(rValue(d)) * 2 )
         .attr("height", (d) -> rScale(rValue(d)) * 2 )
         .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
@@ -336,7 +340,7 @@ Bubbles = () ->
 
     for p, img of population
       node.append("image")
-        .attr("xlink:href", (d)-> if d.keywords.split(";").indexOf(p) != -1 then "assets/img/icon/" + img)
+        .attr("xlink:href", (d)-> if d.population.split(";").indexOf(p) != -1 then "assets/img/icon/" + img)
         .attr("class", "catPopulation")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
         .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
@@ -351,7 +355,7 @@ Bubbles = () ->
     for c, img of coverage
       node.append('g')
         .append("image")
-        .attr("xlink:href", (d) -> if d.keywords.indexOf(c) != -1 then "assets/img/" + img)
+        .attr("xlink:href", (d) -> if d.geo.indexOf(c) != -1 then "assets/img/" + img)
         .attr("class", "catCoverage")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
         .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
@@ -367,7 +371,7 @@ Bubbles = () ->
 
     for l, img of level
       node.append("image")
-        .attr("xlink:href", (d)-> if d.keywords.indexOf(l) != -1 then "assets/img/" + img)
+        .attr("xlink:href", (d)-> if d.level.indexOf(l) != -1 then "assets/img/" + img)
         .attr("class", "catLevel")
         .attr("width",  (d) -> rScale(rValue(d))  )
         .attr("height", (d) -> rScale(rValue(d))  )
@@ -646,12 +650,13 @@ $ ->
   # data is loaded
   # ---
   display = (data) ->
-    data.time = [data.Y1970,
-          data.Y1980,
-          data.Y1990,
-          data.Y2000,
-          data.Y2010,
-          data.Y2020]
+    #data.time = [data.Y1970,
+    #      data.Y1980,
+    #      data.Y1990,
+    #      data.Y2000,
+    #      data.Y2010,
+    #      data.Y2020]
+    console.log data
     plotData("#vis", data, plot)
 
   # we are storing the current text in the search component
@@ -684,5 +689,5 @@ $ ->
   d3.select("#book-title").html(text.name)
 
   # load our data
-  d3.csv("data/ggd.csv", display)
+  d3.json("https://dev.ggd.dss.cloud/api/v1.php", display)
 
