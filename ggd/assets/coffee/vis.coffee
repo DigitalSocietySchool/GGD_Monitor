@@ -293,6 +293,7 @@ Bubbles = () ->
     #node
       .append("g")
         .attr("class", "pie")
+        .attr("id", (d) -> "g_" + d.ID.toString())
         .attr('data_col', (d) -> getBorderColors(d.time))
         .attr("width",  (d) -> rScale(rValue(d)) * 2 )
         .attr("height", (d) -> rScale(rValue(d)) * 2 )
