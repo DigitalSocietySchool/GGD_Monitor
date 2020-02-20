@@ -81,10 +81,8 @@
                     if (cat == view) {
                         $('.cat_' + cat).show();
                         toggleEye(cat, 'show');
-                        console.log("Showing " + categories[category]);
                     } else {
                         $('.cat_' + cat).hide();
-                        console.log("Hiding " + categories[category]);
                         toggleEye(cat, 'hide');
                     }
                 }
@@ -716,29 +714,32 @@
         var keep_geo_label = [];
         
         function filterByGeo(label){
-            // Hide/Show UI buttons
+            ////////// Hide/Show UI buttons
             index_label = keep_geo_label.indexOf(label);
-
-            if(index_label > -1){
+            if(keep_geo_label.length == 10){
+                keep_geo_label = [label];
+            } else if(index_label > -1){
                 keep_geo_label.splice(index_label, 1);
             } else {
                 keep_geo_label.push(label);
             }
-            console.log(keep_geo_label);
+            if(keep_geo_label.length == 0){
+                keep_geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national'];
+            }
 
             var item_geo = document.getElementsByClassName('item_geo');
             for (var i = 0; i < item_geo.length; i++) {
                 
                 in_keep_geo_label = keep_geo_label.indexOf( item_geo[i].getAttribute('value') );
 
-                if ( in_keep_geo_label == -1 ){
-                    item_geo[i].setAttribute('style','color:#999;');
-                } else {
+                if ( in_keep_geo_label > -1){
                     item_geo[i].setAttribute('style','color:#000;');
+                } else {
+                    item_geo[i].setAttribute('style','color:#999;');
                 }
             }
 
-            // Filter the data
+            //////////// Filter the data
             var d = document.getElementById('data_main').innerHTML;
             d = JSON.parse(d);
 
@@ -778,10 +779,11 @@
 
                 if(index_node < 0){
                     console.log('Removing ' + node_id);
-                    $(this).attr('transform', transform_orig + ',scale(0,0)'); 
+                    $(this).hide();
+                    //$(this).attr('transform', transform_orig + ',scale(0,0)'); 
                 } else {
-                    console.log('Adding ' + node_id);
-                    $(this).attr('transform', transform_orig + ',scale(1,1)');
+                    $(this).show();
+                    //$(this).attr('transform', transform_orig + ',scale(1,1)');
                 }
 
             });
