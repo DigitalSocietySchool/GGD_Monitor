@@ -2,12 +2,11 @@
 root = exports ? this
 
 #Years for outline
-years = {}
+root.years = {}
 for x in [0..17] by 1
     years[x] = "#FFFFFF"
-#console.log years
 
-getBorderColors = (year) ->
+root.getBorderColors = (year) ->
   arcFill = years
   current_year = (new Date).getFullYear()
   for y in year.split(";")
@@ -15,9 +14,8 @@ getBorderColors = (year) ->
     index = Math.min index, 17
     arcFill[index] = "#000000"
   return (val for key, val of arcFill)
-#console.log index
 
-Bubbles = () ->
+root.Bubbles = () ->
   # standard variables accessible to
   # the rest of the functions inside Bubbles
   width = 980
@@ -25,17 +23,17 @@ Bubbles = () ->
   data = []
   node = null
   label = null
-  margin = {top: 5, right: 0, bottom: 0, left: 0}
+  root.margin = {top: 5, right: 0, bottom: 0, left: 0}
   # largest size for our bubbles
   maxRadius = 65
 
   # this scale will be used to size our bubbles
-  rScale = d3.scale.sqrt().range([0,maxRadius])
+  root.rScale = d3.scale.sqrt().range([0,maxRadius])
   
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
-  rValue = (d) -> parseInt(d.size)
+  root.rValue = (d) -> parseInt(d.size)
           
   # EMMA
   # Extractig values for donut charts
@@ -67,9 +65,6 @@ Bubbles = () ->
   tine  = (d) -> d.time
 
   keywords = (d) -> d.keyword
-
-
-  policy = "policy" #(d) -> d.policy
 
   # Fill Colors by department
   colors =
@@ -116,7 +111,7 @@ Bubbles = () ->
   # - deals with collisions of force nodes
   # - updates visual bubbles to reflect new force node locations
   # ---
-  tick = (e) ->
+  root.tick = (e) ->
     dampenedAlpha = e.alpha * 0.1
     
     # Most of the work is done by the gravity and collide
@@ -135,7 +130,7 @@ Bubbles = () ->
   # The force variable is the force layout controlling the bubbles
   # here we disable gravity and charge as we implement custom versions
   # of gravity and collisions for this visualization
-  force = d3.layout.force()
+  root.force = d3.layout.force()
     .gravity(0)
     .charge(0)
     .size([width, height])
@@ -155,6 +150,7 @@ Bubbles = () ->
 
       # first, get the data in the right format
       data = transformData(rawData)
+      # data = rawData
       # setup the radius scale's domain now that
       # we have some data
 
@@ -186,9 +182,7 @@ Bubbles = () ->
       label = d3.select(this).selectAll("#bubble-labels").data([data])
         .enter()
         .append("div")
-        .attr("id", "bubble-labels")
-
-        
+        .attr("id", "bubble-labels") 
 
       update()
 
@@ -247,27 +241,25 @@ Bubbles = () ->
 
     # call our update methods to do the creation and layout work
     updateNodes(data)
-    updateLabels(data)
+    #updateLabels(data)
 
   # ---
   # updateNodes creates a new bubble for each node in our dataset
   # ---
-  updateNodes = (datas) ->
+  root.updateNodes = (datas) ->
     # here we are using the idValue function to uniquely bind our
     # data to the (currently) empty 'bubble-node selection'.
     # if you want to use your own data, you just need to modify what
     # idValue returns
-    #console.log("datas")
-    #console.log(datas)
+    console.log("datas")
+    console.log(datas)
 
     node = node.selectAll(".bubble-node").data(datas, (d) -> idValue(d))
-    #console.log(node)  
     # we don't actually remove any nodes from our data in this example 
     # but if we did, this line of code would remove them from the
     # visualization as well
     node.exit().remove()
-    #console.log(node)  
-
+    
     # nodes are just links with circles inside.
     # the styling comes from the css
     node.enter()
@@ -289,8 +281,9 @@ Bubbles = () ->
         .attr("time", (d) -> d.time)
         .call(force.drag)
         .call(connectEvents)
+
     # drawing the Pie chart ( timeline)
-    #node
+    node
       .append("g")
         .attr("class", "pie")
         .attr("id", (d) -> "g_" + d.ID.toString())
@@ -356,7 +349,7 @@ Bubbles = () ->
         .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
         .style("transform-origin","50% 50%")
-
+    
     coverage = 
       "straat" : "icon/geo_1.png"
       "buurt" : "icon/geo_1.png"
@@ -399,9 +392,7 @@ Bubbles = () ->
       .selectAll(".arc")
         .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
 
-
-
-
+    (d) -> console.log(rScale(rValue(d)))
   # ---
   # updateLabels is more involved as we need to deal with getting the sizing
   # to work well with the font size
@@ -420,8 +411,8 @@ Bubbles = () ->
       .attr("class", "bubble-label")
       .attr("href", (d) -> "##{encodeURIComponent(idValue(d))}")
       .attr("id", (d) -> "label_" + d.ID.toString())
-      #.attr("onmouseover", "$(this).find('.bubble-label-name').show();")
-      #.attr("onmouseout", "$(this).find('.bubble-label-name').hide();")
+      .attr("onmouseover", "$(this).find('.bubble-label-name').show();")
+      .attr("onmouseout", "$(this).find('.bubble-label-name').hide();")
       .call(force.drag)
       .call(connectEvents)
 
@@ -466,7 +457,7 @@ Bubbles = () ->
   # ---
   # custom gravity to skew the bubble placement
   # ---
-  gravity = (alpha) ->
+  root.gravity = (alpha) ->
     # start with the center of the display
     cx = width / 2
     cy = height / 2
@@ -488,7 +479,7 @@ Bubbles = () ->
   # we could use quadtree to speed up implementation
   # (which is what Mike's original version does)
   # ---
-  collide = (jitter) ->
+  root.collide = (jitter) ->
     # return a function that modifies
     # the x and y of a node
     (d) ->
@@ -522,7 +513,7 @@ Bubbles = () ->
   # ---
   # adds mouse events to element
   # ---
-  connectEvents = (d) ->
+  root.connectEvents = (d) ->
     d.on("click", click)
     d.on("mouseover", mouseover)
     d.on("mouseout", mouseout)
@@ -652,7 +643,6 @@ $ ->
   # data is loaded
   # ---
   display = (data) ->
-    # console.log data
     document.getElementById('data_main').innerHTML = JSON.stringify(data)
     plotData("#vis", data, plot)
 
@@ -662,16 +652,6 @@ $ ->
     .on "input", () ->
       plot.jitter(parseFloat(this.output.value))
 
-  # bind change in drop down to change the
-  # search url and reset the hash url
-  d3.select("#text-select")
-    .on "change", (e) ->
-      key = $(this).val()
-      location.replace("#")
-      location.search = encodeURIComponent(key)
-
-  # set the book title from the text name
-  #d3.select("#book-title").html(text.name)
 
   # load our data
   d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", display)

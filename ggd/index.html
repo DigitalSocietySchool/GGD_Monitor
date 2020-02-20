@@ -739,13 +739,19 @@
                 }
             }
 
+
             //////////// Filter the data
             var d = document.getElementById('data_main').innerHTML;
             d = JSON.parse(d);
 
             var d_geo = crossfilter(d).dimension(function(d) { return d.geo; });
-            d_geo.filterExact(label);
+            //d_geo.filterExact(label);
+            d_geo = d_geo.filter(function(d) { return keep_geo_label.indexOf(d) > -1; });
 
+//            plotData("#vis", d_geo.top(Infinity), Bubbles());
+            updateNodes(d_geo.top(Infinity));
+
+/*
             var dataset_id, index_data, node_id, index_node;
 
             if(d_geo.top(Infinity).length > 0){
@@ -787,7 +793,7 @@
                 }
 
             });
-
+*/
         }
     </script>
 </body>
