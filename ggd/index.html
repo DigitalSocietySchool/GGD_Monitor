@@ -15,8 +15,16 @@
     <link rel="stylesheet" type="text/css"  href="./assets/css/custom_style.css">
     <title>GGD Dashboard</title>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
+    <script src="assets/js/libs/d3.min.js"></script>
+    <script src="assets/js/libs/crossfilter.min.js"></script>
     <script>
-        var categories = ["Population", "Dataset", "Coverage", "Level"];
+        var size_values = [100, 500, 1000, 2000, 0];
+        var time_values = [];
+        var today = new Date().getFullYear();
+        for(var i = 0; i < 18; i++ ){
+            time_values.push(today - i);
+        }
+        var categories = ["keywords", "geo", "population", "type", "level", "size", "department", "time"];
         var tagsInCategories = []; 
         var editMode = false;
         // Toggle edit mode by making input fields Editable and showing relevant fields
@@ -69,14 +77,14 @@
                 toggleEye(view);
             } else {
                 for (category in categories) {
-                    cat = categories[category]
+                    cat = categories[category];
                     if (cat == view) {
-                        $('.cat' + cat).show();
+                        $('.cat_' + cat).show();
                         toggleEye(cat, 'show');
-                        console.log("Showing" + categories[category]);
+                        console.log("Showing " + categories[category]);
                     } else {
-                        $('.cat' + cat).hide();
-                        console.log("Hiding" + categories[category]);
+                        $('.cat_' + cat).hide();
+                        console.log("Hiding " + categories[category]);
                         toggleEye(cat, 'hide');
                     }
                 }
@@ -85,20 +93,20 @@
 
         function toggleEye(view, showhide = false) {
             if (!showhide) {
-                if ($('#eye' + view).attr('collapsed') == 'false') {
-                    $('#eye' + view).attr('src', 'assets/img/icon/eye_hide.png');
-                    $('#eye' + view).attr('collapsed', 'true');
+                if ($('#eye_' + view).attr('collapsed') == 'false') {
+                    $('#eye_' + view).attr('src', 'assets/img/icon/eye_hide.png');
+                    $('#eye_' + view).attr('collapsed', 'true');
                 } else {
-                    $('#eye' + view).attr('src', 'assets/img/icon/eye_show.png');
-                    $('#eye' + view).attr('collapsed', 'false');
+                    $('#eye_' + view).attr('src', 'assets/img/icon/eye_show.png');
+                    $('#eye_' + view).attr('collapsed', 'false');
                 }
             } else {
-                if (showhide == 'show' && $('#eye' + view).attr('collapsed') == 'true') {
-                    $('#eye' + view).attr('src', 'assets/img/icon/eye_show.png');
-                    $('#eye' + view).attr('collapsed', 'false');
-                } else if (showhide == 'hide' && $('#eye' + view).attr('collapsed') == 'false') {
-                    $('#eye' + view).attr('src', 'assets/img/icon/eye_hide.png');
-                    $('#eye' + view).attr('collapsed', 'true');
+                if (showhide == 'show' && $('#eye_' + view).attr('collapsed') == 'true') {
+                    $('#eye_' + view).attr('src', 'assets/img/icon/eye_show.png');
+                    $('#eye_' + view).attr('collapsed', 'false');
+                } else if (showhide == 'hide' && $('#eye_' + view).attr('collapsed') == 'false') {
+                    $('#eye_' + view).attr('src', 'assets/img/icon/eye_hide.png');
+                    $('#eye_' + view).attr('collapsed', 'true');
                 }
             }
         }
@@ -118,14 +126,14 @@
         }
 
         function toggleFill() {
-            if ($('#eyeOwnership').attr('collapsed') == 'true') {
+            if ($('#eye_dep').attr('collapsed') == 'true') {
                 $('a.bubble-node').each(function() {
                     $(this).css("fill", $(this).attr("fill"));
                 });
-                toggleEye('Ownership');
+                toggleEye('dep');
             } else {
-                $('a.bubble-node').css("fill", "#D31145");
-                toggleEye('Ownership');
+                $('a.bubble-node').css("fill", "#ccc");
+                toggleEye('dep');
             }
         }
         //Filter Number of Cases
@@ -164,7 +172,9 @@
                 //var foundTag = isInKeywords ? $(this).attr("keywords").split(";").includes(tag) : $(this).attr(category) == tag;
                 var obj = $("#" + category + (tag.replace(" ", "-")));
                 var foundTag = $(this).attr(category).split(";").includes(tag);
-                if (isInKeywords) { console.log($(this).attr("keywords").split(";").includes(tag) );}
+                //if(isInKeywords) { 
+                    //console.log($(this).attr("keywords").split(";").includes(tag) );
+                //}
                 if(foundTag && !hide) {
                     $(this).removeClass("hidden_" + category);
                     $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_" + category);
@@ -181,7 +191,7 @@
                             }
                         }
                     }
-                    if (hideBubble) {
+                    if(hideBubble) {
                         $(this).addClass("hidden_" + category);
                         $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_" + category);
                     }
@@ -220,6 +230,7 @@
                     <button class="reset">Reset</button>
                     <div id="status"></div>
                 </div>
+                <div id="data_main" style="display:none;"></div>
                 <div id="vis"></div>
             </div>
         </div>
@@ -227,7 +238,7 @@
     <!-- begin conditional toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col dim_label" style="flex-grow:2;">
+            <div class="col dim_label" style="flex-grow:1.2;">
                 <span class="dim_val">Title:</span>
                 <span id="title-input" contenteditable="false">
                 </span>
@@ -235,10 +246,9 @@
             <div class="col dim_label" style="flex-grow:1;">
                 <span class="dim_val">Contact:</span> 
                 <span id="contact-input" contenteditable="false">
-                Sample Email
                 </span>
             </div>
-            <div class="col dim_label" style="flex-grow:0.5;">
+            <div class="col dim_label" style="flex-grow:0.3;">
                 <span onmouseup="toggleEdit();" >Edit</span> &nbsp; &nbsp;
                 <span class="">New</span> 
             </div>
@@ -263,17 +273,17 @@
     <!-- begin first toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col dim_label" onmouseup="changeView('Coverage');">
-                <img class="eyecon" id="eyeCoverage" collapsed="true" src="assets/img/icon/eye_hide.png"> Geo. Coverage
+            <div class="col dim_label" onmouseup="changeView('geo');">
+                <img class="eyecon" id="eye_geo" collapsed="true" src="assets/img/icon/eye_hide.png"> Geo. Coverage
             </div>
-            <div class="col dim_label" onmouseup="changeView('Population');">
-                <img class="eyecon" collapsed="true" id="eyePopulation" src="assets/img/icon/eye_hide.png"> Population
+            <div class="col dim_label" onmouseup="changeView('population');">
+                <img class="eyecon" collapsed="true" id="eye_population" src="assets/img/icon/eye_hide.png"> Population
             </div>
-            <div class="col dim_label" onmouseup="changeView('Dataset');">
-                <img class="eyecon" collapsed="false" id="eyeDataset" src="assets/img/icon/eye_show.png"> Type of Dataset
+            <div class="col dim_label" onmouseup="changeView('type');">
+                <img class="eyecon" collapsed="false" id="eye_type" src="assets/img/icon/eye_show.png"> Type of Dataset
             </div>
-            <div class="col dim_label" onmouseup="changeView('Level');" style="flex-grow:0.5;">
-                <img class="eyecon" collapsed="true" id="eyeLevel" src="assets/img/icon/eye_hide.png"> Level
+            <div class="col dim_label" onmouseup="changeView('level');" style="flex-grow:0.5;">
+                <img class="eyecon" collapsed="true" id="eye_level" src="assets/img/icon/eye_hide.png"> Level
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
@@ -333,21 +343,21 @@
             </div>
             <div class="col" id="pop_btn" style="flex-grow:1.5;margin-left:20px">
                 <div class="toolbar-items">
-                    <div style="float:left;" id="pop_1" class="item_population" value="Youth">
+                    <div style="float:left;" id="pop_1" class="item_population" value="youth">
                         <img src="assets/img/youth.svg" class="icon">
                         <br>Youth
                     </div>
-                    <div style="float:right;" id="pop_2" class="item_population" value="Young Adult">
+                    <div style="float:right;" id="pop_2" class="item_population" value="young">
                         <img src="assets/img/young_adult.svg" class="icon">
                         <br>Young Adult
                     </div>
                 </div>
                 <div class="toolbar-items">
-                    <div style="float:left;" id="pop_3" class="item_population" value="Adult">
+                    <div style="float:left;" id="pop_3" class="item_population" value="adult">
                         <img src="assets/img/adult.svg" class="icon">
                         <br>Adult
                     </div>
-                    <div style="float:right;" id="pop_4" class="item_population" value="Elderly">
+                    <div style="float:right;" id="pop_4" class="item_population" value="elderly">
                         <img src="assets/img/old_person.svg" class="icon">
                         <br>Elderly
                     </div>
@@ -416,14 +426,14 @@
     <!-- begin second toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col dim_label" onmouseup="changeView('Cases','.bubble-label .bubble-label-value');" style="flex-grow:1.7;">
-                <img class="eyecon" collapsed="false" id="eyeCases" src="assets/img/icon/eye_show.png"> Number of Cases
+            <div class="col dim_label" onmouseup="changeView('size','.bubble-label .bubble-label-value');" style="flex-grow:1.7;">
+                <img class="eyecon" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png"> Number of Cases
             </div>
             <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.2;">
-                <img class="eyecon" id="eyeOwnership" collapsed="false" src="assets/img/icon/eye_show.png"> Ownership
+                <img class="eyecon" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png"> Ownership
             </div>
-            <div class="col dim_label" onmouseup="changeView('Temporal','.arc');">
-                <img class="eyecon" id="eyeTemporal" collapsed="false" src="assets/img/icon/eye_show.png"> Temporal Coverage 
+            <div class="col dim_label" onmouseup="changeView('time','.arc');">
+                <img class="eyecon" id="eye_time" collapsed="false" src="assets/img/icon/eye_show.png"> Temporal Coverage 
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
@@ -438,7 +448,7 @@
                            .st1{font-family:'OpenSans';}
                            .st2{font-size:18px;margin-left:4px;}
                        </style>
-                       <g class="size" data-size="more" id="size_5" value="more">
+                       <g class="size" data-size="more" id="size_5" value="0">
                            <circle class="st0" cx="138.54" cy="131.83" r="125"/>
                            <text transform="matrix(1 0 0 1 111.3019 36.1381)" class="st1 st2">More</text>
                        </g>
@@ -648,18 +658,19 @@
                 filterByTag("department", $(this).attr("value"));  
             });
         });
-
+/*
         // Population
         tagsInCategories["population"] = [];
         $("#pop_btn div div").each(function() {
             var tag = $(this).attr("value");
+
             tagsInCategories["population"].push(tag);
             $(this).click(function() {
                 filterByTag("population", tag);  
             });
         });
         console.log(tagsInCategories);
-
+*/
         // Fill in years, starting with current year.
         function updateYears(xml_id, year_gap){
             document.getElementById(xml_id).textContent = new Date().getFullYear() - year_gap;
@@ -693,6 +704,44 @@
             class_earlier[i].setAttribute("value", 0);
         }
 
+        var item_geo = document.getElementsByClassName('item_geo');
+        for (var i = 0; i < item_geo.length; i++) {
+            item_geo[i].setAttribute("onclick", 'filterByGeo("' + item_geo[i].getAttribute('value') + '")');
+        }
+
+        //////////////////////////////////////////
+        // FILTER GEO
+        //////////////////////////////////////////
+        var keep_id = [];
+        function filterByGeo(label){
+            var d = document.getElementById('data_main').innerHTML;
+            d = JSON.parse(d);
+
+            var d_geo = crossfilter(d).dimension(function(d) { return d.geo; });
+            
+            d_geo.filterExact(label);
+
+            if(d_geo.top(Infinity).length > 0){
+                for(var i = 0; i < d_geo.top(Infinity).length; i++ ){
+                    var dataset_id = d_geo.top(Infinity)[i].ID;
+                    var index = keep_id.indexOf(dataset_id);
+                    if(index > -1){
+                        keep_id.splice(index, 1);
+                    } else {
+                        keep_id.push(dataset_id);
+                    }
+                }
+            }
+            console.log(keep_id);
+            
+            //d3.json(d_geo.top(Infinity), display)
+
+            $('a.bubble-node').each(function() {
+                svg = d3.select('#vis');
+                const t = svg.transition().duration(750);
+            });
+
+        }
     </script>
 </body>
 

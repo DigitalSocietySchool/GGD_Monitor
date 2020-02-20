@@ -57,7 +57,7 @@ size_1	100
 size_2	500
 size_3	1000
 size_4	2000
-size_5	more	
+size_5	0	
 
 
 
@@ -79,6 +79,15 @@ dep_9	AAGG
 # Years (div id year_btn)
 Values are set automatically, e.g., year starts with the current year. 
 The value for the "earlier" button is set to 0.
+
+id 		value
+year_1 	2020
+year_2	2019
+year_3	2018
+...
+year_17	2004
+year_18	0
+
 
 Values are controlled using class, not ids (because there are several component to update).
 Classes are year_1, year_2, year_3, ..., year_17, year_18.

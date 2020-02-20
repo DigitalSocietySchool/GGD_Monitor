@@ -1,0 +1,4 @@
+[
+{"ID":"1","name":"Dataset Alpha","description":"Dummy entry...","keyword":"Dummy","contact":"Emma e.m.a.l.beauxis@hva.nl","department":"EGZ","size":"200","time":"2009;2010;2011;2012","geo":"wijk","type":"Monitor;Health Promotion","population":"Youth;Elderly","level":"Family"},
+{"ID":"2","name":"Dataset Beta","description":"Dummy entry...","keyword":"Dummy","contact":"Emma e.m.a.l.beauxis@hva.nl","department":"IZ","size":"2000","time":"2019;2020;2018","geo":"straat","type":"Monitor;Health Promotion","population":"Elderly","level":"Individual"}
+]

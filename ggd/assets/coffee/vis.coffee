@@ -58,13 +58,18 @@ Bubbles = () ->
   textValue = (d) -> d.name
 
   # function to retrieve the department
+  geo = (d) -> d.geo
+  population = (d) -> d.population
+  # type
+  level = (d) -> d.level
+  size = (d) -> d.size
   department = (d) -> d.department
+  tine  = (d) -> d.time
+
+  keywords = (d) -> d.keyword
 
 
-  policy = (d) -> d.policy
-
-
-  keywords = (d) -> d.keywords
+  policy = "policy" #(d) -> d.policy
 
   # Fill Colors by department
   colors =
@@ -161,6 +166,7 @@ Bubbles = () ->
       svgEnter = svg.enter().append("svg")
       svg.attr("width", width + margin.left + margin.right )
       svg.attr("height", height + margin.top + margin.bottom )
+      svg.attr("id","svg_main")
       
       # node will be used to group the bubbles
       node = svgEnter.append("g").attr("id", "bubble-nodes")
@@ -193,6 +199,7 @@ Bubbles = () ->
       d3.select(window)
         .on("hashchange", hashchange)
 
+      changeView('population');
 
     # search function callback
     $(".button").on "click", ->
@@ -205,9 +212,9 @@ Bubbles = () ->
 
       theNode = d3.selectAll(".bubble-node")
                     .filter( (d,i) ->                                   
-                                      d.keywords.includes(input));
+                                      d.keyword.includes(input));
       theLabel = d3.selectAll(".bubble-label")
-                    .filter( (d) -> d.keywords.includes(input))
+                    .filter( (d) -> d.keyword.includes(input))
       #console.log("theNode")
       #console.log(theNode)
       d3.selectAll(".bubble-node").style("opacity","0");
@@ -271,13 +278,15 @@ Bubbles = () ->
         .attr("id", (d) -> "node_" + d.ID.toString())
         .style("fill", (d) -> colors[d.department])
         .attr("fill", (d) -> colors[d.department])
-        .attr("size", (d) -> d.size)
-        .attr("department", (d) -> d.department)
-        .attr("level", (d) -> d.level)
+        .attr("contact", (d) -> d.contact)
+        .attr("keywords", (d) -> d.keyword)
         .attr("geo", (d) -> d.geo)
+        .attr("pop", (d) -> d.population)
         .attr("type", (d) -> d.type)
-        .attr("population", (d) -> d.population)
-        .attr("keywords", (d) -> d.keywords)
+        .attr("level", (d) -> d.level)
+        .attr("size", (d) -> d.size)
+        .attr("dep", (d) -> d.department)
+        .attr("time", (d) -> d.time)
         .call(force.drag)
         .call(connectEvents)
     # drawing the Pie chart ( timeline)
@@ -302,23 +311,23 @@ Bubbles = () ->
     #adding svgs to the circle
     node.append("image")
       .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
-      .attr("class", "catDataset")
+      .attr("class", "cat_type")
       .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
       .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
       .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
       .style("transform-origin","50% 50%")
 
     petals = 
-      "Social Media": "right"
-      "Health Promotion": "diagonal-right"
-      "Registry": "diagonal-left"
-      "Monitor": "left"
-      "Questionaire": "top"
+      "socialmedia": "right"
+      "promotion": "diagonal-right"
+      "registry": "diagonal-left"
+      "monitor": "left"
+      "questionaire": "top"
 
     for p, dir of petals
       node.append("image")
         .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
-        .attr("class", "catDataset")
+        .attr("class", "cat_type")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
         .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
@@ -326,53 +335,60 @@ Bubbles = () ->
 
     node.append("image")
       .attr("xlink:href", "assets/img/icon/pop_empty.png")
-      .attr("class", "catPopulation")
+      .attr("class", "cat_population")
       .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
       .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
       .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
       .style("transform-origin","50% 50%")
 
     population = 
-      "Youth" : "pop_1_youth.png"
-      "Young Adult" : "pop_2_young_adult.png"
-      "Adult" : "pop_3_adult.png"
-      "Elderly" : "pop_4_elderly.png"
+      "youth" : "pop_1_youth.png"
+      "young" : "pop_2_young_adult.png"
+      "adult" : "pop_3_adult.png"
+      "elderly" : "pop_4_elderly.png"
 
     for p, img of population
       node.append("image")
         .attr("xlink:href", (d)-> if d.population.split(";").indexOf(p) != -1 then "assets/img/icon/" + img)
-        .attr("class", "catPopulation")
+        .attr("class", "cat_population")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
         .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
         .style("transform-origin","50% 50%")
 
     coverage = 
-      "Street" : "icon/geo_1.png"
-      "City" : "icon/geo_2.png"
-      "Metro" : "icon/geo_3.png"
+      "straat" : "icon/geo_1.png"
+      "buurt" : "icon/geo_1.png"
+      "wijk" : "icon/geo_1.png"
+      "gebied" : "icon/geo_2.png"
+      "stadsdeel" : "icon/geo_2.png"
+      "stad" : "icon/geo_2.png"
+      "amstelland" : "icon/geo_3.png"
+      "adam" : "icon/geo_3.png"
+      "g4" : "icon/geo_3.png"
+      "national" : "icon/geo_3.png"
 
     for c, img of coverage
       node.append('g')
         .append("image")
         .attr("xlink:href", (d) -> if d.geo.indexOf(c) != -1 then "assets/img/" + img)
-        .attr("class", "catCoverage")
+        .attr("class", "cat_geo")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
         .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
         .style("transform-origin","50% 50%")
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/1.8 +'px,-'+ rScale(rValue(d))/1.5 +'px)') 
         
     level =
-      "Individual" : "icon/level_1_individual.png"
-      "Family" : "icon/level_2_family.png"
-      "Group" : "icon/level_3_group.png"
-      "Organization" : "icon/level_4_orga.png"
-      "Geography" : "icon/level_5_geo.png"
+      "individual" : "icon/level_1_individual.png"
+      "family" : "icon/level_2_family.png"
+      "group" : "icon/level_3_group.png"
+      "orga" : "icon/level_4_orga.png"
+      "geographic" : "icon/level_5_geo.png"
 
     for l, img of level
       node.append("image")
         .attr("xlink:href", (d)-> if d.level.indexOf(l) != -1 then "assets/img/" + img)
-        .attr("class", "catLevel")
+        .attr("class", "cat_level")
         .attr("width",  (d) -> rScale(rValue(d))  )
         .attr("height", (d) -> rScale(rValue(d))  )
         .style("transform-origin","50% 50%")
@@ -537,6 +553,7 @@ Bubbles = () ->
     node.classed("bubble-selected", (d) -> id == idValue(d))
     dept = ''
     keywords = ''
+    contact = ''
     # size = ''
     image = ''
     coverage = 
@@ -549,12 +566,13 @@ Bubbles = () ->
     activeNode = d3.selectAll(".bubble-selected")
                     .filter( (d) -> 
                       dept = d.department
-                      keywords = d.keywords
+                      keywords = d.keyword
+                      contact = d.contact
 
-                      for c, img of coverage
-                        if d.keywords.indexOf(c) != -1 then image = img
-                        console.log image
-                      console.log image
+                      #for c, img of coverage
+                      #  if d.keyword.indexOf(c) != -1 then image = img
+                      #  console.log image
+                      #console.log image
 
                       
 
@@ -565,6 +583,7 @@ Bubbles = () ->
     if id.length > 0
       d3.select("#status").html("<h3>The <span class=\"active\">#{id}</span> is now selected</h3>")
       d3.select("#title-input").html("#{id}")
+      d3.select("#contact-input").html("#{contact}")
       d3.select("#keywords-input").html("#{keywords}")
 
 
@@ -650,13 +669,8 @@ $ ->
   # data is loaded
   # ---
   display = (data) ->
-    #data.time = [data.Y1970,
-    #      data.Y1980,
-    #      data.Y1990,
-    #      data.Y2000,
-    #      data.Y2010,
-    #      data.Y2020]
-    console.log data
+    # console.log data
+    document.getElementById('data_main').innerHTML = JSON.stringify(data)
     plotData("#vis", data, plot)
 
   # we are storing the current text in the search component
@@ -686,8 +700,10 @@ $ ->
       location.search = encodeURIComponent(key)
 
   # set the book title from the text name
-  d3.select("#book-title").html(text.name)
+  #d3.select("#book-title").html(text.name)
 
   # load our data
-  d3.json("https://dev.ggd.dss.cloud/api/v1.php", display)
+  d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", display)
+  # d3.json("https://dev.ggd.dss.cloud/api/v1.php", display)
+  # d3.json('http://localhost:8888/GGD_20200203/ggd/data/data_ggd.json', display)
 
