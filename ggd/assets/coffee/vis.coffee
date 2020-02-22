@@ -2,11 +2,11 @@
 root = exports ? this
 
 #Years for outline
-root.years = {}
+years = {}
 for x in [0..17] by 1
     years[x] = "#FFFFFF"
 
-root.getBorderColors = (year) ->
+getBorderColors = (year) ->
   arcFill = years
   current_year = (new Date).getFullYear()
   for y in year.split(";")
@@ -23,17 +23,17 @@ root.Bubbles = () ->
   data = []
   node = null
   label = null
-  root.margin = {top: 5, right: 0, bottom: 0, left: 0}
+  margin = {top: 5, right: 0, bottom: 0, left: 0}
   # largest size for our bubbles
   maxRadius = 65
 
   # this scale will be used to size our bubbles
-  root.rScale = d3.scale.sqrt().range([0,maxRadius])
+  rScale = d3.scale.sqrt().range([0,maxRadius])
   
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
-  root.rValue = (d) -> parseInt(d.size)
+  rValue = (d) -> parseInt(d.size)
           
   # EMMA
   # Extractig values for donut charts
@@ -48,7 +48,7 @@ root.Bubbles = () ->
   #   and for url creation
   #  - should make it easier to switch out dataset
   #   for your own
-  idValue = (d) -> d.name
+  root.idValue = (d) -> d.ID
 
   # function to define what to display in each bubble
   #  again, abstracted to ease migration to 
@@ -111,7 +111,7 @@ root.Bubbles = () ->
   # - deals with collisions of force nodes
   # - updates visual bubbles to reflect new force node locations
   # ---
-  root.tick = (e) ->
+  tick = (e) ->
     dampenedAlpha = e.alpha * 0.1
     
     # Most of the work is done by the gravity and collide
@@ -130,11 +130,11 @@ root.Bubbles = () ->
   # The force variable is the force layout controlling the bubbles
   # here we disable gravity and charge as we implement custom versions
   # of gravity and collisions for this visualization
-  root.force = d3.layout.force()
+  force = d3.layout.force()
     .gravity(0)
     .charge(0)
     .size([width, height])
-    .on("tick", tick)
+    .on("tick", tick) #, {passive: true}
 
   # ---
   # Creates new chart function. This is the 'constructor' of our
@@ -173,7 +173,7 @@ root.Bubbles = () ->
         .attr("id", "bubble-background")
         .attr("width", width)
         .attr("height", height)
-        .on("click", clear)
+        .on("click", clear) #, {passive: true}
 
       # label is the container div for all the labels that sit on top of 
       # the bubbles
@@ -191,7 +191,7 @@ root.Bubbles = () ->
 
       # automatically call hashchange when the url has changed
       d3.select(window)
-        .on("hashchange", hashchange)
+        .on("hashchange", hashchange, {passive: true})
 
       changeView('population');
 
@@ -222,17 +222,42 @@ root.Bubbles = () ->
         d3.select("#status").html("<h3>No dataset is selected</h3>")
 
   
+  root.filterNodes = (keep_geo_label) ->
+    #console.log(datas)
+    #d3.selectAll(".bubble-node").style("opacity","0")
+    #d3.selectAll(".bubble-node").filter(datas, (d) -> keep_geo_label.indexOf(d) > -1).style("opacity","1")
+    
+    keep_nodes = d3.selectAll(".bubble-label")
+                    .filter( (d) -> keep_geo_label.indexOf( crossfilter(d).dimension((d) -> d.geo)) > -1 )
+
+    console.log(keep_nodes)
+    keep_nodes.style("opacity","0")
+
+    #node_keep.call(force.drag)
+    #    .call(connectEvents)
+    #    .style("opacity","1")
+
+
+    #node.selectAll(".bubble-node").data(datas, (d) -> idValue(d)).style("opacity","1")
+    #node.selectAll(".bubble-node")
+    #  .filter( (d) -> idValue(d) )
+    #  .style("opacity","1")
+    #node_delete = node.exit().remove()
+    #node_delete.style("opacity","0")
+    # node_keep.style("opacity","1")
+    
   # ---
   # update starts up the force directed layout and then
   # updates the nodes and labels
   # ---
-  update = () ->
+  root.update = () ->
     # add a radius to our data nodes that will serve to determine
     # when a collision has occurred. This uses the same scale as
     # the one used to size our bubbles, but it kicks up the minimum
     # size to make it so smaller bubbles have a slightly larger 
     # collision 'sphere'
-    
+
+
     data.forEach (d,i) ->
       d.forceR = Math.max(minCollisionRadius, rScale(rValue(d)))
 
@@ -251,10 +276,11 @@ root.Bubbles = () ->
     # data to the (currently) empty 'bubble-node selection'.
     # if you want to use your own data, you just need to modify what
     # idValue returns
-    console.log("datas")
-    console.log(datas)
+    #console.log("datas")
+    #console.log(datas)
 
     node = node.selectAll(".bubble-node").data(datas, (d) -> idValue(d))
+
     # we don't actually remove any nodes from our data in this example 
     # but if we did, this line of code would remove them from the
     # visualization as well
@@ -281,6 +307,8 @@ root.Bubbles = () ->
         .attr("time", (d) -> d.time)
         .call(force.drag)
         .call(connectEvents)
+        #.append("g")
+        #  .attr('class','bubble_scaler')
 
     # drawing the Pie chart ( timeline)
     node
@@ -299,11 +327,13 @@ root.Bubbles = () ->
         .attr('stroke','#ffffff')
 
     # drawing the visible circle
-    node.append("circle")
+    node
+      .append("circle")
       .attr("r", (d) -> rScale(rValue(d))-5)
 
     #adding svgs to the circle
-    node.append("image")
+    node
+      .append("image")
       .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
       .attr("class", "cat_type")
       .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
@@ -319,7 +349,8 @@ root.Bubbles = () ->
       "questionaire": "top"
 
     for p, dir of petals
-      node.append("image")
+      node
+        .append("image")
         .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
         .attr("class", "cat_type")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
@@ -327,7 +358,8 @@ root.Bubbles = () ->
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
         .style("transform-origin","50% 50%")
 
-    node.append("image")
+    node
+      .append("image")
       .attr("xlink:href", "assets/img/icon/pop_empty.png")
       .attr("class", "cat_population")
       .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
@@ -342,7 +374,8 @@ root.Bubbles = () ->
       "elderly" : "pop_4_elderly.png"
 
     for p, img of population
-      node.append("image")
+      node
+      .append("image")
         .attr("xlink:href", (d)-> if d.population.split(";").indexOf(p) != -1 then "assets/img/icon/" + img)
         .attr("class", "cat_population")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
@@ -363,7 +396,7 @@ root.Bubbles = () ->
       "national" : "icon/geo_3.png"
 
     for c, img of coverage
-      node.append('g')
+      node
         .append("image")
         .attr("xlink:href", (d) -> if d.geo.indexOf(c) != -1 then "assets/img/" + img)
         .attr("class", "cat_geo")
@@ -380,7 +413,8 @@ root.Bubbles = () ->
       "geographic" : "icon/level_5_geo.png"
 
     for l, img of level
-      node.append("image")
+      node
+        .append("image")
         .attr("xlink:href", (d)-> if d.level.indexOf(l) != -1 then "assets/img/" + img)
         .attr("class", "cat_level")
         .attr("width",  (d) -> rScale(rValue(d))  )
@@ -392,7 +426,9 @@ root.Bubbles = () ->
       .selectAll(".arc")
         .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
 
-    (d) -> console.log(rScale(rValue(d)))
+    # console.log(node)
+    # node.exit().remove()
+
   # ---
   # updateLabels is more involved as we need to deal with getting the sizing
   # to work well with the font size
@@ -513,8 +549,8 @@ root.Bubbles = () ->
   # ---
   # adds mouse events to element
   # ---
-  root.connectEvents = (d) ->
-    d.on("click", click)
+  connectEvents = (d) ->
+    d.on("click", click) # , {passive: true}
     d.on("mouseover", mouseover)
     d.on("mouseout", mouseout)
 
@@ -547,7 +583,7 @@ root.Bubbles = () ->
     keywords = ''
     contact = ''
     # size = ''
-    image = ''
+    # image = ''
 
     # #retrieve data elements from active node
     activeNode = d3.selectAll(".bubble-selected")

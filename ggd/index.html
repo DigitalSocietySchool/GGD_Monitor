@@ -714,7 +714,7 @@
         var keep_geo_label = [];
         
         function filterByGeo(label){
-            ////////// Hide/Show UI buttons
+            ////////// Get the labels to filter on
             index_label = keep_geo_label.indexOf(label);
             if(keep_geo_label.length == 10){
                 keep_geo_label = [label];
@@ -727,6 +727,7 @@
                 keep_geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national'];
             }
 
+            ////////////// Show/Hide Hide/Show UI buttons
             var item_geo = document.getElementsByClassName('item_geo');
             for (var i = 0; i < item_geo.length; i++) {
                 
@@ -739,61 +740,23 @@
                 }
             }
 
-
             //////////// Filter the data
             var d = document.getElementById('data_main').innerHTML;
             d = JSON.parse(d);
 
-            var d_geo = crossfilter(d).dimension(function(d) { return d.geo; });
-            //d_geo.filterExact(label);
-            d_geo = d_geo.filter(function(d) { return keep_geo_label.indexOf(d) > -1; });
+            var d_geo_dim = crossfilter(d).dimension(function(d) { return d.geo; });
+            d_geo = d_geo_dim.filter( function(d) { return keep_geo_label.indexOf(d) > -1; });
 
-//            plotData("#vis", d_geo.top(Infinity), Bubbles());
-            updateNodes(d_geo.top(Infinity));
-
-/*
-            var dataset_id, index_data, node_id, index_node;
-
-            if(d_geo.top(Infinity).length > 0){
-                for(var i = 0; i < d_geo.top(Infinity).length; i++ ){
-
-                    dataset_id = d_geo.top(Infinity)[i].ID;
-                    index_data = keep_data_id.indexOf(dataset_id);
-
-                    if(index_data > -1){
-                        keep_data_id.splice(index_data, 1);
-                    } else {
-                        keep_data_id.push(dataset_id);
-                    }
-                }
-            }
-            console.log(keep_data_id);
-            
-            //d3.json(d_geo.top(Infinity), display)
-
-            // Filter the bubble
-            $('a.bubble-node').each(function() {
-                svg = d3.select('#vis');
-                const t = svg.transition().duration(750);
-
-                node_id = $(this).attr('id');
-                index_node = keep_data_id.indexOf(node_id.replace("node_", ""));
-
-                transform_orig = $(this).attr('transform');
-                transform_orig = transform_orig.replace(',scale(0,0)','');
-                transform_orig = transform_orig.replace(',scale(1,1)','');
-
-                if(index_node < 0){
-                    console.log('Removing ' + node_id);
-                    $(this).hide();
-                    //$(this).attr('transform', transform_orig + ',scale(0,0)'); 
-                } else {
-                    $(this).show();
-                    //$(this).attr('transform', transform_orig + ',scale(1,1)');
-                }
-
+            d3.selectAll(".bubble-node").each(function() {
+                $(this).hide(); 
             });
-*/
+            keep_nodes = d3.selectAll(".bubble-node")
+                    .filter(function(d) { 
+                        return keep_geo_label.indexOf(d.geo) > -1; 
+                    });
+            keep_nodes.each(function() {
+                $(this).show();
+            });
         }
     </script>
 </body>
