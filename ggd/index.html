@@ -710,7 +710,6 @@
         //////////////////////////////////////////
         // FILTER GEO
         //////////////////////////////////////////
-        var keep_data_id = [];
         var keep_geo_label = [];
         
         function filterByGeo(label){
@@ -740,17 +739,17 @@
                 }
             }
 
-            //////////// Filter the data
-            var d = document.getElementById('data_main').innerHTML;
-            d = JSON.parse(d);
+            //////////// Filter the Data
+            //var d = document.getElementById('data_main').innerHTML;
+            //d = JSON.parse(d);
+            //var d_geo_dim = crossfilter(d).dimension(function(d) { return d.geo; });
+            //d_geo = d_geo_dim.filter( function(d) { return keep_geo_label.indexOf(d) > -1; });
 
-            var d_geo_dim = crossfilter(d).dimension(function(d) { return d.geo; });
-            d_geo = d_geo_dim.filter( function(d) { return keep_geo_label.indexOf(d) > -1; });
-
+            //////////// Filter the Bubble
             d3.selectAll(".bubble-node").each(function() {
                 $(this).hide(); 
             });
-            keep_nodes = d3.selectAll(".bubble-node")
+            var keep_nodes = d3.selectAll(".bubble-node")
                     .filter(function(d) { 
                         return keep_geo_label.indexOf(d.geo) > -1; 
                     });
