@@ -709,7 +709,7 @@
         // Filter bubbles using environment variables
         // that store the selected filters for each dimension,
         // e.g.: keep_geo_label, keep_dep_label ...
-        
+
         function filterBubbles(){
             d3.selectAll(".bubble-node").each(function() {
                 $(this).hide(); 
@@ -718,6 +718,7 @@
                 .filter(function(d) { 
                     return (
                         keep_geo_label.indexOf(d.geo) != -1 &
+                        keep_level_label.indexOf(d.level) != -1 &
                         keep_dep_label.indexOf(d.department) != -1
                         );  
                 }).each(function() {
@@ -774,6 +775,48 @@
         }
 
         //////////////////////////////////////////
+        // FILTER LEVELS
+        //////////////////////////////////////////
+        for (var i = 1; i < 6; i++) {
+            btn = document.getElementById('level_' + i);
+            btn.setAttribute("onclick", 'filterByLevel("' + btn.getAttribute('value') + '")');
+        }
+        
+        var keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic'];
+        
+        function filterByLevel(label){
+            ////////// Get the labels to filter on
+            index_label = keep_level_label.indexOf(label);
+
+            if(keep_level_label.length == 5){
+                keep_level_label = [label];
+            } else if(index_label > -1){
+                keep_level_label.splice(index_label, 1);
+            } else {
+                keep_level_label.push(label);
+            }
+            if(keep_level_label.length == 0){
+                keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic'];
+            }
+
+            ////////////// Show/Hide Hide/Show UI buttons
+            for (var i = 1; i < 6; i++) {
+                btn = document.getElementById('level_' + i);
+                in_keep_level_label = keep_level_label.indexOf( btn.getAttribute('value') );
+
+                if ( in_keep_level_label > -1){
+                    btn.setAttribute('style','color:#000;');
+                } else {
+                    btn.setAttribute('style','color:#999;');
+                }
+                
+            }
+
+            //////////// Filter the Bubbles
+            filterBubbles();
+        }
+
+        //////////////////////////////////////////
         // FILTER DEPARTMENT
         //////////////////////////////////////////
         for (var i = 1; i < 10; i++) {
@@ -797,10 +840,8 @@
             if(keep_dep_label.length == 0){
                 keep_dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG'];
             }
-            console.log(keep_dep_label);
 
             ////////////// Show/Hide Hide/Show UI buttons
-            //var item_geo = document.getElementsByClassName('item_geo');
             for (var i = 1; i < 10; i++) {
                 btn = document.getElementById('dep_' + i);
                 in_keep_dep_label = keep_dep_label.indexOf( btn.getAttribute('value') );
