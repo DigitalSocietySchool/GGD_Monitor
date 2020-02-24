@@ -1,17 +1,17 @@
 
 root = exports ? this
 
-#Years for outline
-years = {}
-for x in [0..17] by 1
-    years[x] = "#FFFFFF"
-
+# Years to show in bubble contour
 getBorderColors = (year) ->
-  arcFill = years
+  arcFill = {}
+  for x in [0..17] by 1
+    arcFill[x] = "#FFFFFF"
+
   current_year = (new Date).getFullYear()
   for y in year.split(";")
-    index = current_year - parseInt(y, 10)
-    index = Math.min index, 17
+    if y < current_year - 17
+      y = current_year - 17
+    index = current_year - parseInt(y)
     arcFill[index] = "#000000"
   return (val for key, val of arcFill)
 
@@ -62,7 +62,7 @@ root.Bubbles = () ->
   level = (d) -> d.level
   size = (d) -> d.size
   department = (d) -> d.department
-  tine  = (d) -> d.time
+  time  = (d) -> d.time
 
   keywords = (d) -> d.keyword
 
