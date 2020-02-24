@@ -711,9 +711,13 @@
         // e.g.: keep_geo_label, keep_dep_label ...
 
         function filterBubbles(){
-            d3.selectAll(".bubble-node").each(function() {
-                $(this).hide(); 
-            });
+
+            d3.selectAll(".bubble-node")
+                .each(function(d) {
+                    d.ui_scale = 0;
+                    d.forceR = 0;
+                });
+
             d3.selectAll(".bubble-node")
                 .filter(function(d) { 
                     pop_values = d.population.split(";").map( function(currentValue, index, arr){
@@ -725,9 +729,13 @@
                         keep_dep_label.indexOf(d.department) != -1 &
                         pop_values.includes(true)
                         );  
-                }).each(function() {
-                    $(this).show();
+                }).each(function(d) {
+                    d.ui_scale = 1;
+                    d.forceR = Math.max(12, rScale(rValue(d)));
                 });
+             
+            redraw();
+            
         }
         
         //////////////////////////////////////////

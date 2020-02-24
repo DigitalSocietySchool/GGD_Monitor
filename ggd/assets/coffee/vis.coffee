@@ -28,12 +28,12 @@ root.Bubbles = () ->
   maxRadius = 65
 
   # this scale will be used to size our bubbles
-  rScale = d3.scale.sqrt().range([0,maxRadius])
+  root.rScale = d3.scale.sqrt().range([0,maxRadius])
   
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
-  rValue = (d) -> parseInt(d.size)
+  root.rValue = (d) -> parseInt(d.size)
           
   # EMMA
   # Extractig values for donut charts
@@ -80,7 +80,7 @@ root.Bubbles = () ->
 
   # constants to control how
   # collision look and act
-  collisionPadding = 4
+  collisionPadding = 1
   minCollisionRadius = 12
 
   # variables that can be changed
@@ -88,7 +88,7 @@ root.Bubbles = () ->
   # acts
   # - jitter controls the 'jumpiness'
   #  of the collisions
-  jitter = 0.5
+  jitter = 0.2
 
   # ---
   # tweaks our dataset to get it into the
@@ -112,15 +112,19 @@ root.Bubbles = () ->
   # - updates visual bubbles to reflect new force node locations
   # ---
   tick = (e) ->
+    
     dampenedAlpha = e.alpha * 0.1
     
     # Most of the work is done by the gravity and collide
     # functions.
+    #filtered = node.attr('filtered')
+
     node
       .each(gravity(dampenedAlpha))
       .each(collide(jitter))
-      .attr("transform", (d) -> "translate(#{d.x},#{d.y})")
-
+      .attr("transform", (d) -> "translate(#{d.x},#{d.y})"+ ",scale(#{d.ui_scale})") 
+      
+    #node.attr('transform', node.attr("transform") + ",scale(" + node.attr(filter_scale) + ")")
     # As the labels are created in raw html and not svg, we need
     # to ensure we specify the 'px' for moving based on pixels
     label
@@ -130,7 +134,7 @@ root.Bubbles = () ->
   # The force variable is the force layout controlling the bubbles
   # here we disable gravity and charge as we implement custom versions
   # of gravity and collisions for this visualization
-  force = d3.layout.force()
+  root.force = d3.layout.force()
     .gravity(0)
     .charge(0)
     .size([width, height])
@@ -209,8 +213,7 @@ root.Bubbles = () ->
                                       d.keyword.includes(input));
       theLabel = d3.selectAll(".bubble-label")
                     .filter( (d) -> d.keyword.includes(input))
-      #console.log("theNode")
-      #console.log(theNode)
+      
       d3.selectAll(".bubble-node").style("opacity","0");
       theNode.style("opacity","1")
       d3.selectAll(".bubble-label").style("opacity","0");
@@ -221,36 +224,13 @@ root.Bubbles = () ->
         d3.selectAll(".bubble-label").style("opacity","1");
         d3.select("#status").html("<h3>No dataset is selected</h3>")
 
-  
-  root.filterNodes = (keep_geo_label) ->
-    #console.log(datas)
-    #d3.selectAll(".bubble-node").style("opacity","0")
-    #d3.selectAll(".bubble-node").filter(datas, (d) -> keep_geo_label.indexOf(d) > -1).style("opacity","1")
-    
-    keep_nodes = d3.selectAll(".bubble-label")
-                    .filter( (d) -> keep_geo_label.indexOf( crossfilter(d).dimension((d) -> d.geo)) > -1 )
 
-    console.log(keep_nodes)
-    keep_nodes.style("opacity","0")
-
-    #node_keep.call(force.drag)
-    #    .call(connectEvents)
-    #    .style("opacity","1")
-
-
-    #node.selectAll(".bubble-node").data(datas, (d) -> idValue(d)).style("opacity","1")
-    #node.selectAll(".bubble-node")
-    #  .filter( (d) -> idValue(d) )
-    #  .style("opacity","1")
-    #node_delete = node.exit().remove()
-    #node_delete.style("opacity","0")
-    # node_keep.style("opacity","1")
     
   # ---
   # update starts up the force directed layout and then
   # updates the nodes and labels
   # ---
-  root.update = () ->
+  update = () ->
     # add a radius to our data nodes that will serve to determine
     # when a collision has occurred. This uses the same scale as
     # the one used to size our bubbles, but it kicks up the minimum
@@ -260,6 +240,7 @@ root.Bubbles = () ->
 
     data.forEach (d,i) ->
       d.forceR = Math.max(minCollisionRadius, rScale(rValue(d)))
+      d.ui_scale = 1
 
     # start up the force layout
     force.nodes(data).start()
@@ -271,7 +252,7 @@ root.Bubbles = () ->
   # ---
   # updateNodes creates a new bubble for each node in our dataset
   # ---
-  root.updateNodes = (datas) ->
+  updateNodes = (datas) ->
     # here we are using the idValue function to uniquely bind our
     # data to the (currently) empty 'bubble-node selection'.
     # if you want to use your own data, you just need to modify what
@@ -305,10 +286,9 @@ root.Bubbles = () ->
         .attr("size", (d) -> d.size)
         .attr("dep", (d) -> d.department)
         .attr("time", (d) -> d.time)
+        .attr("filter_scale", (d) -> d.ui_scale)
         .call(force.drag)
         .call(connectEvents)
-        #.append("g")
-        #  .attr('class','bubble_scaler')
 
     # drawing the Pie chart ( timeline)
     node
@@ -493,7 +473,7 @@ root.Bubbles = () ->
   # ---
   # custom gravity to skew the bubble placement
   # ---
-  root.gravity = (alpha) ->
+  gravity = (alpha) ->
     # start with the center of the display
     cx = width / 2
     cy = height / 2
@@ -515,7 +495,7 @@ root.Bubbles = () ->
   # we could use quadtree to speed up implementation
   # (which is what Mike's original version does)
   # ---
-  root.collide = (jitter) ->
+  collide = (jitter) ->
     # return a function that modifies
     # the x and y of a node
     (d) ->
@@ -545,6 +525,12 @@ root.Bubbles = () ->
             d.y -= moveY
             d2.x += moveX
             d2.y += moveY
+
+  # ---
+  # Animate bubbles after filtering
+  # ---
+  root.redraw = () ->
+    force.nodes(data).start() #.alpha(0.1) #.restart()
 
   # ---
   # adds mouse events to element
@@ -662,7 +648,7 @@ root.Bubbles = () ->
 # of our chart with it's data and div selector
 # specified
 # ---
-root.plotData = (selector, data, plot) ->
+plotData = (selector, data, plot) ->
   d3.select(selector)
     .datum(data)
     .call(plot)
@@ -670,9 +656,9 @@ root.plotData = (selector, data, plot) ->
 # ---
 # jQuery document ready.
 # ---
-$ ->
+root.$ ->
   # create a new Bubbles chart
-  plot = Bubbles()
+  root.plot = Bubbles()
 
   # ---
   # function that is called when
@@ -693,4 +679,5 @@ $ ->
   d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", display)
   # d3.json("https://dev.ggd.dss.cloud/api/v1.php", display)
   # d3.json('http://localhost:8888/GGD_20200203/ggd/data/data_ggd.json', display)
+
 
