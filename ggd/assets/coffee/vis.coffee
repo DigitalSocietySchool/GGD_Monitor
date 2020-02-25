@@ -309,7 +309,7 @@ root.Bubbles = () ->
     # drawing the visible circle
     node
       .append("circle")
-      .attr("r", (d) -> rScale(rValue(d))-5)
+      .attr("r", (d) -> rScale(rValue(d))-7)
 
     #adding svgs to the circle
     node

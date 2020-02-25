@@ -396,7 +396,7 @@
     <!-- begin second toolbar -->
     <div class="container toolbar">
         <div class="row toolbar-header">
-            <div class="col dim_label" onmouseup="removeSize();" style="flex-grow:1.7;">
+            <div class="col dim_label" id="toggle_size" onmouseup="removeSize();" style="flex-grow:1.7;">
                 <img class="eyecon" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png"> Number of Cases
             </div>
             <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.2;">
@@ -621,10 +621,10 @@
             // Reset pies
             d3.selectAll(".bubble-node")
                 .each(function(d) {
-                    d.forceR = Math.max(12, 62);
+                    d.forceR = Math.max(12, 60);
                 })
                 .selectAll(".pie")
-                .attr('transform','scale(0.6,0.6)');
+                .attr('transform','scale(0.58,0.58)');
 
             // Reset images
             d3.selectAll(".bubble-node")
@@ -632,6 +632,46 @@
                 .attr('width',63)
                 .attr('height',63)
                 .style("transform", "translate(-"+ 55*0.555 +'px,-'+ 55*0.6 +'px)');
+
+            document.getElementById('toggle_size').setAttribute('onmouseup','restoreSize()');
+
+            redraw();
+            
+        }
+
+        function restoreSize(){
+
+            // Reset circles
+            d3.selectAll(".bubble-node")
+                .selectAll("circle")
+                .attr('r', function(d) {
+                    return rScale(rValue(d))-7;
+                });
+
+            // Reset pies
+            d3.selectAll(".bubble-node")
+                .each(function(d) {
+                    d.forceR = Math.max(12, rScale(rValue(d)));
+                })
+                .selectAll(".pie")
+                    .attr("transform", function(d) {
+                        return "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")";
+                    });
+
+            // Reset images
+            d3.selectAll(".bubble-node")
+                .selectAll("image")
+                  .attr("width",  function(d) {
+                        return rScale(rValue(d)) * 1.15 ;
+                    })
+                  .attr("height", function(d) {
+                        return rScale(rValue(d)) * 1.15 ;
+                    })
+                  .style("transform", function(d) {
+                        return "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)' ;
+                    });
+
+            document.getElementById('toggle_size').setAttribute('onmouseup','removeSize()');
 
             redraw();
             
