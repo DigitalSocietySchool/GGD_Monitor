@@ -18,14 +18,14 @@ getBorderColors = (year) ->
 root.Bubbles = () ->
   # standard variables accessible to
   # the rest of the functions inside Bubbles
-  width = 980
-  height = 510
+  width = 1400
+  height = 700
   data = []
   node = null
   label = null
-  margin = {top: 5, right: 0, bottom: 0, left: 0}
+  margin = {top: 0, right: 0, bottom: 0, left: 0}
   # largest size for our bubbles
-  maxRadius = 65
+  maxRadius = 45
 
   # this scale will be used to size our bubbles
   root.rScale = d3.scale.sqrt().range([0,maxRadius])
@@ -33,7 +33,7 @@ root.Bubbles = () ->
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
-  root.rValue = (d) -> parseInt(d.size)
+  root.rValue = (d) -> Math.min(parseInt(d.size), 5000)
           
   # EMMA
   # Extractig values for donut charts
@@ -170,7 +170,7 @@ root.Bubbles = () ->
       
       # node will be used to group the bubbles
       node = svgEnter.append("g").attr("id", "bubble-nodes")
-        .attr("transform", "translate(#{margin.left},#{margin.top})")
+        .attr("transform", "translate(#{margin.left - 150},#{margin.top})")
 
       # clickable background rect to clear the current selection
       node.append("rect")
@@ -309,7 +309,7 @@ root.Bubbles = () ->
     # drawing the visible circle
     node
       .append("circle")
-      .attr("r", (d) -> rScale(rValue(d))-7)
+      .attr("r", (d) -> Math.max(12, rScale(rValue(d))-4 ) )
 
     #adding svgs to the circle
     node
@@ -568,6 +568,7 @@ root.Bubbles = () ->
     dept = ''
     keywords = ''
     contact = ''
+    name = ''
     # size = ''
     # image = ''
 
@@ -577,11 +578,12 @@ root.Bubbles = () ->
                       dept = d.department
                       keywords = d.keyword
                       contact = d.contact
+                      name = d.name
                     )
 
     # if no node is selected, id will be empty
-    if id.length > 0
-      d3.select("#status").html("<h3>The <span class=\"active\">#{id}</span> is now selected</h3>")
+    if id.length > 0 & name != ''
+      d3.select("#status").html("<span class=\"active\">#{name}</span> is now selected.")
       d3.select("#title-input").html("#{id}")
       d3.select("#contact-input").html("#{contact}")
       d3.select("#keywords-input").html("#{keywords}")
