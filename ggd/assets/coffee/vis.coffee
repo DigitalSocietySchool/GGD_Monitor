@@ -31,12 +31,12 @@ getBorderOpacity = (year) ->
 root.Bubbles = () ->
   # standard variables accessible to
   # the rest of the functions inside Bubbles
-  width = 800
+  width = 1200
   height = 700
   data = []
   node = null
   label = null
-  margin = {top: 0, right: 0, bottom: 0, left: 450}
+  margin = {top: 0, right: 0, bottom: 0, left: 0}
   # largest size for our bubbles
   maxRadius = 45
 
@@ -505,11 +505,11 @@ root.Bubbles = () ->
   # ---
   gravity = (alpha) ->
     # start with the center of the display
-    cx = width / 2
+    cx = 250 + width / 2
     cy = height / 2
     # use alpha to affect how much to push
     # towards the horizontal or vertical
-    ax = alpha # / 8
+    ax = 0.7 * alpha # / 8
     ay = alpha
 
     # return a function that will modify the
@@ -615,7 +615,7 @@ root.Bubbles = () ->
     # if no node is selected, id will be empty
     if id.length > 0 & name != ''
       #d3.select("#status").html("<span style='font-weight:normal'>Dataset:</span> #{name}")
-      d3.select("#title-input").html("<span style='font-weight:normal'>Dataset:</span> #{name}")
+      d3.select("#title-input").html("#{name}")
       d3.select("#descr-input").html("#{description}")
       d3.select("#contact-input").html("#{contact}")
       d3.select("#keywords-input").html("#{keywords}")

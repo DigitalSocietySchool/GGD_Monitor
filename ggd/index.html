@@ -214,16 +214,11 @@
     <!-- begin bubble-specific toolbar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div style="float:left;margin-left:15px;">
+            <div style="float:left;margin-left:10px;">
                 <!--span class="dim_val">Dataset:</span!-->
                 <span id="title-input" contenteditable="false">
                 </span>
             </div>
-            <!--div class="col dim_label" style="flex-grow:1;">
-                <span class="dim_val">Contact:</span> 
-                <span id="contact-input" contenteditable="false">
-                </span>
-            </div-->
             <div style="float:right;margin-right:10px;font-weight: normal;">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
             </div>
@@ -233,13 +228,21 @@
         <div class="row collapse" id="toolbar-meta">
             <div class="col" style="padding-left:25px;">
                 <div class="sidebar-items">
-                    <div><b>Description:&nbsp;</b></div>
-                    <div style="font-weight: 100" contentEditable="false" id="description-input">This dataset was created in 2012 to track the smoking habits of young adults over time</div>
+                    <!--div><b>Description:&nbsp;</b></div-->
+                    <span style="font-weight:100;" contentEditable="false" id="description-input">
+                        No description.
+                    </span>
                 </div>
                 <div class="sidebar-items">
-                    <div>Keywords:&nbsp;&nbsp;</div>
-                    <div contentEditable="false" style="font-weight: 100" id="keywords-input">Smoking, youngadults, 2012</div>
+                    <span style="float:left;width:85px;display:block;">Keywords: </span>
+                    <span contentEditable="false" id="keywords-input" style="float:left;font-weight:100;width:370px;">None.</span>
                 </div>
+            <div class="sidebar-items">
+                <span style="clear:both;width:70px;">Contact:</span> 
+                <span id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
+                    Menno Segeren
+                </span>
+            </div>
             </div>
         </div>
     </div>
