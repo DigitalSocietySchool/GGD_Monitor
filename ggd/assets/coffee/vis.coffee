@@ -15,17 +15,38 @@ getBorderColors = (year) ->
     arcFill[index] = "#000000"
   return (val for key, val of arcFill)
 
+getBorderOpacity = (year) ->
+  arcOpacity = {}
+  for x in [0..17] by 1
+    arcOpacity[x] = 0
+
+  current_year = (new Date).getFullYear()
+  for y in year.split(";")
+    if y < current_year - 17
+      y = current_year - 17
+    index = current_year - parseInt(y)
+    arcOpacity[index] = 1
+  return (val for key, val of arcOpacity)
+
 root.Bubbles = () ->
   # standard variables accessible to
   # the rest of the functions inside Bubbles
-  width = 1400
+  width = 800
   height = 700
   data = []
   node = null
   label = null
-  margin = {top: 0, right: 0, bottom: 0, left: 0}
+  margin = {top: 0, right: 0, bottom: 0, left: 450}
   # largest size for our bubbles
   maxRadius = 45
+
+
+  d3.select('#vis')
+    .attr("width", width + margin.left + margin.right )
+    .attr("height", height + margin.top + margin.bottom )
+    #.attr("transform", "translate(#{margin.left},#{margin.top})")
+    #.attr("style",'border: 1px #f00 solid; position:relative;left:250px;')
+    #.attr("style",'border: 1px #f00 solid;')
 
   # this scale will be used to size our bubbles
   root.rScale = d3.scale.sqrt().range([0,maxRadius])
@@ -34,8 +55,8 @@ root.Bubbles = () ->
   # into its own function. This should make it easy
   # to switch out the underlying dataset
   root.rValue = (d) -> Math.min(parseInt(d.size), 5000)
+
           
-  # EMMA
   # Extractig values for donut charts
   pie_bub = (d) -> d3.pie()(Array(18).fill(1))
 
@@ -164,13 +185,19 @@ root.Bubbles = () ->
       # a fancy way to setup svg element
       svg = d3.select(this).selectAll("svg").data([data])
       svgEnter = svg.enter().append("svg")
-      svg.attr("width", width + margin.left + margin.right )
-      svg.attr("height", height + margin.top + margin.bottom )
-      svg.attr("id","svg_main")
+      svg
+        .attr("width", width)
+        .attr("height", height )
+        .attr("id","svg_main")
+        .attr("transform", "translate(#{margin.left},#{margin.top})")
       
       # node will be used to group the bubbles
-      node = svgEnter.append("g").attr("id", "bubble-nodes")
-        .attr("transform", "translate(#{margin.left - 150},#{margin.top})")
+      node = svgEnter.append("g")
+        .attr("id", "bubble-nodes")
+        .attr("width", width )
+        .attr("height", height )
+        .attr("style",'border: 1px #f00 solid;')
+        .attr("transform", "translate(-30,0)")
 
       # clickable background rect to clear the current selection
       node.append("rect")
@@ -206,7 +233,7 @@ root.Bubbles = () ->
       # updateLabels(data)
       
       input = $(".searchInput").val();
-      d3.select("#status").html("<h3>search results for <span class=\"active\"> " + String(input) + " </span> </h3>")
+      d3.select("#status").html("Search results for <span class=\"active\"> " + String(input) + " </span>")
 
       theNode = d3.selectAll(".bubble-node")
                     .filter( (d,i) ->                                   
@@ -222,8 +249,9 @@ root.Bubbles = () ->
   $(".reset").on "click", ->
         d3.selectAll(".bubble-node").style("opacity","1");
         d3.selectAll(".bubble-label").style("opacity","1");
-        d3.select("#status").html("<h3>No dataset is selected</h3>")
-
+        #d3.select("#status").html("No dataset is selected")
+        d3.select("#title-input").html("No dataset is selected")
+  
 
     
   # ---
@@ -239,7 +267,7 @@ root.Bubbles = () ->
 
 
     data.forEach (d,i) ->
-      d.forceR = Math.max(minCollisionRadius, rScale(rValue(d)))
+      d.forceR = Math.max(minCollisionRadius+4, rScale(rValue(d)))
       d.ui_scale = 1
 
     # start up the force layout
@@ -296,6 +324,7 @@ root.Bubbles = () ->
         .attr("class", "pie")
         .attr("id", (d) -> "g_" + d.ID.toString())
         .attr('data_col', (d) -> getBorderColors(d.time))
+        .attr('data_opac', (d) -> getBorderOpacity(d.time))
         .attr("width",  (d) -> rScale(rValue(d)) * 2 )
         .attr("height", (d) -> rScale(rValue(d)) * 2 )
         .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
@@ -405,6 +434,7 @@ root.Bubbles = () ->
     node.selectAll(".pie")
       .selectAll(".arc")
         .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
+        .attr("opacity", (d,i) -> d3.select(this.parentNode).attr("data_opac").split(",")[i] )
 
     # console.log(node)
     # node.exit().remove()
@@ -479,7 +509,7 @@ root.Bubbles = () ->
     cy = height / 2
     # use alpha to affect how much to push
     # towards the horizontal or vertical
-    ax = alpha / 8
+    ax = alpha # / 8
     ay = alpha
 
     # return a function that will modify the
@@ -569,7 +599,7 @@ root.Bubbles = () ->
     keywords = ''
     contact = ''
     name = ''
-    # size = ''
+    description = ''
     # image = ''
 
     # #retrieve data elements from active node
@@ -579,18 +609,20 @@ root.Bubbles = () ->
                       keywords = d.keyword
                       contact = d.contact
                       name = d.name
+                      description = d.description
                     )
 
     # if no node is selected, id will be empty
     if id.length > 0 & name != ''
-      d3.select("#status").html("<span class=\"active\">#{name}</span> is now selected.")
-      d3.select("#title-input").html("#{id}")
+      #d3.select("#status").html("<span style='font-weight:normal'>Dataset:</span> #{name}")
+      d3.select("#title-input").html("<span style='font-weight:normal'>Dataset:</span> #{name}")
+      d3.select("#descr-input").html("#{description}")
       d3.select("#contact-input").html("#{contact}")
       d3.select("#keywords-input").html("#{keywords}")
 
 
     else
-      d3.select("#status").html("<h3>No dataset is selected</h3>")
+      d3.select("#title-input").html("No dataset is selected")
 
   # ---
   # hover event

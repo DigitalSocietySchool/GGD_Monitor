@@ -2,9 +2,13 @@ body {
     font-family: 'Open Sans', sans-serif;
     color: #000000;
     font-size: 15px;
+    margin-left:-16px;
 }
 
 .header {
+    padding-top: 50px;
+}
+.vizbar {
     padding-top: 50px;
 }
 
@@ -18,6 +22,58 @@ body {
     box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
     margin-bottom: 25px;
     min-height: 40px;
+    min-width: 1140px;
+}
+
+.topbar {
+    font-weight: 700;
+    background-color: #F7F7F7;
+    border: 1px solid #4D4D4D;
+    margin-top: -1px;
+    margin-left: -1px;
+    text-align: center;
+    box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
+    margin-bottom: 25px;
+    min-height: 40px;
+    position: fixed;
+    padding-top:5px;
+    left: 0px;
+    top: 0px;
+    width: 102%;
+    z-index:1000;
+}
+
+.sidebar {
+    font-weight: 700;
+    border-radius: 20px;
+    padding: 6px;
+    padding-bottom: 0px;
+    border: 1px solid #666;
+    background-color: #F7F7F7;
+    border-radius:20px;
+    text-align: center;
+    box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
+    min-height: 40px;
+    position: fixed;
+    left: 5%;
+    top: 60px;
+    width: 480px;
+    z-index:1000;
+}
+
+.sidebar-header {
+    border-radius: 20px;
+    padding: 6px;
+    padding-top: 8px;
+    border: 1px solid #666;
+    background-color: #E6E6E6;
+    margin-top: -7px;
+    margin-bottom: -7px;
+    margin-left: -6px;
+    vertical-align: middle;
+    min-height: 45px;
+    width: 480px;
+    z-index:1000;
 }
 
 .toolbar-header {
@@ -40,6 +96,15 @@ body {
 
 
 .toolbar-items {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    padding-top:20px;
+}
+
+.sidebar-items div{
     display: flex;
     align-items: center;
     text-align: left;
@@ -85,7 +150,7 @@ div.ownership div div, #population div div {
 }
 
 #vis {
-    overflow: hidden;
+    overflow: visible;
     position: relative;
 }
 

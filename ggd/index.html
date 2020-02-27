@@ -173,7 +173,52 @@
 </head>
 
 <body>
-    <div id="edit-top-bar" class="container toolbar" style="display:none">
+
+
+    <!--div style="display: flex; justify-content: center;height: 30px;"-->
+    <div class="topbar">
+        <input class="searchInput" name="targetNode" type="text" />
+        <button class="button">Search</button>
+        <button class="reset">Reset</button>
+        <span id="status"></span>&nbsp; &nbsp;
+        <span class="">New</span>  &nbsp; &nbsp;
+        <span onmouseup="toggleEdit();" >Edit</span>
+    </div>
+
+    <!-- begin bubble-specific toolbar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div style="float:left;margin-left:15px;">
+                <!--span class="dim_val">Dataset:</span!-->
+                <span id="title-input" contenteditable="false">
+                </span>
+            </div>
+            <!--div class="col dim_label" style="flex-grow:1;">
+                <span class="dim_val">Contact:</span> 
+                <span id="contact-input" contenteditable="false">
+                </span>
+            </div-->
+            <div style="float:right;margin-right:10px;font-weight: normal;">
+                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
+            </div>
+            <div class="col-auto">
+            </div>
+        </div>
+        <div class="row collapse" id="toolbar-meta">
+            <div class="col" style="padding-left:25px;">
+                <div class="sidebar-items">
+                    <div><b>Description:&nbsp;</b></div>
+                    <div style="font-weight: 100" contentEditable="false" id="description-input">This dataset was created in 2012 to track the smoking habits of young adults over time</div>
+                </div>
+                <div class="sidebar-items">
+                    <div>Keywords:&nbsp;&nbsp;</div>
+                    <div contentEditable="false" style="font-weight: 100" id="keywords-input">Smoking, youngadults, 2012</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-top-bar" class="topbar" style="display:none">
         <div class="row toolbar-header" id="edit_mode">
             <div class="col"  style="flex-grow:3.5;">
                 EDIT MODE: You are editing the details of this dataset.
@@ -190,54 +235,11 @@
         </div>
     </div>
 
-    <div class="container">
-
-        <div class="row">
-            <div class="col header">
-                <div style="display: flex; justify-content: center;height: 30px;">
-                    <input class="searchInput" name="targetNode" type="text" />
-                    <button class="button">Search</button>
-                    <button class="reset">Reset</button>
-                    <div id="status"></div>
-                </div>
-                <div id="data_main" style="display:none;"></div>
-                <div id="vis"></div>
-            </div>
-        </div>
-    </div>
-    <!-- begin conditional toolbar -->
-    <div class="container toolbar">
-        <div class="row toolbar-header">
-            <div class="col dim_label" style="flex-grow:1.2;">
-                <span class="dim_val">Title:</span>
-                <span id="title-input" contenteditable="false">
-                </span>
-            </div>
-            <div class="col dim_label" style="flex-grow:1;">
-                <span class="dim_val">Contact:</span> 
-                <span id="contact-input" contenteditable="false">
-                </span>
-            </div>
-            <div class="col dim_label" style="flex-grow:0.3;">
-                <span onmouseup="toggleEdit();" >Edit</span> &nbsp; &nbsp;
-                <span class="">New</span> 
-            </div>
-            <div class="col-auto">
-                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
-            </div>
-        </div>
-        <div class="row collapse" id="toolbar-meta">
-            <div class="row" style="padding-left:25px;">
-                <div class="col-md-7 toolbar-items">
-                    <div>Description:&nbsp;&nbsp;&nbsp;</div>
-                    <div style="font-weight: 100" contentEditable="false" id="description-input">This dataset was created in 2012 to track the smoking habits of young adults over time</div>
-                </div>
-                <div class="col-md-4 toolbar-items">
-                    <div>Keywords:&nbsp;&nbsp;</div>
-                    <div contentEditable="false" style="font-weight: 100" id="keywords-input">Smoking, youngadults, 2012</div>
-                </div>
-
-            </div>
+    <div class="container" id="vizContainer">
+    <!-- VISUALIZATION -->
+        <div class="vizbar">
+            <div id="data_main" style="display:none;"></div>
+            <div id="vis"></div>
         </div>
     </div>
     <!-- begin first toolbar -->
@@ -621,7 +623,7 @@
             // Reset pies
             d3.selectAll(".bubble-node")
                 .each(function(d) {
-                    d.forceR = 35;
+                    d.forceR = 36;
                 })
                 .selectAll(".pie")
                 .attr('transform','scale(0.33,0.33)');
@@ -645,13 +647,13 @@
             d3.selectAll(".bubble-node")
                 .selectAll("circle")
                 .attr('r', function(d) {
-                    return Math.max(8, rScale(rValue(d))-4 );
+                    return Math.max(12, rScale(rValue(d))-4 );
                 });
 
             // Reset pies
             d3.selectAll(".bubble-node")
                 .each(function(d) {
-                    d.forceR = Math.max(12, rScale(rValue(d)));
+                    d.forceR = Math.max(16, rScale(rValue(d)));
                 })
                 .selectAll(".pie")
                     .attr("transform", function(d) {
@@ -1085,6 +1087,7 @@
             filterBubbles();
         }
 
+        collapseToolbar('meta');
     </script>
 </body>
 

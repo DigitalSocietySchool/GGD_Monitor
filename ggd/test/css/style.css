@@ -6,7 +6,7 @@ a, a:visited {
   color:#333;
 }
 
-#container {
+#containerZZZ {
   padding-top:20px;
   width: 980px;
   border-left: 2px #ddd solid;
@@ -30,7 +30,7 @@ header {
 }
 
 #vis {
-  overflow: hidden;
+  overflow: visible;
   position: relative;
 }
 
