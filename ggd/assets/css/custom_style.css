@@ -54,8 +54,11 @@ body {
     text-align: center;
     box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
     min-height: 40px;
+    margin-left:-10px;
     position: fixed;
-    left: 5%;
+    /*left: 5%; */
+    margin-left: auto;
+    margin-right: auto;
     top: 60px;
     width: 480px;
     z-index:1000;

@@ -169,10 +169,18 @@
             });
         }
 
+        function replaceLayout(){
+            var element = document.getElementById('toolbar_inside'),
+            style = window.getComputedStyle(element),
+            left = style.getPropertyValue('margin-left');
+            document.getElementById('sidebar').setAttribute('style','margin-left:'+left);
+            document.getElementById('vis').setAttribute('style','margin-left:'+left);
+        }
+
     </script>
 </head>
 
-<body>
+<body onresize="replaceLayout()">
 
 
     <!--div style="display: flex; justify-content: center;height: 30px;"-->
@@ -185,8 +193,26 @@
         <span onmouseup="toggleEdit();" >Edit</span>
     </div>
 
+
+    <div id="edit-top-bar" class="topbar" style="display:none">
+        <div class="row toolbar-header" id="edit_mode">
+            <div class="col"  style="flex-grow:3.5;">
+                EDIT MODE: You are editing the details of this dataset.
+            </div>
+            <div class="col">
+                <img class="eyecon" onmouseup="toggleEdit()" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
+                Cancel
+            </div>
+            <div class="col">
+                <img class="eyecon" style="height: 20px; margin-top:-5px" id="save" src="assets/img/save.svg"> 
+                Save
+            </div>
+
+        </div>
+    </div>
+
     <!-- begin bubble-specific toolbar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div style="float:left;margin-left:15px;">
                 <!--span class="dim_val">Dataset:</span!-->
@@ -218,24 +244,7 @@
         </div>
     </div>
 
-    <div id="edit-top-bar" class="topbar" style="display:none">
-        <div class="row toolbar-header" id="edit_mode">
-            <div class="col"  style="flex-grow:3.5;">
-                EDIT MODE: You are editing the details of this dataset.
-            </div>
-            <div class="col">
-                <img class="eyecon" onmouseup="toggleEdit()" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
-                Cancel
-            </div>
-            <div class="col">
-                <img class="eyecon" style="height: 20px; margin-top:-5px" id="save" src="assets/img/save.svg"> 
-                Save
-            </div>
-
-        </div>
-    </div>
-
-    <div class="container" id="vizContainer">
+    <div class="containerZ" id="vizContainer">
     <!-- VISUALIZATION -->
         <div class="vizbar">
             <div id="data_main" style="display:none;"></div>
@@ -243,7 +252,7 @@
         </div>
     </div>
     <!-- begin first toolbar -->
-    <div class="container toolbar">
+    <div class="container toolbar" id="toolbar_inside">
         <div class="row toolbar-header">
             <div class="col dim_label" onmouseup="changeView('geo');">
                 <img class="eyecon" id="eye_geo" collapsed="true" src="assets/img/icon/eye_hide.png"> Geo. Coverage
@@ -1088,6 +1097,8 @@
         }
 
         collapseToolbar('meta');
+
+        replaceLayout();
     </script>
 </body>
 
