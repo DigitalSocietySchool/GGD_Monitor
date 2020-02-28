@@ -586,14 +586,14 @@ root.Bubbles = () ->
   # ---
   # called when url after the # changes
   # ---
-  hashchange = () ->
+  root.hashchange = () ->
     id = decodeURIComponent(location.hash.substring(1)).trim()
     updateActive(id)
 
   # ---
   # activates new node
   # ---
-  updateActive = (id) ->
+  root.updateActive = (id) ->
     node.classed("bubble-selected", (d) -> id == idValue(d))
     node.classed("bubble-tone-down", (d) -> id != idValue(d))
     keywords = ''
@@ -613,11 +613,6 @@ root.Bubbles = () ->
                       publication = d.publication
                     )
 
-    if description == '' then description == '-'
-    if keywords == '' then keywords == '-'
-    if contact == '' then contact == 'Menno Segeren'
-    if publication == '' then publication == '-'
-
     # if no node is selected, id will be empty
     if id.length > 0 & name != ''
       #d3.select("#status").html("<span style='font-weight:normal'>Dataset:</span> #{name}")
@@ -628,9 +623,8 @@ root.Bubbles = () ->
       d3.select("#publication-input").html("#{publication}")
 
       # Make unselected nodes transparent
-      activeNode = d3.selectAll(".bubble-selected").attr('opacity','1')
-      activeNode = d3.selectAll(".bubble-tone-down").attr('opacity','0.2')
-
+      d3.selectAll(".bubble-selected").attr('opacity','1')
+      d3.selectAll(".bubble-tone-down").attr('opacity','0.2')
 
     else
       d3.select("#title-input").html("No dataset is selected")
@@ -639,7 +633,7 @@ root.Bubbles = () ->
       d3.select("#keywords-input").html("-")
       d3.select("#publication-input").html("-")
 
-      activeNode = d3.selectAll(".bubble-tone-down").attr('opacity','1')
+      d3.selectAll(".bubble-tone-down").attr('opacity','1')
 
   # ---
   # hover event
@@ -647,11 +641,40 @@ root.Bubbles = () ->
   mouseover = (d) ->
     node.classed("bubble-hover", (p) -> p == d)
 
+    keywords = ''
+    contact = ''
+    name = ''
+    description = ''
+    publication = ''
+
+    # retrieve data elements from rolled node
+    rolledNode = d3.selectAll(".bubble-hover")
+                    .filter( (d) -> 
+                      description = d.description.replace(' - ',' ')
+                      keywords = d.keyword 
+                      contact = d.contact
+                      name = d.name
+                      publication = d.publication
+                    )
+
+    d3.select("#title-input").html("#{name}")
+    d3.select("#description-input").html("#{description}")
+    d3.select("#contact-input").html("#{contact}")
+    d3.select("#keywords-input").html("#{keywords}")
+    d3.select("#publication-input").html("#{publication}")
+
+    # Make unselected nodes transparent
+    d3.selectAll(".bubble-hover")
+      .classed('bubble-tone-down', false)
+      .attr('opacity','1')
+
   # ---
   # remove hover class
   # ---
   mouseout = (d) ->
     node.classed("bubble-hover", false)
+      .classed('bubble-tone-down', true)
+    hashchange()
 
   # ---
   # public getter/setter for jitter variable
