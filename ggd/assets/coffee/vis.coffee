@@ -595,34 +595,43 @@ root.Bubbles = () ->
   # ---
   updateActive = (id) ->
     node.classed("bubble-selected", (d) -> id == idValue(d))
-    dept = ''
     keywords = ''
     contact = ''
     name = ''
     description = ''
-    # image = ''
+    publication = ''
 
     # #retrieve data elements from active node
     activeNode = d3.selectAll(".bubble-selected")
                     .filter( (d) -> 
-                      dept = d.department
-                      keywords = d.keyword
+                      description = d.description.replace(' - ',' ')
+                      keywords = d.keyword 
                       contact = d.contact
                       name = d.name
-                      description = d.description
+                      publication = d.publication
                     )
+
+    if description == '' then description == '-'
+    if keywords == '' then keywords == '-'
+    if contact == '' then contact == 'Menno Segeren'
+    if publication == '' then publication == '-'
 
     # if no node is selected, id will be empty
     if id.length > 0 & name != ''
       #d3.select("#status").html("<span style='font-weight:normal'>Dataset:</span> #{name}")
       d3.select("#title-input").html("#{name}")
-      d3.select("#descr-input").html("#{description}")
+      d3.select("#description-input").html("#{description}")
       d3.select("#contact-input").html("#{contact}")
       d3.select("#keywords-input").html("#{keywords}")
+      d3.select("#publication-input").html("#{publication}")
 
 
     else
       d3.select("#title-input").html("No dataset is selected")
+      d3.select("#description-input").html("-")
+      d3.select("#contact-input").html("-")
+      d3.select("#keywords-input").html("-")
+      d3.select("#publication-input").html("-")
 
   # ---
   # hover event

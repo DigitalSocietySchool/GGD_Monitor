@@ -172,9 +172,20 @@
         function replaceLayout(){
             var element = document.getElementById('toolbar_inside'),
             style = window.getComputedStyle(element),
-            left = style.getPropertyValue('margin-left');
-            document.getElementById('sidebar').setAttribute('style','margin-left:'+left);
-            document.getElementById('vis').setAttribute('style','margin-left:'+left);
+            left = style.getPropertyValue('margin-left').replace('px','')*1;
+
+            left_sidebar = Math.max(left, 34);
+
+            element = document.getElementById('title-input'),
+            style = window.getComputedStyle(element),
+            height = style.getPropertyValue('height');
+
+            document.getElementById('sidebar')
+                .setAttribute('style','margin-left:'+left_sidebar+'px;height:'+height);
+
+            document.getElementById('vis')
+                .setAttribute('style','margin-left:'+left+'px');
+
         }
 
     </script>
@@ -213,8 +224,8 @@
 
     <!-- begin bubble-specific toolbar -->
     <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div style="float:left;margin-left:10px;">
+        <div class="sidebar-header" id="sidebar-header">
+            <div style="float:left;margin-left:10px;max-width:400px;">
                 <!--span class="dim_val">Dataset:</span!-->
                 <span id="title-input" contenteditable="false">
                 </span>
@@ -225,22 +236,28 @@
             <div class="col-auto">
             </div>
         </div>
-        <div class="row collapse" id="toolbar-meta">
-            <div class="col" style="padding-left:25px;">
+        <div class="row collapse" id="toolbar-meta" style="clear:both;">
+            <div class="col" style="padding-left:25px;padding-top:20px;">
                 <div class="sidebar-items">
                     <!--div><b>Description:&nbsp;</b></div-->
                     <span style="font-weight:100;" contentEditable="false" id="description-input">
-                        No description.
+                        -
                     </span>
                 </div>
                 <div class="sidebar-items">
-                    <span style="float:left;width:85px;display:block;">Keywords: </span>
+                    <span style="float:left;width:85px;">Keywords: </span>
                     <span contentEditable="false" id="keywords-input" style="float:left;font-weight:100;width:370px;">None.</span>
                 </div>
             <div class="sidebar-items">
-                <span style="clear:both;width:70px;">Contact:</span> 
-                <span id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
-                    Menno Segeren
+                <span style="width:70px;">Contact:</span> 
+                <span id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:385px;">
+                    -
+                </span>
+            </div>
+            <div class="sidebar-items">
+                <span style="width:100px;">Publication:</span> 
+                <span id="publication-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
+                    -
                 </span>
             </div>
             </div>

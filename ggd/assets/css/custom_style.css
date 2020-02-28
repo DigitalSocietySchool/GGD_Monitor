@@ -51,13 +51,12 @@ body {
     border: 1px solid #666;
     background-color: #F7F7F7;
     border-radius:20px;
-    text-align: center;
+    text-align: left;
     box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
     height: auto;
     min-height: 40px;
     margin-left:-9px;
     position: fixed;
-    /*left: 5%; */
     margin-left: auto;
     margin-right: auto;
     top: 60px;
@@ -75,9 +74,13 @@ body {
     margin-bottom: -7px;
     margin-left: -7px;
     vertical-align: middle;
-    min-height: 45px;
+    min-height: 25px;
+    height: auto;
     width: 480px;
     z-index:1000;
+    max-width: 466px;
+    box-sizing: content-box;
+    display: inline-block; /* */
 }
 
 #title-input{
@@ -117,8 +120,7 @@ body {
     align-items: center;
     text-align: left;
     width: 100%;
-    padding: 10px;
-    padding-top:20px;
+    padding-bottom: 10px;
     clear: both;
 }
 
