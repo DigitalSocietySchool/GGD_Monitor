@@ -192,11 +192,6 @@ div.ownership div div, #population div div {
 }
 
 .bubble-selected {
-    /* fill: #a8c8ee;  */
-    fill: #CEE98F;
-    /* stroke: #6081a3; */
-    stroke: #A6BA92;
-    stroke-width: 1.5px;
 }
 
 .active {

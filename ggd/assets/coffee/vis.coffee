@@ -595,11 +595,13 @@ root.Bubbles = () ->
   # ---
   updateActive = (id) ->
     node.classed("bubble-selected", (d) -> id == idValue(d))
+    node.classed("bubble-tone-down", (d) -> id != idValue(d))
     keywords = ''
     contact = ''
     name = ''
     description = ''
     publication = ''
+
 
     # #retrieve data elements from active node
     activeNode = d3.selectAll(".bubble-selected")
@@ -625,6 +627,10 @@ root.Bubbles = () ->
       d3.select("#keywords-input").html("#{keywords}")
       d3.select("#publication-input").html("#{publication}")
 
+      # Make unselected nodes transparent
+      activeNode = d3.selectAll(".bubble-selected").attr('opacity','1')
+      activeNode = d3.selectAll(".bubble-tone-down").attr('opacity','0.2')
+
 
     else
       d3.select("#title-input").html("No dataset is selected")
@@ -632,6 +638,8 @@ root.Bubbles = () ->
       d3.select("#contact-input").html("-")
       d3.select("#keywords-input").html("-")
       d3.select("#publication-input").html("-")
+
+      activeNode = d3.selectAll(".bubble-tone-down").attr('opacity','1')
 
   # ---
   # hover event
