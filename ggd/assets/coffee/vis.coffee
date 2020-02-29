@@ -254,8 +254,8 @@ root.Bubbles = () ->
       
       d3.selectAll(".bubble-node").style("opacity","0.2")
       theNode.style("opacity","1")
-      d3.selectAll(".bubble-label").style("opacity","0.2")
-      theLabel.style("opacity","1")
+      #d3.selectAll(".bubble-label").style("opacity","0.2")
+      #theLabel.style("opacity","1")
 
   $(".reset").on "click", ->
         d3.selectAll(".bubble-node").style("opacity","1")
