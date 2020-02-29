@@ -83,6 +83,7 @@ root.Bubbles = () ->
   time  = (d) -> d.time
 
   keywords = (d) -> d.keyword
+  indicator = (d) -> d.indicator
 
   # Fill Colors by department
   colors =
@@ -304,6 +305,7 @@ root.Bubbles = () ->
         .attr("fill", (d) -> colors[d.department])
         .attr("contact", (d) -> d.contact)
         .attr("keywords", (d) -> d.keyword)
+        .attr("indicators", (d) -> d.indicator)
         .attr("geo", (d) -> d.geo)
         .attr("pop", (d) -> d.population)
         .attr("type", (d) -> d.type)
@@ -614,6 +616,7 @@ root.Bubbles = () ->
     name = ''
     description = ''
     publication = ''
+    indic = ''
 
 
     # #retrieve data elements from active node
@@ -624,6 +627,7 @@ root.Bubbles = () ->
                       contact = d.contact
                       name = d.name
                       publication = d.publication
+                      indic = d.indicator
                     )
 
     # if no node is selected, id will be empty
@@ -633,6 +637,7 @@ root.Bubbles = () ->
       d3.select("#description-input").html("#{description}")
       d3.select("#contact-input").html("#{contact}")
       d3.select("#keywords-input").html("#{keywords}")
+      d3.select("#indic-input").html("#{indic}")
       d3.select("#publication-input").html("#{publication}")
 
       # Make unselected nodes transparent
@@ -644,6 +649,7 @@ root.Bubbles = () ->
       d3.select("#description-input").html("-")
       d3.select("#contact-input").html("-")
       d3.select("#keywords-input").html("-")
+      d3.select("#indic-input").html("-")
       d3.select("#publication-input").html("-")
 
       d3.selectAll(".bubble-tone-down").attr('opacity','1')
@@ -661,6 +667,7 @@ root.Bubbles = () ->
     description = ''
     publication = ''
     ID = ''
+    indic = ''
 
     # retrieve data elements from rolled node
     rolledNode = d3.selectAll(".bubble-hover")
@@ -670,6 +677,7 @@ root.Bubbles = () ->
                       contact = d.contact
                       name = d.name
                       publication = d.publication
+                      indic = d.indicator
                       ID = d.ID
                     )
 
@@ -677,6 +685,7 @@ root.Bubbles = () ->
     d3.select("#description-input").html("#{description}")
     d3.select("#contact-input").html("#{contact}")
     d3.select("#keywords-input").html("#{keywords}")
+    d3.select("#indic-input").html("#{indic}")
     d3.select("#publication-input").html("#{publication}")
 
     # Make unselected nodes transparent
