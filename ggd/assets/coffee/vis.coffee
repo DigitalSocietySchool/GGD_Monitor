@@ -44,9 +44,6 @@ root.Bubbles = () ->
   d3.select('#vis')
     .attr("width", width + margin.left + margin.right )
     .attr("height", height + margin.top + margin.bottom )
-    #.attr("transform", "translate(#{margin.left},#{margin.top})")
-    #.attr("style",'border: 1px #f00 solid; position:relative;left:250px;')
-    #.attr("style",'border: 1px #f00 solid;')
 
   # this scale will be used to size our bubbles
   root.rScale = d3.scale.sqrt().range([0,maxRadius])
@@ -237,19 +234,18 @@ root.Bubbles = () ->
 
       theNode = d3.selectAll(".bubble-node")
                     .filter( (d,i) ->                                   
-                                      d.keyword.includes(input));
+                                      d.keyword.includes(input))
       theLabel = d3.selectAll(".bubble-label")
                     .filter( (d) -> d.keyword.includes(input))
       
-      d3.selectAll(".bubble-node").style("opacity","0");
+      d3.selectAll(".bubble-node").style("opacity","0")
       theNode.style("opacity","1")
-      d3.selectAll(".bubble-label").style("opacity","0");
+      d3.selectAll(".bubble-label").style("opacity","0")
       theLabel.style("opacity","1")
 
   $(".reset").on "click", ->
-        d3.selectAll(".bubble-node").style("opacity","1");
-        d3.selectAll(".bubble-label").style("opacity","1");
-        #d3.select("#status").html("No dataset is selected")
+        d3.selectAll(".bubble-node").style("opacity","1")
+        d3.selectAll(".bubble-label").style("opacity","1")
         d3.select("#title-input").html("No dataset is selected")
   
 
@@ -276,6 +272,7 @@ root.Bubbles = () ->
     # call our update methods to do the creation and layout work
     updateNodes(data)
     updateLabels(data)
+
 
   # ---
   # updateNodes creates a new bubble for each node in our dataset
@@ -471,10 +468,6 @@ root.Bubbles = () ->
       .attr("class", "bubble-label")
       .attr("href", (d) -> "##{encodeURIComponent(idValue(d))}")
       .attr("id", (d) -> "label_" + d.ID.toString())
-      #.attr("onmouseover", "$(this).find('.bubble-label-name').show();")
-      #.attr("onmouseout", "$(this).find('.bubble-label-name').hide();")
-      #.attr("onmouseover", "$(this).show();")
-      #.attr("onmouseout", "$(this).hide();")
       .call(force.drag)
       .call(connectEvents)
 
@@ -515,6 +508,10 @@ root.Bubbles = () ->
     # 'this' inside of D3's each refers to the actual DOM element
     # connected to the data node
     label.each((d) -> d.dy = this.getBoundingClientRect().height)
+
+    # Hide labels
+    d3.selectAll('.bubble-label').style('display','none')
+
 
   # ---
   # custom gravity to skew the bubble placement
@@ -663,6 +660,7 @@ root.Bubbles = () ->
     name = ''
     description = ''
     publication = ''
+    ID = ''
 
     # retrieve data elements from rolled node
     rolledNode = d3.selectAll(".bubble-hover")
@@ -672,6 +670,7 @@ root.Bubbles = () ->
                       contact = d.contact
                       name = d.name
                       publication = d.publication
+                      ID = d.ID
                     )
 
     d3.select("#title-input").html("#{name}")
@@ -685,18 +684,31 @@ root.Bubbles = () ->
       .classed('bubble-tone-down', false)
       .attr('opacity','1')
 
-    # Make unselected nodes transparent
-    d3.selectAll('.bubble-tone-down')
-      .attr('opacity','0.2')
+    # Make unselected nodes transparent...
+    d3.selectAll('.bubble-tone-down').attr('opacity','0.2')
+    # ...except the clicked bubble
+    d3.selectAll(".bubble-selected").attr('opacity','1')
+
+    # Hide labels
+    d3.selectAll('.bubble-label').style('display','none')
+
+    # Show selected label
+    d3.selectAll('#label_'+ID).style('display','block')
+
+
   # ---
   # remove hover class
   # ---
   mouseout = (d) ->
-    d3.selectAll('#text-hover').remove()
-
-    node.classed("bubble-hover", false)
+    # Restore bubble transparency
+    node
+      .classed("bubble-hover", false)
       .classed('bubble-tone-down', true)
 
+    # Hide labels
+    d3.selectAll('.bubble-label').style('display','none')
+
+    # Restore clicked bubble (if any)
     hashchange()
 
   # ---
