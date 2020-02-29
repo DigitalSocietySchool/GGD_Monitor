@@ -72,7 +72,10 @@
         }
 
         function changeView(view, c = false) {
-            if (c) {
+            if ($('#eye_' + view).attr('collapsed') == 'false') {
+                $('.cat_' + view).hide();
+                toggleEye(view, 'hide');
+            } else if (c) {
                 $(c).toggle();
                 toggleEye(view);
             } else {
