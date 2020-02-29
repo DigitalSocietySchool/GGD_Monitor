@@ -230,24 +230,37 @@ root.Bubbles = () ->
       # updateNodes(data)
       # updateLabels(data)
       
-      input = $(".searchInput").val();
+      input = $("#searchInput").val();
       d3.select("#status").html("Search results for <span class=\"active\"> " + String(input) + " </span>")
 
       theNode = d3.selectAll(".bubble-node")
-                    .filter( (d,i) ->                                   
-                                      d.keyword.includes(input))
+                    .filter( (d,i) ->  
+                      d.keyword.includes(input) |
+                      d.time.includes(input) |
+                      d.description.search(input) != -1 |
+                      d.publication.search(input) != -1 |
+                      d.contact.search(input) != -1  |
+                      d.indicator.search(input) != -1 
+                )
       theLabel = d3.selectAll(".bubble-label")
-                    .filter( (d) -> d.keyword.includes(input))
+                    .filter( (d) ->
+                      d.keyword.includes(input) |
+                      d.time.includes(input) |
+                      d.description.search(input) != -1 |
+                      d.publication.search(input) != -1 |
+                      d.contact.search(input) != -1  |
+                      d.indicator.search(input) != -1 
+                    )
       
-      d3.selectAll(".bubble-node").style("opacity","0")
+      d3.selectAll(".bubble-node").style("opacity","0.2")
       theNode.style("opacity","1")
-      d3.selectAll(".bubble-label").style("opacity","0")
+      d3.selectAll(".bubble-label").style("opacity","0.2")
       theLabel.style("opacity","1")
 
   $(".reset").on "click", ->
         d3.selectAll(".bubble-node").style("opacity","1")
         d3.selectAll(".bubble-label").style("opacity","1")
-        d3.select("#title-input").html("No dataset is selected")
+        $("#searchInput").val('')
   
 
     
@@ -470,6 +483,7 @@ root.Bubbles = () ->
       .attr("class", "bubble-label")
       .attr("href", (d) -> "##{encodeURIComponent(idValue(d))}")
       .attr("id", (d) -> "label_" + d.ID.toString())
+      .style("transform-origin","50% 50%")
       .call(force.drag)
       .call(connectEvents)
 
@@ -632,7 +646,6 @@ root.Bubbles = () ->
 
     # if no node is selected, id will be empty
     if id.length > 0 & name != ''
-      #d3.select("#status").html("<span style='font-weight:normal'>Dataset:</span> #{name}")
       d3.select("#title-input").html("#{name}")
       d3.select("#description-input").html("#{description}")
       d3.select("#contact-input").html("#{contact}")
