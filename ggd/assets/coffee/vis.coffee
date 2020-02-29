@@ -361,17 +361,17 @@ root.Bubbles = () ->
       .style("transform-origin","50% 50%")
 
     petals = 
-      "socialmedia": "right"
-      "promotion": "diagonal-right"
-      "registry": "diagonal-left"
-      "monitor": "left"
-      "questionaire": "top"
+      "socialmedia": "socialmedia"
+      "promotion": "promotion"
+      "registry": "registry"
+      "monitor": "monitor"
+      "questionnaire": "questionnaire"
 
     for p, dir of petals
       type_g
         .append("image")
         .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
-        .attr("class", "cat_type")
+        .attr("class", "cat_type " + dir)
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
         .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
