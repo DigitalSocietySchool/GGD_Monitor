@@ -45,7 +45,6 @@ body {
 
 .sidebar {
     font-weight: 700;
-    border-radius: 20px;
     padding: 6px;
     padding-bottom: 0px;
     border: 1px solid #666;
@@ -209,10 +208,24 @@ a.bubble-label {
     position: absolute;
 }
 
-.bubble-label .bubble-label-value {
+.bubble-label-name {
+    margin-bottom: 0px;
+    padding: 6px;
+    padding-left: 10px;
+    border: 1px solid #666;
+    background-color: #F7F7F7;
+    border-radius:10px;
+    text-align: left;
+    box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
+    display:block;
+}
+
+.bubble-label-value {
+    font-weight: bold;
     font: 11px sans-serif;
     white-space: nowrap;
 }
+
 
 footer p {
     text-align: center;
@@ -254,15 +267,6 @@ footer p {
     display: none;
 }
 
-.bubble-label-name {
-    margin-bottom: 30px;
-    /* display:none; */
-}
-
-.bubble-label-value {
-    font-weight: bold;
-}
-
 *[contenteditable="true"] {
     background-color: rgba(230, 230, 230, 1);
 }
@@ -290,11 +294,6 @@ footer p {
     display:none;
 }
 
-#bubble-labels{
-    opacity: 0.5;
-    color: #cccccc;
-    display:none;
-}
 .fa-plus{
     margin-top:5px;
 }

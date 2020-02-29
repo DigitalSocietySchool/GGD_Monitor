@@ -149,8 +149,8 @@ root.Bubbles = () ->
     # As the labels are created in raw html and not svg, we need
     # to ensure we specify the 'px' for moving based on pixels
     label
-      .style("left", (d) -> ((margin.left + d.x) - d.dx / 2) + "px")
-      .style("top", (d) -> ((margin.top + d.y) - d.dy / 2) + "px")
+      .style("left", (d) -> (10+(d.x) - d.dx / 2 + 2 * Math.max(16, rScale(rValue(d))-4)) + "px")
+      .style("top", (d) -> ((d.y) - d.dy / 2 ) + "px")
 
   # The force variable is the force layout controlling the bubbles
   # here we disable gravity and charge as we implement custom versions
@@ -275,7 +275,7 @@ root.Bubbles = () ->
 
     # call our update methods to do the creation and layout work
     updateNodes(data)
-    #updateLabels(data)
+    updateLabels(data)
 
   # ---
   # updateNodes creates a new bubble for each node in our dataset
@@ -318,7 +318,8 @@ root.Bubbles = () ->
         .call(force.drag)
         .call(connectEvents)
 
-    # drawing the Pie chart ( timeline)
+
+    # Adding time dimension
     node
       .append("g")
         .attr("class", "pie")
@@ -335,13 +336,23 @@ root.Bubbles = () ->
        .attr("d", (d) -> arc_bub(d) )
         .attr('stroke','#ffffff')
 
+    # Fix color of pie chart    
+    node.selectAll(".pie")
+      .selectAll(".arc")
+        .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
+        .attr("opacity", (d,i) -> d3.select(this.parentNode).attr("data_opac").split(",")[i] )
+
+
     # drawing the visible circle
     node
       .append("circle")
       .attr("r", (d) -> Math.max(12, rScale(rValue(d))-4 ) )
 
-    #adding svgs to the circle
-    node
+
+    # Adding type dimension
+    type_g = node.append('g')
+
+    type_g
       .append("image")
       .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
       .attr("class", "cat_type")
@@ -358,7 +369,7 @@ root.Bubbles = () ->
       "questionaire": "top"
 
     for p, dir of petals
-      node
+      type_g
         .append("image")
         .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
         .attr("class", "cat_type")
@@ -367,7 +378,11 @@ root.Bubbles = () ->
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
         .style("transform-origin","50% 50%")
 
-    node
+
+    # Adding population dimension
+    pop_g = node.append('g')
+
+    pop_g
       .append("image")
       .attr("xlink:href", "assets/img/icon/pop_empty.png")
       .attr("class", "cat_population")
@@ -383,8 +398,8 @@ root.Bubbles = () ->
       "elderly" : "pop_4_elderly.png"
 
     for p, img of population
-      node
-      .append("image")
+      pop_g
+        .append("image")
         .attr("xlink:href", (d)-> if d.population.split(";").indexOf(p) != -1 then "assets/img/icon/" + img)
         .attr("class", "cat_population")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
@@ -392,6 +407,9 @@ root.Bubbles = () ->
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
         .style("transform-origin","50% 50%")
     
+    # Adding geo dimension
+    geo_g = node.append('g')
+
     coverage = 
       "straat" : "icon/geo_1.png"
       "buurt" : "icon/geo_1.png"
@@ -405,7 +423,7 @@ root.Bubbles = () ->
       "national" : "icon/geo_3.png"
 
     for c, img of coverage
-      node
+      geo_g
         .append("image")
         .attr("xlink:href", (d) -> if d.geo.indexOf(c) != -1 then "assets/img/" + img)
         .attr("class", "cat_geo")
@@ -414,6 +432,9 @@ root.Bubbles = () ->
         .style("transform-origin","50% 50%")
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/1.8 +'px,-'+ rScale(rValue(d))/1.5 +'px)') 
         
+    # Adding population dimension
+    level_g = node.append('g')
+
     level =
       "individual" : "icon/level_1_individual.png"
       "family" : "icon/level_2_family.png"
@@ -422,7 +443,7 @@ root.Bubbles = () ->
       "geographic" : "icon/level_5_geo.png"
 
     for l, img of level
-      node
+      level_g
         .append("image")
         .attr("xlink:href", (d)-> if d.level.indexOf(l) != -1 then "assets/img/" + img)
         .attr("class", "cat_level")
@@ -430,14 +451,7 @@ root.Bubbles = () ->
         .attr("height", (d) -> rScale(rValue(d))  )
         .style("transform-origin","50% 50%")
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/2.1 +'px,-'+ rScale(rValue(d))/1.9 +'px)') 
-        
-    node.selectAll(".pie")
-      .selectAll(".arc")
-        .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
-        .attr("opacity", (d,i) -> d3.select(this.parentNode).attr("data_opac").split(",")[i] )
 
-    # console.log(node)
-    # node.exit().remove()
 
   # ---
   # updateLabels is more involved as we need to deal with getting the sizing
@@ -457,8 +471,10 @@ root.Bubbles = () ->
       .attr("class", "bubble-label")
       .attr("href", (d) -> "##{encodeURIComponent(idValue(d))}")
       .attr("id", (d) -> "label_" + d.ID.toString())
-      .attr("onmouseover", "$(this).find('.bubble-label-name').show();")
-      .attr("onmouseout", "$(this).find('.bubble-label-name').hide();")
+      #.attr("onmouseover", "$(this).find('.bubble-label-name').show();")
+      #.attr("onmouseout", "$(this).find('.bubble-label-name').hide();")
+      #.attr("onmouseover", "$(this).show();")
+      #.attr("onmouseout", "$(this).hide();")
       .call(force.drag)
       .call(connectEvents)
 
@@ -466,17 +482,17 @@ root.Bubbles = () ->
       .attr("class", "bubble-label-name")
       .text((d) -> textValue(d))
 
-    labelEnter.append("div")
-      .attr("class", "bubble-label-value")
-      .text((d) -> rValue(d))
+    #labelEnter.append("div")
+    #  .attr("class", "bubble-label-value")
+    #  .text((d) -> rValue(d))
 
     # label font size is determined based on the size of the bubble
     # this sizing allows for a bit of overhang outside of the bubble
     # - remember to add the 'px' at the end as we are dealing with 
     #  styling divs
     label
-      .style("font-size", (d) -> Math.max(4, rScale(rValue(d) / 12)) + "px")
-      .style("width", (d) -> 2.5 * rScale(rValue(d)) + "px")
+      .style("font-size", (d) -> Math.max(6, rScale(rValue(d) / 12)) + "px")
+      .style("width", (d) -> Math.max(150, 2.5 * rScale(rValue(d)) + "px"))
 
     # interesting hack to get the 'true' text width
     # - create a span inside the label
@@ -560,7 +576,7 @@ root.Bubbles = () ->
   # Animate bubbles after filtering
   # ---
   root.redraw = () ->
-    force.nodes(data).start() #.alpha(0.1) #.restart()
+    force.nodes(data).start()
 
   # ---
   # adds mouse events to element
@@ -640,6 +656,7 @@ root.Bubbles = () ->
   # ---
   mouseover = (d) ->
     node.classed("bubble-hover", (p) -> p == d)
+    node.classed("bubble-tone-down", (p) -> p != d)
 
     keywords = ''
     contact = ''
@@ -668,12 +685,18 @@ root.Bubbles = () ->
       .classed('bubble-tone-down', false)
       .attr('opacity','1')
 
+    # Make unselected nodes transparent
+    d3.selectAll('.bubble-tone-down')
+      .attr('opacity','0.2')
   # ---
   # remove hover class
   # ---
   mouseout = (d) ->
+    d3.selectAll('#text-hover').remove()
+
     node.classed("bubble-hover", false)
       .classed('bubble-tone-down', true)
+
     hashchange()
 
   # ---

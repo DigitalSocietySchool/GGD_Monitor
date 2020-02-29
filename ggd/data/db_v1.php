@@ -16,7 +16,7 @@
 	//echo "ID,name,description,keywords,contact,department,size,years,geo,type,pop,level\n";
 
 
-	$query = "SELECT * FROM datasets";
+	$query = "SELECT * FROM datasets LIMIT 2";
 
 	$result = $conn->query($query);
 //	print $results;
