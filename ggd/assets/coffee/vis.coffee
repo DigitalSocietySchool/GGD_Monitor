@@ -96,7 +96,7 @@ root.Bubbles = () ->
     GHOR: "#E3ACE5"
     LO: "#B3B3B3"
     AAGG: "#D9E021"
-    unknow: "#cccccc"
+    unknown: "#dddddd"
 
   # constants to control how
   # collision look and act
@@ -321,8 +321,8 @@ root.Bubbles = () ->
         .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
         .attr("data-id", (d) -> d.ID)
         .attr("id", (d) -> "node_" + d.ID.toString())
-        .style("fill", (d) -> colors[d.department])
-        .attr("fill", (d) -> colors[d.department])
+        .style("fill", (d) -> colors[d.department.replace('-','unknown')])
+        .attr("fill", (d) -> colors[d.department.replace('-','unknown')])
         .attr("contact", (d) -> d.contact)
         .attr("keywords", (d) -> d.keyword)
         .attr("indicators", (d) -> d.indicator)
@@ -644,11 +644,13 @@ root.Bubbles = () ->
     node.classed("bubble-tone-down", (d) -> id != idValue(d))
     keywords = ''
     contact = ''
+    department = ''
     name = ''
     description = ''
     publication = ''
     indic = ''
     size = ''
+    population = ''
 
 
     # #retrieve data elements from active node
@@ -657,21 +659,31 @@ root.Bubbles = () ->
                       description = d.description.replace(' - ',' ')
                       keywords = d.keyword 
                       contact = d.contact
+                      department = d.department
                       name = d.name
                       publication = d.publication
                       indic = d.indicator
                       size = d.size
+                      population = d.population
                     )
+    if(department == '-')
+      dep_value = 'unknown'
+    else 
+      dep_value = department
 
-    # if no node is selected, id will be empty
+    # Check if a node is selected
     if id.length > 0 & name != ''
       d3.select("#title-input").html("#{name}")
       d3.select("#description-input").html("#{description}")
       d3.select("#contact-input").html("#{contact}")
+      d3.select("#department-input").html("<span class='dep_circle dep_#{dep_value}'></span>#{department}")
+      #d3.select("#department-input").html('<span class="dep_circle dep_#{department}"></span>#{department}')
       d3.select("#keywords-input").html("#{keywords}")
       d3.select("#indic-input").html("#{indic}")
       d3.select("#publication-input").html("#{publication}")
       d3.select("#size-input").html("#{size}")
+
+      #<span class="dep_circle dep_EGZ"></span> EGZ
 
       # Make unselected nodes transparent
       d3.selectAll(".bubble-selected").selectAll('.bubble-opac').style('opacity','0')
@@ -681,10 +693,17 @@ root.Bubbles = () ->
       d3.selectAll(".bubble-selected").selectAll(".pie").attr("opacity", '1' )
       d3.selectAll(".bubble-tone-down").selectAll(".pie").attr("opacity", '0.2' )
 
+      # Highlight dataset's features
+      pop_label = ['youth','young','adult','elderly']
+      for i in [1..4]
+        d3.select('#label_pop_'+i)
+          .classed('input_item_checked', population.includes(pop_label[i-1]))
+
     else
       d3.select("#title-input").html("No dataset is selected")
       d3.select("#description-input").html("-")
       d3.select("#contact-input").html("-")
+      d3.select("#department-input").html("-")
       d3.select("#keywords-input").html("-")
       d3.select("#indic-input").html("-")
       d3.select("#publication-input").html("-")
@@ -693,6 +712,13 @@ root.Bubbles = () ->
 
       # Fix color of pie chart    
       d3.selectAll(".bubble-tone-down").selectAll(".pie").attr("opacity", '1' )
+
+      # Hide dataset's features
+      for i in [1..4]
+        d3.select('#label_pop_'+i)
+          .classed('input_item_checked', false)
+
+
 
   # ---
   # hover event
@@ -709,6 +735,7 @@ root.Bubbles = () ->
     ID = ''
     indic = ''
     size = ''
+    population = ''
 
     # retrieve data elements from rolled node
     rolledNode = d3.selectAll(".bubble-hover")
@@ -721,6 +748,7 @@ root.Bubbles = () ->
                       indic = d.indicator
                       ID = d.ID
                       size = d.size
+                      population = d.population
                     )
 
     d3.select("#title-input").html("#{name}")
@@ -749,6 +777,12 @@ root.Bubbles = () ->
     # Show selected label
     d3.selectAll('#label_'+ID).style('display','block')
 
+    # Highlight dataset's features
+    pop_label = ['youth','young','adult','elderly']
+    for i in [1..4]
+      d3.select('#label_pop_'+i)
+        .classed('input_item_checked', population.includes(pop_label[i-1]))
+
 
   # ---
   # remove hover class
@@ -761,6 +795,11 @@ root.Bubbles = () ->
 
     # Hide labels
     d3.selectAll('.bubble-label').style('display','none')
+
+    # Hide dataset's features
+    for i in [1..4]
+      d3.select('#label_pop_'+i)
+        .classed('input_item_checked', false)
 
     # Restore clicked bubble (if any)
     hashchange()

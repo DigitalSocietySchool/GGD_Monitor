@@ -180,13 +180,12 @@ div.ownership div div, #population div div {
     pointer-events: all;
 }
 
+/*
 .bubble-node {
-    /* fill: #d1e0f3; */
     fill: #DCE9BE;
 }
 
 .bubble-hover {
-    /* fill: #b8c7d9; */
     fill: #E8E9E7;
 }
 
@@ -196,6 +195,7 @@ div.ownership div div, #population div div {
 .active {
     color: #A6BA92;
 }
+*/
 
 a.bubble-label {
     font-family: 'Open Sans', sans-serif;
@@ -383,7 +383,8 @@ tspan{
     background-color: #D9E021;
 }
 .dep_unknown{
-    background-color: #cccccc;
+    background-color: #ccc;
+    width: 0px;
 }
 
 #geo_btn span div div,
@@ -450,4 +451,43 @@ tspan{
     margin-left: -65px;
     font-weight: normal;
     cursor: pointer;
+}
+
+.pop-input-item{
+    float:left;
+    text-align: center;
+    width: 75px;
+    margin-top:3px;
+    font-size:14px;
+    line-height: 15px;
+}
+.pop-input-item img{
+    width: 30px;
+    height: 30px;
+}
+
+.level-input-item{
+    float:left;
+    text-align: center;
+    margin-right: 18px;
+    margin-top:3px;
+    font-size:14px;
+    line-height: 15px;
+}
+.level-input-item img{
+    width: 30px;
+    height: 30px;
+}
+
+.item_input{
+    margin-left:13px;
+    float:left;
+}
+
+.input_item_checked{
+    font-weight: bold;
+    opacity:1;
+}
+label{
+    opacity:0.4;
 }

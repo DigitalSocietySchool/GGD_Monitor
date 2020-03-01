@@ -240,36 +240,163 @@
         </div>
         <div class="row collapse" id="toolbar-meta" style="clear:both;">
             <div class="col" style="padding-left:25px;padding-top:20px;">
+
                 <div class="sidebar-items">
                     <!--div><b>Description:&nbsp;</b></div-->
                     <span style="font-weight:100;" contentEditable="false" id="description-input">
                         -
                     </span>
                 </div>
+
                 <div class="sidebar-items">
                     <span style="float:left;width:85px;">No.Cases: </span>
                     <span contentEditable="false" id="size-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
+
                 <div class="sidebar-items">
                     <span style="float:left;width:85px;">Keywords: </span>
                     <span contentEditable="false" id="keywords-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
+
                 <div class="sidebar-items">
                     <span style="float:left;width:85px;">Indicators: </span>
                     <span contentEditable="false" id="indic-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
-            <div class="sidebar-items">
-                <span style="width:70px;">Contact:</span> 
-                <span id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:385px;">
-                    -
-                </span>
-            </div>
-            <div class="sidebar-items">
-                <span style="width:100px;">Publication:</span> 
-                <span id="publication-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
-                    -
-                </span>
-            </div>
+
+                <div class="sidebar-items">
+                    <span style="width:70px;">Contact:</span> 
+                    <span id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:385px;"></span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span style="width:110px;margin-right: 10px;">Department:</span> 
+                    <span id="department-input" contenteditable="false"  style="float:left;font-weight:100;width:360px;margin-top: -6px;"></span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span style="width:110px;">Geo.Coverage:</span> 
+                    <span id="geo-input" contenteditable="false"  style="float:left;font-weight:100;width:360px;">
+                        
+                        <div id="" class="item_input" value="straat">
+                            Straat
+                        </div>
+                        <div id="" class="item_input" value="buurt">
+                            Buurt
+                        </div>
+                        <div id="" class="item_input" value="wijk">
+                            Wijk
+                        </div>
+                        &nbsp;&nbsp;
+                        <div id="" class="item_input" value="gebied">
+                            Gebied
+                        </div>
+                        <div id="" class="item_input" value="stadsdeel">
+                            Stadsdeel
+                        </div>
+                        <div id="" class="item_input" value="stad">
+                            Stad
+                        </div>
+                        <div id="" class="item_input" value="amstelland">
+                            Amstelland
+                        </div>
+                        &nbsp;&nbsp;
+                        <div id="" class="item_input" value="adam">
+                            Metro. A'dam
+                        </div>
+                        &nbsp;&nbsp;
+                        <div id="" class="item_input" value="g4">
+                            G4
+                        </div>
+                        &nbsp;&nbsp;
+                        <div id="" class="item_input" value="national">
+                            National
+                        </div>
+
+                    </span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span style="width:100px;">Population:</span> 
+                    <span id="pop-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
+                        <input type="checkbox" id="edit_pop_1" name="edit_pop[]" value="youth" style="display:none;">
+                        <input type="checkbox" id="edit_pop_2" name="edit_pop[]" value="young" style="display:none;">
+                        <input type="checkbox" id="edit_pop_3" name="edit_pop[]" value="adult" style="display:none;">
+                        <input type="checkbox" id="edit_pop_4" name="edit_pop[]" value="elderly" style="display:none;">
+                        <label id="label_pop_1" class="pop-input-item" value="youth" for="edit_pop_1">
+                            <img src="assets/img/youth.svg" class="icon">
+                            <br>Youth
+                        </label>
+                        <label id="label_pop_2" class="pop-input-item" value="young" for="edit_pop_2">
+                            <img src="assets/img/young_adult.svg" class="icon">
+                            <br>Young Adult
+                        </label>
+                        <label id="label_pop_3" class="pop-input-item" value="adult" for="edit_pop_3">
+                            <img src="assets/img/adult.svg" class="icon">
+                            <br>Adult
+                        </label>
+                        <label id="label_pop_4" class="pop-input-item" value="elderly" for="edit_pop_4">
+                            <img src="assets/img/old_person.svg" class="icon">
+                            <br>Elderly
+                        </label>
+                    </span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span style="width:100px;">Type:</span> 
+                    <span id="type-input" contenteditable="false"  style="float:left;font-weight:100;width:360px;">
+                        
+                        <div id="" class="item_input" value="questionnaire">
+                            Questionnaire
+                        </div>
+                        <div id="" class="item_input" value="registry">
+                            &nbsp;&nbsp;Registry
+                        </div>
+                        <div id="" class="item_input" value="monitor">
+                            &nbsp;&nbsp;&nbsp;&nbsp;Monitor
+                        </div>
+                        <div id="" class="item_input" value="socialmedia">
+                            Social Media
+                        </div>
+                        <div id="" class="item_input" value="promotion">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Health Promotion
+                        </div>
+
+                    </span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span style="width:60px;">Level:</span> 
+                    <span id="level-input" contenteditable="false"  style="float:left;font-weight:100;width:400px;">
+                        
+                        <div class="level-input-item" id="" value="individual">
+                            <img src="assets/img/icon/level_1_individual.png" class="icon" id="type_1" value="questionnaire">
+                            <br>Individual
+                        </div>
+                        <div class="level-input-item" id="" value="family">
+                            <img src="assets/img/icon/level_2_family.png" class="icon">
+                            <br>Family
+                        </div>
+                        <div class="level-input-item" id="" value="group">
+                            <img src="assets/img/icon/level_3_group.png" class="icon">
+                            <br>Group
+                        </div>
+                        <div class="level-input-item" id="" value="orga">
+                            <img src="assets/img/icon/level_4_orga.png" class="icon">
+                            <br>Organization
+                        </div>
+                        <div class="level-input-item" id="" value="geographic">
+                            <img src="assets/img/icon/level_5_geo.png" class="icon">
+                            <br>Geography
+                        </div>
+
+                    </span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span style="width:100px;">Publication:</span> 
+                    <span id="publication-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;"></span>
+                </div>
+
             </div>
         </div>
     </div>
@@ -796,7 +923,7 @@
                     return (
                         ( keep_geo_label.indexOf(d.geo) != -1 || ( keep_geo_label.includes('unknown') && d.geo == '')) &
                         ( keep_level_label.indexOf(d.level) != -1  || ( keep_level_label.includes('unknown') && d.level == '')) &
-                        ( keep_dep_label.indexOf(d.department) != -1  || ( keep_dep_label.includes('unknown') && d.department == '')) &
+                        ( keep_dep_label.indexOf(d.department) != -1  || ( keep_dep_label.includes('unknown') && d.department == '-')) &
                         ( pop_values.includes(true) || ( keep_pop_label.includes('unknown') && d.population == '') ) &
                         ( type_values.includes(true) || ( keep_type_label.includes('unknown') && d.type == '') ) &
                         ( year_values.includes(true) || ( keep_year_label.includes('unknown') && d.time == '') ) &
