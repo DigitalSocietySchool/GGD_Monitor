@@ -51,7 +51,7 @@ root.Bubbles = () ->
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
-  root.rValue = (d) -> Math.min(parseInt(d.size), 5000)
+  root.rValue = (d) -> Math.max( Math.min(parseInt(d.size), 2000), 50)
 
           
   # Extractig values for donut charts
@@ -99,7 +99,7 @@ root.Bubbles = () ->
 
   # constants to control how
   # collision look and act
-  collisionPadding = 1
+  collisionPadding = 2
   minCollisionRadius = 12
 
   # variables that can be changed
@@ -146,14 +146,19 @@ root.Bubbles = () ->
     #node.attr('transform', node.attr("transform") + ",scale(" + node.attr(filter_scale) + ")")
     # As the labels are created in raw html and not svg, we need
     # to ensure we specify the 'px' for moving based on pixels
+    # - this.offsetWidth
+
     label
-      .style("left", (d) -> (10+(d.x) - d.dx / 2 + 2 * Math.max(16, rScale(rValue(d))-4)) + "px")
+      .style("position", 'absolute')
+      .style("left", (d) -> ((d.x)-25 + d.forceR) + "px")
+      #.style("left", (d) -> ((d.x) - d.dx / 2) + "px")
       .style("top", (d) -> ((d.y) - d.dy / 2 ) + "px")
+      .style("transform-origin","50% 50%")
 
   # The force variable is the force layout controlling the bubbles
   # here we disable gravity and charge as we implement custom versions
   # of gravity and collisions for this visualization
-  root.force = d3.layout.force()
+  force = d3.layout.force()
     .gravity(0)
     .charge(0)
     .size([width, height])
@@ -277,7 +282,7 @@ root.Bubbles = () ->
 
 
     data.forEach (d,i) ->
-      d.forceR = Math.max(minCollisionRadius+4, rScale(rValue(d)))
+      d.forceR = Math.max(minCollisionRadius, rScale(rValue(d)))
       d.ui_scale = 1
 
     # start up the force layout
@@ -310,7 +315,7 @@ root.Bubbles = () ->
     # the styling comes from the css
     node.enter()
       .append("a")
-        .attr("class", "bubble-node")
+        .attr("class", "bubble-node bubble-visible")
         .attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
         .attr("data-id", (d) -> d.ID)
         .attr("id", (d) -> "node_" + d.ID.toString())
@@ -483,7 +488,7 @@ root.Bubbles = () ->
       .attr("class", "bubble-label")
       .attr("href", (d) -> "##{encodeURIComponent(idValue(d))}")
       .attr("id", (d) -> "label_" + d.ID.toString())
-      .style("transform-origin","50% 50%")
+      .style("text-align","left")
       .call(force.drag)
       .call(connectEvents)
 
@@ -500,8 +505,11 @@ root.Bubbles = () ->
     # - remember to add the 'px' at the end as we are dealing with 
     #  styling divs
     label
-      .style("font-size", (d) -> Math.max(6, rScale(rValue(d) / 12)) + "px")
-      .style("width", (d) -> Math.max(150, 2.5 * rScale(rValue(d)) + "px"))
+      #.style("font-size", (d) -> Math.max(10, rScale(rValue(d) / 12)) + "px")
+      .style("font-size", (d) -> "12px")
+      .style("max-width", "250px")
+      .style("min-width", "80px")
+      #.style("width", (d) -> Math.max(150, 2.5 * rScale(rValue(d)) + "px"))
 
     # interesting hack to get the 'true' text width
     # - create a span inside the label
@@ -512,18 +520,18 @@ root.Bubbles = () ->
     # - remove the extra span
     label.append("span")
       .text((d) -> textValue(d))
-      .each((d) -> d.dx = Math.max(2.5 * rScale(rValue(d)), this.getBoundingClientRect().width))
+      #.each((d) -> d.dx = Math.max(2.5 * rScale(rValue(d)), this.getBoundingClientRect().width))
       .remove()
 
     # reset the width of the label to the actual width
-    label
-      .style("width", (d) -> d.dx + "px")
+    label.style("width", (d) -> d.dx + "px")
   
     # compute and store each nodes 'dy' value - the 
     # amount to shift the label down
     # 'this' inside of D3's each refers to the actual DOM element
     # connected to the data node
     label.each((d) -> d.dy = this.getBoundingClientRect().height)
+    label.each((d) -> d.dx = this.getBoundingClientRect().width)
 
     # Hide labels
     d3.selectAll('.bubble-label').style('display','none')

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="assets/css/custom_style.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
-    <script src="https://dss.cloud/fa/js/all.min.js"></script>
+    <script src="assets/js/libs/all.min.js"></script>
     <link rel="stylesheet" type="text/css"  href="./assets/css/custom_style.css">
     <title>GGD Dashboard</title>
     <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
@@ -661,7 +661,7 @@
             // Reset pies
             visible_nodes
                 .each(function(d) {
-                    d.forceR = 36;
+                    d.forceR = 33;
                 })
                 .selectAll(".pie")
                 .attr('transform','scale(0.33,0.33)');
@@ -687,7 +687,7 @@
             visible_nodes
                 .selectAll("circle")
                 .attr('r', function(d) {
-                    return Math.max(12, rScale(rValue(d))-4 );
+                    return Math.max(8, rScale(rValue(d)) );
                 });
 
             // Reset pies
@@ -733,7 +733,8 @@
                 .each(function(d) {
                     d.ui_scale = 0;
                     d.forceR = 0;
-                });
+                })
+                .classed('bubble-visible',false);
 
             // Select Bubbles to show
             d3.selectAll(".bubble-node")
@@ -775,7 +776,7 @@
                     d.ui_scale = 1;
                     d.forceR = Math.max(12, rScale(rValue(d)));
                 }).classed('bubble-visible',true);
-             
+
             // Animate graph
             redraw();
             
