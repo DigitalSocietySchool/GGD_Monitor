@@ -378,28 +378,33 @@
 
                 <div class="sidebar-items">
                     <span style="width:60px;">Level:</span> 
-                    <span id="level-input" contenteditable="false"  style="float:left;font-weight:100;width:400px;">
+                    <span id="level-input" contenteditable="false"  style="float:left;font-weight:100;width:450px;height:50px;overflow:visible;">
+                        <input type="checkbox" id="edit_level_1" name="edit_level[]" value="individual" style="display:none;">
+                        <input type="checkbox" id="edit_level_2" name="edit_level[]" value="family" style="display:none;">
+                        <input type="checkbox" id="edit_level_3" name="edit_level[]" value="group" style="display:none;">
+                        <input type="checkbox" id="edit_level_4" name="edit_level[]" value="orga" style="display:none;">
+                        <input type="checkbox" id="edit_level_5" name="edit_level[]" value="geographic" style="display:none;">
                         
-                        <div class="level-input-item" id="" value="individual">
+                        <label class="level-input-item" id="label_level_1" value="individual" for="edit_level_1">
                             <img src="assets/img/icon/level_1_individual.png" class="icon" id="type_1" value="questionnaire">
                             <br>Individual
-                        </div>
-                        <div class="level-input-item" id="" value="family">
+                        </label>
+                        <label class="level-input-item" id="label_level_2" value="family" for="edit_level_2">
                             <img src="assets/img/icon/level_2_family.png" class="icon">
                             <br>Family
-                        </div>
-                        <div class="level-input-item" id="" value="group">
+                        </label>
+                        <label class="level-input-item" id="label_level_3" value="group" for="edit_level_3">
                             <img src="assets/img/icon/level_3_group.png" class="icon">
                             <br>Group
-                        </div>
-                        <div class="level-input-item" id="" value="orga">
+                        </label>
+                        <label class="level-input-item" id="label_level_4" value="orga" for="edit_level_4">
                             <img src="assets/img/icon/level_4_orga.png" class="icon">
                             <br>Organization
-                        </div>
-                        <div class="level-input-item" id="" value="geographic">
+                        </label>
+                        <label class="level-input-item" id="label_level_5" value="geographic" for="edit_level_5">
                             <img src="assets/img/icon/level_5_geo.png" class="icon">
                             <br>Geography
-                        </div>
+                        </label>
 
                     </span>
                 </div>

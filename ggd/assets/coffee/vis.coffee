@@ -653,6 +653,7 @@ root.Bubbles = () ->
     population = ''
     geo = ''
     type_value = ''
+    level = ''
 
 
     # #retrieve data elements from active node
@@ -669,6 +670,7 @@ root.Bubbles = () ->
                       population = d.population
                       geo = d.geo
                       type_value = d.type
+                      level = d.level
                     )
     if(department == '-')
       dep_value = 'unknown'
@@ -713,6 +715,11 @@ root.Bubbles = () ->
       for i in [1..5]
         d3.select('#label_type_'+i)
           .classed('input_item_checked', type_value.includes(type_label[i-1]))
+      
+      level_label = ['individual', 'family', 'group', 'orga', 'geographic']
+      for i in [1..5]
+        d3.select('#label_level_'+i)
+          .classed('input_item_checked', level.includes(level_label[i-1]))
 
 
     else
@@ -742,6 +749,10 @@ root.Bubbles = () ->
         d3.select('#label_type_'+i)
           .classed('input_item_checked', false)
 
+      for i in [1..5]
+        d3.select('#label_level_'+i)
+          .classed('input_item_checked', false)
+
 
 
   # ---
@@ -762,6 +773,7 @@ root.Bubbles = () ->
     population = ''
     geo = ''
     type_value = ''
+    level = ''
 
     # retrieve data elements from rolled node
     rolledNode = d3.selectAll(".bubble-hover")
@@ -777,6 +789,7 @@ root.Bubbles = () ->
                       population = d.population
                       geo = d.geo
                       type_value = d.type
+                      level = d.level
                     )
 
     d3.select("#title-input").html("#{name}")
@@ -816,10 +829,15 @@ root.Bubbles = () ->
       d3.select('#label_geo_'+i)
         .classed('input_item_checked', geo.includes(geo_label[i-1]))
 
-    type_label =  ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
+    type_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
     for i in [1..5]
       d3.select('#label_type_'+i)
         .classed('input_item_checked', type_value.includes(type_label[i-1]))
+
+    level_label = ['individual', 'family', 'group', 'orga', 'geographic']
+    for i in [1..5]
+      d3.select('#label_level_'+i)
+        .classed('input_item_checked', level.includes(level_label[i-1]))
 
 
   # ---
