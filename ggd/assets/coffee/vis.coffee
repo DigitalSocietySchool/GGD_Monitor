@@ -652,6 +652,7 @@ root.Bubbles = () ->
     size = ''
     population = ''
     geo = ''
+    type_value = ''
 
 
     # #retrieve data elements from active node
@@ -667,6 +668,7 @@ root.Bubbles = () ->
                       size = d.size
                       population = d.population
                       geo = d.geo
+                      type_value = d.type
                     )
     if(department == '-')
       dep_value = 'unknown'
@@ -707,6 +709,11 @@ root.Bubbles = () ->
         d3.select('#label_geo_'+i)
           .classed('input_item_checked', geo.includes(geo_label[i-1]))
 
+      type_label =  ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
+      for i in [1..5]
+        d3.select('#label_type_'+i)
+          .classed('input_item_checked', type_value.includes(type_label[i-1]))
+
 
     else
       d3.select("#title-input").html("No dataset is selected")
@@ -725,6 +732,14 @@ root.Bubbles = () ->
       # Hide dataset's features
       for i in [1..4]
         d3.select('#label_pop_'+i)
+          .classed('input_item_checked', false)
+
+      for i in [1..10]
+        d3.select('#label_geo_'+i)
+          .classed('input_item_checked', false)
+
+      for i in [1..5]
+        d3.select('#label_type_'+i)
           .classed('input_item_checked', false)
 
 
@@ -746,6 +761,7 @@ root.Bubbles = () ->
     size = ''
     population = ''
     geo = ''
+    type_value = ''
 
     # retrieve data elements from rolled node
     rolledNode = d3.selectAll(".bubble-hover")
@@ -760,6 +776,7 @@ root.Bubbles = () ->
                       size = d.size
                       population = d.population
                       geo = d.geo
+                      type_value = d.type
                     )
 
     d3.select("#title-input").html("#{name}")
@@ -799,6 +816,11 @@ root.Bubbles = () ->
       d3.select('#label_geo_'+i)
         .classed('input_item_checked', geo.includes(geo_label[i-1]))
 
+    type_label =  ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
+    for i in [1..5]
+      d3.select('#label_type_'+i)
+        .classed('input_item_checked', type_value.includes(type_label[i-1]))
+
 
   # ---
   # remove hover class
@@ -811,11 +833,6 @@ root.Bubbles = () ->
 
     # Hide labels
     d3.selectAll('.bubble-label').style('display','none')
-
-    # Hide dataset's features
-    for i in [1..4]
-      d3.select('#label_pop_'+i)
-        .classed('input_item_checked', false)
 
     # Restore clicked bubble (if any)
     hashchange()

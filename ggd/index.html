@@ -350,22 +350,28 @@
                 <div class="sidebar-items">
                     <span style="width:100px;">Type:</span> 
                     <span id="type-input" contenteditable="false"  style="float:left;font-weight:100;width:360px;">
+                        <input type="checkbox" id="edit_type_1" name="edit_type[]" value="questionnaire" style="display:none;">
+                        <input type="checkbox" id="edit_type_2" name="edit_type[]" value="registry" style="display:none;">
+                        <input type="checkbox" id="edit_type_3" name="edit_type[]" value="monitor" style="display:none;">
+                        <input type="checkbox" id="edit_type_4" name="edit_type[]" value="socialmedia" style="display:none;">
+                        <input type="checkbox" id="edit_type_5" name="edit_type[]" value="promotion" style="display:none;">
                         
-                        <div id="" class="item_input" value="questionnaire">
-                            Questionnaire
-                        </div>
-                        <div id="" class="item_input" value="registry">
-                            &nbsp;&nbsp;Registry
-                        </div>
-                        <div id="" class="item_input" value="monitor">
-                            &nbsp;&nbsp;&nbsp;&nbsp;Monitor
-                        </div>
-                        <div id="" class="item_input" value="socialmedia">
+                        <label id="label_type_5" class="item_input" value="monitor" for="edit_type_5">
+                            Monitor&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <label id="label_type_1" class="item_input" value="questionnaire" for="edit_type_1">
+                            Questionnaire&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <label id="label_type_2" class="item_input" value="socialmedia" for="edit_type_2">
                             Social Media
-                        </div>
-                        <div id="" class="item_input" value="promotion">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Health Promotion
-                        </div>
+                        </label>
+                        <br>
+                        <label id="label_type_4" class="item_input" value="registry" for="edit_type_4">
+                            Registry&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <label id="label_type_3" class="item_input" value="promotion" for="edit_type_3">
+                            Health Promotion
+                        </label>
 
                     </span>
                 </div>
