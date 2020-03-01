@@ -311,7 +311,7 @@ root.Bubbles = () ->
     # but if we did, this line of code would remove them from the
     # visualization as well
     node.exit().remove()
-    
+
     # nodes are just links with circles inside.
     # the styling comes from the css
     node.enter()
@@ -335,7 +335,6 @@ root.Bubbles = () ->
         .attr("filter_scale", (d) -> d.ui_scale)
         .call(force.drag)
         .call(connectEvents)
-
 
     # Adding time dimension
     node
@@ -361,8 +360,10 @@ root.Bubbles = () ->
         .attr("opacity", (d,i) -> d3.select(this.parentNode).attr("data_opac").split(",")[i] )
 
 
+
     # drawing the visible circle
     node
+      .append("g")
       .append("circle")
       .attr("r", (d) -> Math.max(12, rScale(rValue(d))-4 ) )
 
@@ -470,6 +471,12 @@ root.Bubbles = () ->
         .style("transform-origin","50% 50%")
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/2.1 +'px,-'+ rScale(rValue(d))/1.9 +'px)') 
 
+    node
+      .append("circle")
+      .attr('class','bubble-opac')
+      .attr("r", (d) -> Math.max(12, rScale(rValue(d))-4 ) )
+      .style('fill','#fff')
+      .style('opacity',0)
 
   # ---
   # updateLabels is more involved as we need to deal with getting the sizing
@@ -663,8 +670,12 @@ root.Bubbles = () ->
       d3.select("#publication-input").html("#{publication}")
 
       # Make unselected nodes transparent
-      d3.selectAll(".bubble-selected").attr('opacity','1')
-      d3.selectAll(".bubble-tone-down").attr('opacity','0.2')
+      d3.selectAll(".bubble-selected").selectAll('.bubble-opac').style('opacity','0')
+      d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').style('opacity','0.6')
+
+      # Fix color of pie chart    
+      d3.selectAll(".bubble-selected").selectAll(".pie").attr("opacity", '1' )
+      d3.selectAll(".bubble-tone-down").selectAll(".pie").attr("opacity", '0.2' )
 
     else
       d3.select("#title-input").html("No dataset is selected")
@@ -674,7 +685,10 @@ root.Bubbles = () ->
       d3.select("#indic-input").html("-")
       d3.select("#publication-input").html("-")
 
-      d3.selectAll(".bubble-tone-down").attr('opacity','1')
+      d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').style('opacity','0')
+
+      # Fix color of pie chart    
+      d3.selectAll(".bubble-tone-down").selectAll(".pie").attr("opacity", '1' )
 
   # ---
   # hover event
@@ -710,15 +724,17 @@ root.Bubbles = () ->
     d3.select("#indic-input").html("#{indic}")
     d3.select("#publication-input").html("#{publication}")
 
-    # Make unselected nodes transparent
-    d3.selectAll(".bubble-hover")
-      .classed('bubble-tone-down', false)
-      .attr('opacity','1')
+    # Set transparency
+    d3.selectAll(".bubble-hover").classed('bubble-tone-down', false)
+    d3.selectAll(".bubble-hover").selectAll('.bubble-opac').style('opacity','0')
+    d3.selectAll(".bubble-hover").selectAll(".pie").attr("opacity", '1' )
 
     # Make unselected nodes transparent...
-    d3.selectAll('.bubble-tone-down').attr('opacity','0.2')
+    d3.selectAll('.bubble-tone-down').selectAll('.bubble-opac').style('opacity','0.6')
+    d3.selectAll(".bubble-tone-down").selectAll(".pie").attr("opacity", '0.2' )
     # ...except the clicked bubble
-    d3.selectAll(".bubble-selected").attr('opacity','1')
+    d3.selectAll(".bubble-selected").selectAll('.bubble-opac').style('opacity','0')
+    d3.selectAll(".bubble-selected").selectAll(".pie").attr("opacity", '1' )
 
     # Hide labels
     d3.selectAll('.bubble-label').style('display','none')

@@ -44,7 +44,6 @@
                 //blurs all geo levels
                 var buttons = document.getElementsByClassName('geolevel');
                 for (var i = 0; i < buttons.length; i++) {
-                    console.log(buttons[i].style.opacity);
                     buttons[i].classList.add("faded")
                 }
 
@@ -687,13 +686,13 @@
             visible_nodes
                 .selectAll("circle")
                 .attr('r', function(d) {
-                    return Math.max(8, rScale(rValue(d)) );
+                    return Math.max(10, rScale(rValue(d))-4 );
                 });
 
             // Reset pies
             visible_nodes
                 .each(function(d) {
-                    d.forceR = Math.max(16, rScale(rValue(d)));
+                    d.forceR = Math.max(14, rScale(rValue(d)));
                 })
                 .selectAll(".pie")
                     .attr("transform", function(d) {
