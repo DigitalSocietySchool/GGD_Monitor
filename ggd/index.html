@@ -247,6 +247,10 @@
                     </span>
                 </div>
                 <div class="sidebar-items">
+                    <span style="float:left;width:85px;">No.Cases: </span>
+                    <span contentEditable="false" id="size-input" style="float:left;font-weight:100;width:370px;"></span>
+                </div>
+                <div class="sidebar-items">
                     <span style="float:left;width:85px;">Keywords: </span>
                     <span contentEditable="false" id="keywords-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
@@ -331,7 +335,7 @@
                     </div>
                 </span>
                 <span class="geolevel toolbar-items">
-                    <div style="float:left;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
+                    <div style="float:left;margin-top:-50px;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
                     <div style="float:right;">
                         <div id="geo_7" class="item_geo" value="amstelland">
                             Amstelland
@@ -345,10 +349,13 @@
                         <div id="geo_10" class="item_geo" value="national">
                             National
                         </div>
-                    </div>  
+                        <div id="geo_11" class="item_geo" value="unknown">
+                            (unknown)
+                        </div>
+                    </div> 
                 </span>
             </div>
-            <div class="col" id="pop_btn" style="flex-grow:1.5;margin-left:20px">
+            <div class="col" id="pop_btn" style="flex-grow:1.1;margin-left:20px">
                 <div class="toolbar-items">
                     <div style="float:left;" id="pop_1" class="item_population" value="youth">
                         <img src="assets/img/youth.svg" class="icon">
@@ -368,6 +375,9 @@
                         <img src="assets/img/old_person.svg" class="icon">
                         <br>Elderly
                     </div>
+                </div>    
+                <div id="pop_5" class="item_population" value="unknown">
+                    (unknown)
                 </div>
             </div>
             <div class="col" id="type_btn">
@@ -398,6 +408,9 @@
                          </text>
                        </g>
                     </svg>
+                </div>  
+                <div id="type_6" class="" value="unknown">
+                    (unknown)
                 </div>
             </div>
             <div class="col" id="level_btn" style="flex-grow:0.5;">
@@ -424,6 +437,9 @@
                         <div class="item_level" id="level_5" value="geographic">
                             <img src="assets/img/icon/level_5_geo.png" class="icon">
                             <br>Geography
+                        </div>
+                        <div class="item_level" id="level_6" class="" value="unknown">
+                            (unknown)
                         </div>
                     </div>
                 </div>
@@ -455,7 +471,7 @@
                            .st1{font-family:'OpenSans';}
                            .st2{font-size:18px;margin-left:4px;}
                        </style>
-                       <g class="size" data-size="more" id="size_5" value="0">
+                       <g class="size" data-size="more" id="size_5" value="more">
                            <circle class="st0" cx="138.54" cy="131.83" r="125"/>
                            <text transform="matrix(1 0 0 1 111.3019 36.1381)" class="st1 st2">More</text>
                        </g>
@@ -477,7 +493,10 @@
                        </g>
                    </svg>
                 </div>
-                <div id="caseInput" style="display: none" class="toolbar-items">
+                <div id="size_6" value="unknown" class="size">
+                    (unknown)
+                </div>
+                <!--div id="caseInput" style="display: none" class="toolbar-items">
                     <span>
                         <form>
                             <label for="cases">Cases</label>
@@ -490,7 +509,7 @@
                             <input  id="unit" name="age">
                         </form>
                     </span>
-                </div>
+                </div-->
             </div>
             <div class="col" id="dep_btn" style="flex-grow:1.2;">
                 <div class="toolbar-items ownership">
@@ -532,6 +551,9 @@
                         <div id="dep_9" value="AAGG">
                             <span class="dep_circle dep_AAGG"></span> 
                             AAGG
+                        </div>
+                        <div id="dep_10" value="unknown">
+                            (unknown)
                         </div>
                     </div>
                 </div>
@@ -625,6 +647,9 @@
                             <text transform="matrix(1 0 0 1 146.6807 34.4285)" class="time_font year_18" id='year_18'>earlier</text>
                         </g>
                     </svg>
+                </div>
+                <div id="year_19" class="year_19" value="unknown" onclick="filterByYear('unknown')">
+                    (unknown)
                 </div>
             </div>
         </div>
@@ -725,6 +750,8 @@
         // that store the selected filters for each dimension,
         // e.g.: keep_geo_label, keep_dep_label ...
 
+        var default_db_value = '-';
+
         function filterBubbles(){
 
             // Hide all
@@ -739,7 +766,7 @@
             d3.selectAll(".bubble-node")
                 .filter(function(d) { 
                     pop_values = d.population.split(";").map( function(currentValue, index, arr){
-                        return keep_pop_label.includes(currentValue);
+                        return ( keep_pop_label.includes(currentValue) );
                     });
                     type_values = d.type.split(";").map( function(currentValue, index, arr){
                         return keep_type_label.includes(currentValue);
@@ -749,26 +776,30 @@
                         if(currentValue < new Date().getFullYear() - 17){
                             currentValue = new Date().getFullYear() - 17;
                         }
-                        return keep_year_label.includes(currentValue);
+                        return keep_year_label.includes(currentValue+'');
                     });
+
                     size_test = false;
-                    if(d.size > 2000 & keep_size_label.indexOf("0") != -1){
+                    if(d.size > 2000 & keep_size_label.indexOf("more") != -1){
+                        size_test = true;
+                    } else if(d.size <= 0 & keep_size_label.indexOf("unknown") != -1){
                         size_test = true;
                     } else if(
-                        (keep_size_label.indexOf("2000") != -1 & d.size <= 2000 & d.size > 1000 ) |
-                        (keep_size_label.indexOf("1000") != -1 & d.size <= 1000 & d.size > 500 ) |
-                        (keep_size_label.indexOf("500") != -1 & d.size <= 500 & d.size > 100 ) |
-                        (keep_size_label.indexOf("100") != -1 & d.size <= 100 ) 
+                        (keep_size_label.indexOf("2000") != -1 && d.size <= 2000 && d.size > 1000 ) ||
+                        (keep_size_label.indexOf("1000") != -1 && d.size <= 1000 && d.size > 500 ) ||
+                        (keep_size_label.indexOf("500") != -1 && d.size <= 500 && d.size > 100 ) ||
+                        (keep_size_label.indexOf("100") != -1 && d.size <= 100 )
                     ){
                         size_test = true;
                     }
+
                     return (
-                        keep_geo_label.indexOf(d.geo) != -1 &
-                        keep_level_label.indexOf(d.level) != -1 &
-                        keep_dep_label.indexOf(d.department) != -1 &
-                        pop_values.includes(true) &
-                        type_values.includes(true) &
-                        year_values.includes(true) &
+                        ( keep_geo_label.indexOf(d.geo) != -1 || ( keep_geo_label.includes('unknown') && d.geo == '')) &
+                        ( keep_level_label.indexOf(d.level) != -1  || ( keep_level_label.includes('unknown') && d.level == '')) &
+                        ( keep_dep_label.indexOf(d.department) != -1  || ( keep_dep_label.includes('unknown') && d.department == '')) &
+                        ( pop_values.includes(true) || ( keep_pop_label.includes('unknown') && d.population == '') ) &
+                        ( type_values.includes(true) || ( keep_type_label.includes('unknown') && d.type == '') ) &
+                        ( year_values.includes(true) || ( keep_year_label.includes('unknown') && d.time == '') ) &
                         size_test
                         );  
                 }).each(function(d) {
@@ -790,12 +821,13 @@
             btn[i].setAttribute("onclick", "filterByGeo('" + btn[i].getAttribute('value') + "')");
         }
 
-        var keep_geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national'];
+        var keep_geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national','unknown'];
+        max_geo = keep_geo_label.length;
         
         function filterByGeo(label){
             ////////// Get the labels to filter on
             index_label = keep_geo_label.indexOf(label);
-            if(keep_geo_label.length == 10){
+            if(keep_geo_label.length == max_geo){
                 keep_geo_label = [label];
             } else if(index_label > -1){
                 keep_geo_label.splice(index_label, 1);
@@ -803,7 +835,7 @@
                 keep_geo_label.push(label);
             }
             if(keep_geo_label.length == 0){
-                keep_geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national'];
+                keep_geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national','unknown'];
             }
 
             ////////////// Show/Hide Hide/Show UI buttons
@@ -826,18 +858,20 @@
         //////////////////////////////////////////
         // FILTER POPULATION
         //////////////////////////////////////////
-        for (var i = 1; i < 5; i++) {
+        
+        var keep_pop_label = ['young', 'youth', 'adult', 'elderly','unknown'];
+        max_pop = keep_pop_label.length;
+
+        for (var i = 1; i < max_pop + 1; i++) {
             btn = document.getElementById('pop_' + i);
             btn.setAttribute("onclick", 'filterByPop("' + btn.getAttribute('value') + '")');
         }
-        
-        var keep_pop_label = ['young', 'youth', 'adult', 'elderly'];
         
         function filterByPop(label){
             ////////// Get the labels to filter on
             index_label = keep_pop_label.indexOf(label);
 
-            if(keep_pop_label.length == 4){
+            if(keep_pop_label.length == max_pop){
                 keep_pop_label = [label];
             } else if(index_label > -1){
                 keep_pop_label.splice(index_label, 1);
@@ -845,11 +879,11 @@
                 keep_pop_label.push(label);
             }
             if(keep_pop_label.length == 0){
-                keep_pop_label = ['young', 'youth', 'adult', 'elderly'];
+                keep_pop_label = ['young', 'youth', 'adult', 'elderly','unknown'];
             }
             
             ////////////// Show/Hide Hide/Show UI buttons
-            for (var i = 1; i < 5; i++) {
+            for (var i = 1; i < max_pop+1; i++) {
                 btn = document.getElementById('pop_' + i);
                 in_keep_pop_label = keep_pop_label.indexOf( btn.getAttribute('value') );
 
@@ -868,20 +902,25 @@
         //////////////////////////////////////////
         // FILTER TYPE
         //////////////////////////////////////////
-        for (var i = 1; i < 6; i++) {
+        
+        var keep_type_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor','unknown'];
+        max_type = keep_type_label.length;
+
+
+        for (var i = 1; i < max_type+1; i++) {
             btn = document.getElementById('type_' + i);
             btn.setAttribute("onclick", 'filterByType("' + btn.getAttribute('value') + '")');
-            btn = document.getElementById('type_shape_' + i);
-            btn.setAttribute("onclick", 'filterByType("' + btn.getAttribute('value') + '")');
+            if(i != max_type){
+                btn = document.getElementById('type_shape_' + i);
+                btn.setAttribute("onclick", 'filterByType("' + btn.getAttribute('value') + '")');
+            }
         }
-        
-        var keep_type_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor'];
         
         function filterByType(label){
             ////////// Get the labels to filter on
             index_label = keep_type_label.indexOf(label);
 
-            if(keep_type_label.length == 5){
+            if(keep_type_label.length == max_type){
                 keep_type_label = [label];
             } else if(index_label > -1){
                 keep_type_label.splice(index_label, 1);
@@ -889,22 +928,28 @@
                 keep_type_label.push(label);
             }
             if(keep_type_label.length == 0){
-                keep_type_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor'];
+                keep_type_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor','unknown'];
             }
-            
-            //console.log(keep_type_label);
 
             ////////////// Show/Hide Hide/Show UI buttons
-            for (var i = 1; i < 6; i++) {
+            for (var i = 1; i < max_type+1; i++) {
                 btn = document.getElementById('type_' + i);
                 in_keep_type_label = keep_type_label.indexOf( btn.getAttribute('value') );
 
                 if ( in_keep_type_label > -1){
-                    btn.setAttribute('style','fill:#000;');
-                    document.getElementById('type_shape_' + i).setAttribute('style','fill:#000;');
+                    if(i != max_type){
+                        btn.setAttribute('style','fill:#000;');
+                        document.getElementById('type_shape_' + i).setAttribute('style','fill:#000;');
+                    } else {
+                        btn.setAttribute('style','color:#000;');
+                    }
                 } else {
-                    btn.setAttribute('style','fill:#666;');
-                    document.getElementById('type_shape_' + i).setAttribute('style','fill:#ccc;');
+                    if(i != max_type){
+                        btn.setAttribute('style','fill:#666;');
+                        document.getElementById('type_shape_' + i).setAttribute('style','fill:#ccc;');
+                    } else {
+                        btn.setAttribute('style','color:#999;');
+                    }
                 }
                 
             }
@@ -916,18 +961,20 @@
         //////////////////////////////////////////
         // FILTER LEVELS
         //////////////////////////////////////////
-        for (var i = 1; i < 6; i++) {
+        
+        var keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic','unknown'];
+        max_level = keep_level_label.length;
+
+        for (var i = 1; i < max_level+1; i++) {
             btn = document.getElementById('level_' + i);
             btn.setAttribute("onclick", 'filterByLevel("' + btn.getAttribute('value') + '")');
         }
-        
-        var keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic'];
         
         function filterByLevel(label){
             ////////// Get the labels to filter on
             index_label = keep_level_label.indexOf(label);
 
-            if(keep_level_label.length == 5){
+            if(keep_level_label.length == max_level){
                 keep_level_label = [label];
             } else if(index_label > -1){
                 keep_level_label.splice(index_label, 1);
@@ -935,11 +982,11 @@
                 keep_level_label.push(label);
             }
             if(keep_level_label.length == 0){
-                keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic'];
+                keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic','unknown'];
             }
 
             ////////////// Show/Hide Hide/Show UI buttons
-            for (var i = 1; i < 6; i++) {
+            for (var i = 1; i < max_level+1; i++) {
                 btn = document.getElementById('level_' + i);
                 in_keep_level_label = keep_level_label.indexOf( btn.getAttribute('value') );
 
@@ -964,7 +1011,7 @@
                 $(this).find(".st1").css("fill", "#000");
             });
             $(this).mouseout(function() {
-                if(keep_size_label.length == 5){
+                if(keep_size_label.length == max_size){
                     $(this).find(".st0").css("fill", "#fff");
                     $(this).find(".st1").css("fill", "#000");
                 } else {
@@ -974,18 +1021,19 @@
                 }
             });
             $(this).click(function() {
-                showSize($(this).attr("value"));
+                filterBySize($(this).attr("value"));
             });
         });
         
-        var keep_size_label = ['100', '500', '1000', '2000', '0'];
+        var keep_size_label = ['100', '500', '1000', '2000', 'more', 'unknown'];
+        max_size = keep_size_label.length;
 
         //Filter Number of Cases
-        function showSize(label) {
+        function filterBySize(label) {
             ////////// Get the labels to filter on
             index_label = keep_size_label.indexOf(label);
 
-            if(keep_size_label.length == 5){
+            if(keep_size_label.length == max_size){
                 keep_size_label = [label];
             } else if(index_label > -1){
                 keep_size_label.splice(index_label, 1);
@@ -993,20 +1041,28 @@
                 keep_size_label.push(label);
             }
             if(keep_size_label.length == 0){
-                keep_size_label = ['100', '500', '1000', '2000', '0'];
+                keep_size_label = ['100', '500', '1000', '2000', 'more','unknown'];
             }
 
             ////////////// Show/Hide Hide/Show UI buttons
-            for (var i = 1; i < 6; i++) {
+            for (var i = 1; i < max_size+1; i++) {
                 btn = document.getElementById('size_' + i);
                 in_keep_size_label = keep_size_label.indexOf( btn.getAttribute('value') );
 
-                if ( in_keep_size_label > -1 ){
-                    btn.children[0].setAttribute('style',(keep_size_label.length == 5) ? 'fill:#fff;' : 'fill:#d4d4d4;');
-                    btn.children[1].setAttribute('style','fill:#000;');
+                if(i != max_size){
+                    if ( in_keep_size_label > -1 ){
+                        btn.children[0].setAttribute('style',(keep_size_label.length == max_size) ? 'fill:#fff;' : 'fill:#d4d4d4;');
+                        btn.children[1].setAttribute('style','fill:#000;');
+                    } else {
+                        btn.children[0].setAttribute('style','fill:#f7f7f7;');
+                        btn.children[1].setAttribute('style', 'fill:#888;' );               
+                    }
                 } else {
-                    btn.children[0].setAttribute('style','fill:#f7f7f7;');
-                    btn.children[1].setAttribute('style', 'fill:#888;' );               
+                    if ( in_keep_size_label > -1 ){
+                        btn.setAttribute('style','color:#000;');
+                    } else {
+                        btn.setAttribute('style','color:#999;');            
+                    }
                 }
             }
 
@@ -1018,18 +1074,20 @@
         //////////////////////////////////////////
         // FILTER DEPARTMENT
         //////////////////////////////////////////
-        for (var i = 1; i < 10; i++) {
+        var keep_dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG','unknown'];
+        var max_dep = keep_dep_label.length;
+
+        for (var i = 1; i < max_dep+1; i++) {
             btn = document.getElementById('dep_' + i);
             btn.setAttribute("onclick", 'filterByDep("' + btn.getAttribute('value') + '")');
         }
         
-        var keep_dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG'];
         
         function filterByDep(label){
             ////////// Get the labels to filter on
             index_label = keep_dep_label.indexOf(label);
 
-            if(keep_dep_label.length == 9){
+            if(keep_dep_label.length == max_dep){
                 keep_dep_label = [label];
             } else if(index_label > -1){
                 keep_dep_label.splice(index_label, 1);
@@ -1037,11 +1095,11 @@
                 keep_dep_label.push(label);
             }
             if(keep_dep_label.length == 0){
-                keep_dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG'];
+                keep_dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG','unknown'];
             }
 
             ////////////// Show/Hide Hide/Show UI buttons
-            for (var i = 1; i < 10; i++) {
+            for (var i = 1; i < max_dep+1; i++) {
                 btn = document.getElementById('dep_' + i);
                 in_keep_dep_label = keep_dep_label.indexOf( btn.getAttribute('value') );
 
@@ -1069,7 +1127,7 @@
             var class_elem = document.getElementsByClassName(xml_id);
             for (var i = 0; i < class_elem.length; i++) {
                 class_elem[i].setAttribute("value", fill_year);
-                class_elem[i].setAttribute("onclick", 'filterByYear(' + fill_year + ')');
+                class_elem[i].setAttribute("onclick", 'filterByYear("' + fill_year + '")');
             }
         }
 
@@ -1078,22 +1136,20 @@
         }
 
         document.getElementById("year_18").textContent = 'earlier';
-        //var class_earlier = document.getElementsByClassName("year_18");
-        //for (var i = 0; i < class_earlier.length; i++) {
-        //    class_earlier[i].setAttribute("value", 0);
-        //}
 
         var keep_year_label = [];
         var today = new Date().getFullYear();
         for(var i = 0; i < 18; i++){
-            keep_year_label.push(today - i);
+            keep_year_label.push((today - i)+'');
         }
+        keep_year_label.push('unknown');
+        max_year = keep_year_label.length;
 
         function filterByYear(label){
             ////////// Get the labels to filter on
             index_label = keep_year_label.indexOf(label);
 
-            if(keep_year_label.length == 18){
+            if(keep_year_label.length == max_year){
                 keep_year_label = [label];
             } else if(index_label > -1){
                 keep_year_label.splice(index_label, 1);
@@ -1103,16 +1159,17 @@
             if(keep_year_label.length == 0){
                 keep_year_label = [];
                 for(var i = 0; i < 18; i++){
-                    keep_year_label.push(today - i);
+                    keep_year_label.push((today - i)+'');
                 }
+                keep_year_label.push('unknown');
             }
-
+            
             ////////////// Show/Hide Hide/Show UI buttons
-            for(var y = 1; y < 19; y++){
+            for(var y = 1; y < max_year+1; y++){
                 var class_elem = document.getElementsByClassName("year_" + y);
                 for (var i = 0; i < class_elem.length; i++) {
 
-                    in_keep_year_label = keep_year_label.indexOf( class_elem[i].getAttribute('value')*1 );
+                    in_keep_year_label = keep_year_label.indexOf( class_elem[i].getAttribute('value') );
 
                     if ( in_keep_year_label > -1){
                         class_elem[i].setAttribute('style','opacity:1;');

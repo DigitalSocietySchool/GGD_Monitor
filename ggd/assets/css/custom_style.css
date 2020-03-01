@@ -382,6 +382,9 @@ tspan{
 .dep_AAGG{
     background-color: #D9E021;
 }
+.dep_unknown{
+    background-color: #cccccc;
+}
 
 #geo_btn span div div,
 #pop_btn div div,
@@ -407,4 +410,44 @@ tspan{
     padding-left: 15px;
     margin-right: 5%;
     margin-left: 5%;
+}
+#geo_11{
+    margin-top:10px;
+    font-weight: normal;
+    cursor: pointer;
+}
+#pop_5{
+    width: 100%;
+    margin-left: -30px;
+    font-weight: normal;
+    cursor: pointer;
+}
+#type_6{
+    margin-top:-80px;
+    margin-left:-20px;
+    font-weight: normal;
+    cursor: pointer;
+}
+#level_6{
+    font-weight: normal;
+    margin-top:60px;
+    cursor: pointer;
+}
+#size_6{
+    margin-bottom: 10px;
+    margin-left: -55px;
+    font-weight: normal;
+    cursor: pointer;
+}
+#dep_10{
+    margin-top: 5px;
+    font-weight: normal;
+    padding: 10px;
+    cursor: pointer;
+}
+#year_19{
+    margin-bottom: 10px;
+    margin-left: -65px;
+    font-weight: normal;
+    cursor: pointer;
 }

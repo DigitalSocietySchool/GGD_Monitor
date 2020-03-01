@@ -51,7 +51,7 @@ root.Bubbles = () ->
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
-  root.rValue = (d) -> Math.max( Math.min(parseInt(d.size), 2000), 50)
+  root.rValue = (d) -> Math.max( Math.min(parseInt(d.size), 2000), 20)
 
           
   # Extractig values for donut charts
@@ -96,6 +96,7 @@ root.Bubbles = () ->
     GHOR: "#E3ACE5"
     LO: "#B3B3B3"
     AAGG: "#D9E021"
+    unknow: "#cccccc"
 
   # constants to control how
   # collision look and act
@@ -647,6 +648,7 @@ root.Bubbles = () ->
     description = ''
     publication = ''
     indic = ''
+    size = ''
 
 
     # #retrieve data elements from active node
@@ -658,6 +660,7 @@ root.Bubbles = () ->
                       name = d.name
                       publication = d.publication
                       indic = d.indicator
+                      size = d.size
                     )
 
     # if no node is selected, id will be empty
@@ -668,6 +671,7 @@ root.Bubbles = () ->
       d3.select("#keywords-input").html("#{keywords}")
       d3.select("#indic-input").html("#{indic}")
       d3.select("#publication-input").html("#{publication}")
+      d3.select("#size-input").html("#{size}")
 
       # Make unselected nodes transparent
       d3.selectAll(".bubble-selected").selectAll('.bubble-opac').style('opacity','0')
@@ -704,6 +708,7 @@ root.Bubbles = () ->
     publication = ''
     ID = ''
     indic = ''
+    size = ''
 
     # retrieve data elements from rolled node
     rolledNode = d3.selectAll(".bubble-hover")
@@ -715,6 +720,7 @@ root.Bubbles = () ->
                       publication = d.publication
                       indic = d.indicator
                       ID = d.ID
+                      size = d.size
                     )
 
     d3.select("#title-input").html("#{name}")
@@ -723,6 +729,7 @@ root.Bubbles = () ->
     d3.select("#keywords-input").html("#{keywords}")
     d3.select("#indic-input").html("#{indic}")
     d3.select("#publication-input").html("#{publication}")
+    d3.select("#size-input").html("#{size}")
 
     # Set transparency
     d3.selectAll(".bubble-hover").classed('bubble-tone-down', false)

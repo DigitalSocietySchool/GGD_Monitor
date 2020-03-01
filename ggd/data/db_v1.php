@@ -19,15 +19,6 @@
 	$query = "SELECT * FROM datasets";
 
 	$result = $conn->query($query);
-//	print $results;
-
-/*	if ($result->num_rows > 0) {
-	    // output data of each row
-	    while($row = $result->fetch_assoc()) {
-	        echo $row["id"].", ".$row["name"].", ".$row["description"].", ".$row["keyword"].", ".$row["contact"].", ".$row["department"].", ".$row["size"].", ".$row["time"].", ".$row["geo"].", ".$row["type"].", ".$row["pop"].", ".$row["level"].'\n';
-	    }
-	} 
-*/
 
     $data = array();
     
