@@ -651,6 +651,7 @@ root.Bubbles = () ->
     indic = ''
     size = ''
     population = ''
+    geo = ''
 
 
     # #retrieve data elements from active node
@@ -665,6 +666,7 @@ root.Bubbles = () ->
                       indic = d.indicator
                       size = d.size
                       population = d.population
+                      geo = d.geo
                     )
     if(department == '-')
       dep_value = 'unknown'
@@ -693,11 +695,18 @@ root.Bubbles = () ->
       d3.selectAll(".bubble-selected").selectAll(".pie").attr("opacity", '1' )
       d3.selectAll(".bubble-tone-down").selectAll(".pie").attr("opacity", '0.2' )
 
+
       # Highlight dataset's features
       pop_label = ['youth','young','adult','elderly']
       for i in [1..4]
         d3.select('#label_pop_'+i)
           .classed('input_item_checked', population.includes(pop_label[i-1]))
+
+      geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
+      for i in [1..10]
+        d3.select('#label_geo_'+i)
+          .classed('input_item_checked', geo.includes(geo_label[i-1]))
+
 
     else
       d3.select("#title-input").html("No dataset is selected")
@@ -736,6 +745,7 @@ root.Bubbles = () ->
     indic = ''
     size = ''
     population = ''
+    geo = ''
 
     # retrieve data elements from rolled node
     rolledNode = d3.selectAll(".bubble-hover")
@@ -749,6 +759,7 @@ root.Bubbles = () ->
                       ID = d.ID
                       size = d.size
                       population = d.population
+                      geo = d.geo
                     )
 
     d3.select("#title-input").html("#{name}")
@@ -782,6 +793,11 @@ root.Bubbles = () ->
     for i in [1..4]
       d3.select('#label_pop_'+i)
         .classed('input_item_checked', population.includes(pop_label[i-1]))
+
+    geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
+    for i in [1..10]
+      d3.select('#label_geo_'+i)
+        .classed('input_item_checked', geo.includes(geo_label[i-1]))
 
 
   # ---

@@ -491,3 +491,7 @@ tspan{
 label{
     opacity:0.4;
 }
+label:hover{
+    opacity:1;
+    font-weight: bold;
+}
