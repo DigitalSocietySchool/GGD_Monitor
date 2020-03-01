@@ -154,6 +154,7 @@ root.Bubbles = () ->
       #.style("left", (d) -> ((d.x) - d.dx / 2) + "px")
       .style("top", (d) -> ((d.y) - d.dy / 2 ) + "px")
       .style("transform-origin","50% 50%")
+      .style("font-size", (d) -> 8 + d.forceR/5 + "px")
 
   # The force variable is the force layout controlling the bubbles
   # here we disable gravity and charge as we implement custom versions
@@ -505,8 +506,8 @@ root.Bubbles = () ->
     # - remember to add the 'px' at the end as we are dealing with 
     #  styling divs
     label
-      #.style("font-size", (d) -> Math.max(10, rScale(rValue(d) / 12)) + "px")
-      .style("font-size", (d) -> "12px")
+      .style("font-size", (d) -> 8 + d.forceR/5 + "px")
+      #.style("font-size", (d) -> "12px")
       .style("max-width", "250px")
       .style("min-width", "80px")
       #.style("width", (d) -> Math.max(150, 2.5 * rScale(rValue(d)) + "px"))
