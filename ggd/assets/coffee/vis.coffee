@@ -452,7 +452,7 @@ root.Bubbles = () ->
         .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/1.8 +'px,-'+ rScale(rValue(d))/1.5 +'px)') 
         
     # Adding population dimension
-    level_g = node.append('g')
+    level_g = node.append('g').attr('id','svg_level')
 
     level =
       "individual" : "icon/level_1_individual.png"
@@ -464,6 +464,7 @@ root.Bubbles = () ->
     for l, img of level
       level_g
         .append("image")
+        .attr('id', (d) -> 'svg_icon_level_'+l+'_'+d.ID)
         .attr("xlink:href", (d)-> if d.level.indexOf(l) != -1 then "assets/img/" + img)
         .attr("class", "cat_level")
         .attr("width",  (d) -> rScale(rValue(d))  )
@@ -613,8 +614,19 @@ root.Bubbles = () ->
   # Update data
   # ---
   root.changeLevel = (new_level) ->
-    console.log d3.select('#active_node_id').attr('active_node_id')
-    #force.nodes(data).start()
+    data_id = d3.select('#active_node_id').attr('active_node_id')
+    node_data = d3.select('#node_'+data_id).data()[0]
+    node_data.level = new_level
+
+    level_label = ['individual', 'family', 'group', 'orga', 'geographic']
+    
+    for l in level_label
+      d3.select('#svg_icon_level_'+l+'_'+data_id).attr('href','')
+    
+    index_img = level_label.indexOf(new_level) + 1
+    d3.select('#svg_icon_level_'+new_level+'_'+data_id).attr('href','assets/img/icon/level_'+index_img+'_'+new_level+'.png')
+    
+    hashchange()
 
 
   # ---
