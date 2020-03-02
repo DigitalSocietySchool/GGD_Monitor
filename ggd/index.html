@@ -661,41 +661,41 @@
                     <div style="float:left;">
                         <div id="dep_1" value="EGZ">
                             <span class="dep_circle dep_EGZ"></span> 
-                            EGZ
+                            <span>EGZ</span>
                         </div>
                         <div id="dep_2" value="IZ">
                             <span class="dep_circle dep_IZ"></span> 
-                            IZ
+                            <span>IZ</span>
                         </div>
                         <div id="dep_3" value="JGZ">
                             <span class="dep_circle dep_JGZ"></span> 
-                            JGZ
+                            <span>JGZ</span>
                         </div>
                         <div id="dep_4" value="VT">
                             <span class="dep_circle dep_VT"></span> 
-                            VT
+                            <span>VT</span>
                         </div>
                         <div id="dep_5" value="MGGZ">
                             <span class="dep_circle dep_MGGZ"></span> 
-                            MGGZ
+                            <span>MGGZ</span>
                         </div>
                     </div>
                     <div style="float:right; margin-left:-20px">
                         <div id="dep_6" value="FGMA">
                             <span class="dep_circle dep_FGMA"></span> 
-                            FGMA
+                            <span>FGMA</span>
                         </div>
                         <div id="dep_7" value="GHOR">
                             <span class="dep_circle dep_GHOR"></span> 
-                            GHOR
+                            <span>GHOR</span>
                         </div>
                         <div id="dep_8" value="LO">
                             <span class="dep_circle dep_LO"></span> 
-                            LO
+                            <span>LO</span>
                         </div>
                         <div id="dep_9" value="AAGG">
                             <span class="dep_circle dep_AAGG"></span> 
-                            AAGG
+                            <span>AAGG</span>
                         </div>
                         <div id="dep_10" value="unknown">
                             (unknown)
@@ -1037,8 +1037,14 @@
 
                 if ( in_keep_pop_label > -1){
                     btn.setAttribute('style','color:#000;');
+                    if(i != max_pop){
+                        btn.children[0].setAttribute('style','opacity:1;');
+                    }
                 } else {
                     btn.setAttribute('style','color:#999;');
+                    if(i != max_pop){
+                        btn.children[0].setAttribute('style','opacity:0.5;');
+                    }
                 }
                 
             }
@@ -1140,8 +1146,14 @@
 
                 if ( in_keep_level_label > -1){
                     btn.setAttribute('style','color:#000;');
+                    if(i != max_level){
+                        btn.children[0].setAttribute('style','opacity:1;');
+                    }
                 } else {
                     btn.setAttribute('style','color:#999;');
+                    if(i != max_level){
+                        btn.children[0].setAttribute('style','opacity:0.5;');
+                    }
                 }
             }
 
@@ -1252,9 +1264,19 @@
                 in_keep_dep_label = keep_dep_label.indexOf( btn.getAttribute('value') );
 
                 if ( in_keep_dep_label > -1){
-                    btn.setAttribute('style','color:#000;');
+                    if(keep_dep_label.length == max_dep){
+                        btn.setAttribute('style','color:#000;font-weight:normal;');
+                    } else {
+                        btn.setAttribute('style','color:#000;font-weight:bold;');
+                    }
+                    if(i != max_dep){
+                        btn.children[0].setAttribute('style','opacity:1;');
+                    }
                 } else {
-                    btn.setAttribute('style','color:#999;');
+                    btn.setAttribute('style','color:#999;font-weight:normal;');
+                    if(i != max_dep){
+                        btn.children[0].setAttribute('style','opacity:0.5;');
+                    }
                 }
                 
             }
