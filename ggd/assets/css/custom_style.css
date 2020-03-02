@@ -165,6 +165,7 @@ div.ownership div div, #population div div {
 
 #status {
     padding: 0 0 20px 20px;
+    font-weight: normal;
 }
         
 #controls {
@@ -191,10 +192,11 @@ div.ownership div div, #population div div {
 .bubble-selected {
 }
 
-.active {
-    color: #A6BA92;
-}
 */
+
+.active {
+    font-weight: 600;
+}
 
 a.bubble-label {
     font-family: 'Open Sans', sans-serif;

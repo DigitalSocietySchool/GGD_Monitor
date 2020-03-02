@@ -242,6 +242,8 @@
         <div class="row collapse" id="toolbar-meta" style="clear:both;">
             <div class="col" style="padding-left:25px;padding-top:20px;">
 
+                <span id="active_node_id"></span>
+
                 <div class="sidebar-items">
                     <!--div><b>Description:&nbsp;</b></div-->
                     <span style="font-weight:100;" contentEditable="false" id="description-input">
@@ -407,7 +409,7 @@
                             <img src="assets/img/icon/level_4_orga.png" class="icon">
                             <br>Organization
                         </label>
-                        <label class="level-input-item" id="label_level_5" value="geographic" for="edit_level_5">
+                        <label class="level-input-item" id="label_level_5" value="geographic" for="edit_level_5"  onclick="changeLevel('geographic')">
                             <img src="assets/img/icon/level_5_geo.png" class="icon">
                             <br>Geography
                         </label>

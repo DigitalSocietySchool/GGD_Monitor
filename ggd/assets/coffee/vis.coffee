@@ -232,13 +232,13 @@ root.Bubbles = () ->
       changeView('population');
 
     # search function callback
-    $(".button").on "click", ->
+    $("#searchStart").on "click", ->
       # data = data.filter( (d) -> d.name == ("Dataset_3"||"Dataset_2"))
       # updateNodes(data)
       # updateLabels(data)
       
       input = $("#searchInput").val();
-      d3.select("#status").html("Search results for <span class=\"active\"> " + String(input) + " </span>")
+      d3.select("#status").html("Search results for <span class=\"active\"> " + String(input) + " </span>&nbsp;&nbsp;&nbsp;")
 
       theNode = d3.selectAll(".bubble-node")
                     .filter( (d,i) ->  
@@ -259,14 +259,13 @@ root.Bubbles = () ->
                       d.indicator.search(input) != -1 
                     )
       
-      d3.selectAll(".bubble-node").style("opacity","0.2")
-      theNode.style("opacity","1")
-      #d3.selectAll(".bubble-label").style("opacity","0.2")
-      #theLabel.style("opacity","1")
+      d3.selectAll(".bubble-node").transition().duration(150).style("opacity","0.2")
+      theNode.transition().duration(150).style("opacity","1")
 
   $(".reset").on "click", ->
-        d3.selectAll(".bubble-node").style("opacity","1")
-        d3.selectAll(".bubble-label").style("opacity","1")
+        d3.selectAll(".bubble-node").transition().duration(150).style("opacity","1")
+        d3.selectAll(".bubble-label").transition().duration(150).style("opacity","1")
+        d3.select("#status").html("")
         $("#searchInput").val('')
   
 
@@ -602,11 +601,21 @@ root.Bubbles = () ->
             d2.x += moveX
             d2.y += moveY
 
+
   # ---
   # Animate bubbles after filtering
   # ---
   root.redraw = () ->
     force.nodes(data).start()
+
+
+  # ---
+  # Update data
+  # ---
+  root.changeLevel = (new_level) ->
+    console.log d3.select('#active_node_id').attr('active_node_id')
+    #force.nodes(data).start()
+
 
   # ---
   # adds mouse events to element
@@ -655,6 +664,7 @@ root.Bubbles = () ->
     type_value = ''
     level = ''
     time = ''
+    ID = ''
 
     # #retrieve data elements from active node
     activeNode = d3.selectAll(".bubble-selected")
@@ -672,6 +682,7 @@ root.Bubbles = () ->
                       type_value = d.type
                       level = d.level
                       time = d.time
+                      ID = d.ID
                     )
     if(department == '-')
       dep_value = 'unknown'
@@ -682,6 +693,7 @@ root.Bubbles = () ->
 
     # Check if a node is selected
     if id.length > 0 & name != ''
+      d3.select("#active_node_id").attr('active_node_id',"#{ID}")
       d3.select("#title-input").html("#{name}")
       d3.select("#description-input").html("#{description}")
       d3.select("#contact-input").html("#{contact}")
@@ -692,15 +704,13 @@ root.Bubbles = () ->
       d3.select("#size-input").html("#{size}")
       d3.select("#time-input").html("#{time}")
 
-      #<span class="dep_circle dep_EGZ"></span> EGZ
-
       # Make unselected nodes transparent
-      d3.selectAll(".bubble-selected").selectAll('.bubble-opac').style('opacity','0')
-      d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').style('opacity','0.6')
+      d3.selectAll(".bubble-selected").selectAll('.bubble-opac').transition().duration(150).style('opacity','0')
+      d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').transition().duration(150).style('opacity','0.6')
 
       # Fix color of pie chart    
-      d3.selectAll(".bubble-selected").selectAll(".pie").attr("opacity", '1' )
-      d3.selectAll(".bubble-tone-down").selectAll(".pie").attr("opacity", '0.2' )
+      d3.selectAll(".bubble-selected").selectAll(".pie").transition().duration(150).attr("opacity", '1' )
+      d3.selectAll(".bubble-tone-down").selectAll(".pie").transition().duration(150).attr("opacity", '0.2' )
 
 
       # Highlight dataset's features
@@ -735,10 +745,10 @@ root.Bubbles = () ->
       d3.select("#publication-input").html("-")
       d3.select("#time-input").html("-")
 
-      d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').style('opacity','0')
+      d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').transition().duration(150).style('opacity','0')
 
       # Fix color of pie chart    
-      d3.selectAll(".bubble-tone-down").selectAll(".pie").attr("opacity", '1' )
+      d3.selectAll(".bubble-tone-down").selectAll(".pie").transition().duration(150).attr("opacity", '1' )
 
       # Hide dataset's features
       for i in [1..4]
@@ -756,8 +766,6 @@ root.Bubbles = () ->
       for i in [1..5]
         d3.select('#label_level_'+i)
           .classed('input_item_checked', false)
-
-
 
   # ---
   # hover event
@@ -818,15 +826,15 @@ root.Bubbles = () ->
 
     # Set transparency
     d3.selectAll(".bubble-hover").classed('bubble-tone-down', false)
-    d3.selectAll(".bubble-hover").selectAll('.bubble-opac').style('opacity','0')
-    d3.selectAll(".bubble-hover").selectAll(".pie").attr("opacity", '1' )
+    d3.selectAll(".bubble-hover").selectAll('.bubble-opac').transition().duration(150).style('opacity','0')
+    d3.selectAll(".bubble-hover").selectAll(".pie").transition().duration(150).attr("opacity", '1' )
 
     # Make unselected nodes transparent...
-    d3.selectAll('.bubble-tone-down').selectAll('.bubble-opac').style('opacity','0.6')
-    d3.selectAll(".bubble-tone-down").selectAll(".pie").attr("opacity", '0.2' )
+    d3.selectAll('.bubble-tone-down').selectAll('.bubble-opac').transition().duration(150).style('opacity','0.6')
+    d3.selectAll(".bubble-tone-down").selectAll(".pie").transition().duration(150).attr("opacity", '0.2' )
     # ...except the clicked bubble
-    d3.selectAll(".bubble-selected").selectAll('.bubble-opac').style('opacity','0')
-    d3.selectAll(".bubble-selected").selectAll(".pie").attr("opacity", '1' )
+    d3.selectAll(".bubble-selected").selectAll('.bubble-opac').transition().duration(150).style('opacity','0')
+    d3.selectAll(".bubble-selected").selectAll(".pie").transition().duration(150).attr("opacity", '1' )
 
     # Hide labels
     d3.selectAll('.bubble-label').style('display','none')
@@ -854,7 +862,6 @@ root.Bubbles = () ->
     for i in [1..5]
       d3.select('#label_level_'+i)
         .classed('input_item_checked', level.includes(level_label[i-1]))
-
 
   # ---
   # remove hover class
