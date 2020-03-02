@@ -683,7 +683,6 @@ root.Bubbles = () ->
       d3.select("#description-input").html("#{description}")
       d3.select("#contact-input").html("#{contact}")
       d3.select("#department-input").html("<span class='dep_circle dep_#{dep_value}'></span>#{department}")
-      #d3.select("#department-input").html('<span class="dep_circle dep_#{department}"></span>#{department}')
       d3.select("#keywords-input").html("#{keywords}")
       d3.select("#indic-input").html("#{indic}")
       d3.select("#publication-input").html("#{publication}")
@@ -766,6 +765,7 @@ root.Bubbles = () ->
     contact = ''
     name = ''
     description = ''
+    department = ''
     publication = ''
     ID = ''
     indic = ''
@@ -781,6 +781,7 @@ root.Bubbles = () ->
                       description = d.description.replace(' - ',' ')
                       keywords = d.keyword 
                       contact = d.contact
+                      department = d.department
                       name = d.name
                       publication = d.publication
                       indic = d.indicator
@@ -791,12 +792,17 @@ root.Bubbles = () ->
                       type_value = d.type
                       level = d.level
                     )
+    if(department == '-')
+      dep_value = 'unknown'
+    else 
+      dep_value = department
 
     d3.select("#title-input").html("#{name}")
     d3.select("#description-input").html("#{description}")
     d3.select("#contact-input").html("#{contact}")
     d3.select("#keywords-input").html("#{keywords}")
     d3.select("#indic-input").html("#{indic}")
+    d3.select("#department-input").html("<span class='dep_circle dep_#{dep_value}'></span>#{department}")
     d3.select("#publication-input").html("#{publication}")
     d3.select("#size-input").html("#{size}")
 
