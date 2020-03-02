@@ -460,7 +460,7 @@ root.Bubbles = () ->
       "family" : "icon/level_2_family.png"
       "group" : "icon/level_3_group.png"
       "orga" : "icon/level_4_orga.png"
-      "geographic" : "icon/level_5_geo.png"
+      "geographic" : "icon/level_5_geographic.png"
 
     for l, img of level
       level_g
@@ -618,41 +618,54 @@ root.Bubbles = () ->
     # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
-    node_data.level = new_label
 
-    hashchange()
-
-    # Change bubble icons
     dim_label = ['individual', 'family', 'group', 'orga', 'geographic']
-    
+   
+    # Remove bubble icons
     for l in dim_label
       d3.select('#svg_icon_level_'+l+'_'+data_id).attr('href','')
     
-    index_img = dim_label.indexOf(new_label) + 1
-    d3.select('#svg_icon_level_'+new_label+'_'+data_id).attr('href','assets/img/icon/level_'+index_img+'_'+new_label+'.png')
+    if new_label == node_data.level
+      node_data.level = ''
+
+    else
+      node_data.level = new_label
+      index_img = dim_label.indexOf(new_label) + 1
+
+      d3.select('#svg_icon_level_'+new_label+'_'+data_id).attr('href','assets/img/icon/level_'+index_img+'_'+new_label+'.png')
    
+    hashchange()
+    
+
+
   root.changeGeo = (new_label) ->
     # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
-    node_data.geo = new_label
 
-    hashchange()
-
-    # Change bubble icons
     dim_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
     
+    # Remove bubble icons
     for l in dim_label
       d3.select('#svg_icon_geo_'+l+'_'+data_id).attr('href','')
     
-    index_img = dim_label.indexOf(new_label) + 1
-    if index_img < 4
-      index_img = 1
-    else if index_img < 7
-      index_img = 2
-    else 
-      index_img = 3
-    d3.select('#svg_icon_geo_'+new_label+'_'+data_id).attr('href','assets/img/icon/geo_'+index_img+'.png')
+    if new_label == node_data.geo
+      node_data.geo = ''
+
+    else
+      node_data.geo = new_label
+      index_img = dim_label.indexOf(new_label) + 1
+      
+      if index_img < 4
+        index_img = 1
+      else if index_img < 7
+        index_img = 2
+      else 
+        index_img = 3
+
+      d3.select('#svg_icon_geo_'+new_label+'_'+data_id).attr('href','assets/img/icon/geo_'+index_img+'.png')
+
+    hashchange()
     
 
   # ---

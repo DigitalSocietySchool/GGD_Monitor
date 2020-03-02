@@ -494,7 +494,14 @@ tspan{
 label{
     opacity:0.4;
 }
-label:hover{
+label:hover, .label_selected{
     opacity:1;
     font-weight: bold;
+}
+.dep_label{
+    width:150px;
+    float: left;
+    font-weight: normal;
+    vertical-align: middle;
+    font-size:14px;
 }
