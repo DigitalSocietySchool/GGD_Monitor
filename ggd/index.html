@@ -177,6 +177,11 @@
 
         }
 
+        function showEditDep(){  
+            d3.select('#edit_department').attr('style', 'display:block;')
+            d3.select('#department-input').attr('style', 'display:none;')
+        }
+
     </script>
 </head>
 
@@ -251,9 +256,9 @@
 
                 <div class="sidebar-items">
                     <span style="width:110px;margin-right: 10px;">Department:</span> 
-                    <!--span id="department-input" contenteditable="false"  style="float:left;font-weight:100;width:360px;margin-top: -6px;"></span-->
+                    <span id="department-input" contenteditable="false" onclick="showEditDep()"></span>
 
-                    <div id="edit_department" class="dropdown_department">
+                    <div id="edit_department" class="dropdown_department" style="display: none;">
                         
                             <label id="label_dep_1" value="EGZ" class="dep_label">
                                 <span class="dep_circle dep_EGZ"></span> 
@@ -417,7 +422,7 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:60px;">Level:</span> 
+                    <span style="width:70px;">Level:</span> 
                     <span id="level-input" contenteditable="false"  style="float:left;font-weight:100;width:450px;height:50px;overflow:visible;">
                         <input type="checkbox" id="edit_level_1" name="edit_level[]" value="individual" style="display:none;">
                         <input type="checkbox" id="edit_level_2" name="edit_level[]" value="family" style="display:none;">
@@ -1271,6 +1276,12 @@
         for (var i = 1; i < max_dep+1; i++) {
             btn = document.getElementById('dep_' + i);
             btn.setAttribute("onclick", 'filterByDep("' + btn.getAttribute('value') + '")');
+
+            // + Add Edit functions
+            if(i != max_dep){
+                document.getElementById('label_dep_'+i)
+                    .setAttribute("onclick", "changeDep('" + document.getElementById('label_dep_'+i).getAttribute('value') + "')");
+            }
         }
         
         

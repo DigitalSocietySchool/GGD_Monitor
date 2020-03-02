@@ -493,15 +493,27 @@ tspan{
 }
 label{
     opacity:0.4;
+    font-weight: normal;
 }
 label:hover, .label_selected{
     opacity:1;
     font-weight: bold;
 }
+.level-input-item{
+    float: right;
+}
 .dep_label{
     width:150px;
     float: left;
-    font-weight: normal;
     vertical-align: middle;
-    font-size:14px;
+    font-size:15px;
+}
+#department-input{
+    float:left;
+    font-weight:100;
+    width:360px;
+    margin-top: -6px;
+}
+#edit_department{
+    margin-top: -6px;
 }

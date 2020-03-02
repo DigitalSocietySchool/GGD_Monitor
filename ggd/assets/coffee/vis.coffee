@@ -365,7 +365,8 @@ root.Bubbles = () ->
     node
       .append("g")
       .append("circle")
-      .attr("r", (d) -> Math.max(12, rScale(rValue(d))-4 ) )
+        .attr('id', (d) -> 'svg_icon_dep_'+d.ID)
+        .attr("r", (d) -> Math.max(12, rScale(rValue(d))-4 ) )
 
 
     # Adding type dimension
@@ -666,6 +667,27 @@ root.Bubbles = () ->
       d3.select('#svg_icon_geo_'+new_label+'_'+data_id).attr('href','assets/img/icon/geo_'+index_img+'.png')
 
     hashchange()
+
+  root.changeDep = (new_label) ->
+    # Change data
+    data_id = d3.select('#active_node_id').attr('active_node_id')
+    node_data = d3.select('#node_'+data_id).data()[0]
+
+    dim_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG']
+   
+    if new_label == node_data.department
+      node_data.department = ''
+      d3.select('#svg_icon_dep_'+data_id).attr('fill',colors['unknown'])
+
+    else
+      node_data.department = new_label
+      d3.select('#svg_icon_dep_'+data_id).attr('fill',colors[new_label])
+   
+    hashchange()
+
+    d3.select('#edit_department').attr('style', 'display:none;')
+    d3.select('#department-input').attr('style', 'display:block;')
+
     
 
   # ---
@@ -784,6 +806,11 @@ root.Bubbles = () ->
       for i in [1..5]
         d3.select('#label_level_'+i)
           .classed('input_item_checked', level.includes(level_label[i-1]))
+
+      dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG']
+      for i in [1..9]
+        d3.select('#label_dep_'+i)
+          .classed('input_item_checked', department == dep_label[i-1] )
 
     else
       d3.select("#title-input").html("No dataset is selected")
