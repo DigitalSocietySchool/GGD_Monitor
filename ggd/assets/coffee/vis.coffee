@@ -444,6 +444,7 @@ root.Bubbles = () ->
     for c, img of coverage
       geo_g
         .append("image")
+        .attr('id', (d) -> 'svg_icon_geo_'+c+'_'+d.ID)
         .attr("xlink:href", (d) -> if d.geo.indexOf(c) != -1 then "assets/img/" + img)
         .attr("class", "cat_geo")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
@@ -613,21 +614,46 @@ root.Bubbles = () ->
   # ---
   # Update data
   # ---
-  root.changeLevel = (new_level) ->
+  root.changeLevel = (new_label) ->
+    # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
-    node_data.level = new_level
+    node_data.level = new_label
 
-    level_label = ['individual', 'family', 'group', 'orga', 'geographic']
-    
-    for l in level_label
-      d3.select('#svg_icon_level_'+l+'_'+data_id).attr('href','')
-    
-    index_img = level_label.indexOf(new_level) + 1
-    d3.select('#svg_icon_level_'+new_level+'_'+data_id).attr('href','assets/img/icon/level_'+index_img+'_'+new_level+'.png')
-    
     hashchange()
 
+    # Change bubble icons
+    dim_label = ['individual', 'family', 'group', 'orga', 'geographic']
+    
+    for l in dim_label
+      d3.select('#svg_icon_level_'+l+'_'+data_id).attr('href','')
+    
+    index_img = dim_label.indexOf(new_label) + 1
+    d3.select('#svg_icon_level_'+new_label+'_'+data_id).attr('href','assets/img/icon/level_'+index_img+'_'+new_label+'.png')
+   
+  root.changeGeo = (new_label) ->
+    # Change data
+    data_id = d3.select('#active_node_id').attr('active_node_id')
+    node_data = d3.select('#node_'+data_id).data()[0]
+    node_data.geo = new_label
+
+    hashchange()
+
+    # Change bubble icons
+    dim_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
+    
+    for l in dim_label
+      d3.select('#svg_icon_geo_'+l+'_'+data_id).attr('href','')
+    
+    index_img = dim_label.indexOf(new_label) + 1
+    if index_img < 4
+      index_img = 1
+    else if index_img < 7
+      index_img = 2
+    else 
+      index_img = 3
+    d3.select('#svg_icon_geo_'+new_label+'_'+data_id).attr('href','assets/img/icon/geo_'+index_img+'.png')
+    
 
   # ---
   # adds mouse events to element
@@ -745,7 +771,6 @@ root.Bubbles = () ->
       for i in [1..5]
         d3.select('#label_level_'+i)
           .classed('input_item_checked', level.includes(level_label[i-1]))
-
 
     else
       d3.select("#title-input").html("No dataset is selected")

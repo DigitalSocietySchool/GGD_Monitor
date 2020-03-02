@@ -32,15 +32,7 @@
         function toggleEdit() {
             if (!editMode) {
                 document.getElementById("edit-top-bar").style.display = "block";
-                document.getElementById("title-input").contentEditable = true;
-                document.getElementById("contact-input").contentEditable = true;
-                document.getElementById("description-input").contentEditable = true;
-                document.getElementById("keywords-input").contentEditable = true;
-
-                //show case input fields
-                document.getElementById("caseGraph").style.display = "none";
-                document.getElementById("caseInput").style.display = "block";
-
+                d3.selectAll(".edit_field").attr('contentEditable', 'true');
 
                 //blurs all geo levels
                 var buttons = document.getElementsByClassName('geolevel');
@@ -57,14 +49,8 @@
 
             } else if (editMode) {
                 document.getElementById("edit-top-bar").style.display = "none";
-                document.getElementById("title-input").contentEditable = false;
-                document.getElementById("contact-input").contentEditable = false;
-                document.getElementById("description-input").contentEditable = false;
-                document.getElementById("keywords-input").contentEditable = false;
+                document.getElementsByClassName("edit_field").setAttribute('contentEditable', 'false');
 
-                //hide case input fields
-                document.getElementById("caseGraph").style.display = "block";
-                document.getElementById("caseInput").style.display = "none";
                 editMode = false;
 
             }
@@ -197,7 +183,6 @@
 <body onresize="replaceLayout()">
 
 
-    <!--div style="display: flex; justify-content: center;height: 30px;"-->
     <div class="topbar">
         <input id="searchInput" name="targetNode" type="text" />
         <button class="button" id="searchStart">Search</button>
@@ -246,24 +231,22 @@
 
                 <div class="sidebar-items">
                     <!--div><b>Description:&nbsp;</b></div-->
-                    <span style="font-weight:100;" contentEditable="false" id="description-input">
-                        -
-                    </span>
+                    <span class="edit_field" style="font-weight:100;" contentEditable="false" id="description-input"></span>
                 </div>
 
                 <div class="sidebar-items">
                     <span style="float:left;width:85px;">Keywords: </span>
-                    <span contentEditable="false" id="keywords-input" style="float:left;font-weight:100;width:370px;"></span>
+                    <span class="edit_field" contentEditable="false" id="keywords-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
 
                 <div class="sidebar-items">
                     <span style="float:left;width:85px;">Indicators: </span>
-                    <span contentEditable="false" id="indic-input" style="float:left;font-weight:100;width:370px;"></span>
+                    <span class="edit_field" contentEditable="false" id="indic-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
 
                 <div class="sidebar-items">
                     <span style="width:70px;">Contact:</span> 
-                    <span id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:385px;"></span>
+                    <span class="edit_field" id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:385px;"></span>
                 </div>
 
                 <div class="sidebar-items">
@@ -273,17 +256,17 @@
 
                 <div class="sidebar-items">
                     <span style="float:left;width:85px;">No.Cases: </span>
-                    <span contentEditable="false" id="size-input" style="float:left;font-weight:100;width:370px;"></span>
+                    <span class="edit_field" contentEditable="false" id="size-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
 
                 <div class="sidebar-items">
                     <span style="float:left;width:110px;">Time Coverage: </span>
-                    <span contentEditable="false" id="time-input" style="float:left;font-weight:100;width:360px;"></span>
+                    <span class="edit_field" contentEditable="false" id="time-input" style="float:left;font-weight:100;width:360px;"></span>
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:110px;">Geographic Coverage:</span> 
-                    <span id="geo-input" contenteditable="false"  style="float:left;font-weight:100;width:360px;">
+                    <span style="width:100px;">Geographic Coverage:</span> 
+                    <span id="geo-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
                         <input type="radio" id="edit_geo_1" name="edit_geo" value="straat" style="display:none;">
                         <input type="radio" id="edit_geo_2" name="edit_geo" value="buurt" style="display:none;">
                         <input type="radio" id="edit_geo_3" name="edit_geo" value="wijk" style="display:none;">
@@ -648,20 +631,6 @@
                 <div id="size_6" value="unknown" class="size">
                     (unknown)
                 </div>
-                <!--div id="caseInput" style="display: none" class="toolbar-items">
-                    <span>
-                        <form>
-                            <label for="cases">Cases</label>
-                            <input type="number" id="cases" name="age">
-                        </form>
-                    </span>
-                    <span>
-                        <form>
-                            <label for="unit">Unit</label>
-                            <input  id="unit" name="age">
-                        </form>
-                    </span>
-                </div-->
             </div>
             <div class="col" id="dep_btn" style="flex-grow:1.2;">
                 <div class="toolbar-items ownership">
@@ -974,6 +943,12 @@
         btn = document.getElementsByClassName('item_geo');
         for (var i = 0; i < btn.length; i++) {
             btn[i].setAttribute("onclick", "filterByGeo('" + btn[i].getAttribute('value') + "')");
+            
+            // + Add Edit functions
+            if(i != btn.length-1){
+                document.getElementById('label_geo_'+(i+1))
+                    .setAttribute("onclick", "changeGeo('" + btn[i].getAttribute('value') + "')");
+            }
         }
 
         var keep_geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national','unknown'];
