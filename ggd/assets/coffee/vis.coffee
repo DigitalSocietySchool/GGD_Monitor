@@ -734,7 +734,7 @@ root.Bubbles = () ->
       geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
       for i in [1..10]
         d3.select('#label_geo_'+i)
-          .classed('input_item_checked', geo.includes(geo_label[i-1]))
+          .classed('input_item_checked', geo.split(';').indexOf(geo_label[i-1]) != -1)
 
       type_label =  ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
       for i in [1..5]
