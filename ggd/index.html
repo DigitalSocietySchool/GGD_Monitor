@@ -250,11 +250,6 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="float:left;width:85px;">No.Cases: </span>
-                    <span contentEditable="false" id="size-input" style="float:left;font-weight:100;width:370px;"></span>
-                </div>
-
-                <div class="sidebar-items">
                     <span style="float:left;width:85px;">Keywords: </span>
                     <span contentEditable="false" id="keywords-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
@@ -275,7 +270,17 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:110px;">Geo.Coverage:</span> 
+                    <span style="float:left;width:85px;">No.Cases: </span>
+                    <span contentEditable="false" id="size-input" style="float:left;font-weight:100;width:370px;"></span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span style="float:left;width:110px;">Time Coverage: </span>
+                    <span contentEditable="false" id="time-input" style="float:left;font-weight:100;width:360px;"></span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span style="width:110px;">Geographic Coverage:</span> 
                     <span id="geo-input" contenteditable="false"  style="float:left;font-weight:100;width:360px;">
                         <input type="radio" id="edit_geo_1" name="edit_geo" value="straat" style="display:none;">
                         <input type="radio" id="edit_geo_2" name="edit_geo" value="buurt" style="display:none;">
@@ -598,7 +603,7 @@
                 <img class="eyecon" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png"> Number of Cases
             </div>
             <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.2;">
-                <img class="eyecon" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png"> Ownership
+                <img class="eyecon" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png"> Department
             </div>
             <div class="col dim_label" onmouseup="changeView('time','.arc');">
                 <img class="eyecon" id="eye_time" collapsed="false" src="assets/img/icon/eye_show.png"> Temporal Coverage 

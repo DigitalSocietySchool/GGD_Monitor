@@ -654,7 +654,7 @@ root.Bubbles = () ->
     geo = ''
     type_value = ''
     level = ''
-
+    time = ''
 
     # #retrieve data elements from active node
     activeNode = d3.selectAll(".bubble-selected")
@@ -671,11 +671,14 @@ root.Bubbles = () ->
                       geo = d.geo
                       type_value = d.type
                       level = d.level
+                      time = d.time
                     )
     if(department == '-')
       dep_value = 'unknown'
     else 
       dep_value = department
+
+    time = time.replace(/;/g,', ')
 
     # Check if a node is selected
     if id.length > 0 & name != ''
@@ -687,6 +690,7 @@ root.Bubbles = () ->
       d3.select("#indic-input").html("#{indic}")
       d3.select("#publication-input").html("#{publication}")
       d3.select("#size-input").html("#{size}")
+      d3.select("#time-input").html("#{time}")
 
       #<span class="dep_circle dep_EGZ"></span> EGZ
 
@@ -729,6 +733,7 @@ root.Bubbles = () ->
       d3.select("#keywords-input").html("-")
       d3.select("#indic-input").html("-")
       d3.select("#publication-input").html("-")
+      d3.select("#time-input").html("-")
 
       d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').style('opacity','0')
 
@@ -774,6 +779,7 @@ root.Bubbles = () ->
     geo = ''
     type_value = ''
     level = ''
+    time = ''
 
     # retrieve data elements from rolled node
     rolledNode = d3.selectAll(".bubble-hover")
@@ -791,11 +797,14 @@ root.Bubbles = () ->
                       geo = d.geo
                       type_value = d.type
                       level = d.level
+                      time = d.time
                     )
     if(department == '-')
       dep_value = 'unknown'
     else 
       dep_value = department
+
+    time = time.replace(/;/g,', ')
 
     d3.select("#title-input").html("#{name}")
     d3.select("#description-input").html("#{description}")
@@ -805,6 +814,7 @@ root.Bubbles = () ->
     d3.select("#department-input").html("<span class='dep_circle dep_#{dep_value}'></span>#{department}")
     d3.select("#publication-input").html("#{publication}")
     d3.select("#size-input").html("#{size}")
+    d3.select("#time-input").html("#{time}")
 
     # Set transparency
     d3.selectAll(".bubble-hover").classed('bubble-tone-down', false)
