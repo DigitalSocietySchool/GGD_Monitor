@@ -771,7 +771,6 @@ root.Bubbles = () ->
       d3.select('#label_geo_'+index_label).classed('input_item_checked', true)
 
 
-
   root.changeDep = (new_label) ->
     # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
@@ -837,6 +836,18 @@ root.Bubbles = () ->
       for i in [1..9]
         if d3.select('#label_dep_'+i).classed('input_item_checked')
           node_data.department = d3.select('#label_dep_'+i).attr('value')
+
+      temp = []
+      for i in [1..4]
+        if d3.select('#label_pop_'+i).classed('input_item_checked')
+          temp.push( d3.select('#label_pop_'+i).attr('value') )
+      node_data.population = temp.join(';')
+
+      temp = []
+      for i in [1..5]
+        if d3.select('#label_type_'+i).classed('input_item_checked')
+          temp.push( d3.select('#label_type_'+i).attr('value') )
+      node_data.type = temp.join(';')
 
       if(node_data.keyword == '') 
         node_data.keyword = '-'
@@ -1005,12 +1016,10 @@ root.Bubbles = () ->
         d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','')
 
 
-    dim_label = ['young', 'youth', 'adult', 'elderly']
-    #for new_label in dim_label
-    #  index_label = dim_label.indexOf(new_label)+1
+    dim_label = ['youth', 'young', 'adult', 'elderly']
     for index_label in [1..4]
       new_label = dim_label[index_label-1]
-      
+
       if node_data.temp_pop.search(';') != -1
         temp = node_data.temp_pop.split(';')
 
