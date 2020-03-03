@@ -500,7 +500,7 @@ label:hover, .label_selected{
     font-weight: bold;
 }
 .level-input-item{
-    float: right;
+    float: left;
 }
 .dep_label{
     width:150px;

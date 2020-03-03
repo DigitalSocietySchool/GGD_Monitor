@@ -689,13 +689,24 @@ root.Bubbles = () ->
     d3.select('#department-input').attr('style', 'display:block;')
 
 
-  root.changeTextFields = () ->
+  root.changeTextFields = (leaveEditMode) ->
     # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
-    
-    d3.selectAll(".edit_field").attr('contentEditable', 'false')
-    document.getElementById("edit-top-bar").style.display = "none"
+
+    keywords = d3.select('#keywords-input').html().replace(/,/g,';')
+    node_data.keyword = keywords
+
+    console.log keywords
+    console.log node_data.keyword
+    console.log d3.select('#node_'+data_id).data()[0].keyword
+
+    hashchange()
+
+    # Leave edit mode
+    if(leaveEditMode)
+      d3.selectAll(".edit_field").attr('contentEditable', 'false')
+      document.getElementById("edit-top-bar").style.display = "none"
 
 
 
@@ -861,6 +872,9 @@ root.Bubbles = () ->
   # hover event
   # ---
   mouseover = (d) ->
+    # Save edits
+    changeTextFields(leaveEditMode=false)
+
     node.classed("bubble-hover", (p) -> p == d)
     node.classed("bubble-tone-down", (p) -> p != d)
 
