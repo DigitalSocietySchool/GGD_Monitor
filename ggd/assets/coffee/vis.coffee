@@ -725,6 +725,7 @@ root.Bubbles = () ->
     # Does not apply in edit mode
     if document.getElementById("edit-top-bar").style.display == "none"
       location.replace("#")
+      d3.select('#active_node_id').attr('active_node_id', null)
 
   # ---
   # changes clicked bubble by modifying url
@@ -734,6 +735,7 @@ root.Bubbles = () ->
     if document.getElementById("edit-top-bar").style.display == "none"
       location.replace("#" + encodeURIComponent(idValue(d)))
       d3.event.preventDefault()
+      
 
   # ---
   # called when url after the # changes
