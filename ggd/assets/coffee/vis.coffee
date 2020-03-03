@@ -770,12 +770,26 @@ root.Bubbles = () ->
         node_data.name = '-'
       if(node_data.description == '') 
         node_data.description = '-'
-      if(node_data.size == '') 
+      if(node_data.size == '' | (!Number.isInteger(node_data.size*1)) )
         node_data.size = '0'
       if(node_data.publication == '') 
         node_data.publication = '-'
       if(node_data.contact == '') 
         node_data.contact = '-'
+
+      node_to_update = d3.select('#node_'+data_id)
+      node_to_update
+        .selectAll("circle")
+        .attr('r', (d) -> Math.max(10, rScale(rValue(d))-4 ))
+      node_to_update
+       .each( (d) -> d.forceR = Math.max(14, rScale(rValue(d))) )
+        .selectAll(".pie")
+            .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
+      node_to_update
+        .selectAll("image")
+          .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
+          .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+          .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)' )
 
       d3.selectAll(".edit_field").attr('contentEditable', 'false')
       document.getElementById("edit-top-bar").style.display = "none"
