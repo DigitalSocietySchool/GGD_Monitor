@@ -906,8 +906,14 @@ root.Bubbles = () ->
   click = (d) ->
     # Does not apply in edit mode
     if document.getElementById("edit-top-bar").style.display == "none"
-      location.replace("#" + encodeURIComponent(idValue(d)))
-      d3.event.preventDefault()
+      id = decodeURIComponent(location.hash.substring(1)).trim()
+      if id != idValue(d)
+        location.replace("#" + encodeURIComponent(idValue(d)))
+        d3.event.preventDefault()
+
+      else
+        location.replace("#")
+        d3.event.preventDefault()
 
 
   # ---
