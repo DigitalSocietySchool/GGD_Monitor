@@ -694,12 +694,9 @@ root.Bubbles = () ->
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
 
-    keywords = d3.select('#keywords-input').html().replace(/,/g,';')
-    node_data.keyword = keywords
-
-    console.log keywords
-    console.log node_data.keyword
-    console.log d3.select('#node_'+data_id).data()[0].keyword
+    node_data.keyword = d3.select('#keywords-input').html().replace(/,/g,';')
+    node_data.indicator = d3.select('#indic-input').html().replace(/,/g,';')
+    node_data.time = d3.select('#time-input').html().replace(/,/g,';')
 
     hashchange()
 
@@ -707,6 +704,7 @@ root.Bubbles = () ->
     if(leaveEditMode)
       d3.selectAll(".edit_field").attr('contentEditable', 'false')
       document.getElementById("edit-top-bar").style.display = "none"
+      d3.selectAll('.bubble-node').attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
 
 
 
@@ -724,14 +722,18 @@ root.Bubbles = () ->
   # clears currently selected bubble
   # ---
   clear = () ->
-    location.replace("#")
+    # Does not apply in edit mode
+    if document.getElementById("edit-top-bar").style.display == "none"
+      location.replace("#")
 
   # ---
   # changes clicked bubble by modifying url
   # ---
   click = (d) ->
-    location.replace("#" + encodeURIComponent(idValue(d)))
-    d3.event.preventDefault()
+    # Does not apply in edit mode
+    if document.getElementById("edit-top-bar").style.display == "none"
+      location.replace("#" + encodeURIComponent(idValue(d)))
+      d3.event.preventDefault()
 
   # ---
   # called when url after the # changes
@@ -744,136 +746,138 @@ root.Bubbles = () ->
   # activates new node
   # ---
   root.updateActive = (id) ->
-    node.classed("bubble-selected", (d) -> id == idValue(d))
-    node.classed("bubble-tone-down", (d) -> id != idValue(d))
-    keywords = ''
-    contact = ''
-    department = ''
-    name = ''
-    description = ''
-    publication = ''
-    indic = ''
-    size = ''
-    population = ''
-    geo = ''
-    type_value = ''
-    level = ''
-    time = ''
-    ID = ''
+    if true #document.getElementById("edit-top-bar").style.display == "none"
+      node.classed("bubble-selected", (d) -> id == idValue(d))
+      node.classed("bubble-tone-down", (d) -> id != idValue(d))
+      keywords = ''
+      contact = ''
+      department = ''
+      name = ''
+      description = ''
+      publication = ''
+      indic = ''
+      size = ''
+      population = ''
+      geo = ''
+      type_value = ''
+      level = ''
+      time = ''
+      ID = ''
 
-    # #retrieve data elements from active node
-    activeNode = d3.selectAll(".bubble-selected")
-                    .filter( (d) -> 
-                      description = d.description.replace(' - ',' ')
-                      keywords = d.keyword 
-                      contact = d.contact
-                      department = d.department
-                      name = d.name
-                      publication = d.publication
-                      indic = d.indicator
-                      size = d.size
-                      population = d.population
-                      geo = d.geo
-                      type_value = d.type
-                      level = d.level
-                      time = d.time
-                      ID = d.ID
-                    )
-    if(department == '-')
-      dep_value = 'unknown'
-    else 
-      dep_value = department
+      # #retrieve data elements from active node
+      activeNode = d3.selectAll(".bubble-selected")
+                      .filter( (d) -> 
+                        description = d.description.replace(' - ',' ')
+                        keywords = d.keyword 
+                        contact = d.contact
+                        department = d.department
+                        name = d.name
+                        publication = d.publication
+                        indic = d.indicator
+                        size = d.size
+                        population = d.population
+                        geo = d.geo
+                        type_value = d.type
+                        level = d.level
+                        time = d.time
+                        ID = d.ID
+                      )
+      if(department == '-')
+        dep_value = 'unknown'
+      else 
+        dep_value = department
 
-    time = time.replace(/;/g,', ')
-    keywords = keywords.replace(/;/g,', ')
-    indic = indic.replace(/;/g,', ')
+      time = time.replace(/;/g,', ')
+      keywords = keywords.replace(/;/g,', ')
+      indic = indic.replace(/;/g,', ')
 
-    # Check if a node is selected
-    if id.length > 0 & name != ''
-      d3.select("#active_node_id").attr('active_node_id',"#{ID}")
-      d3.select("#title-input").html("#{name}")
-      d3.select("#description-input").html("#{description}")
-      d3.select("#contact-input").html("#{contact}")
-      d3.select("#department-input").html("<span class='dep_circle dep_#{dep_value}'></span>#{department}")
-      d3.select("#keywords-input").html("#{keywords}")
-      d3.select("#indic-input").html("#{indic}")
-      d3.select("#publication-input").html("#{publication}")
-      d3.select("#size-input").html("#{size}")
-      d3.select("#time-input").html("#{time}")
+      # Check if a node is selected
+      if id.length > 0 & name != ''
+        d3.select("#active_node_id").attr('active_node_id',"#{ID}")
+        d3.select("#title-input").html("#{name}")
+        d3.select("#description-input").html("#{description}")
+        d3.select("#contact-input").html("#{contact}")
+        d3.select("#department-input").html("<span class='dep_circle dep_#{dep_value}'></span>#{department}")
+        d3.select("#keywords-input").html("#{keywords}")
+        d3.select("#indic-input").html("#{indic}")
+        d3.select("#publication-input").html("#{publication}")
+        d3.select("#size-input").html("#{size}")
+        d3.select("#time-input").html("#{time}")
 
-      # Make unselected nodes transparent
-      d3.selectAll(".bubble-selected").selectAll('.bubble-opac').transition().duration(150).style('opacity','0')
-      d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').transition().duration(150).style('opacity','0.6')
+        # Make unselected nodes transparent
+        d3.selectAll(".bubble-selected").selectAll('.bubble-opac').transition().duration(150).style('opacity','0')
+        d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').transition().duration(150).style('opacity','0.6')
 
-      # Fix color of pie chart    
-      d3.selectAll(".bubble-selected").selectAll(".pie").transition().duration(150).attr("opacity", '1' )
-      d3.selectAll(".bubble-tone-down").selectAll(".pie").transition().duration(150).attr("opacity", '0.2' )
+        # Fix color of pie chart    
+        d3.selectAll(".bubble-selected").selectAll(".pie").transition().duration(150).attr("opacity", '1' )
+        d3.selectAll(".bubble-tone-down").selectAll(".pie").transition().duration(150).attr("opacity", '0.2' )
 
 
-      # Highlight dataset's features
-      pop_label = ['youth','young','adult','elderly']
-      for i in [1..4]
-        d3.select('#label_pop_'+i)
-          .classed('input_item_checked', population.includes(pop_label[i-1]))
+        # Highlight dataset's features
+        pop_label = ['youth','young','adult','elderly']
+        for i in [1..4]
+          d3.select('#label_pop_'+i)
+            .classed('input_item_checked', population.includes(pop_label[i-1]))
 
-      geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
-      for i in [1..10]
-        d3.select('#label_geo_'+i)
-          .classed('input_item_checked', geo.split(';').indexOf(geo_label[i-1]) != -1)
+        geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
+        for i in [1..10]
+          d3.select('#label_geo_'+i)
+            .classed('input_item_checked', geo.split(';').indexOf(geo_label[i-1]) != -1)
 
-      type_label =  ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
-      for i in [1..5]
-        d3.select('#label_type_'+i)
-          .classed('input_item_checked', type_value.includes(type_label[i-1]))
-      
-      level_label = ['individual', 'family', 'group', 'orga', 'geographic']
-      for i in [1..5]
-        d3.select('#label_level_'+i)
-          .classed('input_item_checked', level.includes(level_label[i-1]))
+        type_label =  ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
+        for i in [1..5]
+          d3.select('#label_type_'+i)
+            .classed('input_item_checked', type_value.includes(type_label[i-1]))
+        
+        level_label = ['individual', 'family', 'group', 'orga', 'geographic']
+        for i in [1..5]
+          d3.select('#label_level_'+i)
+            .classed('input_item_checked', level.includes(level_label[i-1]))
 
-      dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG']
-      for i in [1..9]
-        d3.select('#label_dep_'+i)
-          .classed('input_item_checked', department == dep_label[i-1] )
+        dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG']
+        for i in [1..9]
+          d3.select('#label_dep_'+i)
+            .classed('input_item_checked', department == dep_label[i-1] )
 
-    else
-      d3.select("#title-input").html("No dataset is selected")
-      d3.select("#description-input").html("-")
-      d3.select("#contact-input").html("-")
-      d3.select("#department-input").html("-")
-      d3.select("#keywords-input").html("-")
-      d3.select("#indic-input").html("-")
-      d3.select("#publication-input").html("-")
-      d3.select("#time-input").html("-")
+      else
+        d3.select("#title-input").html("No dataset is selected")
+        d3.select("#description-input").html("-")
+        d3.select("#contact-input").html("-")
+        d3.select("#department-input").html("-")
+        d3.select("#keywords-input").html("-")
+        d3.select("#indic-input").html("-")
+        d3.select("#publication-input").html("-")
+        d3.select("#time-input").html("-")
 
-      d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').transition().duration(150).style('opacity','0')
+        d3.selectAll(".bubble-tone-down").selectAll('.bubble-opac').transition().duration(150).style('opacity','0')
 
-      # Fix color of pie chart    
-      d3.selectAll(".bubble-tone-down").selectAll(".pie").transition().duration(150).attr("opacity", '1' )
+        # Fix color of pie chart    
+        d3.selectAll(".bubble-tone-down").selectAll(".pie").transition().duration(150).attr("opacity", '1' )
 
-      # Hide dataset's features
-      for i in [1..4]
-        d3.select('#label_pop_'+i)
-          .classed('input_item_checked', false)
+        # Hide dataset's features
+        for i in [1..4]
+          d3.select('#label_pop_'+i)
+            .classed('input_item_checked', false)
 
-      for i in [1..10]
-        d3.select('#label_geo_'+i)
-          .classed('input_item_checked', false)
+        for i in [1..10]
+          d3.select('#label_geo_'+i)
+            .classed('input_item_checked', false)
 
-      for i in [1..5]
-        d3.select('#label_type_'+i)
-          .classed('input_item_checked', false)
+        for i in [1..5]
+          d3.select('#label_type_'+i)
+            .classed('input_item_checked', false)
 
-      for i in [1..5]
-        d3.select('#label_level_'+i)
-          .classed('input_item_checked', false)
+        for i in [1..5]
+          d3.select('#label_level_'+i)
+            .classed('input_item_checked', false)
 
   # ---
   # hover event
   # ---
   mouseover = (d) ->
     # Save edits
-    changeTextFields(leaveEditMode=false)
+    if document.getElementById("edit-top-bar").style.display == "block"
+      changeTextFields(leaveEditMode=false)
 
     node.classed("bubble-hover", (p) -> p == d)
     node.classed("bubble-tone-down", (p) -> p != d)
