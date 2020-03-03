@@ -28,20 +28,6 @@
         var categories = ["keywords", "geo", "population", "type", "level", "size", "department", "time"];
         var tagsInCategories = []; 
         var editMode = false;
-        // Toggle edit mode by making input fields Editable and showing relevant fields
-        function showEditMode() {
-
-            if (d3.select('#active_node_id').attr('active_node_id') == null) {
-                d3.select('#status').html('First select the dataset you wish to edit.')
-            } else {
-                document.getElementById("edit-top-bar").style.display = "block";
-                d3.selectAll(".edit_field").attr('contentEditable', 'true');
-                d3.select('#status').html('')
-                d3.selectAll('.bubble-node').attr("xlink:href",null) // "##{encodeURIComponent(idValue(d))}"
-
-            }
-
-        }
 
         function changeView(view, c = false) {
             if ($('#eye_' + view).attr('collapsed') == 'false') {
@@ -168,19 +154,45 @@
             d3.select('#department-input').attr('style', 'display:none;');
         }
 
+        function showEditMode() {
+            if (d3.select('#active_node_id').attr('active_node_id') == null) {
+                d3.select('#status').html('First select the dataset you wish to edit.')
+
+            } else {
+                document.getElementById("edit-top-bar").style.display = "block";
+                d3.selectAll(".edit_field").attr('contentEditable', 'true');
+                d3.select('#status').html('')
+                d3.selectAll('.bubble-node').attr("xlink:href",null) // "##{encodeURIComponent(idValue(d))}"
+                
+                level_label = ['individual', 'family', 'group', 'orga', 'geographic'];
+                for (var i = 1; i < level_label.length+1; i++) {
+                    btn = document.getElementById('label_level_' + i);
+                    btn.setAttribute("onclick", 'changeLevel("' + btn.getAttribute('value') + '")');
+                }
+
+            }
+        }
+
+        function hideEditMode() {
+            document.getElementById("edit-top-bar").style.display = "none";
+            d3.selectAll(".edit_field").attr('contentEditable', 'false');
+            d3.selectAll('.bubble-node').attr("xlink:href", function(d){ 
+                return '#' + encodeURIComponent(idValue(d));
+            });
+
+            level_label = ['individual', 'family', 'group', 'orga', 'geographic'];
+            for (var i = 1; i < level_label.length+1; i++) {
+                document.getElementById('label_level_' + i).setAttribute("onclick", '');
+            }
+        }
+
         function resetEdit(){
             restorePreviousValues();
-            hashchange();
         }
 
         function cancelEdit(){
             restorePreviousValues();
-            hashchange();
-            d3.selectAll(".edit_field").attr('contentEditable', 'false');
-            document.getElementById("edit-top-bar").style.display = "none";
-            d3.selectAll('.bubble-node').attr("xlink:href", function(d){ 
-                return '#' + encodeURIComponent(idValue(d));
-            });
+            hideEditMode();
         }
 
 
@@ -436,23 +448,23 @@
                         <input type="checkbox" id="edit_level_4" name="edit_level[]" value="orga" style="display:none;">
                         <input type="checkbox" id="edit_level_5" name="edit_level[]" value="geographic" style="display:none;">
                         
-                        <label class="level-input-item" id="label_level_1" value="individual" for="edit_level_1" onclick="changeLevel('individual')">
+                        <label class="level-input-item" id="label_level_1" value="individual" for="edit_level_1">
                             <img src="assets/img/icon/level_1_individual.png" class="icon">
                             <br>Individual
                         </label>
-                        <label class="level-input-item" id="label_level_2" value="family" for="edit_level_2" onclick="changeLevel('family')">
+                        <label class="level-input-item" id="label_level_2" value="family" for="edit_level_2">
                             <img src="assets/img/icon/level_2_family.png" class="icon">
                             <br>Family
                         </label>
-                        <label class="level-input-item" id="label_level_3" value="group" for="edit_level_3" onclick="changeLevel('group')">
+                        <label class="level-input-item" id="label_level_3" value="group" for="edit_level_3">
                             <img src="assets/img/icon/level_3_group.png" class="icon">
                             <br>Group
                         </label>
-                        <label class="level-input-item" id="label_level_4" value="orga" for="edit_level_4" onclick="changeLevel('orga')">
+                        <label class="level-input-item" id="label_level_4" value="orga" for="edit_level_4">
                             <img src="assets/img/icon/level_4_orga.png" class="icon">
                             <br>Organization
                         </label>
-                        <label class="level-input-item" id="label_level_5" value="geographic" for="edit_level_5" onclick="changeLevel('geographic')">
+                        <label class="level-input-item" id="label_level_5" value="geographic" for="edit_level_5">
                             <img src="assets/img/icon/level_5_geographic.png" class="icon">
                             <br>Geography
                         </label>
@@ -1158,7 +1170,7 @@
         // FILTER LEVELS
         //////////////////////////////////////////
         
-        var keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic','unknown'];
+        keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic','unknown'];
         max_level = keep_level_label.length;
 
         for (var i = 1; i < max_level+1; i++) {

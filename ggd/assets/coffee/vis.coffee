@@ -622,20 +622,29 @@ root.Bubbles = () ->
 
     dim_label = ['individual', 'family', 'group', 'orga', 'geographic']
    
-    # Remove bubble icons
+    # Remove icons
     for l in dim_label
       d3.select('#svg_icon_level_'+l+'_'+data_id).attr('href','')
     
-    if new_label == node_data.level
+    for i in [1..5]
+      d3.select('#label_level_'+i).classed('input_item_checked', false)
+    
+    # Manage d3 data
+    if node_data.temp_level == undefined 
+      node_data.temp_level = ''
+
+    if new_label == node_data.temp_level
       node_data.temp_level = ''
 
     else
       node_data.temp_level = new_label
-      index_img = dim_label.indexOf(new_label) + 1
+      index_label = dim_label.indexOf(new_label) + 1
 
-      d3.select('#svg_icon_level_'+new_label+'_'+data_id).attr('href','assets/img/icon/level_'+index_img+'_'+new_label+'.png')
-   
-    hashchange(leaveEditMode=false)
+      d3.select('#svg_icon_level_'+new_label+'_'+data_id).attr('href','assets/img/icon/level_'+index_label+'_'+new_label+'.png')
+      d3.select('#label_level_'+index_label).classed('input_item_checked', true)
+      console.log d3.select('#label_level_'+index_label).classed('input_item_checked')
+      console.log '#label_level_'+index_label
+      
     
 
 
@@ -666,7 +675,7 @@ root.Bubbles = () ->
 
       d3.select('#svg_icon_geo_'+new_label+'_'+data_id).attr('href','assets/img/icon/geo_'+index_img+'.png')
 
-    hashchange(leaveEditMode=false)
+    hashchange()
 
 
   root.changeDep = (new_label) ->
@@ -684,7 +693,7 @@ root.Bubbles = () ->
       node_data.temp_department = new_label
       d3.select('#svg_icon_dep_'+data_id).attr('fill',colors[new_label])
    
-    hashchange(leaveEditMode=false)
+    hashchange()
 
     d3.select('#edit_department').attr('style', 'display:none;')
     d3.select('#department-input').attr('style', 'display:block;')
@@ -788,6 +797,11 @@ root.Bubbles = () ->
     d3.select('#publication-input').html(node_data.publication)
     d3.select('#contact-input').html(node_data.contact)
     d3.select('#department-input').html(node_data.department)
+
+    level_label = ['individual', 'family', 'group', 'orga', 'geographic']
+    for i in [1..5]
+      d3.select('#label_level_'+i).classed('input_item_checked', node_data.level == level_label[i-1])
+
 
 
     
@@ -953,28 +967,23 @@ root.Bubbles = () ->
         # Highlight dataset's features
         pop_label = ['youth','young','adult','elderly']
         for i in [1..4]
-          d3.select('#label_pop_'+i)
-            .classed('input_item_checked', population.includes(pop_label[i-1]))
+          d3.select('#label_pop_'+i).classed('input_item_checked', population.includes(pop_label[i-1]))
 
         geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
         for i in [1..10]
-          d3.select('#label_geo_'+i)
-            .classed('input_item_checked', geo.split(';').indexOf(geo_label[i-1]) != -1)
+          d3.select('#label_geo_'+i).classed('input_item_checked', geo.split(';').indexOf(geo_label[i-1]) != -1)
 
         type_label =  ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
         for i in [1..5]
-          d3.select('#label_type_'+i)
-            .classed('input_item_checked', type_value.includes(type_label[i-1]))
+          d3.select('#label_type_'+i).classed('input_item_checked', type_value.includes(type_label[i-1]))
         
         level_label = ['individual', 'family', 'group', 'orga', 'geographic']
         for i in [1..5]
-          d3.select('#label_level_'+i)
-            .classed('input_item_checked', level.includes(level_label[i-1]))
+          d3.select('#label_level_'+i).classed('input_item_checked', level == level_label[i-1])
 
         dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG']
         for i in [1..9]
-          d3.select('#label_dep_'+i)
-            .classed('input_item_checked', department == dep_label[i-1] )
+          d3.select('#label_dep_'+i).classed('input_item_checked', department == dep_label[i-1] )
 
       else
         d3.select("#title-input").html("No dataset is selected")
