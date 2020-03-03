@@ -166,6 +166,7 @@
         function showEditDep(){  
             d3.select('#edit_department').attr('style', 'display:block;')
             d3.select('#department-input').attr('style', 'display:none;')
+            restorePreviousValues()
         }
 
     </script>
@@ -193,7 +194,7 @@
                 <img class="eyecon" onmouseup="toggleEdit()" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
                 Cancel
             </div-->
-            <div class="col" onclick="changeTextFields(leaveEditMode=true)">
+            <div class="col" onclick="changeFields(leaveEditMode=true)">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="save" src="assets/img/save.svg"> 
                 Save
             </div>

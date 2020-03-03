@@ -689,44 +689,87 @@ root.Bubbles = () ->
     d3.select('#department-input').attr('style', 'display:block;')
 
 
-  root.changeTextFields = (leaveEditMode) ->
+  root.changeFields = (leaveEditMode) ->
     # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
 
-    node_data.keyword = d3.select('#keywords-input').html().replace(/,/g,';')
-    node_data.indicator = d3.select('#indic-input').html().replace(/,/g,';')
-    node_data.time = d3.select('#time-input').html().replace(/,/g,';')
-    node_data.name = d3.select('#title-input').html()
-    node_data.description = d3.select('#description-input').html()
-    node_data.size = d3.select('#size-input').html()
-    node_data.publication = d3.select('#publication-input').html()
-    node_data.contact = d3.select('#contact-input').html()
-
-    if(node_data.keyword == '') 
-      node_data.keyword = '-'
-    if(node_data.indicator == '') 
-      node_data.indicator = '-'
-    if(node_data.time == '') 
-      node_data.time = '-'
-    if(node_data.name == '') 
-      node_data.name = '-'
-    if(node_data.description == '') 
-      node_data.description = '-'
-    if(node_data.size == '') 
-      node_data.size = '0'
-    if(node_data.publication == '') 
-      node_data.publication = '-'
-    if(node_data.contact == '') 
-      node_data.contact = '-'
-
-    hashchange()
-
     # Leave edit mode
     if(leaveEditMode)
+      node_data.keyword = d3.select('#keywords-input').html().replace(/,/g,';')
+      node_data.indicator = d3.select('#indic-input').html().replace(/,/g,';')
+      node_data.time = d3.select('#time-input').html().replace(/,/g,';')
+      node_data.name = d3.select('#title-input').html()
+      node_data.description = d3.select('#description-input').html()
+      node_data.size = d3.select('#size-input').html()
+      node_data.publication = d3.select('#publication-input').html()
+      node_data.contact = d3.select('#contact-input').html()
+
+      if(node_data.keyword == '') 
+        node_data.keyword = '-'
+      if(node_data.indicator == '') 
+        node_data.indicator = '-'
+      if(node_data.time == '') 
+        node_data.time = '-'
+      if(node_data.name == '') 
+        node_data.name = '-'
+      if(node_data.description == '') 
+        node_data.description = '-'
+      if(node_data.size == '') 
+        node_data.size = '0'
+      if(node_data.publication == '') 
+        node_data.publication = '-'
+      if(node_data.contact == '') 
+        node_data.contact = '-'
+
       d3.selectAll(".edit_field").attr('contentEditable', 'false')
       document.getElementById("edit-top-bar").style.display = "none"
       d3.selectAll('.bubble-node').attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
+
+
+    if(!leaveEditMode)
+      node_data.prev_keyword = d3.select('#keywords-input').html().replace(/,/g,';')
+      node_data.prev_indicator = d3.select('#indic-input').html().replace(/,/g,';')
+      node_data.prev_time = d3.select('#time-input').html().replace(/,/g,';')
+      node_data.prev_name = d3.select('#title-input').html()
+      node_data.prev_description = d3.select('#description-input').html()
+      node_data.prev_size = d3.select('#size-input').html()
+      node_data.prev_publication = d3.select('#publication-input').html()
+      node_data.prev_contact = d3.select('#contact-input').html()
+
+    hashchange()
+
+
+  root.restorePreviousValues = () ->
+    data_id = d3.select('#active_node_id').attr('active_node_id')
+    node_data = d3.select('#node_'+data_id).data()[0]
+
+    if node_data.prev_keyword != null
+      d3.select('#keywords-input').html(node_data.prev_keyword.replace(/;/g,', ') )
+
+    if node_data.prev_indicator != null
+      d3.select('#indic-input').html(node_data.prev_indicator.replace(/;/g,', ') )
+
+    if node_data.prev_time != null
+      d3.select('#time-input').html(node_data.prev_time.replace(/;/g,', ') )
+
+    if node_data.prev_name != null
+      d3.select('#title-input').html(node_data.prev_name)
+
+    if node_data.prev_description != null
+      d3.select('#description-input').html(node_data.prev_description)
+
+    if node_data.prev_size != null
+      d3.select('#size-input').html(node_data.prev_size)
+
+    if node_data.prev_publication != null
+      d3.select('#publication-input').html(node_data.prev_publication)
+      
+    if node_data.prev_contact != null
+      d3.select('#contact-input').html(node_data.prev_contact)
+      
+    if node_data.prev_department != null
+      d3.select('#department-input').html(node_data.prev_department)
 
 
 
@@ -901,7 +944,7 @@ root.Bubbles = () ->
   mouseover = (d) ->
     # Save edits
     if document.getElementById("edit-top-bar").style.display == "block"
-      changeTextFields(leaveEditMode=false)
+      changeFields(leaveEditMode=false)
 
     node.classed("bubble-hover", (p) -> p == d)
     node.classed("bubble-tone-down", (p) -> p != d)
@@ -1011,6 +1054,8 @@ root.Bubbles = () ->
 
     # Restore clicked bubble (if any)
     hashchange()
+
+    restorePreviousValues()
 
   # ---
   # public getter/setter for jitter variable
