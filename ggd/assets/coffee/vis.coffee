@@ -175,8 +175,6 @@ root.Bubbles = () ->
   chart = (selection) ->
 
     selection.each (rawData) ->
-      
-      #console.log(rawData)
 
       # first, get the data in the right format
       data = transformData(rawData)
@@ -263,11 +261,11 @@ root.Bubbles = () ->
       theNode.transition().duration(150).style("opacity","1")
 
   $(".reset").on "click", ->
-        d3.selectAll(".bubble-node").transition().duration(150).style("opacity","1")
-        d3.selectAll(".bubble-label").transition().duration(150).style("opacity","1")
-        d3.select("#status").html("")
-        $("#searchInput").val('')
-  
+    d3.selectAll(".bubble-node").transition().duration(150).style("opacity","1")
+    d3.selectAll(".bubble-label").transition().duration(150).style("opacity","1")
+    d3.select("#status").html("")
+    $("#searchInput").val('')
+
 
     
   # ---
@@ -391,7 +389,7 @@ root.Bubbles = () ->
     for p, dir of petals
       type_g
         .append("image")
-        .attr('id', (d) -> 'svg_icon_type_'+l+'_'+d.ID)
+        .attr('id', (d) -> 'svg_icon_type_'+p+'_'+d.ID)
         .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
         .attr("class", "cat_type " + dir)
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
@@ -654,18 +652,12 @@ root.Bubbles = () ->
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
 
-    dim_label = ['young', 'youth', 'adult', 'elderly']
+    dim_label = ['youth','young','adult','elderly']
+    index_label = dim_label.indexOf(new_label) + 1
    
     # Manage d3 data
     if restore || node_data.temp_pop == undefined 
       node_data.temp_pop = node_data.population 
-
-
-    console.log node_data.temp_pop
-    console.log node_data.temp_pop.search(';')
-
-    dim_label = ['youth','young','adult','elderly']
-    index_label = dim_label.indexOf(new_label) + 1
 
     if node_data.temp_pop == ''
       node_data.temp_pop = new_label
@@ -673,8 +665,6 @@ root.Bubbles = () ->
       
     else if node_data.temp_pop.search(';') != -1
       temp = node_data.temp_pop.split(';')
-
-      console.log(temp)
 
       if temp.indexOf(new_label) == -1
         temp.push(new_label) 
@@ -685,8 +675,6 @@ root.Bubbles = () ->
         d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','')
 
       node_data.temp_pop = temp.join(';')
-
-      console.log(temp)
       
     else if node_data.temp_pop == new_label
       node_data.temp_pop = ''
@@ -696,11 +684,49 @@ root.Bubbles = () ->
       node_data.temp_pop = node_data.temp_pop + ';' + new_label
       d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','assets/img/icon/pop_'+index_label+'_'+new_label+'.png')
         
-
-    console.log node_data.temp_pop
-
     for i in [1..4]
       d3.select('#label_pop_'+i).classed('input_item_checked', node_data.temp_pop.includes(dim_label[i-1]))
+
+
+  root.changeType = (new_label, restore=false) ->
+    # Change data
+    data_id = d3.select('#active_node_id').attr('active_node_id')
+    node_data = d3.select('#node_'+data_id).data()[0]
+
+    dim_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
+    index_label = dim_label.indexOf(new_label) + 1
+   
+    # Manage d3 data
+    if restore || node_data.temp_type == undefined 
+      node_data.temp_type = node_data.type 
+
+    if node_data.temp_type == ''
+      node_data.temp_type = new_label
+      d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','assets/img/glyphs/glyph-'+new_label+'.png')
+      
+    else if node_data.temp_type.search(';') != -1
+      temp = node_data.temp_type.split(';')
+
+      if temp.indexOf(new_label) == -1
+        temp.push(new_label) 
+        d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','assets/img/glyphs/glyph-'+new_label+'.png')
+      
+      else 
+        temp.splice( temp.indexOf(new_label) , 1)
+        d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','')
+
+      node_data.temp_type = temp.join(';')
+      
+    else if node_data.temp_type == new_label
+      node_data.temp_type = ''
+      d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','')
+      
+    else 
+      node_data.temp_type = node_data.temp_type + ';' + new_label
+      d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','assets/img/glyphs/glyph-'+new_label+'.png')
+        
+    for i in [1..5]
+      d3.select('#label_type_'+i).classed('input_item_checked', node_data.temp_type.includes(dim_label[i-1]))
 
 
   root.changeGeo = (new_label, restore=false) ->
@@ -746,7 +772,7 @@ root.Bubbles = () ->
 
 
 
-  root.changeDep = (new_label, restore=false) ->
+  root.changeDep = (new_label) ->
     # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
@@ -757,9 +783,6 @@ root.Bubbles = () ->
       d3.select('#label_dep_'+i).classed('input_item_checked', false)
 
     # Manage data
-    if restore
-      node_data.temp_department = node_data.department
-
     if node_data.temp_department == undefined
       node_data.temp_department = node_data.department
     
@@ -782,7 +805,6 @@ root.Bubbles = () ->
    
     d3.select('#edit_department').attr('style', 'display:none;')
     d3.select('#department-input').attr('style', 'display:block;')
-
 
 
   root.changeFields = (leaveEditMode) ->
@@ -896,48 +918,121 @@ root.Bubbles = () ->
       
     if node_data.temp_department != undefined
       changeDep(node_data.temp_department)
+    else
+      changeDep(node_data.department)
 
     if node_data.temp_level != undefined
       changeLevel(node_data.temp_level)
+    else
+      changeLevel(node_data.level)
 
     if node_data.temp_geo != undefined
       changeGeo(node_data.temp_geo)
+    else
+      changeGeo(node_data.geo)
 
 
+    for new_label in ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
+      if node_data.temp_type == ''
+        node_data.temp_type = new_label
+        d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','assets/img/glyphs/glyph-'+new_label+'.png')
+        
+      else if node_data.temp_type.search(';') != -1
+        temp = node_data.temp_type.split(';')
+
+        if temp.indexOf(new_label) == -1
+          temp.push(new_label) 
+          d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','assets/img/glyphs/glyph-'+new_label+'.png')
+        
+        else 
+          temp.splice( temp.indexOf(new_label) , 1)
+          d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','')
+
+        node_data.temp_type = temp.join(';')
+        
+      else if node_data.temp_type == new_label
+        node_data.temp_type = ''
+        d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','')
+        
+      else 
+        node_data.temp_type = node_data.temp_type + ';' + new_label
+        d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','assets/img/glyphs/glyph-'+new_label+'.png')
+
+
+
+    hashchange()
 
   root.restorePreviousValues = () ->
-    data_id = d3.select('#active_node_id').attr('active_node_id')
-    node_data = d3.select('#node_'+data_id).data()[0]
-
-    d3.select('#keywords-input').html(node_data.keyword.replace(/;/g,', ') )
-    d3.select('#indic-input').html(node_data.indicator.replace(/;/g,', ') )
-    d3.select('#time-input').html(node_data.time.replace(/;/g,', ') )
-    d3.select('#title-input').html(node_data.name)
-    d3.select('#description-input').html(node_data.description)
-    d3.select('#size-input').html(node_data.size)
-    d3.select('#publication-input').html(node_data.publication)
-    d3.select('#contact-input').html(node_data.contact)
-
-    changeDep(node_data.department, true)
-    changeLevel(node_data.level, true)
-    changeGeo(node_data.geo, true)
+    resetTempValues()
+    hashchange()
 
 
   root.resetTempValues = () ->
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
-    node_data.temp_keyword = undefined
-    node_data.temp_indicator = undefined
-    node_data.temp_time = undefined
-    node_data.temp_name = undefined
-    node_data.temp_description = undefined
-    node_data.temp_size = undefined
-    node_data.temp_publication = undefined
-    node_data.temp_contact = undefined
-    node_data.temp_department = undefined
-    node_data.temp_level = undefined
-    node_data.temp_geo = undefined
+
+    node_data.temp_keyword = node_data.keyword
+    node_data.temp_indicator = node_data.indicator
+    node_data.temp_time = node_data.time
+    node_data.temp_name = node_data.name
+    node_data.temp_description = node_data.description
+    node_data.temp_size = node_data.size
+    node_data.temp_publication = node_data.publication
+    node_data.temp_contact = node_data.contact
+    node_data.temp_department = node_data.department
+    node_data.temp_level = node_data.level
+    node_data.temp_geo = node_data.geo
+    node_data.temp_pop = node_data.population
+    node_data.temp_type = node_data.type
+
     
+    dim_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
+    for new_label in dim_label
+
+      if node_data.temp_type.search(';') != -1
+        temp = node_data.temp_type.split(';')
+
+        if temp.indexOf(new_label) == -1
+          d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','')
+        
+        else 
+          d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','assets/img/glyphs/glyph-'+new_label+'.png')
+        
+      else if node_data.temp_type == new_label
+        d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','assets/img/glyphs/glyph-'+new_label+'.png')
+        
+      else 
+        d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','')
+
+
+    dim_label = ['young', 'youth', 'adult', 'elderly']
+    #for new_label in dim_label
+    #  index_label = dim_label.indexOf(new_label)+1
+    for index_label in [1..4]
+      new_label = dim_label[index_label-1]
+      
+      if node_data.temp_pop.search(';') != -1
+        temp = node_data.temp_pop.split(';')
+
+        if temp.indexOf(new_label) == -1
+          d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','')
+        
+        else 
+          d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','assets/img/icon/pop_'+index_label+'_'+new_label+'.png')
+        
+      else if node_data.temp_pop == new_label
+        d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','assets/img/icon/pop_'+index_label+'_'+new_label+'.png')
+        
+      else 
+        d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','')
+    
+
+  root.restoreDep = (text_field, data_id) ->
+    dim_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG']
+    for i in [1..9]
+      node_to_update = d3.select('#label_dep_'+i)
+      node_to_update.classed('input_item_checked',  text_field.split(';').includes(dim_label[i-1]) != -1 )
+
 
   # ---
   # adds mouse events to element
@@ -1044,8 +1139,8 @@ root.Bubbles = () ->
                         else
                           size = d.size
                         
-                        if d.temp_population != undefined
-                          population = d.temp_population
+                        if d.temp_pop != undefined
+                          population = d.temp_pop
                         else
                           population = d.population
                         
@@ -1081,6 +1176,16 @@ root.Bubbles = () ->
       keywords = keywords.replace(/;/g,', ')
       indic = indic.replace(/;/g,', ')
 
+      if type_value.search(';') == -1
+        type_value = [type_value]
+      else
+        type_value = type_value.split(';')
+
+      if population.search(';') == -1
+        population = [population]
+      else
+        population = population.split(';')
+
       # Check if a node is selected
       if id.length > 0 & name != ''
         d3.select("#active_node_id").attr('active_node_id',"#{ID}")
@@ -1102,19 +1207,18 @@ root.Bubbles = () ->
         d3.selectAll(".bubble-selected").selectAll(".pie").transition().duration(150).attr("opacity", '1' )
         d3.selectAll(".bubble-tone-down").selectAll(".pie").transition().duration(150).attr("opacity", '0.2' )
 
-
         # Highlight dataset's features
         pop_label = ['youth','young','adult','elderly']
         for i in [1..4]
           d3.select('#label_pop_'+i).classed('input_item_checked', population.includes(pop_label[i-1]))
 
-        geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
-        for i in [1..10]
-          d3.select('#label_geo_'+i).classed('input_item_checked', geo.split(';').indexOf(geo_label[i-1]) != -1)
-
-        type_label =  ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
+        type_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
         for i in [1..5]
           d3.select('#label_type_'+i).classed('input_item_checked', type_value.includes(type_label[i-1]))
+
+        geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
+        for i in [1..10]
+          d3.select('#label_geo_'+i).classed('input_item_checked', geo == geo_label[i-1])
         
         level_label = ['individual', 'family', 'group', 'orga', 'geographic']
         for i in [1..5]
@@ -1141,20 +1245,16 @@ root.Bubbles = () ->
 
         # Hide dataset's features
         for i in [1..4]
-          d3.select('#label_pop_'+i)
-            .classed('input_item_checked', false)
+          d3.select('#label_pop_'+i).classed('input_item_checked', false)
+
+        for i in [1..5]
+          d3.select('#label_type_'+i).classed('input_item_checked', false)
 
         for i in [1..10]
-          d3.select('#label_geo_'+i)
-            .classed('input_item_checked', false)
+          d3.select('#label_geo_'+i).classed('input_item_checked', false)
 
         for i in [1..5]
-          d3.select('#label_type_'+i)
-            .classed('input_item_checked', false)
-
-        for i in [1..5]
-          d3.select('#label_level_'+i)
-            .classed('input_item_checked', false)
+          d3.select('#label_level_'+i).classed('input_item_checked', false)
 
   # ---
   # hover event
@@ -1209,6 +1309,16 @@ root.Bubbles = () ->
     keywords = keywords.replace(/;/g,', ')
     indic = indic.replace(/;/g,', ')
 
+    if type_value.search(';') == -1
+      type_value = [type_value]
+    else
+      type_value = type_value.split(';')
+
+    if population.search(';') == -1
+      population = [population]
+    else
+      population = population.split(';')
+
     d3.select("#title-input").html("#{name}")
     d3.select("#description-input").html("#{description}")
     d3.select("#contact-input").html("#{contact}")
@@ -1240,23 +1350,19 @@ root.Bubbles = () ->
     # Highlight dataset's features
     pop_label = ['youth','young','adult','elderly']
     for i in [1..4]
-      d3.select('#label_pop_'+i)
-        .classed('input_item_checked', population.includes(pop_label[i-1]))
-
-    geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
-    for i in [1..10]
-      d3.select('#label_geo_'+i)
-        .classed('input_item_checked', geo.includes(geo_label[i-1]))
+      d3.select('#label_pop_'+i).classed('input_item_checked', population.includes(pop_label[i-1]))
 
     type_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor']
     for i in [1..5]
-      d3.select('#label_type_'+i)
-        .classed('input_item_checked', type_value.includes(type_label[i-1]))
+      d3.select('#label_type_'+i).classed('input_item_checked', type_value.includes(type_label[i-1]))
+
+    geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
+    for i in [1..10]
+      d3.select('#label_geo_'+i).classed('input_item_checked', geo == geo_label[i-1] )
 
     level_label = ['individual', 'family', 'group', 'orga', 'geographic']
     for i in [1..5]
-      d3.select('#label_level_'+i)
-        .classed('input_item_checked', level.includes(level_label[i-1]))
+      d3.select('#label_level_'+i).classed('input_item_checked', level == level_label[i-1] )
 
   # ---
   # remove hover class

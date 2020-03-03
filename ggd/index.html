@@ -121,6 +121,8 @@
         }
 
         function showEditMode() {
+            resetTempValues();
+             
             if (d3.select('#active_node_id').attr('active_node_id') == null) {
                 d3.select('#status').html('First select the dataset you wish to edit.')
 
