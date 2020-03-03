@@ -731,8 +731,20 @@ root.Bubbles = () ->
       node_data.name = d3.select('#title-input').html()
       node_data.description = d3.select('#description-input').html()
       node_data.size = d3.select('#size-input').html()
-      node_data.publication = d3.select('#publication-input').html()
+      node_data.publication = d3.select('#publication-input').html().replace(/,/g,';')
       node_data.contact = d3.select('#contact-input').html()
+
+      for i in [1..10]
+        if d3.select('#label_geo_'+i).classed('input_item_checked')
+          node_data.geo = d3.select('#label_geo_'+i).attr('value')
+
+      for i in [1..5]
+        if d3.select('#label_level_'+i).classed('input_item_checked')
+          node_data.level = d3.select('#label_level_'+i).attr('value')
+
+      for i in [1..9]
+        if d3.select('#label_dep_'+i).classed('input_item_checked')
+          node_data.department = d3.select('#label_dep_'+i).attr('value')
 
       if(node_data.keyword == '') 
         node_data.keyword = '-'
@@ -755,6 +767,7 @@ root.Bubbles = () ->
       document.getElementById("edit-top-bar").style.display = "none"
       d3.selectAll('.bubble-node').attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
 
+      resetTempValues()
 
     else
       node_data.temp_keyword = d3.select('#keywords-input').html().replace(/,/g,';')
@@ -825,6 +838,20 @@ root.Bubbles = () ->
     changeLevel(node_data.level)
     changeGeo(node_data.geo)
 
+  root.resetTempValues = () ->
+    data_id = d3.select('#active_node_id').attr('active_node_id')
+    node_data = d3.select('#node_'+data_id).data()[0]
+    node_data.temp_keyword = undefined
+    node_data.temp_indicator = undefined
+    node_data.temp_time = undefined
+    node_data.temp_name = undefined
+    node_data.temp_description = undefined
+    node_data.temp_size = undefined
+    node_data.temp_publication = undefined
+    node_data.temp_contact = undefined
+    node_data.temp_department = undefined
+    node_data.temp_level = undefined
+    node_data.temp_geo = undefined
     
 
   # ---
@@ -916,10 +943,10 @@ root.Bubbles = () ->
                         else
                           publication = d.publication
                         
-                        if d.temp_indic != undefined
-                          indic = d.temp_indic
+                        if d.temp_indicator != undefined
+                          indicator = d.temp_indicator
                         else
-                          indic = d.indicator
+                          indicator = d.indicator
                         
                         if d.temp_size != undefined
                           size = d.temp_size
@@ -971,7 +998,7 @@ root.Bubbles = () ->
         d3.select("#contact-input").html("#{contact}")
         d3.select("#department-input").html("<span class='dep_circle dep_#{dep_value}'></span>#{department}")
         d3.select("#keywords-input").html("#{keywords}")
-        d3.select("#indic-input").html("#{indic}")
+        d3.select("#indic-input").html("#{indicator}")
         d3.select("#publication-input").html("#{publication}")
         d3.select("#size-input").html("#{size}")
         d3.select("#time-input").html("#{time}")

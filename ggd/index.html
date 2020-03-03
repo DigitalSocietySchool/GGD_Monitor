@@ -187,11 +187,12 @@
         }
 
         function resetEdit(){
+            resetTempValues();
             restorePreviousValues();
         }
 
         function cancelEdit(){
-            restorePreviousValues();
+            resetEdit();
             hideEditMode();
         }
 
@@ -225,7 +226,7 @@
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
                 Reset
             </div>
-            <div class="col" onclick="changeFields(true)">
+            <div class="col" onclick="changeFields(true);resetTempValues();">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="save" src="assets/img/save.svg"> 
                 Save
             </div>
