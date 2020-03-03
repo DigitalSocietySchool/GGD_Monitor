@@ -688,6 +688,17 @@ root.Bubbles = () ->
     d3.select('#edit_department').attr('style', 'display:none;')
     d3.select('#department-input').attr('style', 'display:block;')
 
+
+  root.changeTextFields = () ->
+    # Change data
+    data_id = d3.select('#active_node_id').attr('active_node_id')
+    node_data = d3.select('#node_'+data_id).data()[0]
+    
+    d3.selectAll(".edit_field").attr('contentEditable', 'false')
+    document.getElementById("edit-top-bar").style.display = "none"
+
+
+
     
 
   # ---
@@ -763,6 +774,8 @@ root.Bubbles = () ->
       dep_value = department
 
     time = time.replace(/;/g,', ')
+    keywords = keywords.replace(/;/g,', ')
+    indic = indic.replace(/;/g,', ')
 
     # Check if a node is selected
     if id.length > 0 & name != ''
@@ -890,6 +903,8 @@ root.Bubbles = () ->
       dep_value = department
 
     time = time.replace(/;/g,', ')
+    keywords = keywords.replace(/;/g,', ')
+    indic = indic.replace(/;/g,', ')
 
     d3.select("#title-input").html("#{name}")
     d3.select("#description-input").html("#{description}")

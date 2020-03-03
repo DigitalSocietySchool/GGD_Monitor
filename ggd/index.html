@@ -29,11 +29,11 @@
         var tagsInCategories = []; 
         var editMode = false;
         // Toggle edit mode by making input fields Editable and showing relevant fields
-        function toggleEdit() {
-            if (!editMode) {
+        function showEditMode() {
+            //if (!editMode) {
                 document.getElementById("edit-top-bar").style.display = "block";
                 d3.selectAll(".edit_field").attr('contentEditable', 'true');
-
+                /*
                 //blurs all geo levels
                 var buttons = document.getElementsByClassName('geolevel');
                 for (var i = 0; i < buttons.length; i++) {
@@ -44,17 +44,17 @@
                     $(this).toggleClass('faded'); //you can list several class names 
                     e.preventDefault();
                 });
-
-                editMode = true;
-
+                */
+                //editMode = true;
+/*
             } else if (editMode) {
                 document.getElementById("edit-top-bar").style.display = "none";
-                document.getElementsByClassName("edit_field").setAttribute('contentEditable', 'false');
+                d3.selectAll(".edit_field").attr('contentEditable', 'false');
 
                 editMode = false;
 
             }
-
+*/
         }
 
         function changeView(view, c = false) {
@@ -194,7 +194,7 @@
         <button class="reset">Reset</button>
         <span id="status"></span>&nbsp; &nbsp;
         <span class="">New</span>  &nbsp; &nbsp;
-        <span onmouseup="toggleEdit();" >Edit</span>
+        <span onmouseup="showEditMode();" >Edit</span>
     </div>
 
 
@@ -203,11 +203,11 @@
             <div class="col"  style="flex-grow:3.5;">
                 EDIT MODE: You are editing the details of this dataset.
             </div>
-            <div class="col">
+            <!--div class="col">
                 <img class="eyecon" onmouseup="toggleEdit()" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
                 Cancel
-            </div>
-            <div class="col">
+            </div-->
+            <div class="col" onclick="changeTextFields()">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="save" src="assets/img/save.svg"> 
                 Save
             </div>
