@@ -391,6 +391,7 @@ root.Bubbles = () ->
     for p, dir of petals
       type_g
         .append("image")
+        .attr('id', (d) -> 'svg_icon_type_'+l+'_'+d.ID)
         .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
         .attr("class", "cat_type " + dir)
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
@@ -413,13 +414,14 @@ root.Bubbles = () ->
 
     population = 
       "youth" : "pop_1_youth.png"
-      "young" : "pop_2_young_adult.png"
+      "young" : "pop_2_young.png"
       "adult" : "pop_3_adult.png"
       "elderly" : "pop_4_elderly.png"
 
     for p, img of population
       pop_g
         .append("image")
+        .attr('id', (d) -> 'svg_icon_pop_'+p+'_'+d.ID)
         .attr("xlink:href", (d)-> if d.population.split(";").indexOf(p) != -1 then "assets/img/icon/" + img)
         .attr("class", "cat_population")
         .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
@@ -631,7 +633,7 @@ root.Bubbles = () ->
     
     # Manage d3 data
     if restore
-      node_data.temp_level = ''
+      node_data.temp_level = node_data.level
 
     if node_data.temp_level == undefined 
       node_data.temp_level = node_data.level
@@ -645,7 +647,61 @@ root.Bubbles = () ->
 
       d3.select('#svg_icon_level_'+new_label+'_'+data_id).attr('href','assets/img/icon/level_'+index_label+'_'+new_label+'.png')
       d3.select('#label_level_'+index_label).classed('input_item_checked', true)
-    
+
+
+  root.changePop = (new_label, restore=false) ->
+    # Change data
+    data_id = d3.select('#active_node_id').attr('active_node_id')
+    node_data = d3.select('#node_'+data_id).data()[0]
+
+    dim_label = ['young', 'youth', 'adult', 'elderly']
+   
+    # Manage d3 data
+    if restore || node_data.temp_pop == undefined 
+      node_data.temp_pop = node_data.population 
+
+
+    console.log node_data.temp_pop
+    console.log node_data.temp_pop.search(';')
+
+    dim_label = ['youth','young','adult','elderly']
+    index_label = dim_label.indexOf(new_label) + 1
+
+    if node_data.temp_pop == ''
+      node_data.temp_pop = new_label
+      d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','assets/img/icon/pop_'+index_label+'_'+new_label+'.png')
+      
+    else if node_data.temp_pop.search(';') != -1
+      temp = node_data.temp_pop.split(';')
+
+      console.log(temp)
+
+      if temp.indexOf(new_label) == -1
+        temp.push(new_label) 
+        d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','assets/img/icon/pop_'+index_label+'_'+new_label+'.png')
+      
+      else 
+        temp.splice( temp.indexOf(new_label) , 1)
+        d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','')
+
+      node_data.temp_pop = temp.join(';')
+
+      console.log(temp)
+      
+    else if node_data.temp_pop == new_label
+      node_data.temp_pop = ''
+      d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','')
+      
+    else 
+      node_data.temp_pop = node_data.temp_pop + ';' + new_label
+      d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','assets/img/icon/pop_'+index_label+'_'+new_label+'.png')
+        
+
+    console.log node_data.temp_pop
+
+    for i in [1..4]
+      d3.select('#label_pop_'+i).classed('input_item_checked', node_data.temp_pop.includes(dim_label[i-1]))
+
 
   root.changeGeo = (new_label, restore=false) ->
     # Change data
@@ -663,7 +719,7 @@ root.Bubbles = () ->
 
     # Manage data
     if restore
-      node_data.temp_geo = ''
+      node_data.temp_geo = node_data.geo
 
     if node_data.temp_geo == undefined
       node_data.temp_geo = node_data.geo
@@ -702,7 +758,7 @@ root.Bubbles = () ->
 
     # Manage data
     if restore
-      node_data.temp_department = ''
+      node_data.temp_department = node_data.department
 
     if node_data.temp_department == undefined
       node_data.temp_department = node_data.department

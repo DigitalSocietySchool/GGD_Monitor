@@ -96,40 +96,6 @@
             }
         }
 
-        function filterByTag(category, tag, isInKeywords=false) { console.log("#" + category + tag.replace(" ", "-"));
-            var hide = $("#" + category + tag.replace(" ", "-")).attr("filtered") == "true";
-            $('a.bubble-node').each(function() {
-                //var obj = $("#" + category + (isInKeywords ? tag.replace(" ", "-") : $(this).attr(category)));
-                //var foundTag = isInKeywords ? $(this).attr("keywords").split(";").includes(tag) : $(this).attr(category) == tag;
-                var obj = $("#" + category + (tag.replace(" ", "-")));
-                var foundTag = $(this).attr(category).split(";").includes(tag);
-                //if(isInKeywords) { 
-                    //console.log($(this).attr("keywords").split(";").includes(tag) );
-                //}
-                if(foundTag && !hide) {
-                    $(this).removeClass("hidden_" + category);
-                    $("#label_" + $(this).attr("data-id").toString()).removeClass("hidden_" + category);
-                    obj.attr("filtered", "true");
-                    obj.addClass("selected");
-                } else if ( ( !foundTag && obj.attr("filtered") != "true" )|| ( hide && foundTag ) ) {
-                    obj.attr("filtered", "false");
-                    obj.removeClass("selected");
-                    var hideBubble = true;
-                    if (isInKeywords) {
-                        for (tagInCategory in tagsInCategories[category]) {
-                            if ($("#" + category + tagsInCategories[category][tagInCategory].replace(" ", "-")).attr("filtered") == "true") {
-                                hideBubble = false;
-                            }
-                        }
-                    }
-                    if(hideBubble) {
-                        $(this).addClass("hidden_" + category);
-                        $("#label_" + $(this).attr("data-id").toString()).addClass("hidden_" + category);
-                    }
-                }
-            });
-        }
-
         function replaceLayout(){
             var element = document.getElementById('toolbar_inside'),
             style = window.getComputedStyle(element),
@@ -177,7 +143,14 @@
                     btn.setAttribute("onclick", 'changeGeo("' + btn.getAttribute('value') + '")');
                 }
                 d3.select('#edit_department').attr('onclick',"showEditDep()")
-
+                for (var i = 1; i < 6; i++) {
+                    btn = document.getElementById('label_type_' + i);
+                    btn.setAttribute("onclick", 'changeType("' + btn.getAttribute('value') + '")');
+                }
+                for (var i = 1; i < 5; i++) {
+                    btn = document.getElementById('label_pop_' + i);
+                    btn.setAttribute("onclick", 'changePop("' + btn.getAttribute('value') + '")');
+                }
             }
         }
 
@@ -198,6 +171,12 @@
                 document.getElementById('label_geo_' + i).setAttribute("onclick", '');
             }
             d3.select('#edit_department').attr('onclick',"")
+            for (var i = 1; i < 6; i++) {
+                document.getElementById('label_type_' + i).setAttribute("onclick", '');
+            }
+            for (var i = 1; i < 5; i++) {
+                document.getElementById('label_pop_' + i).setAttribute("onclick", '');
+            }
         }
 
         function resetEdit(){
