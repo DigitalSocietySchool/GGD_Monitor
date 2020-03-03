@@ -627,15 +627,15 @@ root.Bubbles = () ->
       d3.select('#svg_icon_level_'+l+'_'+data_id).attr('href','')
     
     if new_label == node_data.level
-      node_data.level = ''
+      node_data.temp_level = ''
 
     else
-      node_data.level = new_label
+      node_data.temp_level = new_label
       index_img = dim_label.indexOf(new_label) + 1
 
       d3.select('#svg_icon_level_'+new_label+'_'+data_id).attr('href','assets/img/icon/level_'+index_img+'_'+new_label+'.png')
    
-    hashchange()
+    hashchange(leaveEditMode=false)
     
 
 
@@ -651,10 +651,10 @@ root.Bubbles = () ->
       d3.select('#svg_icon_geo_'+l+'_'+data_id).attr('href','')
     
     if new_label == node_data.geo
-      node_data.geo = ''
+      node_data.temp_geo = ''
 
     else
-      node_data.geo = new_label
+      node_data.temp_geo = new_label
       index_img = dim_label.indexOf(new_label) + 1
       
       if index_img < 4
@@ -666,7 +666,8 @@ root.Bubbles = () ->
 
       d3.select('#svg_icon_geo_'+new_label+'_'+data_id).attr('href','assets/img/icon/geo_'+index_img+'.png')
 
-    hashchange()
+    hashchange(leaveEditMode=false)
+
 
   root.changeDep = (new_label) ->
     # Change data
@@ -676,17 +677,18 @@ root.Bubbles = () ->
     dim_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG']
    
     if new_label == node_data.department
-      node_data.department = ''
+      node_data.temp_department = ''
       d3.select('#svg_icon_dep_'+data_id).attr('fill',colors['unknown'])
 
     else
-      node_data.department = new_label
+      node_data.temp_department = new_label
       d3.select('#svg_icon_dep_'+data_id).attr('fill',colors[new_label])
    
-    hashchange()
+    hashchange(leaveEditMode=false)
 
     d3.select('#edit_department').attr('style', 'display:none;')
     d3.select('#department-input').attr('style', 'display:block;')
+
 
 
   root.changeFields = (leaveEditMode) ->
@@ -728,14 +730,14 @@ root.Bubbles = () ->
 
 
     if(!leaveEditMode)
-      node_data.prev_keyword = d3.select('#keywords-input').html().replace(/,/g,';')
-      node_data.prev_indicator = d3.select('#indic-input').html().replace(/,/g,';')
-      node_data.prev_time = d3.select('#time-input').html().replace(/,/g,';')
-      node_data.prev_name = d3.select('#title-input').html()
-      node_data.prev_description = d3.select('#description-input').html()
-      node_data.prev_size = d3.select('#size-input').html()
-      node_data.prev_publication = d3.select('#publication-input').html()
-      node_data.prev_contact = d3.select('#contact-input').html()
+      node_data.temp_keyword = d3.select('#keywords-input').html().replace(/,/g,';')
+      node_data.temp_indicator = d3.select('#indic-input').html().replace(/,/g,';')
+      node_data.temp_time = d3.select('#time-input').html().replace(/,/g,';')
+      node_data.temp_name = d3.select('#title-input').html()
+      node_data.temp_description = d3.select('#description-input').html()
+      node_data.temp_size = d3.select('#size-input').html()
+      node_data.temp_publication = d3.select('#publication-input').html()
+      node_data.temp_contact = d3.select('#contact-input').html()
 
     hashchange()
 
@@ -744,32 +746,32 @@ root.Bubbles = () ->
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
 
-    if node_data.prev_keyword != null
-      d3.select('#keywords-input').html(node_data.prev_keyword.replace(/;/g,', ') )
+    if node_data.temp_keyword != null
+      d3.select('#keywords-input').html(node_data.temp_keyword.replace(/;/g,', ') )
 
-    if node_data.prev_indicator != null
-      d3.select('#indic-input').html(node_data.prev_indicator.replace(/;/g,', ') )
+    if node_data.temp_indicator != null
+      d3.select('#indic-input').html(node_data.temp_indicator.replace(/;/g,', ') )
 
-    if node_data.prev_time != null
-      d3.select('#time-input').html(node_data.prev_time.replace(/;/g,', ') )
+    if node_data.temp_time != null
+      d3.select('#time-input').html(node_data.temp_time.replace(/;/g,', ') )
 
-    if node_data.prev_name != null
-      d3.select('#title-input').html(node_data.prev_name)
+    if node_data.temp_name != null
+      d3.select('#title-input').html(node_data.temp_name)
 
-    if node_data.prev_description != null
-      d3.select('#description-input').html(node_data.prev_description)
+    if node_data.temp_description != null
+      d3.select('#description-input').html(node_data.temp_description)
 
-    if node_data.prev_size != null
-      d3.select('#size-input').html(node_data.prev_size)
+    if node_data.temp_size != null
+      d3.select('#size-input').html(node_data.temp_size)
 
-    if node_data.prev_publication != null
-      d3.select('#publication-input').html(node_data.prev_publication)
+    if node_data.temp_publication != null
+      d3.select('#publication-input').html(node_data.temp_publication)
       
-    if node_data.prev_contact != null
-      d3.select('#contact-input').html(node_data.prev_contact)
+    if node_data.temp_contact != null
+      d3.select('#contact-input').html(node_data.temp_contact)
       
-    if node_data.prev_department != null
-      d3.select('#department-input').html(node_data.prev_department)
+    if node_data.temp_department != null
+      d3.select('#department-input').html(node_data.temp_department)
 
 
 
@@ -834,22 +836,75 @@ root.Bubbles = () ->
       # #retrieve data elements from active node
       activeNode = d3.selectAll(".bubble-selected")
                       .filter( (d) -> 
-                        description = d.description.replace(' - ',' ')
-                        keywords = d.keyword 
-                        contact = d.contact
-                        department = d.department
-                        name = d.name
-                        publication = d.publication
-                        indic = d.indicator
-                        size = d.size
-                        population = d.population
-                        geo = d.geo
-                        type_value = d.type
-                        level = d.level
-                        time = d.time
+                        if d.temp_description != undefined
+                          description = d.temp_description
+                        else
+                          description = d.description.replace(' - ',' ')
+
+                        if d.temp_keyword != undefined
+                          keywords = d.temp_keyword
+                        else
+                          keywords = d.keyword 
+                        
+                        if d.temp_contact != undefined
+                          contact = d.temp_contact
+                        else
+                          contact = d.contact
+                        
+                        if d.temp_department != undefined
+                          department = d.temp_department
+                        else
+                          department = d.department
+                        
+                        if d.temp_name != undefined
+                          name = d.temp_name
+                        else
+                          name = d.name
+                        
+                        if d.temp_publication != undefined
+                          publication = d.temp_publication
+                        else
+                          publication = d.publication
+                        
+                        if d.temp_indic != undefined
+                          indic = d.temp_indic
+                        else
+                          indic = d.indicator
+                        
+                        if d.temp_size != undefined
+                          size = d.temp_size
+                        else
+                          size = d.size
+                        
+                        if d.temp_population != undefined
+                          population = d.temp_population
+                        else
+                          population = d.population
+                        
+                        if d.temp_geo != undefined
+                          geo = d.temp_geo
+                        else
+                          geo = d.geo
+                        
+                        if d.temp_type != undefined
+                          type_value = d.temp_type
+                        else
+                          type_value = d.type
+                        
+                        if d.temp_level != undefined
+                          level = d.temp_level
+                        else
+                          level = d.level
+
+                        if d.temp_time != undefined
+                          time = d.temp_time
+                        else
+                          time = d.time
+
                         ID = d.ID
                       )
-      if(department == '-')
+
+      if department == '-' | department ==''
         dep_value = 'unknown'
       else 
         dep_value = department
