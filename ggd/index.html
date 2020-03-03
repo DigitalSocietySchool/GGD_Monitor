@@ -164,10 +164,25 @@
         }
 
         function showEditDep(){  
-            d3.select('#edit_department').attr('style', 'display:block;')
-            d3.select('#department-input').attr('style', 'display:none;')
-            restorePreviousValues()
+            d3.select('#edit_department').attr('style', 'display:block;');
+            d3.select('#department-input').attr('style', 'display:none;');
         }
+
+        function resetEdit(){
+            restorePreviousValues();
+            hashchange();
+        }
+
+        function cancelEdit(){
+            restorePreviousValues();
+            hashchange();
+            d3.selectAll(".edit_field").attr('contentEditable', 'false');
+            document.getElementById("edit-top-bar").style.display = "none";
+            d3.selectAll('.bubble-node').attr("xlink:href", function(d){ 
+                return '#' + encodeURIComponent(idValue(d));
+            });
+        }
+
 
     </script>
 </head>
@@ -190,11 +205,15 @@
             <div class="col"  style="flex-grow:3.5;">
                 EDIT MODE: You are editing the details of this dataset.
             </div>
-            <!--div class="col">
-                <img class="eyecon" onmouseup="toggleEdit()" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
+            <div class="col" onclick="cancelEdit();">
+                <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
                 Cancel
-            </div-->
-            <div class="col" onclick="changeFields(leaveEditMode=true)">
+            </div>
+            <div class="col" onclick="resetEdit();">
+                <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
+                Reset
+            </div>
+            <div class="col" onclick="changeFields(true)">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="save" src="assets/img/save.svg"> 
                 Save
             </div>

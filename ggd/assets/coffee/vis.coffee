@@ -729,7 +729,7 @@ root.Bubbles = () ->
       d3.selectAll('.bubble-node').attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
 
 
-    if(!leaveEditMode)
+    else
       node_data.temp_keyword = d3.select('#keywords-input').html().replace(/,/g,';')
       node_data.temp_indicator = d3.select('#indic-input').html().replace(/,/g,';')
       node_data.temp_time = d3.select('#time-input').html().replace(/,/g,';')
@@ -742,37 +742,52 @@ root.Bubbles = () ->
     hashchange()
 
 
+  root.restoreTempValues = () ->
+    data_id = d3.select('#active_node_id').attr('active_node_id')
+    node_data = d3.select('#node_'+data_id).data()[0]
+
+    if node_data.temp_keyword != undefined
+      d3.select('#keywords-input').html(node_data.temp_keyword.replace(/;/g,', ') )
+
+    if node_data.temp_indicator != undefined
+      d3.select('#indic-input').html(node_data.temp_indicator.replace(/;/g,', ') )
+
+    if node_data.temp_time != undefined
+      d3.select('#time-input').html(node_data.temp_time.replace(/;/g,', ') )
+
+    if node_data.temp_name != undefined
+      d3.select('#title-input').html(node_data.temp_name)
+
+    if node_data.temp_description != undefined
+      d3.select('#description-input').html(node_data.temp_description)
+
+    if node_data.temp_size != undefined
+      d3.select('#size-input').html(node_data.temp_size)
+
+    if node_data.temp_publication != undefined
+      d3.select('#publication-input').html(node_data.temp_publication)
+      
+    if node_data.temp_contact != undefined
+      d3.select('#contact-input').html(node_data.temp_contact)
+      
+    if node_data.temp_department != undefined
+      d3.select('#department-input').html(node_data.temp_department)
+
+
+
   root.restorePreviousValues = () ->
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
 
-    if node_data.temp_keyword != null
-      d3.select('#keywords-input').html(node_data.temp_keyword.replace(/;/g,', ') )
-
-    if node_data.temp_indicator != null
-      d3.select('#indic-input').html(node_data.temp_indicator.replace(/;/g,', ') )
-
-    if node_data.temp_time != null
-      d3.select('#time-input').html(node_data.temp_time.replace(/;/g,', ') )
-
-    if node_data.temp_name != null
-      d3.select('#title-input').html(node_data.temp_name)
-
-    if node_data.temp_description != null
-      d3.select('#description-input').html(node_data.temp_description)
-
-    if node_data.temp_size != null
-      d3.select('#size-input').html(node_data.temp_size)
-
-    if node_data.temp_publication != null
-      d3.select('#publication-input').html(node_data.temp_publication)
-      
-    if node_data.temp_contact != null
-      d3.select('#contact-input').html(node_data.temp_contact)
-      
-    if node_data.temp_department != null
-      d3.select('#department-input').html(node_data.temp_department)
-
+    d3.select('#keywords-input').html(node_data.keyword.replace(/;/g,', ') )
+    d3.select('#indic-input').html(node_data.indicator.replace(/;/g,', ') )
+    d3.select('#time-input').html(node_data.time.replace(/;/g,', ') )
+    d3.select('#title-input').html(node_data.name)
+    d3.select('#description-input').html(node_data.description)
+    d3.select('#size-input').html(node_data.size)
+    d3.select('#publication-input').html(node_data.publication)
+    d3.select('#contact-input').html(node_data.contact)
+    d3.select('#department-input').html(node_data.department)
 
 
     
@@ -999,7 +1014,7 @@ root.Bubbles = () ->
   mouseover = (d) ->
     # Save edits
     if document.getElementById("edit-top-bar").style.display == "block"
-      changeFields(leaveEditMode=false)
+      changeFields(false)
 
     node.classed("bubble-hover", (p) -> p == d)
     node.classed("bubble-tone-down", (p) -> p != d)
@@ -1110,7 +1125,7 @@ root.Bubbles = () ->
     # Restore clicked bubble (if any)
     hashchange()
 
-    restorePreviousValues()
+    restoreTempValues()
 
   # ---
   # public getter/setter for jitter variable
