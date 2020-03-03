@@ -615,7 +615,7 @@ root.Bubbles = () ->
   # ---
   # Update data
   # ---
-  root.changeLevel = (new_label) ->
+  root.changeLevel = (new_label, restore=false) ->
     # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
@@ -630,8 +630,11 @@ root.Bubbles = () ->
       d3.select('#label_level_'+i).classed('input_item_checked', false)
     
     # Manage d3 data
-    if node_data.temp_level == undefined 
+    if restore
       node_data.temp_level = ''
+
+    if node_data.temp_level == undefined 
+      node_data.temp_level = node_data.level
 
     if new_label == node_data.temp_level
       node_data.temp_level = ''
@@ -644,7 +647,7 @@ root.Bubbles = () ->
       d3.select('#label_level_'+index_label).classed('input_item_checked', true)
     
 
-  root.changeGeo = (new_label) ->
+  root.changeGeo = (new_label, restore=false) ->
     # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
@@ -659,16 +662,22 @@ root.Bubbles = () ->
       d3.select('#label_geo_'+i).classed('input_item_checked', false)
 
     # Manage data
-    if node_data.temp_geo == undefined
+    if restore
       node_data.temp_geo = ''
+
+    if node_data.temp_geo == undefined
+      node_data.temp_geo = node_data.geo
     
     if new_label == node_data.temp_geo
       node_data.temp_geo = ''
+      index_label = dim_label.indexOf(new_label) + 1
+
+      d3.select('#svg_icon_geo_'+new_label+'_'+data_id).attr('href','')
+      d3.select('#label_geo_'+index_label).classed('input_item_checked', false)
 
     else
       node_data.temp_geo = new_label
       index_label = dim_label.indexOf(new_label) + 1
-      
       if index_label < 4
         index_img = 1
       else if index_label < 7
@@ -681,7 +690,7 @@ root.Bubbles = () ->
 
 
 
-  root.changeDep = (new_label) ->
+  root.changeDep = (new_label, restore=false) ->
     # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
@@ -692,10 +701,13 @@ root.Bubbles = () ->
       d3.select('#label_dep_'+i).classed('input_item_checked', false)
 
     # Manage data
-    if node_data.temp_department == undefined
+    if restore
       node_data.temp_department = ''
+
+    if node_data.temp_department == undefined
+      node_data.temp_department = node_data.department
     
-    if new_label == node_data.temp_department
+    if new_label == node_data.temp_department | dim_label.indexOf(new_label) == -1
       node_data.temp_department = ''
       d3.select('#svg_icon_dep_'+data_id).attr('fill',colors['unknown'])
       d3.select('#department-input').html('')
@@ -708,10 +720,9 @@ root.Bubbles = () ->
       d3.select('#label_dep_'+index_label).classed('input_item_checked', true)
 
       if index_label == 0
-        dep_value = 'unknown'
+        d3.select('#department-input').html('')
       else 
-        dep_value = node_data.temp_department
-      d3.select('#department-input').html("<span class='dep_circle dep_#{dep_value}'></span>#{node_data.temp_department}")
+        d3.select('#department-input').html("<span class='dep_circle dep_#{node_data.temp_department}'></span>#{node_data.temp_department}")
    
     d3.select('#edit_department').attr('style', 'display:none;')
     d3.select('#department-input').attr('style', 'display:block;')
@@ -734,14 +745,17 @@ root.Bubbles = () ->
       node_data.publication = d3.select('#publication-input').html().replace(/,/g,';')
       node_data.contact = d3.select('#contact-input').html()
 
+      node_data.geo = ''
       for i in [1..10]
         if d3.select('#label_geo_'+i).classed('input_item_checked')
           node_data.geo = d3.select('#label_geo_'+i).attr('value')
 
+      node_data.level = ''
       for i in [1..5]
         if d3.select('#label_level_'+i).classed('input_item_checked')
           node_data.level = d3.select('#label_level_'+i).attr('value')
 
+      node_data.department = ''
       for i in [1..9]
         if d3.select('#label_dep_'+i).classed('input_item_checked')
           node_data.department = d3.select('#label_dep_'+i).attr('value')
@@ -834,9 +848,10 @@ root.Bubbles = () ->
     d3.select('#publication-input').html(node_data.publication)
     d3.select('#contact-input').html(node_data.contact)
 
-    changeDep(node_data.department)
-    changeLevel(node_data.level)
-    changeGeo(node_data.geo)
+    changeDep(node_data.department, true)
+    changeLevel(node_data.level, true)
+    changeGeo(node_data.geo, true)
+
 
   root.resetTempValues = () ->
     data_id = d3.select('#active_node_id').attr('active_node_id')
