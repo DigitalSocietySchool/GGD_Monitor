@@ -697,6 +697,28 @@ root.Bubbles = () ->
     node_data.keyword = d3.select('#keywords-input').html().replace(/,/g,';')
     node_data.indicator = d3.select('#indic-input').html().replace(/,/g,';')
     node_data.time = d3.select('#time-input').html().replace(/,/g,';')
+    node_data.name = d3.select('#title-input').html()
+    node_data.description = d3.select('#description-input').html()
+    node_data.size = d3.select('#size-input').html()
+    node_data.publication = d3.select('#publication-input').html()
+    node_data.contact = d3.select('#contact-input').html()
+
+    if(node_data.keyword == '') 
+      node_data.keyword = '-'
+    if(node_data.indicator == '') 
+      node_data.indicator = '-'
+    if(node_data.time == '') 
+      node_data.time = '-'
+    if(node_data.name == '') 
+      node_data.name = '-'
+    if(node_data.description == '') 
+      node_data.description = '-'
+    if(node_data.size == '') 
+      node_data.size = '0'
+    if(node_data.publication == '') 
+      node_data.publication = '-'
+    if(node_data.contact == '') 
+      node_data.contact = '-'
 
     hashchange()
 
@@ -735,7 +757,7 @@ root.Bubbles = () ->
     if document.getElementById("edit-top-bar").style.display == "none"
       location.replace("#" + encodeURIComponent(idValue(d)))
       d3.event.preventDefault()
-      
+
 
   # ---
   # called when url after the # changes
