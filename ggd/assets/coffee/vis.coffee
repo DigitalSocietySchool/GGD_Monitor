@@ -642,11 +642,7 @@ root.Bubbles = () ->
 
       d3.select('#svg_icon_level_'+new_label+'_'+data_id).attr('href','assets/img/icon/level_'+index_label+'_'+new_label+'.png')
       d3.select('#label_level_'+index_label).classed('input_item_checked', true)
-      console.log d3.select('#label_level_'+index_label).classed('input_item_checked')
-      console.log '#label_level_'+index_label
-      
     
-
 
   root.changeGeo = (new_label) ->
     # Change data
@@ -655,27 +651,34 @@ root.Bubbles = () ->
 
     dim_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national']
     
-    # Remove bubble icons
+    # Remove icons
     for l in dim_label
       d3.select('#svg_icon_geo_'+l+'_'+data_id).attr('href','')
     
-    if new_label == node_data.geo
+    for i in [1..10]
+      d3.select('#label_geo_'+i).classed('input_item_checked', false)
+
+    # Manage data
+    if node_data.temp_geo == undefined
+      node_data.temp_geo = ''
+    
+    if new_label == node_data.temp_geo
       node_data.temp_geo = ''
 
     else
       node_data.temp_geo = new_label
-      index_img = dim_label.indexOf(new_label) + 1
+      index_label = dim_label.indexOf(new_label) + 1
       
-      if index_img < 4
+      if index_label < 4
         index_img = 1
-      else if index_img < 7
+      else if index_label < 7
         index_img = 2
       else 
         index_img = 3
 
       d3.select('#svg_icon_geo_'+new_label+'_'+data_id).attr('href','assets/img/icon/geo_'+index_img+'.png')
+      d3.select('#label_geo_'+index_label).classed('input_item_checked', true)
 
-    hashchange()
 
 
   root.changeDep = (new_label) ->
@@ -684,17 +687,32 @@ root.Bubbles = () ->
     node_data = d3.select('#node_'+data_id).data()[0]
 
     dim_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG']
-   
-    if new_label == node_data.department
+
+    for i in [1..9]
+      d3.select('#label_dep_'+i).classed('input_item_checked', false)
+
+    # Manage data
+    if node_data.temp_department == undefined
+      node_data.temp_department = ''
+    
+    if new_label == node_data.temp_department
       node_data.temp_department = ''
       d3.select('#svg_icon_dep_'+data_id).attr('fill',colors['unknown'])
+      d3.select('#department-input').html('')
 
     else
       node_data.temp_department = new_label
-      d3.select('#svg_icon_dep_'+data_id).attr('fill',colors[new_label])
-   
-    hashchange()
+      index_label = dim_label.indexOf(new_label) + 1
 
+      d3.select('#svg_icon_dep_'+data_id).attr('fill',colors[new_label])
+      d3.select('#label_dep_'+index_label).classed('input_item_checked', true)
+
+      if index_label == 0
+        dep_value = 'unknown'
+      else 
+        dep_value = node_data.temp_department
+      d3.select('#department-input').html("<span class='dep_circle dep_#{dep_value}'></span>#{node_data.temp_department}")
+   
     d3.select('#edit_department').attr('style', 'display:none;')
     d3.select('#department-input').attr('style', 'display:block;')
 
@@ -780,7 +798,13 @@ root.Bubbles = () ->
       d3.select('#contact-input').html(node_data.temp_contact)
       
     if node_data.temp_department != undefined
-      d3.select('#department-input').html(node_data.temp_department)
+      changeDep(node_data.temp_department)
+
+    if node_data.temp_level != undefined
+      changeLevel(node_data.temp_level)
+
+    if node_data.temp_geo != undefined
+      changeGeo(node_data.temp_geo)
 
 
 
@@ -796,13 +820,10 @@ root.Bubbles = () ->
     d3.select('#size-input').html(node_data.size)
     d3.select('#publication-input').html(node_data.publication)
     d3.select('#contact-input').html(node_data.contact)
-    d3.select('#department-input').html(node_data.department)
 
-    level_label = ['individual', 'family', 'group', 'orga', 'geographic']
-    for i in [1..5]
-      d3.select('#label_level_'+i).classed('input_item_checked', node_data.level == level_label[i-1])
-
-
+    changeDep(node_data.department)
+    changeLevel(node_data.level)
+    changeGeo(node_data.geo)
 
     
 
@@ -1133,8 +1154,6 @@ root.Bubbles = () ->
 
     # Restore clicked bubble (if any)
     hashchange()
-
-    restoreTempValues()
 
   # ---
   # public getter/setter for jitter variable
