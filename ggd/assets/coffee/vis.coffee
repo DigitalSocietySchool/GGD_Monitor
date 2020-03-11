@@ -227,7 +227,7 @@ root.Bubbles = () ->
       d3.select(window)
         .on("hashchange", hashchange, {passive: true})
 
-      changeView('population');
+      changeView('population')
 
     # search function callback
     $("#searchStart").on "click", ->
@@ -235,7 +235,7 @@ root.Bubbles = () ->
       # updateNodes(data)
       # updateLabels(data)
       
-      input = $("#searchInput").val();
+      input = $("#searchInput").val()
       d3.select("#status").html("Search results for <span class=\"active\"> " + String(input) + " </span>&nbsp;&nbsp;&nbsp;")
 
       theNode = d3.selectAll(".bubble-node")
@@ -819,7 +819,7 @@ root.Bubbles = () ->
       node_data.name = d3.select('#title-input').html()
       node_data.description = d3.select('#description-input').html()
       node_data.size = d3.select('#size-input').html()
-      node_data.publication = d3.select('#publication-input').html().replace(/,/g,';')
+      node_data.publication = d3.select('#publication-input').html()
       node_data.contact = d3.select('#contact-input').html()
 
       node_data.geo = ''
@@ -885,6 +885,9 @@ root.Bubbles = () ->
       d3.selectAll('.bubble-node').attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
 
       resetTempValues()
+
+      node_data = d3.select('#node_'+data_id).data()[0]
+      sendData(node_data)
 
     else
       node_data.temp_keyword = d3.select('#keywords-input').html().replace(/,/g,';')
@@ -968,8 +971,6 @@ root.Bubbles = () ->
       else 
         node_data.temp_type = node_data.temp_type + ';' + new_label
         d3.select('#svg_icon_type_'+new_label+'_'+data_id).attr('href','assets/img/glyphs/glyph-'+new_label+'.png')
-
-
 
     hashchange()
 
@@ -1183,7 +1184,7 @@ root.Bubbles = () ->
 
       time = time.replace(/;/g,', ')
       keywords = keywords.replace(/;/g,', ')
-      indic = indic.replace(/;/g,', ')
+      indicator = indicator.replace(/;/g,', ')
 
       if type_value.search(';') == -1
         type_value = [type_value]
@@ -1283,7 +1284,7 @@ root.Bubbles = () ->
     department = ''
     publication = ''
     ID = ''
-    indic = ''
+    indicator = ''
     size = ''
     population = ''
     geo = ''
@@ -1300,7 +1301,7 @@ root.Bubbles = () ->
                       department = d.department
                       name = d.name
                       publication = d.publication
-                      indic = d.indicator
+                      indicator = d.indicator
                       ID = d.ID
                       size = d.size
                       population = d.population
@@ -1316,7 +1317,7 @@ root.Bubbles = () ->
 
     time = time.replace(/;/g,', ')
     keywords = keywords.replace(/;/g,', ')
-    indic = indic.replace(/;/g,', ')
+    indicator = indicator.replace(/;/g,', ')
 
     if type_value.search(';') == -1
       type_value = [type_value]
@@ -1332,7 +1333,7 @@ root.Bubbles = () ->
     d3.select("#description-input").html("#{description}")
     d3.select("#contact-input").html("#{contact}")
     d3.select("#keywords-input").html("#{keywords}")
-    d3.select("#indic-input").html("#{indic}")
+    d3.select("#indic-input").html("#{indicator}")
     d3.select("#department-input").html("<span class='dep_circle dep_#{dep_value}'></span>#{department}")
     d3.select("#publication-input").html("#{publication}")
     d3.select("#size-input").html("#{size}")
