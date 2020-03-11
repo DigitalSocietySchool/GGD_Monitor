@@ -91,7 +91,6 @@ body {
     padding: 6px;
     border: 1px solid #666;
     background-color: #E6E6E6;
-    cursor: pointer;
     margin-top: -1px;
     margin-bottom: -1px;
     margin-right: -16px;
@@ -196,6 +195,9 @@ div.ownership div div, #population div div {
 
 .active {
     font-weight: 600;
+}
+.button{
+    cursor: pointer;
 }
 
 a.bubble-label {

@@ -201,10 +201,10 @@
     <div class="topbar">
         <input id="searchInput" name="targetNode" type="text" />
         <button class="button" id="searchStart">Search</button>
-        <button class="reset">Reset</button>
+        <button class="button reset">Reset</button>
         <span id="status"></span>&nbsp; &nbsp;
-        <span class="">New</span>  &nbsp; &nbsp;
-        <span onmouseup="showEditMode();" >Edit</span>
+        <span class="button">New</span>  &nbsp; &nbsp;
+        <span onmouseup="showEditMode();" class="button">Edit</span>
     </div>
 
 
@@ -213,15 +213,15 @@
             <div class="col"  style="flex-grow:3.5;">
                 EDIT MODE: You are editing the details of this dataset.
             </div>
-            <div class="col" onclick="cancelEdit();">
+            <div class="col button" onclick="cancelEdit();">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
                 Cancel
             </div>
-            <div class="col" onclick="resetEdit();">
-                <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
+            <div class="col button" onclick="resetEdit();">
+                <img class="eyecon" style="height: 20px; margin-top:-5px" id="reset" src="assets/img/cancel.svg"> 
                 Reset
             </div>
-            <div class="col" onclick="changeFields(true);">
+            <div class="col button" onclick="changeFields(true);">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="save" src="assets/img/save.svg"> 
                 Save
             </div>
@@ -477,7 +477,7 @@
         </div>
     </div>
 
-    <div class="containerZ" id="vizContainer">
+    <div class="" id="vizContainer">
     <!-- VISUALIZATION -->
         <div class="vizbar">
             <div id="data_main" style="display:none;"></div>
@@ -488,19 +488,23 @@
     <div class="container toolbar" id="toolbar_inside">
         <div class="row toolbar-header">
             <div class="col dim_label" onmouseup="changeView('geo');">
-                <img class="eyecon" id="eye_geo" collapsed="true" src="assets/img/icon/eye_hide.png"> Geo. Coverage
+                <img class="eyecon button" id="eye_geo" collapsed="true" src="assets/img/icon/eye_hide.png"> 
+                <span class="button">Geo. Coverage</span>
             </div>
             <div class="col dim_label" onmouseup="changeView('population');">
-                <img class="eyecon" collapsed="true" id="eye_population" src="assets/img/icon/eye_hide.png"> Population
+                <img class="eyecon button" collapsed="true" id="eye_population" src="assets/img/icon/eye_hide.png">  
+                <span class="button">Population</span>
             </div>
             <div class="col dim_label" onmouseup="changeView('type');">
-                <img class="eyecon" collapsed="false" id="eye_type" src="assets/img/icon/eye_show.png"> Type of Dataset
+                <img class="eyecon button" collapsed="false" id="eye_type" src="assets/img/icon/eye_show.png"> 
+                <span class="button">Type of Dataset</span>
             </div>
             <div class="col dim_label" onmouseup="changeView('level');" style="flex-grow:0.5;">
-                <img class="eyecon" collapsed="true" id="eye_level" src="assets/img/icon/eye_hide.png"> Level
+                <img class="eyecon button" collapsed="true" id="eye_level" src="assets/img/icon/eye_hide.png"> 
+                <span class="button">Level</span>
             </div>
             <div class="col-auto">
-                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
+                <i class="fa fa-plus button" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
             </div>
         </div>
         <div class="row collapse" id="toolbar-top">
@@ -653,16 +657,19 @@
     <div class="container toolbar">
         <div class="row toolbar-header">
             <div class="col dim_label" id="toggle_size" onmouseup="removeSize();" style="flex-grow:1.7;">
-                <img class="eyecon" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png"> Number of Cases
+                <img class="eyecon button" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png">
+                <span class="button">Number of Cases</span>
             </div>
             <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.2;">
-                <img class="eyecon" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png"> Department
+                <img class="eyecon button" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png">
+                <span class="button">Department</span>
             </div>
             <div class="col dim_label" onmouseup="changeView('time','.arc');">
-                <img class="eyecon" id="eye_time" collapsed="false" src="assets/img/icon/eye_show.png"> Temporal Coverage 
+                <img class="eyecon button" id="eye_time" collapsed="false" src="assets/img/icon/eye_show.png">
+                <span class="button">Temporal Coverage</span>
             </div>
             <div class="col-auto">
-                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
+                <i class="fa fa-plus button" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
             </div>
         </div>
         <div class="row collapse" id="toolbar-bottom">
