@@ -144,7 +144,7 @@
                     btn = document.getElementById('label_geo_' + i);
                     btn.setAttribute("onclick", 'changeGeo("' + btn.getAttribute('value') + '")');
                 }
-                d3.select('#edit_department').attr('onclick',"showEditDep()")
+                d3.select('#department-input').attr('onclick',"showEditDep()")
                 for (var i = 1; i < 6; i++) {
                     btn = document.getElementById('label_type_' + i);
                     btn.setAttribute("onclick", 'changeType("' + btn.getAttribute('value') + '")');
@@ -264,8 +264,8 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:70px;">Contact:</span> 
-                    <span class="edit_field" id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:385px;"></span>
+                    <span style="width:85px;">Contact:</span> 
+                    <span class="edit_field" id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;"></span>
                 </div>
 
                 <div class="sidebar-items">
@@ -328,8 +328,8 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="float:left;width:110px;">Time Coverage: </span>
-                    <span class="edit_field" contentEditable="false" id="time-input" style="float:left;font-weight:100;width:360px;"></span>
+                    <span style="float:left;width:85px;">Time Coverage: </span>
+                    <span class="edit_field" contentEditable="false" id="time-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
 
                 <div class="sidebar-items">

@@ -788,7 +788,7 @@ root.Bubbles = () ->
     if new_label == node_data.temp_department | dim_label.indexOf(new_label) == -1
       node_data.temp_department = ''
       d3.select('#svg_icon_dep_'+data_id).attr('fill',colors['unknown'])
-      d3.select('#department-input').html('')
+      d3.select('#department-input').html('_')
 
     else
       node_data.temp_department = new_label
