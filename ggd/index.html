@@ -159,10 +159,8 @@
             }
         }
 
-
-
         function showEditNewMode() {
-            
+
             document.getElementById("edit-top-bar-new").style.display = "block";
             d3.selectAll(".edit_field").attr('contentEditable', 'true');
             d3.select('#status').html('')
@@ -191,6 +189,7 @@
             }
 
             showNewBubble();
+            resetTempValues();
         }
         
 
@@ -309,11 +308,11 @@
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel_new" src="assets/img/cancel.svg"> 
                 Cancel
             </div>
-            <div class="col button" onclick="resetEditNew();">
+            <div class="col button" onclick="resetEdit();">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="reset_new" src="assets/img/cancel.svg"> 
                 Reset
             </div>
-            <div class="col button" onclick="makeNewDataset();">
+            <div class="col button" onclick="changeFields(true);">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="save_new" src="assets/img/save.svg"> 
                 Save
             </div>

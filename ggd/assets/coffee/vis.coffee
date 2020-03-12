@@ -319,10 +319,6 @@ root.Bubbles = () ->
 
 
   root.showNewBubble = () ->
-
-    location.replace("#")
-    d3.select('#active_node_id').attr('active_node_id', null)
-    hashchange()
     
     node_data = d3.select('#node_0').data()[0]
     node_data.ui_scale = 1
@@ -334,8 +330,6 @@ root.Bubbles = () ->
       .classed('bubble-selected', true)
 
     location.replace("#0")
-    hashchange()
-    updateActive('0')
 
 
   root.hideNewBubble = () ->
@@ -349,9 +343,6 @@ root.Bubbles = () ->
     node_data.ui_scale = 0
 
     location.replace("#")
-    d3.select('#active_node_id').attr('active_node_id', null)
-
-
 
 
   # ---
@@ -942,6 +933,7 @@ root.Bubbles = () ->
 
       d3.selectAll(".edit_field").attr('contentEditable', 'false')
       document.getElementById("edit-top-bar").style.display = "none"
+      document.getElementById("edit-top-bar-new").style.display = "none"
       d3.selectAll('.bubble-node').attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
 
       resetTempValues()
@@ -959,6 +951,7 @@ root.Bubbles = () ->
       node_data.temp_publication = d3.select('#publication-input').html()
       node_data.temp_contact = d3.select('#contact-input').html()
 
+    console.log node_data
     hashchange()
 
 
@@ -1148,6 +1141,7 @@ root.Bubbles = () ->
   # activates new node
   # ---
   root.updateActive = (id) ->
+    
     if true #document.getElementById("edit-top-bar").style.display == "none"
       node.classed("bubble-selected", (d) -> id == idValue(d))
       node.classed("bubble-tone-down", (d) -> id != idValue(d))
@@ -1331,7 +1325,7 @@ root.Bubbles = () ->
   # ---
   mouseover = (d) ->
     # Save edits
-    if document.getElementById("edit-top-bar").style.display == "block"
+    if document.getElementById("edit-top-bar").style.display == "block" | document.getElementById("edit-top-bar-new").style.display == "block"
       changeFields(false)
 
     node.classed("bubble-hover", (p) -> p == d)
