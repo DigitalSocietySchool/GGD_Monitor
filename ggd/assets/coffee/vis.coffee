@@ -273,16 +273,42 @@ root.Bubbles = () ->
   # updates the nodes and labels
   # ---
   update = () ->
+    
     # add a radius to our data nodes that will serve to determine
     # when a collision has occurred. This uses the same scale as
     # the one used to size our bubbles, but it kicks up the minimum
     # size to make it so smaller bubbles have a slightly larger 
     # collision 'sphere'
-
-
     data.forEach (d,i) ->
       d.forceR = Math.max(minCollisionRadius, rScale(rValue(d)))
       d.ui_scale = 1
+
+    newDataset = new data[0].constructor()
+
+    for key of data[0]
+      newDataset[key] = data[0][key]
+
+    newDataset.ID = '0'
+    newDataset.name = '(No title)'
+    newDataset.description = '-'
+    newDataset.keyword = ''
+    newDataset.indicator = ''
+    newDataset.time = ''
+    newDataset.size = 10000
+    newDataset.publication = '-'
+    newDataset.contact = '-'
+    newDataset.department = '-'
+    newDataset.level = ''
+    newDataset.geo = ''
+    newDataset.population = ''
+    newDataset.type = ''
+
+    newDataset.x = 0
+    newDataset.y = 0
+    newDataset.forceR = Math.max(minCollisionRadius, rScale(rValue(newDataset)))
+    newDataset.ui_scale = 0
+
+    data.push(newDataset)
 
     # start up the force layout
     force.nodes(data).start()
@@ -290,6 +316,42 @@ root.Bubbles = () ->
     # call our update methods to do the creation and layout work
     updateNodes(data)
     updateLabels(data)
+
+
+  root.showNewBubble = () ->
+
+    location.replace("#")
+    d3.select('#active_node_id').attr('active_node_id', null)
+    hashchange()
+    
+    node_data = d3.select('#node_0').data()[0]
+    node_data.ui_scale = 1
+    
+    d3.select('#node_0')
+      .attr('filter_scale','1')
+      .attr("transform", (d) -> "translate(#{d.x},#{d.y})"+ ",scale(1)")
+      .style("opacity","1")
+      .classed('bubble-selected', true)
+
+    location.replace("#0")
+    hashchange()
+    updateActive('0')
+
+
+  root.hideNewBubble = () ->
+    
+    d3.select('#node_0')
+      .attr('filter_scale','0')
+      .attr("transform", (d) -> "translate(#{d.x},#{d.y})"+ ",scale(0)")
+      .style("opacity","0")
+    
+    node_data = d3.select('#node_0').data()[0]
+    node_data.ui_scale = 0
+
+    location.replace("#")
+    d3.select('#active_node_id').attr('active_node_id', null)
+
+
 
 
   # ---
@@ -300,15 +362,17 @@ root.Bubbles = () ->
     # data to the (currently) empty 'bubble-node selection'.
     # if you want to use your own data, you just need to modify what
     # idValue returns
-    #console.log("datas")
     #console.log(datas)
 
-    node = node.selectAll(".bubble-node").data(datas, (d) -> idValue(d))
+    #node = node.selectAll(".bubble-node").data(datas, (d) -> idValue(d))
+    node = node.selectAll(".bubble-node").data(datas)
+
+    #console.log(node)
 
     # we don't actually remove any nodes from our data in this example 
     # but if we did, this line of code would remove them from the
     # visualization as well
-    node.exit().remove()
+    # node.exit().remove()
 
     # nodes are just links with circles inside.
     # the styling comes from the css
@@ -506,10 +570,6 @@ root.Bubbles = () ->
     labelEnter.append("div")
       .attr("class", "bubble-label-name")
       .text((d) -> textValue(d))
-
-    #labelEnter.append("div")
-    #  .attr("class", "bubble-label-value")
-    #  .text((d) -> rValue(d))
 
     # label font size is determined based on the size of the bubble
     # this sizing allows for a bit of overhang outside of the bubble
@@ -1057,7 +1117,7 @@ root.Bubbles = () ->
   # ---
   clear = () ->
     # Does not apply in edit mode
-    if document.getElementById("edit-top-bar").style.display == "none"
+    if document.getElementById("edit-top-bar").style.display == "none" & document.getElementById("edit-top-bar-new").style.display == "none"
       location.replace("#")
       d3.select('#active_node_id').attr('active_node_id', null)
 
@@ -1066,7 +1126,7 @@ root.Bubbles = () ->
   # ---
   click = (d) ->
     # Does not apply in edit mode
-    if document.getElementById("edit-top-bar").style.display == "none"
+    if document.getElementById("edit-top-bar").style.display == "none" & document.getElementById("edit-top-bar-new").style.display == "none"
       id = decodeURIComponent(location.hash.substring(1)).trim()
       if id != idValue(d)
         location.replace("#" + encodeURIComponent(idValue(d)))
@@ -1097,7 +1157,7 @@ root.Bubbles = () ->
       name = ''
       description = ''
       publication = ''
-      indic = ''
+      indicator = ''
       size = ''
       population = ''
       geo = ''
@@ -1239,7 +1299,7 @@ root.Bubbles = () ->
           d3.select('#label_dep_'+i).classed('input_item_checked', department == dep_label[i-1] )
 
       else
-        d3.select("#title-input").html("No dataset is selected")
+        d3.select("#title-input").html("-")
         d3.select("#description-input").html("-")
         d3.select("#contact-input").html("-")
         d3.select("#department-input").html("-")
