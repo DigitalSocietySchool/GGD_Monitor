@@ -370,8 +370,7 @@ root.Bubbles = () ->
   root.updateWithNewBubble = () ->   
     d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", display)
 
-    location.replace("#")
-    d3.select('#active_node_id').attr('active_node_id', null)
+    d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_getlast.php", (d) -> location.replace("#"+d[0].ID) )
     hashchange()
   
 
