@@ -140,6 +140,7 @@ root.Bubbles = () ->
     #filtered = node.attr('filtered')
 
     node
+      #.each(gravity((d) -> d.ID == 0 ? 0 : dampenedAlpha))
       .each(gravity(dampenedAlpha))
       .each(collide(jitter))
       .attr("transform", (d) -> "translate(#{d.x},#{d.y})"+ ",scale(#{d.ui_scale})") 
@@ -193,6 +194,13 @@ root.Bubbles = () ->
         .attr("height", height )
         .attr("id","svg_main")
         .attr("transform", "translate(#{margin.left},#{margin.top})")
+
+      svgEnter.append('defs')
+        .append('filter')
+        .attr('id', 'blurBubble')
+        .append('feGaussianBlur')
+        .attr('in','SourceGraphic')
+        .attr('stdDeviation','3')
       
       # node will be used to group the bubbles
       node = svgEnter.append("g")
@@ -294,11 +302,20 @@ root.Bubbles = () ->
       newDataset[key] = data[0][key]
 
     newDataset.ID = '0'
-    newDataset.name = '(No title)'
+    newDataset.name = '(Title of New Dataset)'
     newDataset.description = '-'
     newDataset.keyword = '-'
     newDataset.indicator = '-'
+
+    current_year = (new Date).getFullYear()
     newDataset.time = ''
+    for y in [0..5] by 1
+      if y != 0
+        newDataset.time =  ';' + newDataset.time
+      year = current_year - y 
+      newDataset.time = year + newDataset.time
+
+
     newDataset.size = 10000
     newDataset.publication = '-'
     newDataset.contact = '-'
@@ -308,8 +325,8 @@ root.Bubbles = () ->
     newDataset.population = '-'
     newDataset.type = '-'
 
-    newDataset.x = 0
-    newDataset.y = 0
+    newDataset.x = 540
+    newDataset.y = 45
     newDataset.forceR = Math.max(minCollisionRadius, rScale(rValue(newDataset)))
     newDataset.ui_scale = 0
 
@@ -334,16 +351,17 @@ root.Bubbles = () ->
       .classed('bubble-selected', true)
 
     location.replace("#0")
+    updateActive(0)
 
 
-  root.hideNewBubble = () ->   
+  root.hideNewBubble = () ->  
+    node_data = d3.select('#node_0').data()[0]
+    node_data.ui_scale = 0
+
     d3.select('#node_0')
       .attr('filter_scale','0')
       .attr("transform", (d) -> "translate(#{d.x},#{d.y})"+ ",scale(0)")
       .style("opacity","0")
-    
-    node_data = d3.select('#node_0').data()[0]
-    node_data.ui_scale = 0
 
     location.replace("#")
     d3.select('#active_node_id').attr('active_node_id', null)
@@ -401,6 +419,19 @@ root.Bubbles = () ->
         .call(force.drag)
         .call(connectEvents)
 
+    # Draw shadow (for the new bubble)
+    node
+      .append("g")
+      .append('circle')
+        .attr('r', (d) -> 
+          if d.ID != '0' 
+            '0' 
+          else 
+            Math.max(12, rScale(rValue(d))-4 ) 
+          )
+        .attr('style','stroke:#fff;stroke-width:8px;fill:#fff;')
+        .attr('filter','url(#blurBubble)')
+
     # Adding time dimension
     node
       .append("g")
@@ -424,15 +455,12 @@ root.Bubbles = () ->
         .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
         .attr("opacity", (d,i) -> d3.select(this.parentNode).attr("data_opac").split(",")[i] )
 
-
-
-    # drawing the visible circle
+    # drawing the visible circle with department color
     node
       .append("g")
       .append("circle")
         .attr('id', (d) -> 'svg_icon_dep_'+d.ID)
         .attr("r", (d) -> Math.max(12, rScale(rValue(d))-4 ) )
-
 
     # Adding type dimension
     type_g = node.append('g')
@@ -630,8 +658,9 @@ root.Bubbles = () ->
     # return a function that will modify the
     # node's x and y values
     (d) ->
-      d.x += (cx - d.x) * ax
-      d.y += (cy - d.y) * ay
+      if d.ID != '0'
+        d.x += (cx - d.x) * ax
+        d.y += (cy - d.y) * ay
 
   # ---
   # custom collision function to prevent
@@ -647,7 +676,7 @@ root.Bubbles = () ->
       data.forEach (d2) ->
         # check that we aren't comparing a node
         # with itself
-        if d != d2
+        if d != d2 & d.ID != '0' & d2.ID != '0'
           # use distance formula to find distance
           # between two nodes
           x = d.x - d2.x

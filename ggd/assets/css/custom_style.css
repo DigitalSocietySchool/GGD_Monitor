@@ -519,3 +519,6 @@ label:hover, .label_selected{
 #edit_department{
     margin-top: -6px;
 }
+#node_0{
+    box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
+}
