@@ -160,7 +160,7 @@ root.Bubbles = () ->
   # The force variable is the force layout controlling the bubbles
   # here we disable gravity and charge as we implement custom versions
   # of gravity and collisions for this visualization
-  force = d3.layout.force()
+  root.force = d3.layout.force()
     .gravity(0)
     .charge(0)
     .size([width, height])
@@ -272,7 +272,12 @@ root.Bubbles = () ->
   # update starts up the force directed layout and then
   # updates the nodes and labels
   # ---
-  update = () ->
+  root.update = () ->
+
+    #console.log 'update()'
+    #console.log data
+    
+    document.getElementById('data_main').innerHTML = JSON.stringify(data)
     
     # add a radius to our data nodes that will serve to determine
     # when a collision has occurred. This uses the same scale as
@@ -291,17 +296,17 @@ root.Bubbles = () ->
     newDataset.ID = '0'
     newDataset.name = '(No title)'
     newDataset.description = '-'
-    newDataset.keyword = ''
-    newDataset.indicator = ''
+    newDataset.keyword = '-'
+    newDataset.indicator = '-'
     newDataset.time = ''
     newDataset.size = 10000
     newDataset.publication = '-'
     newDataset.contact = '-'
     newDataset.department = '-'
-    newDataset.level = ''
-    newDataset.geo = ''
-    newDataset.population = ''
-    newDataset.type = ''
+    newDataset.level = '-'
+    newDataset.geo = '-'
+    newDataset.population = '-'
+    newDataset.type = '-'
 
     newDataset.x = 0
     newDataset.y = 0
@@ -319,7 +324,6 @@ root.Bubbles = () ->
 
 
   root.showNewBubble = () ->
-    
     node_data = d3.select('#node_0').data()[0]
     node_data.ui_scale = 1
     
@@ -332,8 +336,7 @@ root.Bubbles = () ->
     location.replace("#0")
 
 
-  root.hideNewBubble = () ->
-    
+  root.hideNewBubble = () ->   
     d3.select('#node_0')
       .attr('filter_scale','0')
       .attr("transform", (d) -> "translate(#{d.x},#{d.y})"+ ",scale(0)")
@@ -343,7 +346,16 @@ root.Bubbles = () ->
     node_data.ui_scale = 0
 
     location.replace("#")
+    d3.select('#active_node_id').attr('active_node_id', null)
+    hashchange()
 
+  root.updateWithNewBubble = () ->   
+    d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", display)
+
+    location.replace("#")
+    d3.select('#active_node_id').attr('active_node_id', null)
+    hashchange()
+  
 
   # ---
   # updateNodes creates a new bubble for each node in our dataset
@@ -353,18 +365,17 @@ root.Bubbles = () ->
     # data to the (currently) empty 'bubble-node selection'.
     # if you want to use your own data, you just need to modify what
     # idValue returns
-    #console.log(datas)
 
-    #node = node.selectAll(".bubble-node").data(datas, (d) -> idValue(d))
-    node = node.selectAll(".bubble-node").data(datas)
+    d3.selectAll(".bubble-node").remove()
+    node = d3.select('#svg_main').selectAll(".bubble-node").data(datas, (d) -> idValue(d))
 
-    #console.log(node)
+    # node = node.selectAll(".bubble-node").data(datas, (d) -> idValue(d))
 
     # we don't actually remove any nodes from our data in this example 
     # but if we did, this line of code would remove them from the
     # visualization as well
     # node.exit().remove()
-
+    
     # nodes are just links with circles inside.
     # the styling comes from the css
     node.enter()
@@ -383,6 +394,7 @@ root.Bubbles = () ->
         .attr("type", (d) -> d.type)
         .attr("level", (d) -> d.level)
         .attr("size", (d) -> d.size)
+        .attr("dep", (d) -> d.department)
         .attr("dep", (d) -> d.department)
         .attr("time", (d) -> d.time)
         .attr("filter_scale", (d) -> d.ui_scale)
@@ -543,9 +555,13 @@ root.Bubbles = () ->
   updateLabels = (datas) ->
     # as in updateNodes, we use idValue to define what the unique id for each data 
     # point is
-    label = label.selectAll(".bubble-label").data(datas, (d) -> idValue(d))
 
-    label.exit().remove()
+    label.selectAll(".bubble-label").remove()
+    label = d3.select('#bubble-labels').selectAll(".bubble-label").data(datas, (d) -> idValue(d))
+
+    #label = label.selectAll(".bubble-label").data(datas, (d) -> idValue(d))
+
+    #label.exit().remove()
 
     # labels are anchors with div's inside them
     # labelEnter holds our enter selection so it 
@@ -837,7 +853,7 @@ root.Bubbles = () ->
       node_data.temp_department = node_data.department
     
     if new_label == node_data.temp_department | dim_label.indexOf(new_label) == -1
-      node_data.temp_department = ''
+      node_data.temp_department = '-'
       d3.select('#svg_icon_dep_'+data_id).attr('fill',colors['unknown'])
       d3.select('#department-input').html('_')
 
@@ -883,7 +899,7 @@ root.Bubbles = () ->
         if d3.select('#label_level_'+i).classed('input_item_checked')
           node_data.level = d3.select('#label_level_'+i).attr('value')
 
-      node_data.department = ''
+      node_data.department = '-'
       for i in [1..9]
         if d3.select('#label_dep_'+i).classed('input_item_checked')
           node_data.department = d3.select('#label_dep_'+i).attr('value')
@@ -936,7 +952,8 @@ root.Bubbles = () ->
       document.getElementById("edit-top-bar-new").style.display = "none"
       d3.selectAll('.bubble-node').attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
 
-      resetTempValues()
+      if data_id != 0
+        resetTempValues()
 
       node_data = d3.select('#node_'+data_id).data()[0]
       sendData(node_data)
@@ -951,7 +968,6 @@ root.Bubbles = () ->
       node_data.temp_publication = d3.select('#publication-input').html()
       node_data.temp_contact = d3.select('#contact-input').html()
 
-    console.log node_data
     hashchange()
 
 
@@ -1505,7 +1521,7 @@ root.$ ->
   # function that is called when
   # data is loaded
   # ---
-  display = (data) ->
+  root.display = (data) ->
     document.getElementById('data_main').innerHTML = JSON.stringify(data)
     plotData("#vis", data, plot)
 

@@ -1,4 +1,5 @@
 <?php
+
 	$servername = "localhost";
 	$username = "ggd";
 	$password = "GGDmonitor";
@@ -16,7 +17,7 @@
 	//echo "ID,name,description,keywords,contact,department,size,years,geo,type,pop,level\n";
 
 
-	$query = "SELECT * FROM datasets";
+	$query = "SELECT * FROM datasets"; #  ORDER BY `ID` DESC LIMIT 3
 
 	$result = $conn->query($query);
 

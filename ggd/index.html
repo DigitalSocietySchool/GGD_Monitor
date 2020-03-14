@@ -189,7 +189,7 @@
             }
 
             showNewBubble();
-            resetTempValues();
+            //resetTempValues();
         }
         
 
@@ -262,6 +262,17 @@
             $.post("http://localhost:8888/GGD_20200203/ggd/data/db_save.php", data);
         }
 
+        function insertNew(){
+            //console.log('insertNew()');
+            changeFields(true);
+            //d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", 
+            //    function(d){console.log('insertNew()');console.log(d);})
+            //d3.selectAll(".bubble-node").remove();
+            updateWithNewBubble();
+            //d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", update);
+            changeView('population');
+        }
+
     </script>
 </head>
 
@@ -312,7 +323,7 @@
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="reset_new" src="assets/img/cancel.svg"> 
                 Reset
             </div>
-            <div class="col button" onclick="changeFields(true);">
+            <div class="col button" onclick="insertNew();">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="save_new" src="assets/img/save.svg"> 
                 Save
             </div>
