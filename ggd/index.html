@@ -114,8 +114,6 @@
 
             document.getElementById('vis')
                 .setAttribute('style','margin-left:'+left+'px');
-
-
         }
 
         function showEditDep(){  
@@ -127,9 +125,10 @@
             resetTempValues();
              
             if (d3.select('#active_node_id').attr('active_node_id') == null) {
-                d3.select('#status').html('First select the dataset you wish to edit.')
+                //d3.select('#status').html('First select the dataset you wish to edit.')
 
             } else {
+                d3.select('#confirm_delete').attr('style','display:none;');
                 document.getElementById("edit-top-bar").style.display = "block";
                 d3.selectAll(".edit_field").attr('contentEditable', 'true');
                 d3.select('#status').html('')
@@ -160,11 +159,11 @@
         }
 
         function showEditNewMode() {
-
             document.getElementById("edit-top-bar-new").style.display = "block";
+
             d3.selectAll(".edit_field").attr('contentEditable', 'true');
-            d3.select('#status').html('')
-            d3.selectAll('.bubble-node').attr("xlink:href",null) // "##{encodeURIComponent(idValue(d))}"
+            d3.select('#status').html('');
+            d3.selectAll('.bubble-node').attr("xlink:href",null); 
             
             for (var i = 1; i < 6; i++) {
                 btn = document.getElementById('label_level_' + i);
@@ -189,13 +188,12 @@
             }
 
             showNewBubble();
-            //resetTempValues();
         }
         
 
         function hideEditMode() {
+            d3.select('#confirm_delete').attr('style','display:none;');
             document.getElementById("edit-top-bar").style.display = "none";
-            d3.selectAll(".edit_field").attr('contentEditable', 'false');
             d3.selectAll('.bubble-node').attr("xlink:href", function(d){ 
                 return '#' + encodeURIComponent(idValue(d));
             });
@@ -219,6 +217,7 @@
         }
 
         function hideEditNewMode() {
+            document.getElementById("confirm_delete").style.display = "none";
             document.getElementById("edit-top-bar-new").style.display = "none";
             d3.selectAll(".edit_field").attr('contentEditable', 'false');
             d3.selectAll('.bubble-node').attr("xlink:href", function(d){ 
@@ -245,11 +244,13 @@
         }
 
         function resetEdit(){
+            d3.select('#confirm_delete').attr('style','display:none;');
             resetTempValues();
             restorePreviousValues();
         }
 
         function cancelEdit(){
+            d3.select('#confirm_delete').attr('style','display:none;');
             resetEdit();
             hideEditMode();
         }
@@ -261,16 +262,19 @@
         function sendData(data){
             $.post("http://localhost:8888/GGD_20200203/ggd/data/db_save.php", data);
         }
+        function deleteData(data){
+            $.post("http://localhost:8888/GGD_20200203/ggd/data/db_delete.php", data);
+            d3.select('#confirm_delete').attr('style','display:none;');
+        }
 
         function insertNew(){
-            //console.log('insertNew()');
             changeFields(true);
-            //d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", 
-            //    function(d){console.log('insertNew()');console.log(d);})
-            //d3.selectAll(".bubble-node").remove();
             updateWithNewBubble();
-            //d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", update);
             changeView('population');
+        }
+
+        function confirmDelete(){
+            d3.select('#confirm_delete').attr('style','display:inline;');
         }
 
     </script>
@@ -293,6 +297,12 @@
         <div class="row toolbar-header" id="edit_mode">
             <div class="col"  style="flex-grow:3.5;">
                 EDIT MODE: You are editing this dataset.
+            </div>
+            <div class="col button" onclick="confirmDelete()"  style="flex-grow:2.5;text-align: left;">
+                <span class="col button" id="start_delete" style="display:inline;">[!] Delete</span>
+                <span class="col button" id="confirm_delete" onclick="deleteDataset();" style="display:none;">
+                    [!] Confirm
+                </span>
             </div>
             <div class="col button" onclick="cancelEdit();">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
