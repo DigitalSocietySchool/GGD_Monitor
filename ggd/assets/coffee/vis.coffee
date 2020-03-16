@@ -31,7 +31,7 @@ getBorderOpacity = (year) ->
 root.Bubbles = () ->
   # standard variables accessible to
   # the rest of the functions inside Bubbles
-  width = 1200
+  width = 1200 # deprecated?
   height = 700
   data = []
   node = null
@@ -197,7 +197,7 @@ root.Bubbles = () ->
       svg = d3.select(this).selectAll("svg").data([data])
       svgEnter = svg.enter().append("svg")
       svg
-        .attr("width", width)
+        .attr("width", '98%')
         .attr("height", height )
         .attr("id","svg_main")
         .attr("transform", "translate(#{margin.left},#{margin.top})")
@@ -332,7 +332,7 @@ root.Bubbles = () ->
     newDataset.population = '-'
     newDataset.type = '-'
 
-    newDataset.x = 540
+    newDataset.x = 600
     newDataset.y = 45
     newDataset.forceR = Math.max(minCollisionRadius, rScale(rValue(newDataset)))
     newDataset.ui_scale = 0
@@ -376,8 +376,9 @@ root.Bubbles = () ->
   root.updateWithNewBubble = () ->   
     d3.json("http://localhost:8000/GGD_20200203/ggd/data/db_v1.php", display)
 
-    d3.json("http://localhost:8000/GGD_20200203/ggd/data/db_getlast.php", (d) -> location.replace("#"+d[0].ID) )
-    hashchange()
+    $ -> 
+      d3.json("http://localhost:8000/GGD_20200203/ggd/data/db_getlast.php", (d) -> location.replace("#"+d[0].ID) )
+      hashchange()
   
 
   # ---
@@ -658,7 +659,7 @@ root.Bubbles = () ->
   # ---
   gravity = (alpha) ->
     # start with the center of the display
-    cx = 250 + width / 2
+    cx = 390 + width / 2
     cy = height / 2
     # use alpha to affect how much to push
     # towards the horizontal or vertical
@@ -1207,7 +1208,6 @@ root.Bubbles = () ->
       else
         location.replace("#")
         d3.event.preventDefault()
-
 
   # ---
   # called when url after the # changes
