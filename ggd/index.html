@@ -340,6 +340,15 @@
         </div>
     </div>
 
+
+    <div class="" id="vizContainer">
+    <!-- VISUALIZATION -->
+        <div class="vizbar">
+            <div id="data_main" style="display:none;"></div>
+            <div id="vis"></div>
+        </div>
+    </div>
+    
     <!-- begin bubble-specific toolbar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header" id="sidebar-header">
@@ -588,15 +597,8 @@
         </div>
     </div>
 
-    <div class="" id="vizContainer">
-    <!-- VISUALIZATION -->
-        <div class="vizbar">
-            <div id="data_main" style="display:none;"></div>
-            <div id="vis"></div>
-        </div>
-    </div>
     <!-- begin first toolbar -->
-    <div class="container toolbar" id="toolbar_inside">
+    <div class="Zcontainer toolbar" id="toolbar_inside">
         <div class="row toolbar-header">
             <div class="col dim_label" onmouseup="changeView('geo');">
                 <img class="eyecon button" id="eye_geo" collapsed="true" src="assets/img/icon/eye_hide.png"> 
@@ -764,8 +766,9 @@
             </div>
         </div>
     </div>
+
     <!-- begin second toolbar -->
-    <div class="container toolbar">
+    <div class="Zcontainer toolbar">
         <div class="row toolbar-header">
             <div class="col dim_label" id="toggle_size" onmouseup="removeSize();" style="flex-grow:1.7;">
                 <img class="eyecon button" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png">
@@ -1517,7 +1520,7 @@
 
         collapseToolbar('meta');
 
-        replaceLayout();
+        //replaceLayout();
 
         // Get the input field
         var input = document.getElementById("searchInput");
