@@ -35,17 +35,17 @@
 			NULL, 
 			'".$_POST["name"]."', 
 			'".$_POST["description"]."', 
-			'".$_POST["keyword"]."', 
+			'".str_replace(' ', '', $_POST["keyword"])."', 
 			'".$_POST["contact"]."', 
 			'".$_POST["department"]."', 
 			'".$_POST["size"]."', 
-			'".$_POST["time"]."', 
+			'".str_replace(' ', '', $_POST["time"])."', 
 			'".$_POST["geo"]."', 
-			'".$_POST["type"]."', 
-			'".$_POST["population"]."', 
+			'".str_replace(' ', '', $_POST["type"])."', 
+			'".str_replace(' ', '', $_POST["population"])."', 
 			'".$_POST["level"]."', 
 			'".$_POST["publication"]."', 
-			'".$_POST["indicator"]."')";
+			'".str_replace(' ', '', $_POST["indicator"])."')";
 	}
 
 	$result = $conn->query($query);

@@ -260,10 +260,10 @@
         }
 
         function sendData(data){
-            $.post("http://localhost:8888/GGD_20200203/ggd/data/db_save.php", data);
+            $.post("http://localhost:8000/GGD_20200203/ggd/data/db_save.php", data);
         }
         function deleteData(data){
-            $.post("http://localhost:8888/GGD_20200203/ggd/data/db_delete.php", data);
+            $.post("http://localhost:8000/GGD_20200203/ggd/data/db_delete.php", data);
             d3.select('#confirm_delete').attr('style','display:none;');
         }
 
@@ -1020,30 +1020,30 @@
             visible_nodes
                 .selectAll("circle")
                 .attr('r', function(d) {
-                    return Math.max(10, rScale(rValue(d))-4 );
+                    return Math.max(minRadius-4, rScale(rValue(d))-4 );
                 });
 
             // Reset pies
             visible_nodes
                 .each(function(d) {
-                    d.forceR = Math.max(14, rScale(rValue(d)));
+                    d.forceR = Math.max(minRadius, rScale(rValue(d)));
                 })
                 .selectAll(".pie")
                     .attr("transform", function(d) {
-                        return "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")";
+                        return "scale(" + Math.max(minRadius,rScale(rValue(d)))/100 + "," + Math.max(minRadius,rScale(rValue(d)))/100 + ")";
                     });
 
             // Reset images
             visible_nodes
                 .selectAll("image")
                   .attr("width",  function(d) {
-                        return rScale(rValue(d)) * 1.15 ;
+                        return Math.max(minRadius,rScale(rValue(d))) * 1.15 ;
                     })
                   .attr("height", function(d) {
-                        return rScale(rValue(d)) * 1.15 ;
+                        return Math.max(minRadius,rScale(rValue(d))) * 1.15 ;
                     })
                   .style("transform", function(d) {
-                        return "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)' ;
+                        return "translate(-"+ Math.max(minRadius,rScale(rValue(d)))*0.555 +'px,-'+ Math.max(minRadius,rScale(rValue(d)))*0.6 +'px)' ;
                     });
 
             document.getElementById('toggle_size').setAttribute('onmouseup','removeSize()');

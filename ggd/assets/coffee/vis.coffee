@@ -37,9 +37,10 @@ root.Bubbles = () ->
   node = null
   label = null
   margin = {top: 0, right: 0, bottom: 0, left: 0}
+  
   # largest size for our bubbles
-  maxRadius = 45
-
+  root.maxRadius = 50
+  root.minRadius = 16
 
   d3.select('#vis')
     .attr("width", width + margin.left + margin.right )
@@ -51,8 +52,14 @@ root.Bubbles = () ->
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
-  root.rValue = (d) -> Math.max( Math.min(parseInt(d.size), 2000), 20)
+  cap_size = 30000
+  floor_size = 100
 
+  root.scale_bub = d3.scaleSqrt()
+    .domain([floor_size, cap_size])
+    .range([0, maxRadius]);
+
+  root.rValue = (d) -> scale_bub( Math.max( Math.min(parseInt(d.size), cap_size), floor_size) )
           
   # Extractig values for donut charts
   pie_bub = (d) -> d3.pie()(Array(18).fill(1))
@@ -101,7 +108,7 @@ root.Bubbles = () ->
   # constants to control how
   # collision look and act
   collisionPadding = 2
-  minCollisionRadius = 12
+  minCollisionRadius = minRadius 
 
   # variables that can be changed
   # to tweak how the force layout
@@ -353,7 +360,6 @@ root.Bubbles = () ->
     location.replace("#0")
     updateActive(0)
 
-
   root.hideNewBubble = () ->  
     node_data = d3.select('#node_0').data()[0]
     node_data.ui_scale = 0
@@ -368,9 +374,9 @@ root.Bubbles = () ->
     hashchange()
 
   root.updateWithNewBubble = () ->   
-    d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", display)
+    d3.json("http://localhost:8000/GGD_20200203/ggd/data/db_v1.php", display)
 
-    d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_getlast.php", (d) -> location.replace("#"+d[0].ID) )
+    d3.json("http://localhost:8000/GGD_20200203/ggd/data/db_getlast.php", (d) -> location.replace("#"+d[0].ID) )
     hashchange()
   
 
@@ -426,9 +432,14 @@ root.Bubbles = () ->
           if d.ID != '0' 
             '0' 
           else 
-            Math.max(12, rScale(rValue(d))-4 ) 
+            Math.max(minRadius-4, rScale(rValue(d))-4 ) 
           )
-        .attr('style','stroke:#fff;stroke-width:8px;fill:#fff;')
+        .attr('style',(d) ->
+          if d.ID != '0'
+            'display:none;scale(0);'
+          else
+            'stroke:#fff;stroke-width:8px;fill:#fff;'
+          )
         .attr('filter','url(#blurBubble)')
 
     # Adding time dimension
@@ -440,7 +451,7 @@ root.Bubbles = () ->
         .attr('data_opac', (d) -> getBorderOpacity(d.time))
         .attr("width",  (d) -> rScale(rValue(d)) * 2 )
         .attr("height", (d) -> rScale(rValue(d)) * 2 )
-        .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
+        .attr("transform", (d) -> "scale(" + Math.max(minRadius, rScale(rValue(d)))/100 + "," + Math.max(minRadius, rScale(rValue(d)))/100 + ")" )
       .selectAll(".arc")
         .data( (d) -> pie_bub(d) )
       .enter().append("path")
@@ -459,7 +470,7 @@ root.Bubbles = () ->
       .append("g")
       .append("circle")
         .attr('id', (d) -> 'svg_icon_dep_'+d.ID)
-        .attr("r", (d) -> Math.max(12, rScale(rValue(d))-4 ) )
+        .attr("r", (d) -> Math.max(minRadius-4, rScale(rValue(d))-4 ) )
 
     # Adding type dimension
     type_g = node.append('g')
@@ -468,9 +479,9 @@ root.Bubbles = () ->
       .append("image")
       .attr("xlink:href", "assets/img/glyphs/glyph-empty.png")
       .attr("class", "cat_type")
-      .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
-      .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
-      .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+      .attr("width",  (d) -> Math.max(minRadius-2,rScale(rValue(d))) * 1.15 )
+      .attr("height", (d) -> Math.max(minRadius-2,rScale(rValue(d)))* 1.15 )
+      .style("transform", (d) -> "translate(-"+ Math.max(minRadius-2,rScale(rValue(d)))*0.555 +'px,-'+ Math.max(minRadius-2,rScale(rValue(d)))*0.6 +'px)') 
       .style("transform-origin","50% 50%")
 
     petals = 
@@ -486,9 +497,9 @@ root.Bubbles = () ->
         .attr('id', (d) -> 'svg_icon_type_'+p+'_'+d.ID)
         .attr("xlink:href", (d)-> if d.type.indexOf(p) != -1 then "assets/img/glyphs/glyph-" + dir + ".png")
         .attr("class", "cat_type " + dir)
-        .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
-        .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
-        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+        .attr("width",  (d) -> Math.max(minRadius-2,rScale(rValue(d))) * 1.15 )
+        .attr("height", (d) -> Math.max(minRadius-2,rScale(rValue(d)))* 1.15 )
+        .style("transform", (d) -> "translate(-"+ Math.max(minRadius-2,rScale(rValue(d)))*0.555 +'px,-'+ Math.max(minRadius-2,rScale(rValue(d)))*0.6 +'px)') 
         .style("transform-origin","50% 50%")
 
 
@@ -499,9 +510,9 @@ root.Bubbles = () ->
       .append("image")
       .attr("xlink:href", "assets/img/icon/pop_empty.png")
       .attr("class", "cat_population")
-      .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
-      .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
-      .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+      .attr("width",  (d) -> Math.max(minRadius-2,rScale(rValue(d))) * 1.15 )
+      .attr("height", (d) -> Math.max(minRadius-2,rScale(rValue(d)))* 1.15 )
+      .style("transform", (d) -> "translate(-"+ Math.max(minRadius-2,rScale(rValue(d)))*0.555 +'px,-'+ Math.max(minRadius-2,rScale(rValue(d)))*0.6 +'px)') 
       .style("transform-origin","50% 50%")
 
     population = 
@@ -516,9 +527,9 @@ root.Bubbles = () ->
         .attr('id', (d) -> 'svg_icon_pop_'+p+'_'+d.ID)
         .attr("xlink:href", (d)-> if d.population.split(";").indexOf(p) != -1 then "assets/img/icon/" + img)
         .attr("class", "cat_population")
-        .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
-        .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
-        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)') 
+        .attr("width",  (d) -> Math.max(minRadius-2,rScale(rValue(d))) * 1.15 )
+        .attr("height", (d) -> Math.max(minRadius-2,rScale(rValue(d))) * 1.15 )
+        .style("transform", (d) -> "translate(-"+ Math.max(minRadius-2,rScale(rValue(d)))*0.555 +'px,-'+ Math.max(minRadius-2,rScale(rValue(d)))*0.6 +'px)') 
         .style("transform-origin","50% 50%")
     
     # Adding geo dimension
@@ -542,10 +553,10 @@ root.Bubbles = () ->
         .attr('id', (d) -> 'svg_icon_geo_'+c+'_'+d.ID)
         .attr("xlink:href", (d) -> if d.geo.indexOf(c) != -1 then "assets/img/" + img)
         .attr("class", "cat_geo")
-        .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
-        .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
+        .attr("width",  (d) -> Math.max(minRadius-2,rScale(rValue(d))) * 1.15 )
+        .attr("height", (d) -> Math.max(minRadius-2,rScale(rValue(d))) * 1.15 )
         .style("transform-origin","50% 50%")
-        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/1.8 +'px,-'+ rScale(rValue(d))/1.5 +'px)') 
+        .style("transform", (d) -> "translate(-"+ Math.max(minRadius-2,rScale(rValue(d))) /1.8 +'px,-'+ Math.max(minRadius-2,rScale(rValue(d))) /1.5 +'px)') 
         
     # Adding population dimension
     level_g = node.append('g').attr('id','svg_level')
@@ -563,15 +574,15 @@ root.Bubbles = () ->
         .attr('id', (d) -> 'svg_icon_level_'+l+'_'+d.ID)
         .attr("xlink:href", (d)-> if d.level.indexOf(l) != -1 then "assets/img/" + img)
         .attr("class", "cat_level")
-        .attr("width",  (d) -> rScale(rValue(d))  )
-        .attr("height", (d) -> rScale(rValue(d))  )
+        .attr("width",  (d) -> Math.max(minRadius-2,rScale(rValue(d)))   )
+        .attr("height", (d) -> Math.max(minRadius-2,rScale(rValue(d)))   )
         .style("transform-origin","50% 50%")
-        .style("transform", (d) -> "translate(-"+ rScale(rValue(d))/2.1 +'px,-'+ rScale(rValue(d))/1.9 +'px)') 
+        .style("transform", (d) -> "translate(-"+ Math.max(minRadius-2,rScale(rValue(d))) /2.1 +'px,-'+ Math.max(minRadius-2,rScale(rValue(d))) /1.9 +'px)') 
 
     node
       .append("circle")
       .attr('class','bubble-opac')
-      .attr("r", (d) -> Math.max(12, rScale(rValue(d))-4 ) )
+      .attr("r", (d) -> Math.max(minRadius-4, rScale(rValue(d))-4 ) )
       .style('fill','#fff')
       .style('opacity',0)
 
@@ -964,9 +975,9 @@ root.Bubbles = () ->
       node_to_update = d3.select('#node_'+data_id)
       node_to_update
         .selectAll("circle")
-        .attr('r', (d) -> Math.max(10, rScale(rValue(d))-4 ))
+        .attr('r', (d) -> Math.max(minRadius-4, rScale(rValue(d))-4 ))
       node_to_update
-       .each( (d) -> d.forceR = Math.max(14, rScale(rValue(d))) )
+       .each( (d) -> d.forceR = Math.max(minRadius, rScale(rValue(d))) )
         .selectAll(".pie")
             .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
       node_to_update
@@ -1585,7 +1596,7 @@ root.$ ->
 
 
   # load our data
-  d3.json("http://localhost:8888/GGD_20200203/ggd/data/db_v1.php", display)
+  d3.json("http://localhost:8000/GGD_20200203/ggd/data/db_v1.php", display)
   # d3.json("https://dev.ggd.dss.cloud/api/v1.php", display)
   # d3.json('http://localhost:8888/GGD_20200203/ggd/data/data_ggd.json', display)
 
