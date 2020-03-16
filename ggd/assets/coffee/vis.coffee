@@ -138,7 +138,7 @@ root.Bubbles = () ->
   # - deals with collisions of force nodes
   # - updates visual bubbles to reflect new force node locations
   # ---
-  tick = (e) ->
+  root.tick = (e) ->
     
     dampenedAlpha = e.alpha * 0.1
     
@@ -197,7 +197,7 @@ root.Bubbles = () ->
       svg = d3.select(this).selectAll("svg").data([data])
       svgEnter = svg.enter().append("svg")
       svg
-        .attr("width", '98%')
+        .attr("width", '100%')
         .attr("height", height )
         .attr("id","svg_main")
         .attr("transform", "translate(#{margin.left},#{margin.top})")
@@ -659,7 +659,12 @@ root.Bubbles = () ->
   # ---
   gravity = (alpha) ->
     # start with the center of the display
-    cx = 390 + width / 2
+    element = document.getElementById('vizContainer')
+    style = window.getComputedStyle(element)
+    w = style.getPropertyValue('width').replace('px','')
+    console.log w
+
+    cx = 200 + w / 2
     cy = height / 2
     # use alpha to affect how much to push
     # towards the horizontal or vertical

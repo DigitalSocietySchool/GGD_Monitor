@@ -25,6 +25,7 @@ body {
     min-height: 40px;
     margin-left: 4%;
     width: 90%;
+    min-width: 840px;
 }
 
 .topbar {

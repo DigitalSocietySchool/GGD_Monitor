@@ -280,7 +280,7 @@
     </script>
 </head>
 
-<body onresize="replaceLayout()">
+<body onresize="redraw()"> <!--  onresize="replaceLayout()" -->
 
 
     <div class="topbar">
@@ -778,7 +778,7 @@
                 <img class="eyecon button" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png">
                 <span class="button">Department</span>
             </div>
-            <div class="col dim_label" onmouseup="changeView('time','.arc');">
+            <div class="col dim_label" onmouseup="changeView('time','.arc');" style="flex-grow:1.2;">
                 <img class="eyecon button" id="eye_time" collapsed="false" src="assets/img/icon/eye_show.png">
                 <span class="button">Temporal Coverage</span>
             </div>
