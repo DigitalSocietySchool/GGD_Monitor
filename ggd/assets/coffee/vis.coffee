@@ -32,7 +32,7 @@ root.Bubbles = () ->
   # standard variables accessible to
   # the rest of the functions inside Bubbles
   width = 1200 # deprecated?
-  height = 700
+  height = 650
   data = []
   node = null
   label = null
@@ -668,7 +668,7 @@ root.Bubbles = () ->
     cy = height / 2
     # use alpha to affect how much to push
     # towards the horizontal or vertical
-    ax = 0.7 * alpha # / 8
+    ax = 0.6 * alpha # / 8
     ay = alpha
 
     # return a function that will modify the
