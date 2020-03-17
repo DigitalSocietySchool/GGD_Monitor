@@ -159,7 +159,7 @@ root.Bubbles = () ->
 
     label
       .style("position", 'absolute')
-      .style("left", (d) -> ((d.x)-25 + d.forceR) + "px")
+      .style("left", (d) -> ((d.x)+5 + d.forceR) + "px")
       #.style("left", (d) -> ((d.x) - d.dx / 2) + "px")
       .style("top", (d) -> ((d.y) - d.dy / 2 ) + "px")
       .style("transform-origin","50% 50%")
@@ -668,7 +668,7 @@ root.Bubbles = () ->
     cy = height / 2
     # use alpha to affect how much to push
     # towards the horizontal or vertical
-    ax = 0.6 * alpha # / 8
+    ax = 0.5 * alpha # / 8
     ay = alpha
 
     # return a function that will modify the
@@ -1209,10 +1209,12 @@ root.Bubbles = () ->
       if id != idValue(d)
         location.replace("#" + encodeURIComponent(idValue(d)))
         d3.event.preventDefault()
+        d3.select('#edit_btn').attr('style', 'display:inline;')
 
       else
         location.replace("#")
         d3.event.preventDefault()
+        d3.select('#edit_btn').attr('style', 'display:none;')
 
   # ---
   # called when url after the # changes
