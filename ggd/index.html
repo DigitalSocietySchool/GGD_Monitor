@@ -350,10 +350,10 @@
     <!-- begin bubble-specific toolbar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header" id="sidebar-header">
-            <div style="float:left;margin-left:10px;max-width:400px;">
+            <div style="float:left;margin-left:10px;">
                 <!--span class="dim_val">Dataset:</span!-->
-                <span class="edit_field" id="title-input" contenteditable="false">
-                </span>
+                <div class="edit_field" id="title-input" contenteditable="false">
+                </div>
             </div>
             <div style="float:right;margin-right:10px;font-weight: normal;">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
@@ -766,7 +766,7 @@
     </div>
 
     <!-- begin second toolbar -->
-    <div class="toolbar">
+    <div class="toolbar" id="toolbar_outside">
         <div class="row toolbar-header">
             <div class="col dim_label" id="toggle_size" onmouseup="removeSize();">
                 <img class="eyecon button" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png">

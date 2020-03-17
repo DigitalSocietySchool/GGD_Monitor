@@ -31,8 +31,11 @@ getBorderOpacity = (year) ->
 root.Bubbles = () ->
   # standard variables accessible to
   # the rest of the functions inside Bubbles
-  width = 1200 # deprecated?
-  height = 650
+  # width = 1200 # deprecated?
+  # height = 650
+  width = '100%'
+  height = '82%'
+  h_ratio = 0.82
   data = []
   node = null
   label = null
@@ -43,8 +46,10 @@ root.Bubbles = () ->
   root.minRadius = 16
 
   d3.select('#vis')
-    .attr("width", width + margin.left + margin.right )
-    .attr("height", height + margin.top + margin.bottom )
+    .attr("width", width)
+    .attr("height", height)
+    #.attr("width", width + margin.left + margin.right )
+    #.attr("height", height + margin.top + margin.bottom )
 
   # this scale will be used to size our bubbles
   root.rScale = d3.scale.sqrt().range([0,maxRadius])
@@ -146,6 +151,9 @@ root.Bubbles = () ->
     # functions.
     #filtered = node.attr('filtered')
 
+    w = window.innerWidth;
+    h = window.innerHeight;
+
     node
       #.each(gravity((d) -> d.ID == 0 ? 0 : dampenedAlpha))
       .each(gravity(dampenedAlpha))
@@ -165,13 +173,19 @@ root.Bubbles = () ->
       .style("transform-origin","50% 50%")
       .style("font-size", (d) -> 8 + d.forceR/5 + "px")
 
+
   # The force variable is the force layout controlling the bubbles
   # here we disable gravity and charge as we implement custom versions
   # of gravity and collisions for this visualization
+  
+  w = window.innerWidth;
+  h = window.innerHeight;
+
   root.force = d3.layout.force()
     .gravity(0)
     .charge(0)
-    .size([width, height])
+    #.size([width, height])
+    .size([w, h])
     .on("tick", tick) #, {passive: true}
 
   # ---
@@ -197,7 +211,7 @@ root.Bubbles = () ->
       svg = d3.select(this).selectAll("svg").data([data])
       svgEnter = svg.enter().append("svg")
       svg
-        .attr("width", '100%')
+        .attr("width", width)
         .attr("height", height )
         .attr("id","svg_main")
         .attr("transform", "translate(#{margin.left},#{margin.top})")
@@ -288,10 +302,6 @@ root.Bubbles = () ->
   # updates the nodes and labels
   # ---
   root.update = () ->
-
-    #console.log 'update()'
-    #console.log data
-    
     document.getElementById('data_main').innerHTML = JSON.stringify(data)
     
     # add a radius to our data nodes that will serve to determine
@@ -659,13 +669,11 @@ root.Bubbles = () ->
   # ---
   gravity = (alpha) ->
     # start with the center of the display
-    element = document.getElementById('vizContainer')
-    style = window.getComputedStyle(element)
-    w = style.getPropertyValue('width').replace('px','')
-    console.log w
+    w = window.innerWidth;
+    h = window.innerHeight;
 
     cx = 200 + w / 2
-    cy = height / 2
+    cy = h*h_ratio / 2
     # use alpha to affect how much to push
     # towards the horizontal or vertical
     ax = 0.5 * alpha # / 8

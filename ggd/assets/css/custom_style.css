@@ -22,11 +22,18 @@ body {
     text-align: center;
     box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
     margin-bottom: 25px;
-    min-height: 40px;
+    position: fixed;
+    top: 82%;
+    left: -15px;
     margin-right: -2%;
     margin-left: 4%;
     width: 45%;
+    width: 45%;
     float:left;
+    z-index:500;
+}
+#toolbar_outside{
+    margin-left: 50%;
 }
 
 .topbar {
@@ -64,7 +71,10 @@ body {
     min-height: 40px;
     position: fixed;
     top: 60px;
+    padding-top: 25px;
     width: 480px;
+    max-height: 74%;
+    overflow: scroll;
     z-index:1000;
     margin-left: 4%;
 }
@@ -75,12 +85,13 @@ body {
     padding-top: 8px;
     border: 1px solid #666;
     background-color: #E6E6E6;
-    margin-top: -7px;
+    position: fixed;
+    top: 60px;
+    margin-left: 4%;
     margin-bottom: -7px;
-    margin-left: -7px;
+    left: -16px;
     vertical-align: middle;
     min-height: 25px;
-    height: auto;
     width: 480px;
     z-index:1000;
     max-width: 466px;
@@ -89,7 +100,9 @@ body {
 }
 
 #title-input{
-    width: 420px;
+    width: 430px;
+    overflow: scroll;
+    height: 20px;
 }
 
 .toolbar-header {
@@ -165,7 +178,11 @@ div.ownership div div, #population div div {
 
 #vis {
     overflow: visible;
-    position: relative;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
 }
 
 #status {
