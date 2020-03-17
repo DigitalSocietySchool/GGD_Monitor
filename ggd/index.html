@@ -27,21 +27,15 @@
         for(var i = 0; i < 18; i++ ){
             time_values.push(today - i);
         }
-        var categories = ["keywords", "geo", "population", "type", "level", "size", "department", "time"];
+        var categories = ["keywords", "geo", "population", "type", "level"];
         var tagsInCategories = []; 
         var editMode = false;
 
-        function changeView(view, c = false) {
-            if ($('#eye_' + view).attr('collapsed') == 'false') {
-                $('.cat_' + view).hide();
-                toggleEye(view, 'hide');
-            } else if (c) {
-                $(c).toggle();
-                toggleEye(view);
-            } else {
+        function changeView(view) {
+            if(categories.indexOf(view) != -1) {
                 for (category in categories) {
                     cat = categories[category];
-                    if (cat == view) {
+                    if ( cat == view & $('#eye_' + view).attr('collapsed') == 'true' ) {
                         $('.cat_' + cat).show();
                         toggleEye(cat, 'show');
                     } else {
@@ -49,7 +43,17 @@
                         toggleEye(cat, 'hide');
                     }
                 }
+            } else if ( $('#eye_' + view).attr('collapsed') == 'false' ) {
+                $('.cat_' + view).hide();
+                toggleEye(view);
+            } else if ( $('#eye_' + view).attr('collapsed') == 'true' ) {
+                $('.cat_' + view).show();
+                toggleEye(view);
             }
+            
+            if(view == 'time'){
+                $('.pie').toggle();
+            } 
         }
 
         function toggleEye(view, showhide = false) {
@@ -104,6 +108,7 @@
             }
         }
 
+        // Deprecated
         function replaceLayout(){
             var element = document.getElementById('toolbar_inside'),
             style = window.getComputedStyle(element),
@@ -618,7 +623,7 @@
                         <span class="button">Level</span>
                     </div>
                     <div class="col dim_label" onmouseup="changeView('type');">
-                        <img class="eyecon button" collapsed="false" id="eye_type" src="assets/img/icon/eye_show.png"> 
+                        <img class="eyecon button" collapsed="true" id="eye_type" src="assets/img/icon/eye_hide.png"> 
                         <span class="button">Type</span>
                     </div>
                     <div class="col-auto">
@@ -784,7 +789,7 @@
                         <img class="eyecon button" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png">
                         <span class="button">Department</span>
                     </div>
-                    <div class="col dim_label" onmouseup="changeView('time','.arc');">
+                    <div class="col dim_label" onmouseup="changeView('time');"> <!-- ,'.arc' -->
                         <img class="eyecon button" id="eye_time" collapsed="false" src="assets/img/icon/eye_show.png">
                         <span class="button">Years</span>
                     </div>
@@ -1020,6 +1025,8 @@
 
             document.getElementById('toggle_size').setAttribute('onmouseup','restoreSize()');
 
+            toggleEye('size');
+
             redraw();
             
         }
@@ -1059,6 +1066,8 @@
                     });
 
             document.getElementById('toggle_size').setAttribute('onmouseup','removeSize()');
+
+            toggleEye('size');
 
             redraw();
             
