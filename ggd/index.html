@@ -79,10 +79,16 @@
                 $('#toolbar-icon-' + toolbar).removeClass('fa-plus');
                 $('#toolbar-icon-' + toolbar).addClass('fa-minus');
                 $('#toolbar-icon-' + toolbar).attr('collapsed', 'false');
+                if(toolbar == 'meta'){
+                    d3.select('#vis').attr('style','margin-left:250px;');
+                }
             } else {
                 $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
                 $('#toolbar-icon-' + toolbar).addClass('fa-plus');
                 $('#toolbar-icon-' + toolbar).attr('collapsed', 'true');
+                if(toolbar == 'meta'){
+                    d3.select('#vis').attr('style','margin-left:0px;');
+                }
             }
         }
 

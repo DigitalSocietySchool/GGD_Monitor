@@ -226,16 +226,16 @@ root.Bubbles = () ->
       # node will be used to group the bubbles
       node = svgEnter.append("g")
         .attr("id", "bubble-nodes")
-        .attr("width", width )
-        .attr("height", height )
+        .attr("width", '100%' )
+        .attr("height", '100%' )
         .attr("style",'border: 1px #f00 solid;')
-        .attr("transform", "translate(-30,0)")
+        #.attr("transform", "translate(-30,0)")
 
       # clickable background rect to clear the current selection
       node.append("rect")
         .attr("id", "bubble-background")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("width", '100%')
+        .attr("height", '100%')
         .on("click", clear) #, {passive: true}
 
       # label is the container div for all the labels that sit on top of 
@@ -672,7 +672,7 @@ root.Bubbles = () ->
     w = window.innerWidth;
     h = window.innerHeight;
 
-    cx = 200 + w / 2
+    cx = w / 2 - 20
     cy = h*h_ratio / 2
     # use alpha to affect how much to push
     # towards the horizontal or vertical
