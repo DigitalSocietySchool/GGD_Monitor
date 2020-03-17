@@ -34,8 +34,8 @@ root.Bubbles = () ->
   # width = 1200 # deprecated?
   # height = 650
   width = '100%'
-  height = '82%'
-  h_ratio = 0.82
+  height = '100%'
+  h_ratio = 1
   data = []
   node = null
   label = null
@@ -669,15 +669,15 @@ root.Bubbles = () ->
   # ---
   gravity = (alpha) ->
     # start with the center of the display
-    w = window.innerWidth;
-    h = window.innerHeight;
+    w = window.innerWidth
+    h = window.innerHeight
 
-    cx = w / 2 - 20
-    cy = h*h_ratio / 2
+    cx = w / 2 + 30
+    cy = h / 2 - 30
     # use alpha to affect how much to push
     # towards the horizontal or vertical
-    ax = 0.5 * alpha # / 8
-    ay = alpha
+    ax = h/w * alpha # / 8
+    ay = w/h * alpha
 
     # return a function that will modify the
     # node's x and y values

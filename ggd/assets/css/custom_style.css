@@ -34,7 +34,6 @@ body {
 #toolbar_container{
     width: 97%;
     min-width: 950px;
-    border: 1px dashed #00f;
     position: absolute;
     bottom: 0px;
     left: 4%;
@@ -45,10 +44,8 @@ body {
     align-items: flex-end;
 }
 #toolbar_outside{
-    border: 1px solid #0f0;
 }
 #toolbar_inside{
-    border: 1px solid #f00;
 }
 .toolbar_sizer{
     width: 50%;
@@ -56,7 +53,6 @@ body {
     margin: 0px;
     min-width: 425px;
     display: block;
-    /* position: absolute; */
     bottom: 0px;
     max-height: 20%;
     float: left;
@@ -73,7 +69,7 @@ body {
     min-height: 40px;
     position: fixed;
     left: -15px;
-    top: 10px;
+    top: 1.5%;
     width: 480px;
     height: 40px;
     margin-left: 4%;
@@ -92,10 +88,11 @@ body {
     height: auto;
     min-height: 40px;
     position: fixed;
-    top: 60px;
-    padding-top: 25px;
+    top: 1.5%;
+    margin-top: 50px;
+    padding-top: 24px;
     width: 480px;
-    max-height: 74%;
+    max-height: 71%;
     overflow: scroll;
     z-index:1000;
     margin-left: 4%;
@@ -119,6 +116,9 @@ body {
     max-width: 466px;
     box-sizing: content-box;
     display: inline-block; /* */
+}
+#sidebar-meta{
+    padding-top:0px;
 }
 
 #title-input{
