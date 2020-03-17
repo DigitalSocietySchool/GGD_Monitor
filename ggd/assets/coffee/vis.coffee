@@ -342,8 +342,8 @@ root.Bubbles = () ->
     newDataset.population = '-'
     newDataset.type = '-'
 
-    newDataset.x = 600
-    newDataset.y = 45
+    newDataset.x = 335
+    newDataset.y = 65
     newDataset.forceR = Math.max(minCollisionRadius, rScale(rValue(newDataset)))
     newDataset.ui_scale = 0
 

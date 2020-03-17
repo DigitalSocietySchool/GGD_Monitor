@@ -50,7 +50,7 @@
                 $('.cat_' + view).show();
                 toggleEye(view);
             }
-            
+
             if(view == 'time'){
                 $('.pie').toggle();
             } 
@@ -131,6 +131,10 @@
             d3.select('#edit_department').attr('style', 'display:block;');
             d3.select('#department-input').attr('style', 'display:none;');
         }
+        function hideEditDep(){  
+            d3.select('#edit_department').attr('style', 'display:none;');
+            d3.select('#department-input').attr('style', 'display:block;');
+        }
 
         function showEditMode() {
             resetTempValues();
@@ -167,6 +171,7 @@
                     btn.setAttribute("onclick", 'changePop("' + btn.getAttribute('value') + '")');
                 }
             }
+            hideEditDep();
         }
 
         function showEditNewMode() {
@@ -198,6 +203,7 @@
                 btn.setAttribute("onclick", 'changePop("' + btn.getAttribute('value') + '")');
             }
 
+            hideEditDep();
             showNewBubble();
         }
         
@@ -225,6 +231,7 @@
             for (var i = 1; i < 5; i++) {
                 document.getElementById('label_pop_' + i).setAttribute("onclick", '');
             }
+            hideEditDep();
         }
 
         function hideEditNewMode() {
@@ -251,6 +258,7 @@
             for (var i = 1; i < 5; i++) {
                 document.getElementById('label_pop_' + i).setAttribute("onclick", '');
             }
+            hideEditDep();
             hideNewBubble();
         }
 
@@ -263,10 +271,12 @@
         function cancelEdit(){
             d3.select('#confirm_delete').attr('style','display:none;');
             resetEdit();
+            hideEditDep();
             hideEditMode();
         }
 
         function cancelEditNew(){
+            hideEditDep();
             hideEditNewMode();
         }
 
@@ -313,16 +323,16 @@
 
     <div id="edit-top-bar" class="topbar" style="display:none">
         <div class="row toolbar-header" id="edit_mode">
-            <div class="col"  style="flex-grow:3.5;">
-                EDIT MODE: You are editing this dataset.
+            <div class="col" style="flex-grow:0.5;margin-left:-5px;color:#C33;">
+                EDIT
             </div>
-            <div class="col button" onclick="confirmDelete()"  style="flex-grow:2.5;text-align: left;">
+            <div class="col button" onclick="confirmDelete()"  style="flex-grow:2;text-align: left;">
                 <span class="col button" id="start_delete" style="display:inline;">[!] Delete</span>
                 <span class="col button" id="confirm_delete" onclick="deleteDataset();" style="display:none;">
                     [!] Confirm
                 </span>
             </div>
-            <div class="col button" onclick="cancelEdit();">
+            <div class="col button" onclick="cancelEdit();" style="flex-grow:1.1;">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
                 Cancel
             </div>
@@ -340,8 +350,8 @@
 
     <div id="edit-top-bar-new" class="topbar" style="display:none">
         <div class="row toolbar-header" id="edit_mode">
-            <div class="col"  style="flex-grow:3.5;">
-                EDIT MODE: You are creating a new dataset.
+            <div class="col"  style="flex-grow:1.7;color:#C33;">
+                NEW DATASET
             </div>
             <div class="col button" onclick="cancelEditNew();">
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel_new" src="assets/img/cancel.svg"> 
