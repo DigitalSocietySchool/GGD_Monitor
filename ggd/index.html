@@ -594,169 +594,371 @@
             </div>
         </div>
     </div>
-
-    <!-- begin first toolbar -->
-    <div class="toolbar" id="toolbar_inside">
-        <div class="row toolbar-header">
-            <div class="col dim_label" onmouseup="changeView('geo');">
-                <img class="eyecon button" id="eye_geo" collapsed="true" src="assets/img/icon/eye_hide.png"> 
-                <span class="button">Area</span>
-            </div>
-            <div class="col dim_label" onmouseup="changeView('population');">
-                <img class="eyecon button" collapsed="true" id="eye_population" src="assets/img/icon/eye_hide.png">  
-                <span class="button" >Age</span>
-            </div>
-            <div class="col dim_label" onmouseup="changeView('level');">
-                <img class="eyecon button" collapsed="true" id="eye_level" src="assets/img/icon/eye_hide.png"> 
-                <span class="button">Level</span>
-            </div>
-            <div class="col dim_label" onmouseup="changeView('type');">
-                <img class="eyecon button" collapsed="false" id="eye_type" src="assets/img/icon/eye_show.png"> 
-                <span class="button">Type</span>
-            </div>
-            <div class="col-auto">
-                <i class="fa fa-plus button" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
-            </div>
-        </div>
-        <div class="row collapse" id="toolbar-top">
-            <div class="col" id="geo_btn">
-                <span class="geolevel toolbar-items">
-                    <div style="float:left;">
-                        <img src="assets/img/icon/geo_1.png" class="icon">
+    <div id="toolbar_container">
+        <div class='toolbar_sizer' id="toolbar_inside">
+            <!-- begin first toolbar -->
+            <div class="toolbar">
+                <div class="row toolbar-header">
+                    <div class="col dim_label" onmouseup="changeView('geo');">
+                        <img class="eyecon button" id="eye_geo" collapsed="true" src="assets/img/icon/eye_hide.png"> 
+                        <span class="button">Area</span>
                     </div>
-                    <div style="float:right;">
-                        <div id="geo_1" class="item_geo" value="straat">
-                            Straat
-                        </div>
-                        <div id="geo_2" class="item_geo" value="buurt">
-                            Buurt
-                        </div>
-                        <div id="geo_3" class="item_geo" value="wijk">
-                            Wijk
-                        </div>
+                    <div class="col dim_label" onmouseup="changeView('population');">
+                        <img class="eyecon button" collapsed="true" id="eye_population" src="assets/img/icon/eye_hide.png">  
+                        <span class="button" >Age</span>
                     </div>
-                </span>
-                <span class="geolevel toolbar-items">
-                    <div style="float:left;">
-                        <img src="assets/img/icon/geo_2.png" class="icon" style="width:70px;height:70px;margin-right:-10px;margin-top:-10px">
+                    <div class="col dim_label" onmouseup="changeView('level');">
+                        <img class="eyecon button" collapsed="true" id="eye_level" src="assets/img/icon/eye_hide.png"> 
+                        <span class="button">Level</span>
                     </div>
-                    <div style="float:right;">
-                        <div id="geo_4" class="item_geo" value="gebied">
-                            Gebied
-                        </div>
-                        <div id="geo_5" class="item_geo" value="stadsdeel">
-                            Stadsdeel
-                        </div>
-                        <div id="geo_6" class="item_geo" value="stad">
-                            Stad
-                        </div>
+                    <div class="col dim_label" onmouseup="changeView('type');">
+                        <img class="eyecon button" collapsed="false" id="eye_type" src="assets/img/icon/eye_show.png"> 
+                        <span class="button">Type</span>
                     </div>
-                </span>
-                <span class="geolevel toolbar-items">
-                    <div style="float:left;margin-top:-50px;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
-                    <div style="float:right;">
-                        <div id="geo_7" class="item_geo" value="amstelland">
-                            Amstelland
+                    <div class="col-auto">
+                        <i class="fa fa-plus button" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
+                    </div>
+                </div>
+                <div class="row collapse" id="toolbar-top">
+                    <div class="col" id="geo_btn">
+                        <span class="geolevel toolbar-items">
+                            <div style="float:left;">
+                                <img src="assets/img/icon/geo_1.png" class="icon">
+                            </div>
+                            <div style="float:right;">
+                                <div id="geo_1" class="item_geo" value="straat">
+                                    Straat
+                                </div>
+                                <div id="geo_2" class="item_geo" value="buurt">
+                                    Buurt
+                                </div>
+                                <div id="geo_3" class="item_geo" value="wijk">
+                                    Wijk
+                                </div>
+                            </div>
+                        </span>
+                        <span class="geolevel toolbar-items">
+                            <div style="float:left;">
+                                <img src="assets/img/icon/geo_2.png" class="icon" style="width:70px;height:70px;margin-right:-10px;margin-top:-10px">
+                            </div>
+                            <div style="float:right;">
+                                <div id="geo_4" class="item_geo" value="gebied">
+                                    Gebied
+                                </div>
+                                <div id="geo_5" class="item_geo" value="stadsdeel">
+                                    Stadsdeel
+                                </div>
+                                <div id="geo_6" class="item_geo" value="stad">
+                                    Stad
+                                </div>
+                            </div>
+                        </span>
+                        <span class="geolevel toolbar-items">
+                            <div style="float:left;margin-top:-50px;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
+                            <div style="float:right;">
+                                <div id="geo_7" class="item_geo" value="amstelland">
+                                    Amstelland
+                                </div>
+                                <div id="geo_8" class="item_geo" value="adam">
+                                    Metro. A'dam
+                                </div>
+                                <div id="geo_9" class="item_geo" value="g4">
+                                    G4
+                                </div>
+                                <div id="geo_10" class="item_geo" value="national">
+                                    National
+                                </div>
+                                <div id="geo_11" class="item_geo" value="unknown">
+                                    (unknown)
+                                </div>
+                            </div> 
+                        </span>
+                    </div>
+                    <div class="col" id="pop_btn" style="flex-grow:1.1;margin-left:20px">
+                        <div class="toolbar-items">
+                            <div style="float:left;" id="pop_1" class="item_population" value="youth">
+                                <img src="assets/img/youth.svg" class="icon">
+                                <br>Youth
+                            </div>
+                            <div style="float:right;" id="pop_2" class="item_population" value="young">
+                                <img src="assets/img/young_adult.svg" class="icon">
+                                <br>Young Adult
+                            </div>
                         </div>
-                        <div id="geo_8" class="item_geo" value="adam">
-                            Metro. A'dam
-                        </div>
-                        <div id="geo_9" class="item_geo" value="g4">
-                            G4
-                        </div>
-                        <div id="geo_10" class="item_geo" value="national">
-                            National
-                        </div>
-                        <div id="geo_11" class="item_geo" value="unknown">
+                        <div class="toolbar-items">
+                            <div style="float:left;" id="pop_3" class="item_population" value="adult">
+                                <img src="assets/img/adult.svg" class="icon">
+                                <br>Adult
+                            </div>
+                            <div style="float:right;" id="pop_4" class="item_population" value="elderly">
+                                <img src="assets/img/old_person.svg" class="icon">
+                                <br>Elderly
+                            </div>
+                        </div>    
+                        <div id="pop_5" class="item_population" value="unknown">
                             (unknown)
                         </div>
-                    </div> 
-                </span>
-            </div>
-            <div class="col" id="pop_btn" style="flex-grow:1.1;margin-left:20px">
-                <div class="toolbar-items">
-                    <div style="float:left;" id="pop_1" class="item_population" value="youth">
-                        <img src="assets/img/youth.svg" class="icon">
-                        <br>Youth
                     </div>
-                    <div style="float:right;" id="pop_2" class="item_population" value="young">
-                        <img src="assets/img/young_adult.svg" class="icon">
-                        <br>Young Adult
+                    <div class="col" id="type_btn">
+                        <div class="toolbar-items" style="display:block;margin-right:-50px;">
+                            <svg style="transform:scale(0.6);margin-left:-90px;margin-top:-30px;" height="300px" width="390px">
+                               <g>
+                                 <ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07" id="type_shape_1" value="questionnaire"/>
+                                 <ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)" id="type_shape_5" value="socialmedia"/>
+                                 <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" id="type_shape_4" value="promotion" />
+                                 <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" id="type_shape_3" value="registry" />
+                                 <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" id="type_shape_2" value="monitor" />
+                                 <text transform="translate(100 25.95)" id="type_1" value="questionnaire">
+                                    <tspan>Questionnaire</tspan>
+                                 </text>
+                                 <text transform="translate(286.87 84.56)" id="type_2" value="socialmedia">
+                                    <tspan>Social</tspan>
+                                    <tspan x="0" y="30">Media</tspan>
+                                 </text>
+                                 <text transform="translate(258.9 183.13)" id="type_3" value="promotion">
+                                    <tspan>Health</tspan>
+                                    <tspan x="0" y="30">Promotion</tspan>
+                                 </text>
+                                 <text transform="translate(44.52 212.13)" id="type_4" value="registry">
+                                    <tspan>Registry</tspan>
+                                 </text>
+                                 <text transform="translate(0 102.58)" id="type_5" value="monitor">
+                                    <tspan>Monitor</tspan>
+                                 </text>
+                               </g>
+                            </svg>
+                        </div>  
+                        <div id="type_6" class="" value="unknown">
+                            (unknown)
+                        </div>
+                    </div>
+                    <div class="col" id="level_btn" style="flex-grow:0.5;">
+                        <div class="toolbar-items level">
+                            <div style="float:left;">
+                                <div class="item_level" id="level_1" value="individual">
+                                    <img src="assets/img/icon/level_1_individual.png" class="icon">
+                                    <br>Individual
+                                </div>
+                                <div class="item_level" id="level_2" value="family">
+                                    <img src="assets/img/icon/level_2_family.png" class="icon">
+                                    <br>Family
+                                </div>
+                                <div class="item_level" id="level_3" value="group">
+                                    <img src="assets/img/icon/level_3_group.png" class="icon">
+                                    <br>Group
+                                </div>
+                            </div>
+                            <div style="float:right;margin-left:10px">
+                                <div class="item_level" id="level_4" value="orga">
+                                    <img src="assets/img/icon/level_4_orga.png" class="icon">
+                                    <br>Organization
+                                </div>
+                                <div class="item_level" id="level_5" value="geographic">
+                                    <img src="assets/img/icon/level_5_geographic.png" class="icon">
+                                    <br>Geography
+                                </div>
+                                <div class="item_level" id="level_6" class="" value="unknown">
+                                    (unknown)
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="toolbar-items">
-                    <div style="float:left;" id="pop_3" class="item_population" value="adult">
-                        <img src="assets/img/adult.svg" class="icon">
-                        <br>Adult
-                    </div>
-                    <div style="float:right;" id="pop_4" class="item_population" value="elderly">
-                        <img src="assets/img/old_person.svg" class="icon">
-                        <br>Elderly
-                    </div>
-                </div>    
-                <div id="pop_5" class="item_population" value="unknown">
-                    (unknown)
-                </div>
             </div>
-            <div class="col" id="type_btn">
-                <div class="toolbar-items" style="display:block;margin-right:-50px;">
-                    <svg style="transform:scale(0.6);margin-left:-90px;margin-top:-30px;" height="300px" width="390px">
-                       <g>
-                         <ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07" id="type_shape_1" value="questionnaire"/>
-                         <ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)" id="type_shape_5" value="socialmedia"/>
-                         <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" id="type_shape_4" value="promotion" />
-                         <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" id="type_shape_3" value="registry" />
-                         <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" id="type_shape_2" value="monitor" />
-                         <text transform="translate(100 25.95)" id="type_1" value="questionnaire">
-                            <tspan>Questionnaire</tspan>
-                         </text>
-                         <text transform="translate(286.87 84.56)" id="type_2" value="socialmedia">
-                            <tspan>Social</tspan>
-                            <tspan x="0" y="30">Media</tspan>
-                         </text>
-                         <text transform="translate(258.9 183.13)" id="type_3" value="promotion">
-                            <tspan>Health</tspan>
-                            <tspan x="0" y="30">Promotion</tspan>
-                         </text>
-                         <text transform="translate(44.52 212.13)" id="type_4" value="registry">
-                            <tspan>Registry</tspan>
-                         </text>
-                         <text transform="translate(0 102.58)" id="type_5" value="monitor">
-                            <tspan>Monitor</tspan>
-                         </text>
-                       </g>
-                    </svg>
-                </div>  
-                <div id="type_6" class="" value="unknown">
-                    (unknown)
+        </div>
+        <div class="toolbar_sizer" id="toolbar_outside">
+            <!-- begin second toolbar -->
+            <div class="toolbar">
+                <div class="row toolbar-header">
+                    <div class="col dim_label" id="toggle_size" onmouseup="removeSize();">
+                        <img class="eyecon button" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png">
+                        <span class="button">Size</span>
+                    </div>
+                    <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.5;">
+                        <img class="eyecon button" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png">
+                        <span class="button">Department</span>
+                    </div>
+                    <div class="col dim_label" onmouseup="changeView('time','.arc');">
+                        <img class="eyecon button" id="eye_time" collapsed="false" src="assets/img/icon/eye_show.png">
+                        <span class="button">Years</span>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa fa-plus button" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
+                    </div>
                 </div>
-            </div>
-            <div class="col" id="level_btn" style="flex-grow:0.5;">
-                <div class="toolbar-items level">
-                    <div style="float:left;">
-                        <div class="item_level" id="level_1" value="individual">
-                            <img src="assets/img/icon/level_1_individual.png" class="icon">
-                            <br>Individual
+                <div class="row collapse" id="toolbar-bottom">
+                    <div class="col" id="size_btn">
+                        <div id="caseGraph" style="display: block" class="toolbar-items">
+                            <svg width="80%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97"xml:space="preserve">
+                               <style type="text/css">
+                                   .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
+                                   .st1{font-family:'OpenSans';}
+                                   .st2{font-size:18px;margin-left:4px;}
+                               </style>
+                               <g class="size" data-size="more" id="size_5" value="more">
+                                   <circle class="st0" cx="138.54" cy="131.83" r="125"/>
+                                   <text transform="matrix(1 0 0 1 111.3019 36.1381)" class="st1 st2">More</text>
+                               </g>
+                               <g class="size" data-size="2000" id="size_4" value="2000">
+                                   <circle class="st0" cx="138.54" cy="158.6" r="100" />
+                                   <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2">2000</text>
+                               </g>
+                               <g class="size" data-size="1000" id="size_3" value="1000">
+                                   <circle class="st0" cx="138.54" cy="183.6" r="75" />
+                                   <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2">1000</text>
+                               </g>
+                               <g class="size" data-size="500" id="size_2" value="500">
+                                   <circle class="st0" cx="138.54" cy="208.6" r="50" />
+                                   <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2">500</text>
+                               </g>
+                               <g class="size" data-size="100" id="size_1" value="100">
+                                   <circle class="st0" cx="138.54" cy="226.83" r="30" />
+                                   <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2">100</text>
+                               </g>
+                           </svg>
                         </div>
-                        <div class="item_level" id="level_2" value="family">
-                            <img src="assets/img/icon/level_2_family.png" class="icon">
-                            <br>Family
-                        </div>
-                        <div class="item_level" id="level_3" value="group">
-                            <img src="assets/img/icon/level_3_group.png" class="icon">
-                            <br>Group
+                        <div id="size_6" value="unknown" class="size">
+                            (unknown)
                         </div>
                     </div>
-                    <div style="float:right;margin-left:10px">
-                        <div class="item_level" id="level_4" value="orga">
-                            <img src="assets/img/icon/level_4_orga.png" class="icon">
-                            <br>Organization
+                    <div class="col" id="dep_btn" style="flex-grow:1.2;">
+                        <div class="toolbar-items ownership">
+                            <div style="float:left;">
+                                <div id="dep_1" value="EGZ">
+                                    <span class="dep_circle dep_EGZ"></span> 
+                                    <span>EGZ</span>
+                                </div>
+                                <div id="dep_2" value="IZ">
+                                    <span class="dep_circle dep_IZ"></span> 
+                                    <span>IZ</span>
+                                </div>
+                                <div id="dep_3" value="JGZ">
+                                    <span class="dep_circle dep_JGZ"></span> 
+                                    <span>JGZ</span>
+                                </div>
+                                <div id="dep_4" value="VT">
+                                    <span class="dep_circle dep_VT"></span> 
+                                    <span>VT</span>
+                                </div>
+                                <div id="dep_5" value="MGGZ">
+                                    <span class="dep_circle dep_MGGZ"></span> 
+                                    <span>MGGZ</span>
+                                </div>
+                            </div>
+                            <div style="float:right; margin-left:-20px">
+                                <div id="dep_6" value="FGMA">
+                                    <span class="dep_circle dep_FGMA"></span> 
+                                    <span>FGMA</span>
+                                </div>
+                                <div id="dep_7" value="GHOR">
+                                    <span class="dep_circle dep_GHOR"></span> 
+                                    <span>GHOR</span>
+                                </div>
+                                <div id="dep_8" value="LO">
+                                    <span class="dep_circle dep_LO"></span> 
+                                    <span>LO</span>
+                                </div>
+                                <div id="dep_9" value="AAGG">
+                                    <span class="dep_circle dep_AAGG"></span> 
+                                    <span>AAGG</span>
+                                </div>
+                                <div id="dep_10" value="unknown">
+                                    (unknown)
+                                </div>
+                            </div>
                         </div>
-                        <div class="item_level" id="level_5" value="geographic">
-                            <img src="assets/img/icon/level_5_geographic.png" class="icon">
-                            <br>Geography
+                    </div>
+                    <div class="col" id="time_btn">
+                        <div class="toolbar-items">
+                            <svg id="timedimsvg">
+                                <style type="text/css">
+                                    .time_st0{fill:none;}
+                                    .time_st1{fill:none;stroke:#231F20;stroke-width:5;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st2{fill:none;stroke:#231F20;stroke-width:4.694;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st3{fill:none;stroke:#231F20;stroke-width:4.388;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st4{fill:none;stroke:#231F20;stroke-width:4.083;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st5{fill:none;stroke:#231F20;stroke-width:3.777;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st6{fill:none;stroke:#231F20;stroke-width:3.472;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st7{fill:none;stroke:#231F20;stroke-width:3.166;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st8{fill:none;stroke:#231F20;stroke-width:2.861;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st9{fill:none;stroke:#231F20;stroke-width:2.555;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st10{fill:none;stroke:#231F20;stroke-width:2.25;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st11{display:none;}
+                                    .time_st12{display:inline;fill:none;stroke:#000000;stroke-width:24;stroke-miterlimit:10;}
+                                    .time_st13{display:inline;fill:none;stroke:#FFFFFF;stroke-width:6;stroke-miterlimit:10;}
+                                    .time_st14{display:inline;fill:none;stroke:#FFFFFF;stroke-width:11;stroke-miterlimit:10;}
+                                    .time_st15{fill:url(#Undulating_Coarse_Dots);}
+                                    .time_st16{fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
+                                    .time_st17{font-family:'OpenSans';}
+                                    .time_font{font-size:22px;font-weight: normal;}
+                                </style>
+                                <pattern  x="-647.91" y="-473.44" width="83" height="65" patternUnits="userSpaceOnUse" id="Undulating_Coarse_Dots" viewBox="2.5 -133 83 65" style="overflow:visible;">
+                                    <g>
+                                        <line class="time_st1" x1="2.5" y1="-133" x2="2.5" y2="-67.5"/>
+                                        <line class="time_st2" x1="7.11" y1="-136.25" x2="7.11" y2="-67.5"/>
+                                        <line class="time_st3" x1="11.72" y1="-133" x2="11.72" y2="-67.5"/>
+                                        <line class="time_st4" x1="16.33" y1="-136.25" x2="16.33" y2="-67.5"/>
+                                        <line class="time_st5" x1="20.94" y1="-133" x2="20.94" y2="-67.5"/>
+                                        <line class="time_st6" x1="25.56" y1="-136.25" x2="25.56" y2="-67.5"/>
+                                        <line class="time_st7" x1="30.17" y1="-133" x2="30.17" y2="-67.5"/>
+                                        <line class="time_st8" x1="34.78" y1="-136.25" x2="34.78" y2="-67.5"/>
+                                        <line class="time_st9" x1="39.39" y1="-133" x2="39.39" y2="-67.5"/>
+                                        <line class="time_st10" x1="44" y1="-136.25" x2="44" y2="-67.5"/>
+                                        <line class="time_st1" x1="85.5" y1="-133" x2="85.5" y2="-67.5"/>
+                                        <line class="time_st2" x1="80.89" y1="-136.25" x2="80.89" y2="-67.5"/>
+                                        <line class="time_st3" x1="76.28" y1="-133" x2="76.28" y2="-67.5"/>
+                                        <line class="time_st4" x1="71.67" y1="-136.25" x2="71.67" y2="-67.5"/>
+                                        <line class="time_st5" x1="67.06" y1="-133" x2="67.06" y2="-67.5"/>
+                                        <line class="time_st6" x1="62.44" y1="-136.25" x2="62.44" y2="-67.5"/>
+                                        <line class="time_st7" x1="57.83" y1="-133" x2="57.83" y2="-67.5"/>
+                                        <line class="time_st8" x1="53.22" y1="-136.25" x2="53.22" y2="-67.5"/>
+                                        <line class="time_st9" x1="48.61" y1="-133" x2="48.61" y2="-67.5"/>
+                                    </g>
+                                </pattern>
+                                <g>
+                                    <path class="year_1" d="M251.97,68.36l8.21-22.57c-12.84-4.34-26.53-6.82-40.75-7.13v24C230.77,62.97,241.7,64.95,251.97,68.36z"/>
+                                    <path class="year_2"  d="M286.28,86.86l15.42-18.38c-10.76-8.58-22.84-15.58-35.88-20.64l-8.21,22.55C268.01,74.48,277.65,80.06,286.28,86.86z"/>
+                                    <path class="year_3"  d="M312.34,115.94l20.79-12c-7.31-11.85-16.36-22.51-26.81-31.61L290.89,90.7C299.21,98.01,306.45,106.51,312.34,115.94z"/>
+                                    <path class="year_4"  d="M326.99,152.23l23.66-4.17c-2.84-13.86-7.79-26.95-14.48-38.95l-20.78,12C320.7,130.72,324.66,141.18,326.99,152.23z"/>
+                                    <path class="year_5"  d="M329.44,175.63c0,5.37-0.39,10.65-1.11,15.82l23.65,4.17c0.96-6.53,1.46-13.2,1.46-19.99c0-7.37-0.59-14.61-1.72-21.67
+                                        l-23.64,4.17C328.97,163.84,329.44,169.68,329.44,175.63z"/>
+                                    <path class="year_6"  d="M316.1,228.84l20.79,12.01c6.59-12.12,11.39-25.35,14.08-39.31l-23.64-4.17C325.15,208.53,321.31,219.11,316.1,228.84z"/>
+                                    <path class="year_7"  d="M291.72,259.82l15.42,18.38c10.47-9.27,19.52-20.11,26.76-32.15l-20.78-12C307.29,243.68,300.06,252.36,291.72,259.82z"/>
+                                    <path class="year_8"  d="M258.16,280.64l8.21,22.56c13.18-5.18,25.36-12.34,36.19-21.12l-15.42-18.38C278.45,270.7,268.69,276.44,258.16,280.64z"/>
+                                    <path class="year_9"  d="M219.44,288.59v24c14.42-0.31,28.3-2.86,41.31-7.32l-8.21-22.56C242.1,286.25,230.98,288.29,219.44,288.59z"/>
+                                    <path class="year_10"  d="M180.34,282.72l-8.21,22.56c13,4.46,26.88,7.01,41.31,7.32v-24C201.89,288.29,190.78,286.25,180.34,282.72z"/>
+                                    <path class="year_11"  d="M145.73,263.7l-15.42,18.38c10.83,8.78,23.01,15.95,36.19,21.12l8.21-22.56C164.18,276.45,154.43,270.7,145.73,263.7z"/>
+                                    <path class="year_12"  d="M119.75,234.06l-20.78,12c7.25,12.04,16.29,22.88,26.76,32.15l15.42-18.38C132.81,252.36,125.58,243.68,119.75,234.06z"/>
+                                    <path class="year_13"  d="M105.54,197.37l-23.64,4.17c2.68,13.97,7.49,27.19,14.08,39.31l20.79-12.01C111.56,219.11,107.73,208.53,105.54,197.37z"/>
+                                    <path class="year_14"  d="M103.44,175.63c0-5.95,0.47-11.8,1.36-17.5l-23.64-4.17c-1.13,7.06-1.72,14.3-1.72,21.67c0,6.79,0.5,13.46,1.46,19.99
+                                        l23.65-4.17C103.82,186.28,103.44,181,103.44,175.63z"/>
+                                    <path class="year_15"  d="M117.49,121.11l-20.78-12c-6.69,12-11.64,25.09-14.48,38.95l23.66,4.17C108.22,141.18,112.17,130.72,117.49,121.11z"/>
+                                    <path class="year_16"  d="M141.98,90.7l-15.42-18.38c-10.45,9.1-19.51,19.76-26.81,31.61l20.79,12C126.42,106.51,133.66,98.01,141.98,90.7z"/>
+                                    <path class="year_17"  d="M175.26,70.4l-8.21-22.55c-13.04,5.06-25.12,12.05-35.88,20.64l15.42,18.38C155.22,80.06,164.87,74.48,175.26,70.4z"/>
+                                    <path class="time_st15 year_18" d="M213.44,62.67v-24c-14.22,0.31-27.91,2.79-40.75,7.13l8.21,22.57C191.18,64.95,202.1,62.97,213.44,62.67z"/>
+                                    <path class="time_st16 year_18" d="M172.69,45.79l8.21,22.57"/>
+                                    <text transform="matrix(1 0 0 1 226.8767 34.4286)" class="time_font year_1" id='year_1'>2020</text>
+                                    <text transform="matrix(1 0 0 1 288.203 55.0738)" class="time_font year_2" id='year_2'>2019</text>
+                                    <text transform="matrix(1 0 0 1 324.1019 86.1158)" class="time_font year_3" id='year_3'>2018</text>
+                                    <text transform="matrix(1 0 0 1 350.9763 129.6168)" class="time_font year_4" id='year_4'>2017</text>
+                                    <text transform="matrix(1 0 0 1 360.2678 181.1421)" class="time_font year_5" id='year_5'>2016</text>
+                                    <text transform="matrix(1 0 0 1 351.2869 232.2453)" class="time_font year_6" id='year_6'>2015</text>
+                                    <text transform="matrix(1 0 0 1 329.8593 277.4357)" class="time_font year_7" id='year_7'>2014</text>
+                                    <text transform="matrix(1 0 0 1 291.1594 312.4897)" class="time_font year_8" id='year_8'>2013</text>
+                                    <text transform="matrix(1 0 0 1 225.2744 333.184)" class="time_font year_9" id='year_9'>2012</text>
+                                    <text transform="matrix(1 0 0 1 158.9091 333.1849)" class="time_font year_10" id='year_10'>2011</text>
+                                    <text transform="matrix(1 0 0 1 94.0241 312.4899)" class="time_font year_11" id='year_11'>2010</text>
+                                    <text transform="matrix(1 0 0 1 55.0136 277.4355)" class="time_font year_12" id='year_12'>2009</text>
+                                    <text transform="matrix(1 0 0 1 31.3626 232.2451)" class="time_font year_13" id='year_13'>2008</text>
+                                    <text transform="matrix(1 0 0 1 22.0711 181.1423)" class="time_font year_14" id='year_14'>2007</text>
+                                    <text transform="matrix(1 0 0 1 33.0519 129.6168)" class="time_font year_15" id='year_15'>2006</text>
+                                    <text transform="matrix(1 0 0 1 59.3923 86.1158)" class="time_font year_16" id='year_16'>2005</text>
+                                    <text transform="matrix(1 0 0 1 97.2475 55.0739)" class="time_font year_17" id='year_17'>2004</text>
+                                    <text transform="matrix(1 0 0 1 146.6807 34.4285)" class="time_font year_18" id='year_18'>earlier</text>
+                                </g>
+                            </svg>
                         </div>
-                        <div class="item_level" id="level_6" class="" value="unknown">
+                        <div id="year_19" class="year_19" value="unknown" onclick="filterByYear('unknown')">
                             (unknown)
                         </div>
                     </div>
@@ -765,203 +967,6 @@
         </div>
     </div>
 
-    <!-- begin second toolbar -->
-    <div class="toolbar" id="toolbar_outside">
-        <div class="row toolbar-header">
-            <div class="col dim_label" id="toggle_size" onmouseup="removeSize();">
-                <img class="eyecon button" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png">
-                <span class="button">Size</span>
-            </div>
-            <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.5;">
-                <img class="eyecon button" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png">
-                <span class="button">Department</span>
-            </div>
-            <div class="col dim_label" onmouseup="changeView('time','.arc');">
-                <img class="eyecon button" id="eye_time" collapsed="false" src="assets/img/icon/eye_show.png">
-                <span class="button">Years</span>
-            </div>
-            <div class="col-auto">
-                <i class="fa fa-plus button" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
-            </div>
-        </div>
-        <div class="row collapse" id="toolbar-bottom">
-            <div class="col" id="size_btn">
-                <div id="caseGraph" style="display: block" class="toolbar-items">
-                    <svg width="80%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97"xml:space="preserve">
-                       <style type="text/css">
-                           .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
-                           .st1{font-family:'OpenSans';}
-                           .st2{font-size:18px;margin-left:4px;}
-                       </style>
-                       <g class="size" data-size="more" id="size_5" value="more">
-                           <circle class="st0" cx="138.54" cy="131.83" r="125"/>
-                           <text transform="matrix(1 0 0 1 111.3019 36.1381)" class="st1 st2">More</text>
-                       </g>
-                       <g class="size" data-size="2000" id="size_4" value="2000">
-                           <circle class="st0" cx="138.54" cy="158.6" r="100" />
-                           <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2">2000</text>
-                       </g>
-                       <g class="size" data-size="1000" id="size_3" value="1000">
-                           <circle class="st0" cx="138.54" cy="183.6" r="75" />
-                           <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2">1000</text>
-                       </g>
-                       <g class="size" data-size="500" id="size_2" value="500">
-                           <circle class="st0" cx="138.54" cy="208.6" r="50" />
-                           <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2">500</text>
-                       </g>
-                       <g class="size" data-size="100" id="size_1" value="100">
-                           <circle class="st0" cx="138.54" cy="226.83" r="30" />
-                           <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2">100</text>
-                       </g>
-                   </svg>
-                </div>
-                <div id="size_6" value="unknown" class="size">
-                    (unknown)
-                </div>
-            </div>
-            <div class="col" id="dep_btn" style="flex-grow:1.2;">
-                <div class="toolbar-items ownership">
-                    <div style="float:left;">
-                        <div id="dep_1" value="EGZ">
-                            <span class="dep_circle dep_EGZ"></span> 
-                            <span>EGZ</span>
-                        </div>
-                        <div id="dep_2" value="IZ">
-                            <span class="dep_circle dep_IZ"></span> 
-                            <span>IZ</span>
-                        </div>
-                        <div id="dep_3" value="JGZ">
-                            <span class="dep_circle dep_JGZ"></span> 
-                            <span>JGZ</span>
-                        </div>
-                        <div id="dep_4" value="VT">
-                            <span class="dep_circle dep_VT"></span> 
-                            <span>VT</span>
-                        </div>
-                        <div id="dep_5" value="MGGZ">
-                            <span class="dep_circle dep_MGGZ"></span> 
-                            <span>MGGZ</span>
-                        </div>
-                    </div>
-                    <div style="float:right; margin-left:-20px">
-                        <div id="dep_6" value="FGMA">
-                            <span class="dep_circle dep_FGMA"></span> 
-                            <span>FGMA</span>
-                        </div>
-                        <div id="dep_7" value="GHOR">
-                            <span class="dep_circle dep_GHOR"></span> 
-                            <span>GHOR</span>
-                        </div>
-                        <div id="dep_8" value="LO">
-                            <span class="dep_circle dep_LO"></span> 
-                            <span>LO</span>
-                        </div>
-                        <div id="dep_9" value="AAGG">
-                            <span class="dep_circle dep_AAGG"></span> 
-                            <span>AAGG</span>
-                        </div>
-                        <div id="dep_10" value="unknown">
-                            (unknown)
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col" id="time_btn">
-                <div class="toolbar-items">
-                    <svg id="timedimsvg">
-                        <style type="text/css">
-                            .time_st0{fill:none;}
-                            .time_st1{fill:none;stroke:#231F20;stroke-width:5;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                            .time_st2{fill:none;stroke:#231F20;stroke-width:4.694;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                            .time_st3{fill:none;stroke:#231F20;stroke-width:4.388;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                            .time_st4{fill:none;stroke:#231F20;stroke-width:4.083;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                            .time_st5{fill:none;stroke:#231F20;stroke-width:3.777;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                            .time_st6{fill:none;stroke:#231F20;stroke-width:3.472;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                            .time_st7{fill:none;stroke:#231F20;stroke-width:3.166;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                            .time_st8{fill:none;stroke:#231F20;stroke-width:2.861;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                            .time_st9{fill:none;stroke:#231F20;stroke-width:2.555;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                            .time_st10{fill:none;stroke:#231F20;stroke-width:2.25;stroke-linecap:round;stroke-dasharray:0,6.5;}
-                            .time_st11{display:none;}
-                            .time_st12{display:inline;fill:none;stroke:#000000;stroke-width:24;stroke-miterlimit:10;}
-                            .time_st13{display:inline;fill:none;stroke:#FFFFFF;stroke-width:6;stroke-miterlimit:10;}
-                            .time_st14{display:inline;fill:none;stroke:#FFFFFF;stroke-width:11;stroke-miterlimit:10;}
-                            .time_st15{fill:url(#Undulating_Coarse_Dots);}
-                            .time_st16{fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
-                            .time_st17{font-family:'OpenSans';}
-                            .time_font{font-size:22px;font-weight: normal;}
-                        </style>
-                        <pattern  x="-647.91" y="-473.44" width="83" height="65" patternUnits="userSpaceOnUse" id="Undulating_Coarse_Dots" viewBox="2.5 -133 83 65" style="overflow:visible;">
-                            <g>
-                                <line class="time_st1" x1="2.5" y1="-133" x2="2.5" y2="-67.5"/>
-                                <line class="time_st2" x1="7.11" y1="-136.25" x2="7.11" y2="-67.5"/>
-                                <line class="time_st3" x1="11.72" y1="-133" x2="11.72" y2="-67.5"/>
-                                <line class="time_st4" x1="16.33" y1="-136.25" x2="16.33" y2="-67.5"/>
-                                <line class="time_st5" x1="20.94" y1="-133" x2="20.94" y2="-67.5"/>
-                                <line class="time_st6" x1="25.56" y1="-136.25" x2="25.56" y2="-67.5"/>
-                                <line class="time_st7" x1="30.17" y1="-133" x2="30.17" y2="-67.5"/>
-                                <line class="time_st8" x1="34.78" y1="-136.25" x2="34.78" y2="-67.5"/>
-                                <line class="time_st9" x1="39.39" y1="-133" x2="39.39" y2="-67.5"/>
-                                <line class="time_st10" x1="44" y1="-136.25" x2="44" y2="-67.5"/>
-                                <line class="time_st1" x1="85.5" y1="-133" x2="85.5" y2="-67.5"/>
-                                <line class="time_st2" x1="80.89" y1="-136.25" x2="80.89" y2="-67.5"/>
-                                <line class="time_st3" x1="76.28" y1="-133" x2="76.28" y2="-67.5"/>
-                                <line class="time_st4" x1="71.67" y1="-136.25" x2="71.67" y2="-67.5"/>
-                                <line class="time_st5" x1="67.06" y1="-133" x2="67.06" y2="-67.5"/>
-                                <line class="time_st6" x1="62.44" y1="-136.25" x2="62.44" y2="-67.5"/>
-                                <line class="time_st7" x1="57.83" y1="-133" x2="57.83" y2="-67.5"/>
-                                <line class="time_st8" x1="53.22" y1="-136.25" x2="53.22" y2="-67.5"/>
-                                <line class="time_st9" x1="48.61" y1="-133" x2="48.61" y2="-67.5"/>
-                            </g>
-                        </pattern>
-                        <g>
-                            <path class="year_1" d="M251.97,68.36l8.21-22.57c-12.84-4.34-26.53-6.82-40.75-7.13v24C230.77,62.97,241.7,64.95,251.97,68.36z"/>
-                            <path class="year_2"  d="M286.28,86.86l15.42-18.38c-10.76-8.58-22.84-15.58-35.88-20.64l-8.21,22.55C268.01,74.48,277.65,80.06,286.28,86.86z"/>
-                            <path class="year_3"  d="M312.34,115.94l20.79-12c-7.31-11.85-16.36-22.51-26.81-31.61L290.89,90.7C299.21,98.01,306.45,106.51,312.34,115.94z"/>
-                            <path class="year_4"  d="M326.99,152.23l23.66-4.17c-2.84-13.86-7.79-26.95-14.48-38.95l-20.78,12C320.7,130.72,324.66,141.18,326.99,152.23z"/>
-                            <path class="year_5"  d="M329.44,175.63c0,5.37-0.39,10.65-1.11,15.82l23.65,4.17c0.96-6.53,1.46-13.2,1.46-19.99c0-7.37-0.59-14.61-1.72-21.67
-                                l-23.64,4.17C328.97,163.84,329.44,169.68,329.44,175.63z"/>
-                            <path class="year_6"  d="M316.1,228.84l20.79,12.01c6.59-12.12,11.39-25.35,14.08-39.31l-23.64-4.17C325.15,208.53,321.31,219.11,316.1,228.84z"/>
-                            <path class="year_7"  d="M291.72,259.82l15.42,18.38c10.47-9.27,19.52-20.11,26.76-32.15l-20.78-12C307.29,243.68,300.06,252.36,291.72,259.82z"/>
-                            <path class="year_8"  d="M258.16,280.64l8.21,22.56c13.18-5.18,25.36-12.34,36.19-21.12l-15.42-18.38C278.45,270.7,268.69,276.44,258.16,280.64z"/>
-                            <path class="year_9"  d="M219.44,288.59v24c14.42-0.31,28.3-2.86,41.31-7.32l-8.21-22.56C242.1,286.25,230.98,288.29,219.44,288.59z"/>
-                            <path class="year_10"  d="M180.34,282.72l-8.21,22.56c13,4.46,26.88,7.01,41.31,7.32v-24C201.89,288.29,190.78,286.25,180.34,282.72z"/>
-                            <path class="year_11"  d="M145.73,263.7l-15.42,18.38c10.83,8.78,23.01,15.95,36.19,21.12l8.21-22.56C164.18,276.45,154.43,270.7,145.73,263.7z"/>
-                            <path class="year_12"  d="M119.75,234.06l-20.78,12c7.25,12.04,16.29,22.88,26.76,32.15l15.42-18.38C132.81,252.36,125.58,243.68,119.75,234.06z"/>
-                            <path class="year_13"  d="M105.54,197.37l-23.64,4.17c2.68,13.97,7.49,27.19,14.08,39.31l20.79-12.01C111.56,219.11,107.73,208.53,105.54,197.37z"/>
-                            <path class="year_14"  d="M103.44,175.63c0-5.95,0.47-11.8,1.36-17.5l-23.64-4.17c-1.13,7.06-1.72,14.3-1.72,21.67c0,6.79,0.5,13.46,1.46,19.99
-                                l23.65-4.17C103.82,186.28,103.44,181,103.44,175.63z"/>
-                            <path class="year_15"  d="M117.49,121.11l-20.78-12c-6.69,12-11.64,25.09-14.48,38.95l23.66,4.17C108.22,141.18,112.17,130.72,117.49,121.11z"/>
-                            <path class="year_16"  d="M141.98,90.7l-15.42-18.38c-10.45,9.1-19.51,19.76-26.81,31.61l20.79,12C126.42,106.51,133.66,98.01,141.98,90.7z"/>
-                            <path class="year_17"  d="M175.26,70.4l-8.21-22.55c-13.04,5.06-25.12,12.05-35.88,20.64l15.42,18.38C155.22,80.06,164.87,74.48,175.26,70.4z"/>
-                            <path class="time_st15 year_18" d="M213.44,62.67v-24c-14.22,0.31-27.91,2.79-40.75,7.13l8.21,22.57C191.18,64.95,202.1,62.97,213.44,62.67z"/>
-                            <path class="time_st16 year_18" d="M172.69,45.79l8.21,22.57"/>
-                            <text transform="matrix(1 0 0 1 226.8767 34.4286)" class="time_font year_1" id='year_1'>2020</text>
-                            <text transform="matrix(1 0 0 1 288.203 55.0738)" class="time_font year_2" id='year_2'>2019</text>
-                            <text transform="matrix(1 0 0 1 324.1019 86.1158)" class="time_font year_3" id='year_3'>2018</text>
-                            <text transform="matrix(1 0 0 1 350.9763 129.6168)" class="time_font year_4" id='year_4'>2017</text>
-                            <text transform="matrix(1 0 0 1 360.2678 181.1421)" class="time_font year_5" id='year_5'>2016</text>
-                            <text transform="matrix(1 0 0 1 351.2869 232.2453)" class="time_font year_6" id='year_6'>2015</text>
-                            <text transform="matrix(1 0 0 1 329.8593 277.4357)" class="time_font year_7" id='year_7'>2014</text>
-                            <text transform="matrix(1 0 0 1 291.1594 312.4897)" class="time_font year_8" id='year_8'>2013</text>
-                            <text transform="matrix(1 0 0 1 225.2744 333.184)" class="time_font year_9" id='year_9'>2012</text>
-                            <text transform="matrix(1 0 0 1 158.9091 333.1849)" class="time_font year_10" id='year_10'>2011</text>
-                            <text transform="matrix(1 0 0 1 94.0241 312.4899)" class="time_font year_11" id='year_11'>2010</text>
-                            <text transform="matrix(1 0 0 1 55.0136 277.4355)" class="time_font year_12" id='year_12'>2009</text>
-                            <text transform="matrix(1 0 0 1 31.3626 232.2451)" class="time_font year_13" id='year_13'>2008</text>
-                            <text transform="matrix(1 0 0 1 22.0711 181.1423)" class="time_font year_14" id='year_14'>2007</text>
-                            <text transform="matrix(1 0 0 1 33.0519 129.6168)" class="time_font year_15" id='year_15'>2006</text>
-                            <text transform="matrix(1 0 0 1 59.3923 86.1158)" class="time_font year_16" id='year_16'>2005</text>
-                            <text transform="matrix(1 0 0 1 97.2475 55.0739)" class="time_font year_17" id='year_17'>2004</text>
-                            <text transform="matrix(1 0 0 1 146.6807 34.4285)" class="time_font year_18" id='year_18'>earlier</text>
-                        </g>
-                    </svg>
-                </div>
-                <div id="year_19" class="year_19" value="unknown" onclick="filterByYear('unknown')">
-                    (unknown)
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!--script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
