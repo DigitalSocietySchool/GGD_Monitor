@@ -282,6 +282,13 @@
 
 <body onresize="redraw()"> <!--  onresize="replaceLayout()" -->
 
+    <div class="" id="vizContainer">
+    <!-- VISUALIZATION -->
+        <div class="vizbar">
+            <div id="data_main" style="display:none;"></div>
+            <div id="vis"></div>
+        </div>
+    </div>
 
     <div class="topbar">
         <input id="searchInput" name="targetNode" type="text" />
@@ -337,15 +344,6 @@
                 <img class="eyecon" style="height: 20px; margin-top:-5px" id="save_new" src="assets/img/save.svg"> 
                 Save
             </div>
-        </div>
-    </div>
-
-
-    <div class="" id="vizContainer">
-    <!-- VISUALIZATION -->
-        <div class="vizbar">
-            <div id="data_main" style="display:none;"></div>
-            <div id="vis"></div>
         </div>
     </div>
 
@@ -453,7 +451,7 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:100px;">Geographic Coverage:</span> 
+                    <span style="width:100px;">Area:</span> 
                     <span id="geo-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
                         <input type="radio" id="edit_geo_1" name="edit_geo" value="straat" style="display:none;">
                         <input type="radio" id="edit_geo_2" name="edit_geo" value="buurt" style="display:none;">
@@ -501,7 +499,7 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:100px;">Population:</span> 
+                    <span style="width:100px;">Age:</span> 
                     <span id="pop-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
                         <input type="checkbox" id="edit_pop_1" name="edit_pop[]" value="youth" style="display:none;">
                         <input type="checkbox" id="edit_pop_2" name="edit_pop[]" value="young" style="display:none;">
@@ -528,7 +526,7 @@
 
                 <div class="sidebar-items">
                     <span style="width:100px;">Type:</span> 
-                    <span id="type-input" contenteditable="false"  style="float:left;font-weight:100;width:360px;">
+                    <span id="type-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
                         <input type="checkbox" id="edit_type_1" name="edit_type[]" value="questionnaire" style="display:none;">
                         <input type="checkbox" id="edit_type_2" name="edit_type[]" value="registry" style="display:none;">
                         <input type="checkbox" id="edit_type_3" name="edit_type[]" value="monitor" style="display:none;">
@@ -602,19 +600,19 @@
         <div class="row toolbar-header">
             <div class="col dim_label" onmouseup="changeView('geo');">
                 <img class="eyecon button" id="eye_geo" collapsed="true" src="assets/img/icon/eye_hide.png"> 
-                <span class="button">Geo. Coverage</span>
+                <span class="button">Area</span>
             </div>
             <div class="col dim_label" onmouseup="changeView('population');">
                 <img class="eyecon button" collapsed="true" id="eye_population" src="assets/img/icon/eye_hide.png">  
-                <span class="button">Population</span>
+                <span class="button" >Age</span>
+            </div>
+            <div class="col dim_label" onmouseup="changeView('level');">
+                <img class="eyecon button" collapsed="true" id="eye_level" src="assets/img/icon/eye_hide.png"> 
+                <span class="button">Level</span>
             </div>
             <div class="col dim_label" onmouseup="changeView('type');">
                 <img class="eyecon button" collapsed="false" id="eye_type" src="assets/img/icon/eye_show.png"> 
-                <span class="button">Type of Dataset</span>
-            </div>
-            <div class="col dim_label" onmouseup="changeView('level');" style="flex-grow:0.5;">
-                <img class="eyecon button" collapsed="true" id="eye_level" src="assets/img/icon/eye_hide.png"> 
-                <span class="button">Level</span>
+                <span class="button">Type</span>
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus button" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
@@ -770,17 +768,17 @@
     <!-- begin second toolbar -->
     <div class="toolbar">
         <div class="row toolbar-header">
-            <div class="col dim_label" id="toggle_size" onmouseup="removeSize();" style="flex-grow:1.7;">
+            <div class="col dim_label" id="toggle_size" onmouseup="removeSize();">
                 <img class="eyecon button" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png">
-                <span class="button">Number of Cases</span>
+                <span class="button">Size</span>
             </div>
-            <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.2;">
+            <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.5;">
                 <img class="eyecon button" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png">
                 <span class="button">Department</span>
             </div>
-            <div class="col dim_label" onmouseup="changeView('time','.arc');" style="flex-grow:1.2;">
+            <div class="col dim_label" onmouseup="changeView('time','.arc');">
                 <img class="eyecon button" id="eye_time" collapsed="false" src="assets/img/icon/eye_show.png">
-                <span class="button">Temporal Coverage</span>
+                <span class="button">Years</span>
             </div>
             <div class="col-auto">
                 <i class="fa fa-plus button" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>

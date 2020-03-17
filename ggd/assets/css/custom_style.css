@@ -9,7 +9,7 @@ body {
     padding-top: 50px;
 }
 .vizbar {
-    padding-top: 50px;
+    padding-top: 0px;
 }
 
 .toolbar {
@@ -23,26 +23,31 @@ body {
     box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
     margin-bottom: 25px;
     min-height: 40px;
+    margin-right: -2%;
     margin-left: 4%;
-    width: 90%;
-    min-width: 840px;
+    width: 45%;
+    float:left;
 }
 
 .topbar {
     font-weight: 700;
+    border: 1px solid #999;
     background-color: #F7F7F7;
-    border: 1px solid #4D4D4D;
-    margin-top: -1px;
-    margin-left: -1px;
+    border-radius:20px;
     text-align: center;
-    box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
-    margin-bottom: 25px;
+    box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.10);
+    padding: 4px;
     min-height: 40px;
     position: fixed;
+    left: -15px;
+    top: 10px;
+    width: 480px;
+    height: 40px;
+    margin-left: 4%;
+    /*width: 102%;
     padding-top:5px;
-    left: 0px;
-    top: 0px;
-    width: 102%;
+    margin-top: -1px;
+    margin-left: -1px;*/
     z-index:1000;
 }
 
