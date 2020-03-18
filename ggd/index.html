@@ -376,14 +376,14 @@
                 <div class="edit_field" id="title-input" contenteditable="false">
                 </div>
             </div>
-            <div style="float:right;margin-right:10px;font-weight: normal;">
+            <div class="collapse_btn">
                 <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
             </div>
             <div class="col-auto">
             </div>
         </div>
         <div class="row collapse" id="toolbar-meta" style="clear:both;">
-            <div class="col" style="padding-left:25px;padding-top:20px;">
+            <div class="col" style="padding-left: 10px;padding-right: 0px;padding-top: 6px;padding-bottom: 6px;">
 
                 <span id="active_node_id"></span>
 
@@ -393,7 +393,7 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:110px;margin-right: 10px;">Department:</span> 
+                    <span class="sidebar_field_big">Department:</span> 
                     <span id="department-input" contenteditable="false"></span>
 
                     <div id="edit_department" class="dropdown_department" style="display: none;">
@@ -452,28 +452,28 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="float:left;width:85px;">Keywords: </span>
+                    <span class="sidebar_field_big">Keywords: </span>
                     <span class="edit_field" contentEditable="false" id="keywords-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="float:left;width:85px;">Indicators: </span>
+                    <span class="sidebar_field_big">Indicators: </span>
                     <span class="edit_field" contentEditable="false" id="indic-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:85px;">Contact:</span> 
+                    <span class="sidebar_field_big">Contact:</span> 
                     <span class="edit_field" id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;"></span>
                 </div>
 
 
                 <div class="sidebar-items">
-                    <span style="float:left;width:85px;">Time: </span>
+                    <span class="sidebar_field_small">Time: </span>
                     <span class="edit_field" contentEditable="false" id="time-input" style="float:left;font-weight:100;width:370px;"></span>
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:100px;">Area:</span> 
+                    <span class="sidebar_field_small">Area:</span> 
                     <span id="geo-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
                         <input type="radio" id="edit_geo_1" name="edit_geo" value="straat" style="display:none;">
                         <input type="radio" id="edit_geo_2" name="edit_geo" value="buurt" style="display:none;">
@@ -521,8 +521,8 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:100px;">Age:</span> 
-                    <span id="pop-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
+                    <span class="sidebar_field_small">Age:</span> 
+                    <span id="pop-input" contenteditable="false">
                         <input type="checkbox" id="edit_pop_1" name="edit_pop[]" value="youth" style="display:none;">
                         <input type="checkbox" id="edit_pop_2" name="edit_pop[]" value="young" style="display:none;">
                         <input type="checkbox" id="edit_pop_3" name="edit_pop[]" value="adult" style="display:none;">
@@ -547,7 +547,7 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:100px;">Type:</span> 
+                    <span class="sidebar_field_small">Type:</span> 
                     <span id="type-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
                         <input type="checkbox" id="edit_type_1" name="edit_type[]" value="questionnaire" style="display:none;">
                         <input type="checkbox" id="edit_type_2" name="edit_type[]" value="registry" style="display:none;">
@@ -576,7 +576,7 @@
                 </div>
 
                 <div class="sidebar-items">
-                    <span style="width:70px;">Level:</span> 
+                    <span class="sidebar_field_small">Level:</span> 
                     <span id="level-input" contenteditable="false"  style="float:left;font-weight:100;width:450px;height:50px;overflow:visible;">
                         <input type="checkbox" id="edit_level_1" name="edit_level[]" value="individual" style="display:none;">
                         <input type="checkbox" id="edit_level_2" name="edit_level[]" value="family" style="display:none;">
@@ -602,14 +602,14 @@
                         </label>
                         <label class="level-input-item" id="label_level_5" value="geographic" for="edit_level_5">
                             <img src="assets/img/icon/level_5_geographic.png" class="icon">
-                            <br>Geography
+                            <br>Area
                         </label>
 
                     </span>
                 </div>
 
-                <div class="sidebar-items">
-                    <span style="width:100px;">Publication:</span> 
+                <div class="sidebar-items" style="border: none;">
+                    <span class="sidebar_field_big">Publication:</span> 
                     <span class="edit_field" id="publication-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;"></span>
                 </div>
 

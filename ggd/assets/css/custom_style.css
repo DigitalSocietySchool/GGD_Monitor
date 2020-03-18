@@ -92,7 +92,7 @@ body {
     top: 1.5%;
     margin-top: 50px;
     padding-top: 0px;
-    width: 480px;
+    width: 425px;
     max-height: 71%;
     overflow: scroll;
     z-index:1000;
@@ -160,8 +160,11 @@ body {
     display: flex;
     text-align: left;
     width: 100%;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 13px;
     clear: both;
+    border-bottom: 1px dotted #e0e0e0;
 }
 
 img.eyecon {
@@ -515,6 +518,7 @@ tspan{
     text-align: center;
     width: 75px;
     margin-top:3px;
+    margin-bottom: 0px;
     font-size:14px;
     line-height: 15px;
 }
@@ -526,10 +530,10 @@ tspan{
 .level-input-item{
     float:left;
     text-align: center;
-    margin-right: 15px;
+    margin-right: 17px;
     margin-top:3px;
     font-size:14px;
-    line-height: 15px;
+    line-height: 16px;
     overflow: visible;
 }
 .level-input-item img{
@@ -538,7 +542,7 @@ tspan{
 }
 
 .item_input{
-    margin-left:13px;
+    margin-right:13px;
     float:left;
     margin-bottom: 0px;
 }
@@ -559,7 +563,7 @@ label:hover, .label_selected{
     float: left;
 }
 .dep_label{
-    width: 100px;
+    width: 85px;
     float: initial;
     vertical-align: middle;
     font-size: 15px;
@@ -573,12 +577,33 @@ label:hover, .label_selected{
 #size-input{
     float: left;
     font-weight: 100;
-    width: 100px;
+    width: 80px;
     max-height: 20px;
 }
-#edit_department{
-    width: 250px;
+#pop-input{
+    float: left;
+    font-weight: 100;
+    width: 370px;
+    margin-left:-17px;
 }
+#edit_department{
+    width: 185px;
+}
+.sidebar_field_small{
+    width:50px;
+    float: left;
+}
+.sidebar_field_big{
+    margin-right: 6px;
+    float: left;
+}
+.collapse_btn{
+    font-weight: normal;
+    position: absolute;
+    top: 7px;
+    right: 13px;
+}
+
 #node_0{
     box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
 }
