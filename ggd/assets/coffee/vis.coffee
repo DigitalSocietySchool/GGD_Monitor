@@ -433,7 +433,7 @@ root.Bubbles = () ->
         .attr("dep", (d) -> d.department)
         .attr("time", (d) -> d.time)
         .attr("filter_scale", (d) -> d.ui_scale)
-        .attr("ondblclick", "openToolbar('meta')")
+        #.attr("ondblclick", "openToolbar('meta');")
         .call(force.drag)
         .call(connectEvents)
 
@@ -674,8 +674,16 @@ root.Bubbles = () ->
     w = window.innerWidth
     h = window.innerHeight
 
-    cx = w / 2 + 30
-    cy = h / 2 - 30
+    shift_x = d3.select('#vis').attr('shift_bubble_right') * 1
+    if shift_x == undefined
+      shift_x = 0
+
+    shift_y = d3.select('#vis').attr('shift_bubble_up') * 1
+    if shift_y == undefined
+      shift_y = 0
+
+    cx = w / 2 + 30 + shift_x
+    cy = h / 2 - 40 - shift_y
     # use alpha to affect how much to push
     # towards the horizontal or vertical
     ax = h/w * alpha # / 8

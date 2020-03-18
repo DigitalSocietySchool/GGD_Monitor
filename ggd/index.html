@@ -84,14 +84,20 @@
                 $('#toolbar-icon-' + toolbar).addClass('fa-minus');
                 $('#toolbar-icon-' + toolbar).attr('collapsed', 'false');
                 if(toolbar == 'meta'){
-                    d3.select('#vis').attr('style','margin-left:250px;');
+                    d3.select('#vis').attr('shift_bubble_right','200');
+                }
+                if(toolbar == 'bottom'){
+                    d3.select('#vis').attr('shift_bubble_up','80');
                 }
             } else {
                 $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
                 $('#toolbar-icon-' + toolbar).addClass('fa-plus');
                 $('#toolbar-icon-' + toolbar).attr('collapsed', 'true');
                 if(toolbar == 'meta'){
-                    d3.select('#vis').attr('style','margin-left:0px;');
+                    d3.select('#vis').attr('shift_bubble_right','0');
+                }
+                if(toolbar == 'bottom'){
+                    d3.select('#vis').attr('shift_bubble_up','0');
                 }
             }
         }
@@ -102,7 +108,7 @@
             $('#toolbar-icon-' + toolbar).addClass('fa-plus');
             $('#toolbar-icon-' + toolbar).attr('collapsed', 'true');
             if(toolbar == 'meta'){
-                d3.select('#vis').attr('style','margin-left:0px;');
+                d3.select('#vis').attr('shift_bubble_right','0');
             }
         }
 
@@ -112,7 +118,7 @@
             $('#toolbar-icon-' + toolbar).addClass('fa-minus');
             $('#toolbar-icon-' + toolbar).attr('collapsed', 'false');
             if(toolbar == 'meta'){
-                d3.select('#vis').attr('style','margin-left:250px;');
+                d3.select('#vis').attr('shift_bubble_right','200');
             }
         }
 
