@@ -386,7 +386,7 @@ footer p {
 .dim_label{
 	color: #333;
     text-align: left;
-    margin-left: 20px;
+    margin-left: 14px;
     font-weight: bold;
     overflow: hidden;
     padding: 0px;
@@ -489,8 +489,9 @@ tspan{
     padding: 0px;
     margin: 0px;
     margin-left: -33px;
-    padding-left: 33px;
-    height: 24vh;
+    padding-left: 29px;
+    height: 23vh;
+    padding-top: 2px;
 }
 
 #edit_mode{
