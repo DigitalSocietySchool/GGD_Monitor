@@ -29,7 +29,7 @@ body {
     top: 15px;
     display: inline-block;
     max-height: 28vh;
-    min-height: 40px;
+    min-height: 30px;
     float: left;
 }
 #toolbar_container{
@@ -150,14 +150,14 @@ body {
 }
 .toolbar-header {
     border-radius: 20px;
-    padding: 6px;
+    padding: 2px;
     border: 1px solid #666;
     background-color: #E6E6E6;
     margin-top: -1px;
     margin-bottom: -1px;
     margin-right: -7px;
     margin-left: -7px;
-    height: 40px;
+    height: 30px;
     vertical-align: middle;
 }
 
@@ -176,7 +176,7 @@ body {
 
 #toolbar-top, #toolbar-bottom{
     width: 100%;
-    flex-wrap: initial;
+    margin-left: 4px;
 }
 
 .sidebar-items {
@@ -191,9 +191,9 @@ body {
 }
 
 img.eyecon {
-    height: 30px;
-    width: 30px;
-    margin-right: 5px;
+    height: 23px;
+    width: 23px;
+    margin-right: 4px;
 }
 
 img.icon {
@@ -398,14 +398,17 @@ footer p {
 }       
 .geolevel{
     text-align: left;
-    margin-left: -3px;
+    /* margin-left: 0px; */
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
 }
 .item_geo {
     width: 100%;
     text-align: left;
     /* padding-left: 30px; */
     /* padding-bottom: 4px; */
-    font-size: 14px;
+    /* font-size: 14px;*/
 }
 .item_population {
     width: 40%;
@@ -478,6 +481,16 @@ tspan{
 #dep_btn div div, 
 #time_btn div svg g path, #time_btn div svg g text{
     cursor: pointer;
+}
+#geo_btn{
+    overflow-y: scroll;
+    overflow-x: visible;
+    display: inline-block;
+    padding: 0px;
+    margin: 0px;
+    margin-left: -33px;
+    padding-left: 33px;
+    height: 24vh;
 }
 
 #edit_mode{
