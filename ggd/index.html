@@ -315,8 +315,8 @@
         <input id="searchInput" name="targetNode" type="text" />
         <button class="button" id="searchStart">Search</button>
         <button class="button reset">Reset</button>
-        <span id="status"></span>&nbsp; &nbsp;
-        <span onmouseup="showEditNewMode();" class="button">New</span>  &nbsp; &nbsp;
+        <span id="status" style="display: none;"></span>
+        <span onmouseup="showEditNewMode();" class="button">New</span> 
         <span onmouseup="showEditMode();" class="button" id='edit_btn' style='display:none;'>Edit</span>
     </div>
 
@@ -329,19 +329,19 @@
             <div class="col button" onclick="confirmDelete()"  style="flex-grow:2;text-align: left;">
                 <span class="col button" id="start_delete" style="display:inline;">[!] Delete</span>
                 <span class="col button" id="confirm_delete" onclick="deleteDataset();" style="display:none;">
-                    [!] Confirm
+                    &nbsp;[Confirm]
                 </span>
             </div>
             <div class="col button" onclick="cancelEdit();" style="flex-grow:1.1;">
-                <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel" src="assets/img/cancel.svg"> 
+                <img class="eyecon" id="cancel" src="assets/img/cancel.svg"> 
                 Cancel
             </div>
             <div class="col button" onclick="resetEdit();">
-                <img class="eyecon" style="height: 20px; margin-top:-5px" id="reset" src="assets/img/cancel.svg"> 
+                <img class="eyecon" id="reset" src="assets/img/cancel.svg"> 
                 Reset
             </div>
             <div class="col button" onclick="changeFields(true);">
-                <img class="eyecon" style="height: 20px; margin-top:-5px" id="save" src="assets/img/save.svg"> 
+                <img class="eyecon" id="save" src="assets/img/save.svg"> 
                 Save
             </div>
         </div>
@@ -354,15 +354,15 @@
                 NEW DATASET
             </div>
             <div class="col button" onclick="cancelEditNew();">
-                <img class="eyecon" style="height: 20px; margin-top:-5px" id="cancel_new" src="assets/img/cancel.svg"> 
+                <img class="eyecon" id="cancel_new" src="assets/img/cancel.svg"> 
                 Cancel
             </div>
             <div class="col button" onclick="resetEdit();">
-                <img class="eyecon" style="height: 20px; margin-top:-5px" id="reset_new" src="assets/img/cancel.svg"> 
+                <img class="eyecon" id="reset_new" src="assets/img/cancel.svg"> 
                 Reset
             </div>
             <div class="col button" onclick="insertNew();">
-                <img class="eyecon" style="height: 20px; margin-top:-5px" id="save_new" src="assets/img/save.svg"> 
+                <img class="eyecon" id="save_new" src="assets/img/save.svg"> 
                 Save
             </div>
         </div>
@@ -661,7 +661,7 @@
                         </span>
                         <span class="geolevel toolbar-items">
                             <div style="float:left;">
-                                <img src="assets/img/icon/geo_2.png" class="icon" style="width:70px;height:70px;margin-right:-10px;margin-top:-10px">
+                                <img src="assets/img/icon/geo_2.png" class="icon" style="padding-right: 3px;">
                             </div>
                             <div style="float:right;">
                                 <div id="geo_4" class="item_geo" value="gebied">
@@ -676,7 +676,7 @@
                             </div>
                         </span>
                         <span class="geolevel toolbar-items">
-                            <div style="float:left;margin-top:-50px;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
+                            <div style="padding-right: 3px;padding-bottom: 40px;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
                             <div style="float:right;">
                                 <div id="geo_7" class="item_geo" value="amstelland">
                                     Amstelland
