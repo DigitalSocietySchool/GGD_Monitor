@@ -1069,6 +1069,8 @@ root.Bubbles = () ->
 
     if node_data.temp_size != undefined
       d3.select('#size-input').html(node_data.temp_size)
+    else
+      d3.select('#size-input').html(node_data.size)
 
     if node_data.temp_publication != undefined
       d3.select('#publication-input').html(node_data.temp_publication)
@@ -1206,6 +1208,7 @@ root.Bubbles = () ->
     if document.getElementById("edit-top-bar").style.display == "none" & document.getElementById("edit-top-bar-new").style.display == "none"
       location.replace("#")
       d3.select('#active_node_id').attr('active_node_id', null)
+      d3.select('#edit_btn').attr('style', 'display:none;')
 
   # ---
   # changes clicked bubble by modifying url
@@ -1220,6 +1223,7 @@ root.Bubbles = () ->
         d3.select('#edit_btn').attr('style', 'display:inline;')
 
       else
+        console.log 'here'
         location.replace("#")
         d3.event.preventDefault()
         d3.select('#edit_btn').attr('style', 'display:none;')

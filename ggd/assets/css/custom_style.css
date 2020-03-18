@@ -91,7 +91,7 @@ body {
     position: fixed;
     top: 1.5%;
     margin-top: 50px;
-    padding-top: 24px;
+    padding-top: 0px;
     width: 480px;
     max-height: 71%;
     overflow: scroll;
@@ -105,18 +105,19 @@ body {
     padding-top: 8px;
     border: 1px solid #666;
     background-color: #E6E6E6;
-    position: fixed;
-    top: 60px;
-    margin-left: 4%;
+    position: relative;
+    top: -1px;
+    /* margin-top: 1.5%; */
+    /* margin-left: 4%; */
     margin-bottom: -7px;
-    left: -16px;
+    left: -7px;
     vertical-align: middle;
     min-height: 25px;
-    width: 480px;
-    z-index:1000;
-    max-width: 466px;
+    width: 100%;
+    z-index: 1000;
+    /* max-width: 466px; */
     box-sizing: content-box;
-    display: inline-block; /* */
+    display: inline-block;
 }
 #sidebar-meta{
     padding-top:0px;
@@ -452,6 +453,7 @@ tspan{
     border: #C33 3px solid;
     padding-right: 15px;
     padding-left: 15px;
+    margin-top: -5px;
 }
 #edit_mode .col, #edit_mode .eyecon{
     padding:0px;
