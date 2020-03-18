@@ -23,12 +23,12 @@ body {
     box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
     margin-bottom: 25px;
     width: 98%;
-    z-index:500;
+    z-index:2000;
     min-width: 450px;
     position: relative;
     top: 15px;
     display: inline-block;
-    max-height: 17vh;
+    max-height: 28vh;
     min-height: 40px;
     float: left;
 }
@@ -93,7 +93,7 @@ body {
     margin-top: 50px;
     padding-top: 0px;
     width: 425px;
-    max-height: 71%;
+    max-height: 62.5%;
     overflow: scroll;
     z-index:1000;
     margin-left: 4%;
@@ -133,7 +133,21 @@ body {
 #title-input[contentEditable=true]{
     background: #ccc;
 }
-
+#description-input{
+    font-weight: 100;
+    width: 400px;
+    max-height: 89px;
+    overflow: scroll;
+    padding-right: 6px;
+    margin-top: -2px;
+    border-right: 1px solid #666;
+    border-image: 
+    linear-gradient(
+      to bottom, 
+      rgba(0, 0, 0, 0), 
+      rgba(100, 100, 100, 0.3)
+    ) 1 100%;
+}
 .toolbar-header {
     border-radius: 20px;
     padding: 6px;
@@ -151,7 +165,6 @@ body {
     background: #D8A38D;
 }
 
-
 .toolbar-items {
     display: flex;
     align-items: center;
@@ -159,6 +172,11 @@ body {
     width: 100%;
     /* padding: 10px; */
     padding-top: 5px;
+}
+
+#toolbar-top, #toolbar-bottom{
+    width: 100%;
+    flex-wrap: initial;
 }
 
 .sidebar-items {
@@ -379,9 +397,8 @@ footer p {
     font-weight: normal;
 }       
 .geolevel{
-	text-align:left;
-    margin-left: 10px;
-    margin-right: 10px;
+    text-align: left;
+    margin-left: -3px;
 }
 .item_geo {
     width: 100%;
@@ -623,4 +640,18 @@ label:hover, .label_selected{
 
 #node_0{
     box-shadow: 2px 4px 20px 4px rgb(0, 0, 0, 0.18);
+}
+.arrow_down {
+    position: relative; 
+    top: 79px;
+    right: 4.465px;
+    width: 8px;
+    height: 9px;
+    border-width: 0 1px 1px 0;
+    border-color: #666;
+    border-style: solid;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
 }
