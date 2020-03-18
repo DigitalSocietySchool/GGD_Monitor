@@ -124,9 +124,14 @@ body {
 }
 
 #title-input{
-    width: 430px;
     overflow: scroll;
     height: 20px;
+    margin-left: -2px;
+    width: 380px;
+
+}
+#title-input[contentEditable=true]{
+    background: #ccc;
 }
 
 .toolbar-header {
@@ -589,7 +594,7 @@ label:hover, .label_selected{
 #size-input{
     float: left;
     font-weight: 100;
-    width: 80px;
+    width: 72px;
     max-height: 20px;
 }
 #pop-input{
@@ -612,7 +617,7 @@ label:hover, .label_selected{
 .collapse_btn{
     font-weight: normal;
     position: absolute;
-    top: 7px;
+    top: 8px;
     right: 13px;
 }
 

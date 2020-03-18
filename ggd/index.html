@@ -96,6 +96,26 @@
             }
         }
 
+        function closeToolbar(toolbar) {
+            $('#toolbar-' + toolbar).collapse('toggle');
+            $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
+            $('#toolbar-icon-' + toolbar).addClass('fa-plus');
+            $('#toolbar-icon-' + toolbar).attr('collapsed', 'true');
+            if(toolbar == 'meta'){
+                d3.select('#vis').attr('style','margin-left:0px;');
+            }
+        }
+
+        function openToolbar(toolbar) {
+            $('#toolbar-' + toolbar).collapse('toggle');
+            $('#toolbar-icon-' + toolbar).removeClass('fa-plus');
+            $('#toolbar-icon-' + toolbar).addClass('fa-minus');
+            $('#toolbar-icon-' + toolbar).attr('collapsed', 'false');
+            if(toolbar == 'meta'){
+                d3.select('#vis').attr('style','margin-left:250px;');
+            }
+        }
+
         function toggleFill() {
             if ($('#eye_dep').attr('collapsed') == 'true') {
                 $('a.bubble-node').each(function() {
@@ -264,7 +284,7 @@
 
         function resetEdit(){
             d3.select('#confirm_delete').attr('style','display:none;');
-            resetTempValues();
+            //resetTempValues();
             restorePreviousValues();
         }
 
@@ -278,6 +298,7 @@
         function cancelEditNew(){
             hideEditDep();
             hideEditNewMode();
+            collapseToolbar('meta');
         }
 
         function sendData(data){
@@ -389,7 +410,7 @@
 
                 <div class="sidebar-items">
                     <!--div><b>Description:&nbsp;</b></div-->
-                    <span class="edit_field" style="font-weight:100;" contentEditable="false" id="description-input"></span>
+                    <span class="edit_field" style="font-weight:100;width: 400px;" contentEditable="false" id="description-input"></span>
                 </div>
 
                 <div class="sidebar-items">
@@ -453,23 +474,23 @@
 
                 <div class="sidebar-items">
                     <span class="sidebar_field_big">Keywords: </span>
-                    <span class="edit_field" contentEditable="false" id="keywords-input" style="float:left;font-weight:100;width:370px;"></span>
+                    <span class="edit_field" contentEditable="false" id="keywords-input" style="float: right;font-weight:100;width: 317px;"></span>
                 </div>
 
                 <div class="sidebar-items">
                     <span class="sidebar_field_big">Indicators: </span>
-                    <span class="edit_field" contentEditable="false" id="indic-input" style="float:left;font-weight:100;width:370px;"></span>
+                    <span class="edit_field" contentEditable="false" id="indic-input" style="float: right;font-weight:100;width: 317px;margin-left:-3px"></span>
                 </div>
 
                 <div class="sidebar-items">
                     <span class="sidebar_field_big">Contact:</span> 
-                    <span class="edit_field" id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;"></span>
+                    <span class="edit_field" id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:331px;"></span>
                 </div>
 
 
                 <div class="sidebar-items">
                     <span class="sidebar_field_small">Time: </span>
-                    <span class="edit_field" contentEditable="false" id="time-input" style="float:left;font-weight:100;width:370px;"></span>
+                    <span class="edit_field" contentEditable="false" id="time-input" style="float:left;font-weight:100;width:350px;"></span>
                 </div>
 
                 <div class="sidebar-items">
@@ -610,7 +631,7 @@
 
                 <div class="sidebar-items" style="border: none;">
                     <span class="sidebar_field_big">Publication:</span> 
-                    <span class="edit_field" id="publication-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;"></span>
+                    <span class="edit_field" id="publication-input" contenteditable="false"  style="float:left;font-weight:100;width:300px;"></span>
                 </div>
 
             </div>

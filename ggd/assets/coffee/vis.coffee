@@ -236,6 +236,7 @@ root.Bubbles = () ->
         .attr("id", "bubble-background")
         .attr("width", '100%')
         .attr("height", '100%')
+        .attr("ondblclick", "closeToolbar('meta')")
         .on("click", clear) #, {passive: true}
 
       # label is the container div for all the labels that sit on top of 
@@ -432,6 +433,7 @@ root.Bubbles = () ->
         .attr("dep", (d) -> d.department)
         .attr("time", (d) -> d.time)
         .attr("filter_scale", (d) -> d.ui_scale)
+        .attr("ondblclick", "openToolbar('meta')")
         .call(force.drag)
         .call(connectEvents)
 
