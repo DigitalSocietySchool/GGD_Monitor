@@ -1144,7 +1144,7 @@
                         );  
                 }).each(function(d) {
                     d.ui_scale = 1;
-                    d.forceR = Math.max(12, rScale(rValue(d)));
+                    d.forceR = Math.max(minRadius, rScale(rValue(d)));
                 }).classed('bubble-visible',true);
 
             // Animate graph
