@@ -136,10 +136,16 @@
 
         // Deprecated
         function replaceLayout(){
-            var element = document.getElementById('toolbar_inside'),
-            style = window.getComputedStyle(element),
-            left = style.getPropertyValue('margin-left').replace('px','')*1;
+            redraw();
 
+            var element = document.getElementById('body'),
+            style = window.getComputedStyle(element),
+            w = style.getPropertyValue('width').replace('px','')*1;
+            h = style.getPropertyValue('height').replace('px','')*1;
+
+            console.log([w,h]);
+
+            /*
             left_sidebar = Math.max(left, 34);
 
             element = document.getElementById('title-input'),
@@ -151,6 +157,7 @@
 
             document.getElementById('vis')
                 .setAttribute('style','margin-left:'+left+'px');
+            */
         }
 
         function showEditDep(){  
@@ -328,7 +335,7 @@
     </script>
 </head>
 
-<body onresize="redraw()"> <!--  onresize="replaceLayout()" -->
+<body onresize="replaceLayout()" id="body"> <!--   -->
 
     <div class="" id="vizContainer">
     <!-- VISUALIZATION -->
@@ -629,7 +636,7 @@
                         </label>
                         <label class="level-input-item" id="label_level_5" value="geographic" for="edit_level_5">
                             <img src="assets/img/icon/level_5_geographic.png" class="icon">
-                            <br>Area
+                            <br>Geo
                         </label>
 
                     </span>
@@ -643,6 +650,7 @@
             </div>
         </div>
     </div>
+
     <div id="toolbar_container">
         <div class='toolbar_sizer' id="toolbar_inside">
             <!-- begin first toolbar -->
@@ -661,7 +669,7 @@
                         <span class="button">Level</span>
                     </div>
                     <div class="col dim_label" onmouseup="changeView('type');">
-                        <img class="eyecon button" collapsed="true" id="eye_type" src="assets/img/icon/eye_hide.png"> 
+                        <img class="eyecon button" collapsed="true" id="eye_type" src="assets/img/icon/eye_hide.png" style="margin-left: 16px;"> 
                         <span class="button">Type</span>
                     </div>
                     <div class="col-auto">
@@ -669,7 +677,7 @@
                     </div>
                 </div>
                 <div class="row collapse" id="toolbar-top">
-                    <div class="col" id="geo_btn">
+                    <div class="Zcol" id="geo_btn">
                         <span class="geolevel toolbar-items">
                             <div style="float:left;">
                                 <img src="assets/img/icon/geo_1.png" class="icon">
@@ -709,7 +717,7 @@
                                     Amstelland
                                 </div>
                                 <div id="geo_8" class="item_geo" value="adam">
-                                    Metro. A'dam
+                                    A'dam
                                 </div>
                                 <div id="geo_9" class="item_geo" value="g4">
                                     G4
@@ -723,11 +731,12 @@
                             </div> 
                         </span>
                     </div>
-                    <!--div style="opacity: 0" class="col" id="pop_btn">
+
+                    <div class="Zcol" id="pop_btn">
                         <div class="toolbar-items">
                             <div style="float:left;" id="pop_1" class="item_population" value="youth">
                                 <img src="assets/img/youth.svg" class="icon">
-                                <br>Youth
+                                <br>Youth<br><br>
                             </div>
                             <div style="float:right;" id="pop_2" class="item_population" value="young">
                                 <img src="assets/img/young_adult.svg" class="icon">
@@ -748,42 +757,10 @@
                             (unknown)
                         </div>
                     </div>
-                    <div style="opacity: 0" class="col" id="type_btn">
-                        <div class="toolbar-items" style="display:block;margin-right:-50px;">
-                            <svg style="transform:scale(0.6);margin-left:-90px;margin-top:-30px;" height="300px" width="390px">
-                               <g>
-                                 <ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07" id="type_shape_1" value="questionnaire"/>
-                                 <ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)" id="type_shape_5" value="socialmedia"/>
-                                 <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" id="type_shape_4" value="promotion" />
-                                 <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" id="type_shape_3" value="registry" />
-                                 <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" id="type_shape_2" value="monitor" />
-                                 <text transform="translate(100 25.95)" id="type_1" value="questionnaire">
-                                    <tspan>Questionnaire</tspan>
-                                 </text>
-                                 <text transform="translate(286.87 84.56)" id="type_2" value="socialmedia">
-                                    <tspan>Social</tspan>
-                                    <tspan x="0" y="30">Media</tspan>
-                                 </text>
-                                 <text transform="translate(258.9 183.13)" id="type_3" value="promotion">
-                                    <tspan>Health</tspan>
-                                    <tspan x="0" y="30">Promotion</tspan>
-                                 </text>
-                                 <text transform="translate(44.52 212.13)" id="type_4" value="registry">
-                                    <tspan>Registry</tspan>
-                                 </text>
-                                 <text transform="translate(0 102.58)" id="type_5" value="monitor">
-                                    <tspan>Monitor</tspan>
-                                 </text>
-                               </g>
-                            </svg>
-                        </div>  
-                        <div id="type_6" class="" value="unknown">
-                            (unknown)
-                        </div>
-                    </div>
-                    <div style="opacity: 0" class="col" id="level_btn" style="flex-grow:0.5;">
+
+                    <div class="Zcol" id="level_btn">
                         <div class="toolbar-items level">
-                            <div style="float:left;">
+                            <div style="float:left;margin-left:10px;margin-top:-2px;">
                                 <div class="item_level" id="level_1" value="individual">
                                     <img src="assets/img/icon/level_1_individual.png" class="icon">
                                     <br>Individual
@@ -797,7 +774,7 @@
                                     <br>Group
                                 </div>
                             </div>
-                            <div style="float:right;margin-left:10px">
+                            <div style="float:right;margin-left:10px;">
                                 <div class="item_level" id="level_4" value="orga">
                                     <img src="assets/img/icon/level_4_orga.png" class="icon">
                                     <br>Organization
@@ -811,7 +788,43 @@
                                 </div>
                             </div>
                         </div>
-                    </div-->
+                    </div>
+
+                    <div class="Zcol" id="type_btn">
+                        <div class="toolbar-items" id="glyph_type_filter">
+                            <svg height="300px" width="390px">
+                               <g style="transform: translate(0px, 10px);">
+                                 <ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07" id="type_shape_1" value="questionnaire"/>
+                                 <ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)" id="type_shape_5" value="socialmedia"/>
+                                 <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" id="type_shape_4" value="promotion" />
+                                 <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" id="type_shape_3" value="registry" />
+                                 <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" id="type_shape_2" value="monitor" />
+                                 <text transform="translate(90 15)" id="type_1" value="questionnaire">
+                                    <tspan>Questionnaire</tspan>
+                                 </text>
+                                 <text transform="translate(286.87 80)" id="type_2" value="socialmedia">
+                                    <tspan>Social</tspan>
+                                    <tspan x="0" y="30">Media</tspan>
+                                 </text>
+                                 <text transform="translate(210 183.13)" id="type_3" value="promotion">
+                                    <tspan x="0" y="30">Promotion</tspan>
+                                 </text>
+                                 <text transform="translate(44.52 212.13)" id="type_4" value="registry">
+                                    <tspan>Registry</tspan>
+                                 </text>
+                                 <text transform="translate(20 80)" id="type_5" value="monitor">
+                                    <tspan>Monitor</tspan>
+                                 </text>
+                                 <text transform="translate(100 300)" id="type_6" value="unknown">
+                                    <tspan>(unknown)</tspan>
+                                 </text>
+                               </g>
+                            </svg>
+                        </div>  
+                        <!--div id="type_6" class="" value="unknown">
+                            (unknown)
+                        </div-->
+                    </div>
                 </div>
             </div>
         </div>
@@ -1575,8 +1588,6 @@
         }
 
         collapseToolbar('meta');
-
-        //replaceLayout();
 
         // Get the input field
         var input = document.getElementById("searchInput");
