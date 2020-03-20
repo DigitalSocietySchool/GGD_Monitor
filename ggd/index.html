@@ -889,7 +889,7 @@
 
                     <div class="Zcol" id="dep_btn">
                         <div class="toolbar-items ownership">
-                            <div style="float:left;">
+                            <div style="float:left;" class="dep_btn_col">
                                 <div id="dep_1" value="EGZ">
                                     <span class="dep_circle dep_EGZ"></span> 
                                     <span>EGZ</span>
@@ -911,7 +911,7 @@
                                     <span>MGGZ</span>
                                 </div>
                             </div>
-                            <div style="float:right; margin-left:-20px">
+                            <div style="float:right; margin-left:-20px" class="dep_btn_col">
                                 <div id="dep_6" value="FGMA">
                                     <span class="dep_circle dep_FGMA"></span> 
                                     <span>FGMA</span>
@@ -1211,6 +1211,8 @@
         max_geo = keep_geo_label.length;
         
         function filterByGeo(label){
+            font = '700;';
+
             ////////// Get the labels to filter on
             index_label = keep_geo_label.indexOf(label);
             if(keep_geo_label.length == max_geo){
@@ -1222,6 +1224,7 @@
             }
             if(keep_geo_label.length == 0){
                 keep_geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national','unknown'];
+                font = 'normal;';
             }
 
             ////////////// Show/Hide Hide/Show UI buttons
@@ -1231,9 +1234,9 @@
                 in_keep_geo_label = keep_geo_label.indexOf( item_geo[i].getAttribute('value') );
 
                 if ( in_keep_geo_label > -1){
-                    item_geo[i].setAttribute('style','color:#000;');
+                    item_geo[i].setAttribute('style','color:#000;font-weight:'+font);
                 } else {
-                    item_geo[i].setAttribute('style','color:#999;');
+                    item_geo[i].setAttribute('style','color:#999;font-weight:normal;');
                 }
             }
 
@@ -1256,6 +1259,7 @@
         function filterByPop(label){
             ////////// Get the labels to filter on
             index_label = keep_pop_label.indexOf(label);
+            font = '700;';
 
             if(keep_pop_label.length == max_pop){
                 keep_pop_label = [label];
@@ -1266,6 +1270,7 @@
             }
             if(keep_pop_label.length == 0){
                 keep_pop_label = ['youth', 'young', 'adult', 'elderly','unknown'];
+                font = 'normal;';
             }
             
             ////////////// Show/Hide Hide/Show UI buttons
@@ -1274,12 +1279,12 @@
                 in_keep_pop_label = keep_pop_label.indexOf( btn.getAttribute('value') );
 
                 if ( in_keep_pop_label > -1){
-                    btn.setAttribute('style','color:#000;');
+                    btn.setAttribute('style','color:#000;font-weight:'+font);
                     if(i != max_pop){
                         btn.children[0].setAttribute('style','opacity:1;');
                     }
                 } else {
-                    btn.setAttribute('style','color:#999;');
+                    btn.setAttribute('style','color:#999;font-weight: normal;');
                     if(i != max_pop){
                         btn.children[0].setAttribute('style','opacity:0.5;');
                     }
@@ -1311,6 +1316,7 @@
         function filterByType(label){
             ////////// Get the labels to filter on
             index_label = keep_type_label.indexOf(label);
+            font = '700;';
 
             if(keep_type_label.length == max_type){
                 keep_type_label = [label];
@@ -1321,6 +1327,7 @@
             }
             if(keep_type_label.length == 0){
                 keep_type_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor','unknown'];
+                font = 'normal;';
             }
 
             ////////////// Show/Hide Hide/Show UI buttons
@@ -1330,17 +1337,17 @@
 
                 if ( in_keep_type_label > -1){
                     if(i != max_type){
-                        btn.setAttribute('style','fill:#000;');
+                        btn.setAttribute('style','fill:#000;font-weight:'+font);
                         document.getElementById('type_shape_' + i).setAttribute('style','fill:#000;');
                     } else {
-                        btn.setAttribute('style','color:#000;');
+                        btn.setAttribute('style','fill:#000;font-weight:'+font);
                     }
                 } else {
                     if(i != max_type){
-                        btn.setAttribute('style','fill:#999;');
+                        btn.setAttribute('style','fill:#999;font-weight: normal;');
                         document.getElementById('type_shape_' + i).setAttribute('style','fill:#ccc;');
                     } else {
-                        btn.setAttribute('style','color:#999;');
+                        btn.setAttribute('style','fill:#999;font-weight: normal;');
                     }
                 }
                 
@@ -1365,6 +1372,7 @@
         function filterByLevel(label){
             ////////// Get the labels to filter on
             index_label = keep_level_label.indexOf(label);
+            font = '700;';
 
             if(keep_level_label.length == max_level){
                 keep_level_label = [label];
@@ -1375,6 +1383,7 @@
             }
             if(keep_level_label.length == 0){
                 keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic','unknown'];
+                font = 'normal;';
             }
 
             ////////////// Show/Hide Hide/Show UI buttons
@@ -1383,12 +1392,12 @@
                 in_keep_level_label = keep_level_label.indexOf( btn.getAttribute('value') );
 
                 if ( in_keep_level_label > -1){
-                    btn.setAttribute('style','color:#000;');
+                    btn.setAttribute('style','color:#000;font-weight:'+font);
                     if(i != max_level){
                         btn.children[0].setAttribute('style','opacity:1;');
                     }
                 } else {
-                    btn.setAttribute('style','color:#999;');
+                    btn.setAttribute('style','color:#999;font-weight: normal;');
                     if(i != max_level){
                         btn.children[0].setAttribute('style','opacity:0.5;');
                     }
