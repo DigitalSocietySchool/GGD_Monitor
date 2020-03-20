@@ -191,7 +191,7 @@ body {
     margin-left: 10px;
 }
 #toolbar-bottom{
-    margin-left: -15px;
+    /*margin-left: -15px;*/
 }
 
 .sidebar-items {
@@ -563,6 +563,31 @@ tspan{
 #glyph_type_filter{
     /*transform: translate(74%, -31%) scale(0.4);*/
 }
+#size_btn{
+    border-right: 1px dotted #e0e0e0;
+    width: 33%;
+    overflow-y: scroll;
+    position: absolute;
+    bottom: 0px;
+    top: 1px;
+}
+#dep_btn{
+    border-right: 1px dotted #e0e0e0;
+    width: 26%;
+    overflow-y: scroll;
+    position: absolute;
+    bottom: 0px;
+    top: 1px;
+    left: 35%;
+}
+#time_btn{
+    width: 35%;overflow-y: scroll;
+    position: absolute;
+    bottom: 0px;
+    top: 0px;
+    left: 65%;
+}
+
 #glyph_type_filter svg{
     /*height: 44vh;
     overflow-y: scroll;

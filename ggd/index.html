@@ -652,6 +652,7 @@
     </div>
 
     <div id="toolbar_container">
+
         <div class='toolbar_sizer' id="toolbar_inside">
             <!-- begin first toolbar -->
             <div class="toolbar">
@@ -828,15 +829,16 @@
                 </div>
             </div>
         </div>
+
         <div class="toolbar_sizer" id="toolbar_outside">
             <!-- begin second toolbar -->
             <div class="toolbar">
                 <div class="row toolbar-header">
-                    <div class="col dim_label" id="toggle_size" onmouseup="removeSize();">
+                    <div class="col dim_label" id="toggle_size" onmouseup="removeSize();" style="flex-grow: 1.55;">
                         <img class="eyecon button" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png">
                         <span class="button">Size</span>
                     </div>
-                    <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow:1.5;">
+                    <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow: 1.7;">
                         <img class="eyecon button" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png">
                         <span class="button">Department</span>
                     </div>
@@ -849,9 +851,10 @@
                     </div>
                 </div>
                 <div class="row collapse" id="toolbar-bottom">
-                    <div class="col" id="size_btn">
+
+                    <div class="Zcol" id="size_btn">
                         <div id="caseGraph" style="display: block" class="toolbar-items">
-                            <svg width="90%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97"xml:space="preserve">
+                            <svg width="97%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97"xml:space="preserve">
                                <style type="text/css">
                                    .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
                                    .st1{font-family:'OpenSans';}
@@ -884,7 +887,7 @@
                         </div>
                     </div>
 
-                    <div class="col" id="dep_btn" style="flex-grow:1.2;">
+                    <div class="Zcol" id="dep_btn">
                         <div class="toolbar-items ownership">
                             <div style="float:left;">
                                 <div id="dep_1" value="EGZ">
@@ -932,7 +935,7 @@
                         </div>
                     </div>
 
-                    <div class="col" id="time_btn">
+                    <div class="Zcol" id="time_btn">
                         <div class="toolbar-items">
                             <svg id="timedimsvg" width="60%">
                                 <style type="text/css">
