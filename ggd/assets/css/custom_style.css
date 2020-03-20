@@ -532,23 +532,26 @@ tspan{
     border-right: 1px dotted #e0e0e0;
 }
 #type_btn{
-    position: relative;
-    top: 20px;
-    right: 0px;
-    bottom: 1%;
-    height: 22vh;
-    margin-left: -7px;
-    /* width: 17%; */
-    /* height: 17%; */
-    z-index: -10;
-}
-#glyph_type_filter{
-    transform: translate(74%, -100px) scale(0.4);
-}
-#glyph_type_filter svg{
-    height: 44vh;
+    transform: translate(74%, -31%) scale(0.4);
     overflow-y: scroll;
     overflow-x: visible;
+    display: inline-block;
+    /* position: absolute; */
+    /* bottom: 0px; */
+    /* top: 40px; */
+    left: 62%;
+    margin-left: -7px;
+    margin-top: 16px;
+    height: 48vh;
+    /* z-index: -10;*/
+}
+#glyph_type_filter{
+    /*transform: translate(74%, -31%) scale(0.4);*/
+}
+#glyph_type_filter svg{
+    /*height: 44vh;
+    overflow-y: scroll;
+    overflow-x: visible;*/
 }
 
 #edit_mode{
