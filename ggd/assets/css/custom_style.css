@@ -38,8 +38,8 @@ body {
     max-width: 1400px;
     position: absolute;
     bottom: 0px;
-    /* left: 4%;*/
-    margin-left: -15px;
+    /* left: 4%;
+    margin-left: -15px;*/
     vertical-align: bottom;
     display: flex;
     justify-content: flex-end;
@@ -180,9 +180,14 @@ body {
 
 #toolbar-top, #toolbar-bottom{
     width: 100%;
+    margin: 0px;
+    padding: 0px;
+    /* padding-top: 26px; */
     margin-left: 10px;
     font-weight: normal;
     font-size: 13px;
+    position: inherit;
+    /* top: 0px;*/
 }
 
 .sidebar-items {
@@ -492,50 +497,52 @@ tspan{
 #geo_btn{
     overflow-y: scroll;
     overflow-x: visible;
-    display: inline-block;
+    display: block;
     padding: 0px;
-    margin: 0px;
+    margin: 1px;
     margin-left: -33px;
     padding-left: 29px;
     padding-right: 7px;
     padding-top: 2px;
     margin-right: 5px;
-    /* height: 22vh; */
-    position: absolute;
-    bottom: 0px;
-    top: 26px;
+    height: 22.8vh;
+    /* position: absolute; */
+    /* bottom: 1.5%; */
+    /* top: 1px; */
     border-right: 1px dotted #e0e0e0;
 }
 #pop_btn{
     padding-left: 6px;
     line-height: 17px;
-    /* height: 22vh; */
+    height: 21.8vh;
     overflow-y: scroll;
     overflow-x: visible;
-    display: inline-block;
+    display: block;
     position: absolute;
     bottom: 0px;
-    top: 34px;
+    top: 3px;
+    padding-top: 3px;
     left: 20%;
     border-right: 1px dotted #e0e0e0;
 }
 #level_btn{
     line-height: 17px;
-    /* height: 22vh; */
+    height: 22vh;
     overflow-y: scroll;
     overflow-x: visible;
-    display: inline-block;
+    display: block;
+    margin-top: 1px;
     position: absolute;
     bottom: 0px;
-    top: 30px;
+    top: 0px;
     left: 42%;
     border-right: 1px dotted #e0e0e0;
 }
 #type_btn{
-    transform: translate(74%, -31%) scale(0.4);
+    transform: translate(45%, -31%) scale(0.4);
     overflow-y: scroll;
     overflow-x: visible;
-    display: inline-block;
+    display: block;
     /* position: absolute; */
     /* bottom: 0px; */
     /* top: 40px; */

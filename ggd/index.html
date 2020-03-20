@@ -78,7 +78,7 @@
 
         function collapseToolbar(toolbar) {
             $('#toolbar-' + toolbar).collapse('toggle');
-            //console.log($('#toolbar-icon-' + toolbar).attr('collapsed'));
+            
             if ($('#toolbar-icon-' + toolbar).attr('collapsed') == 'true') {
                 $('#toolbar-icon-' + toolbar).removeClass('fa-plus');
                 $('#toolbar-icon-' + toolbar).addClass('fa-minus');
@@ -86,8 +86,12 @@
                 if(toolbar == 'meta'){
                     d3.select('#vis').attr('shift_bubble_right','200');
                 }
-                if(toolbar == 'bottom'){
+                else if(toolbar == 'bottom'){
                     d3.select('#vis').attr('shift_bubble_up','80');
+                }
+                else if(toolbar == 'top'){
+                    //d3.select('#geo_btn').attr('style', 'top:0px;');
+                    //setTimeout(d3.select('#geo_btn').attr('style', 'top:26px;'), 2000);
                 }
             } else {
                 $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
