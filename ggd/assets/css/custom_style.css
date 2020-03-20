@@ -34,12 +34,11 @@ body {
 }
 #toolbar_container{
     width: 97%;
-    min-width: 1100px;
+    min-width: 1150px;
     max-width: 1400px;
     position: absolute;
     bottom: 0px;
-    /* left: 4%;
-    margin-left: -15px;*/
+    margin-left: 4%;
     vertical-align: bottom;
     display: flex;
     justify-content: flex-end;
@@ -51,7 +50,6 @@ body {
 #toolbar_inside{
     width: 50%;
     min-width: 600px;
-    margin-left: 4%;
 }
 .toolbar_sizer{
     padding: 0px;
@@ -183,11 +181,16 @@ body {
     margin: 0px;
     padding: 0px;
     /* padding-top: 26px; */
-    margin-left: 10px;
     font-weight: normal;
     font-size: 13px;
     position: inherit;
     /* top: 0px;*/
+}
+#toolbar-top{
+    margin-left: 10px;
+}
+#toolbar-bottom{
+    margin-left: -15px;
 }
 
 .sidebar-items {
@@ -502,9 +505,9 @@ tspan{
     margin: 1px;
     margin-left: -33px;
     padding-left: 29px;
-    padding-right: 7px;
+    padding-right: 1%;
     padding-top: 2px;
-    margin-right: 5px;
+    /* margin-right: 5px; */
     height: 22.8vh;
     /* position: absolute; */
     /* bottom: 1.5%; */
@@ -512,7 +515,7 @@ tspan{
     border-right: 1px dotted #e0e0e0;
 }
 #pop_btn{
-    padding-left: 6px;
+    padding-left: 1%;
     line-height: 17px;
     height: 21.8vh;
     overflow-y: scroll;
@@ -522,7 +525,8 @@ tspan{
     bottom: 0px;
     top: 3px;
     padding-top: 3px;
-    left: 20%;
+    padding-right: 1%;
+    left: 18%;
     border-right: 1px dotted #e0e0e0;
 }
 #level_btn{
@@ -539,18 +543,18 @@ tspan{
     border-right: 1px dotted #e0e0e0;
 }
 #type_btn{
-    transform: translate(45%, -31%) scale(0.4);
+    transform: translate(0%, -31%) scale(0.4);
     overflow-y: scroll;
     overflow-x: visible;
     display: block;
-    /* position: absolute; */
+    position: absolute;
     /* bottom: 0px; */
     /* top: 40px; */
-    left: 62%;
+    left: 51.5%;
     margin-left: -7px;
     margin-top: 16px;
     height: 48vh;
-    /* z-index: -10;*/
+    /* z-index: -10;
 }
 #glyph_type_filter{
     /*transform: translate(74%, -31%) scale(0.4);*/
@@ -613,7 +617,7 @@ tspan{
 }
 #size_6{
     margin-bottom: 10px;
-    margin-left: -55px;
+    margin-left: -5%;
     font-weight: normal;
     cursor: pointer;
 }

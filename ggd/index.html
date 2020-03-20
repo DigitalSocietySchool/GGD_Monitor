@@ -89,10 +89,6 @@
                 else if(toolbar == 'bottom'){
                     d3.select('#vis').attr('shift_bubble_up','80');
                 }
-                else if(toolbar == 'top'){
-                    //d3.select('#geo_btn').attr('style', 'top:0px;');
-                    //setTimeout(d3.select('#geo_btn').attr('style', 'top:26px;'), 2000);
-                }
             } else {
                 $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
                 $('#toolbar-icon-' + toolbar).addClass('fa-plus');
@@ -855,7 +851,7 @@
                 <div class="row collapse" id="toolbar-bottom">
                     <div class="col" id="size_btn">
                         <div id="caseGraph" style="display: block" class="toolbar-items">
-                            <svg width="80%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97"xml:space="preserve">
+                            <svg width="90%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97"xml:space="preserve">
                                <style type="text/css">
                                    .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
                                    .st1{font-family:'OpenSans';}
@@ -887,6 +883,7 @@
                             (unknown)
                         </div>
                     </div>
+
                     <div class="col" id="dep_btn" style="flex-grow:1.2;">
                         <div class="toolbar-items ownership">
                             <div style="float:left;">
@@ -934,9 +931,10 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col" id="time_btn">
                         <div class="toolbar-items">
-                            <svg id="timedimsvg">
+                            <svg id="timedimsvg" width="60%">
                                 <style type="text/css">
                                     .time_st0{fill:none;}
                                     .time_st1{fill:none;stroke:#231F20;stroke-width:5;stroke-linecap:round;stroke-dasharray:0,6.5;}
