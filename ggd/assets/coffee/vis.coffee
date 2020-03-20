@@ -1625,7 +1625,7 @@ root.$ ->
 
 
   # load our data
-  d3.json("/data/db_v1.php", display)
+  d3.json("data/db_v1.php", display)
   # d3.json("https://dev.ggd.dss.cloud/api/v1.php", display)
   # d3.json('http://localhost:8888/GGD_20200203/ggd/data/data_ggd.json', display)
 
