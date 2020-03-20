@@ -185,6 +185,7 @@ body {
     font-size: 13px;
     position: inherit;
     /* top: 0px;*/
+    height: 20vh;
 }
 #toolbar-top{
     margin-left: 10px;
@@ -508,16 +509,16 @@ tspan{
     padding-right: 1%;
     padding-top: 2px;
     /* margin-right: 5px; */
-    height: 22.8vh;
-    /* position: absolute; */
-    /* bottom: 1.5%; */
-    /* top: 1px; */
+    /* height: 22.8vh; */
+    position: absolute;
+    bottom: -1px;
+    top: 1px;
     border-right: 1px dotted #e0e0e0;
 }
 #pop_btn{
     padding-left: 1%;
     line-height: 17px;
-    height: 21.8vh;
+    /*height: 21.8vh;*/
     overflow-y: scroll;
     overflow-x: visible;
     display: block;
@@ -531,7 +532,7 @@ tspan{
 }
 #level_btn{
     line-height: 17px;
-    height: 22vh;
+    /* height: 22vh; */
     overflow-y: scroll;
     overflow-x: visible;
     display: block;
@@ -539,8 +540,10 @@ tspan{
     position: absolute;
     bottom: 0px;
     top: 0px;
-    left: 42%;
+    left: 40%;
     border-right: 1px dotted #e0e0e0;
+    padding-right: 1.5%;
+    margin-left: 1.5%;
 }
 #type_btn{
     transform: translate(0%, -31%) scale(0.4);
@@ -548,13 +551,14 @@ tspan{
     overflow-x: visible;
     display: block;
     position: absolute;
-    /* bottom: 0px; */
-    /* top: 40px; */
-    left: 51.5%;
-    margin-left: -7px;
+    bottom: -28vh;
+    top: 0px;
+    left: 50%;
+    padding-left: 2%;
     margin-top: 16px;
-    height: 48vh;
-    /* z-index: -10;
+    margin-bottom: 1.5%;
+    /* margin-right: 1%; */
+    /* height: 48vh;
 }
 #glyph_type_filter{
     /*transform: translate(74%, -31%) scale(0.4);*/
