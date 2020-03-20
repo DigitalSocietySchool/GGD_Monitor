@@ -315,10 +315,10 @@
         }
 
         function sendData(data){
-            $.post("http://localhost:8000/GGD_20200203/ggd/data/db_save.php", data);
+            $.post("/data/db_save.php", data);
         }
         function deleteData(data){
-            $.post("http://localhost:8000/GGD_20200203/ggd/data/db_delete.php", data);
+            $.post("/data/db_delete.php", data);
             d3.select('#confirm_delete').attr('style','display:none;');
         }
 
