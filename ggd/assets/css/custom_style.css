@@ -439,10 +439,10 @@ tspan{
 	font-family: OpenSans;
 }
 #timedimsvg{
-    transform: scale(0.4);
-    height: 340px;
+    transform: scale(0.5);
     transform-origin: top;
     width: 420px;
+    height: 346px;
     margin-right: -50px;
     margin-left: -100px;
     margin-bottom: -100px;
@@ -628,7 +628,6 @@ tspan{
 }
 #geo_11{
     margin-top:10px;
-    font-weight: normal;
     cursor: pointer;
 }
 #pop_5{
@@ -636,7 +635,6 @@ tspan{
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: -2px;
-    font-weight: normal;
     cursor: pointer;
 }
 #type_6{
@@ -645,23 +643,21 @@ tspan{
     cursor: pointer;
 }
 #level_6{
-    font-weight: normal;
     margin-top:32px;
     cursor: pointer;
 }
 #size_6{
     margin-bottom: 10px;
     margin-left: -5%;
-    font-weight: normal;
     cursor: pointer;
 }
 #dep_10{
     margin-top: 3px;
 }
 #year_19{
-    margin-bottom: 10px;
-    font-weight: normal;
     cursor: pointer;
+    margin-top: -83px;
+    margin-left: -35px;
 }
 
 .pop-input-item{
