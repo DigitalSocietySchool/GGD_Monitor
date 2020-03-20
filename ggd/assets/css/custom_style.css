@@ -439,7 +439,7 @@ tspan{
 	font-family: OpenSans;
 }
 #timedimsvg{
-    transform: scale(0.7);
+    transform: scale(0.4);
     height: 340px;
     transform-origin: top;
     width: 420px;
@@ -581,11 +581,12 @@ tspan{
     left: 34%;
 }
 #time_btn{
-    width: 35%;overflow-y: scroll;
+    width: 44%;
+    overflow-y: scroll;
     position: absolute;
     bottom: 0px;
     top: 0px;
-    left: 65%;
+    left: 62%;
 }
 
 #dep_btn .dep_btn_col{
