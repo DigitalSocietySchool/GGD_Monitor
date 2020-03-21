@@ -445,7 +445,7 @@ root.Bubbles = () ->
           if d.ID != '0' 
             '0' 
           else 
-            Math.max(minRadius-4, rScale(rValue(d))-4 ) 
+            Math.max(minRadius-3.5, rScale(rValue(d))-3.5 ) 
           )
         .attr('style',(d) ->
           if d.ID != '0'
@@ -483,7 +483,7 @@ root.Bubbles = () ->
       .append("g")
       .append("circle")
         .attr('id', (d) -> 'svg_icon_dep_'+d.ID)
-        .attr("r", (d) -> Math.max(minRadius-4, rScale(rValue(d))-4 ) )
+        .attr("r", (d) -> Math.max(minRadius-3.5, rScale(rValue(d))-3.5 ) )
 
     # Adding type dimension
     type_g = node.append('g')
@@ -595,7 +595,7 @@ root.Bubbles = () ->
     node
       .append("circle")
       .attr('class','bubble-opac')
-      .attr("r", (d) -> Math.max(minRadius-4, rScale(rValue(d))-4 ) )
+      .attr("r", (d) -> Math.max(minRadius-3.5, rScale(rValue(d))-3.5 ) )
       .style('fill','#fff')
       .style('opacity',0)
 
@@ -999,7 +999,7 @@ root.Bubbles = () ->
       node_to_update = d3.select('#node_'+data_id)
       node_to_update
         .selectAll("circle")
-        .attr('r', (d) -> Math.max(minRadius-4, rScale(rValue(d))-4 ))
+        .attr('r', (d) -> Math.max(minRadius-3.5, rScale(rValue(d))-3.5 ))
       node_to_update
        .each( (d) -> d.forceR = Math.max(minRadius, rScale(rValue(d))) )
         .selectAll(".pie")

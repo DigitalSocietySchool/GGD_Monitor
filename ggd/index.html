@@ -1070,7 +1070,7 @@
             visible_nodes
                 .selectAll("circle")
                 .attr('r', function(d) {
-                    return Math.max(minRadius-4, rScale(rValue(d))-4 );
+                    return Math.max(minRadius-3.5, rScale(rValue(d))-3.5 );
                 });
 
             // Reset pies
