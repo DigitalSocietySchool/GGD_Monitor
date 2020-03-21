@@ -134,32 +134,6 @@
             }
         }
 
-        // Deprecated
-        function replaceLayout(){
-            redraw();
-
-            var element = document.getElementById('body'),
-            style = window.getComputedStyle(element),
-            w = style.getPropertyValue('width').replace('px','')*1;
-            h = style.getPropertyValue('height').replace('px','')*1;
-
-            console.log([w,h]);
-
-            /*
-            left_sidebar = Math.max(left, 34);
-
-            element = document.getElementById('title-input'),
-            style = window.getComputedStyle(element),
-            height = style.getPropertyValue('height');
-
-            document.getElementById('sidebar')
-                .setAttribute('style','margin-left:'+left_sidebar+'px;height:'+height);
-
-            document.getElementById('vis')
-                .setAttribute('style','margin-left:'+left+'px');
-            */
-        }
-
         function showEditDep(){  
             d3.select('#edit_department').attr('style', 'display:block;');
             d3.select('#department-input').attr('style', 'display:none;');
@@ -339,7 +313,7 @@
 
     <div class="" id="vizContainer">
     <!-- VISUALIZATION -->
-        <div class="vizbar">
+        <div class="vizbar" id="vizbar">
             <div id="data_main" style="display:none;"></div>
             <div id="vis"></div>
         </div>
@@ -1617,6 +1591,31 @@
                 document.getElementById("searchStart").click();
               }
         });
+
+
+        function replaceLayout(){
+
+            element = document.getElementById('vis');
+            style = window.getComputedStyle(element);
+            w = style.getPropertyValue('width').replace('px','')*1;
+            h = style.getPropertyValue('height').replace('px','')*1;
+
+            if(w < 1150){
+                document.getElementById('vizbar').style = 'width:1150px;';
+                document.getElementById('vis').style = 'width:1150px;';
+                document.getElementById('vis').width = '1150px;';
+            } else {
+                document.getElementById('vizbar').style = 'width:100%;';
+                document.getElementById('vis').style = 'width:100%;';
+                document.getElementById('vis').width = '100%;';
+            }
+            
+            if(typeof(redraw) === typeof(Function)) {
+                redraw();
+            }
+
+        }
+        replaceLayout();
     </script>
 </body>
 
