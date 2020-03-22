@@ -261,12 +261,13 @@ root.Bubbles = () ->
 
     # search function callback
     $("#searchStart").on "click", ->
+      console.log('searchStart')
       # data = data.filter( (d) -> d.name == ("Dataset_3"||"Dataset_2"))
       # updateNodes(data)
       # updateLabels(data)
       
       input = $("#searchInput").val()
-      d3.select("#status").html("Search results for <span class=\"active\"> " + String(input) + " </span>&nbsp;&nbsp;&nbsp;")
+      # d3.select("#status").html("Search results for <span class=\"active\"> " + String(input) + " </span>&nbsp;&nbsp;&nbsp;")
 
       theNode = d3.selectAll(".bubble-node")
                     .filter( (d,i) ->  

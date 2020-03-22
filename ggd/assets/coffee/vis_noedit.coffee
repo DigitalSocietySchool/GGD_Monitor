@@ -293,7 +293,7 @@ root.Bubbles = () ->
   $(".reset").on "click", ->
     d3.selectAll(".bubble-node").transition().duration(150).style("opacity","1")
     d3.selectAll(".bubble-label").transition().duration(150).style("opacity","1")
-    d3.select("#status").html("")
+    # d3.select("#status").html("")
     $("#searchInput").val('')
 
 
@@ -900,160 +900,7 @@ root.Bubbles = () ->
       d3.select('#svg_icon_geo_'+new_label+'_'+data_id).attr('href','assets/img/icon/geo_'+index_img+'.png')
       d3.select('#label_geo_'+index_label).classed('input_item_checked', true)
 
-
-  root.changeDep = (new_label) ->
-    # Change data
-    data_id = d3.select('#active_node_id').attr('active_node_id')
-    node_data = d3.select('#node_'+data_id).data()[0]
-
-    dim_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG']
-
-    for i in [1..9]
-      d3.select('#label_dep_'+i).classed('input_item_checked', false)
-
-    # Manage data
-    if node_data.temp_department == undefined
-      node_data.temp_department = node_data.department
-    
-    if new_label == node_data.temp_department | dim_label.indexOf(new_label) == -1
-      node_data.temp_department = '-'
-      d3.select('#svg_icon_dep_'+data_id).attr('fill',colors['unknown'])
-      d3.select('#department-input').html('_')
-
-    else
-      node_data.temp_department = new_label
-      index_label = dim_label.indexOf(new_label) + 1
-
-      d3.select('#svg_icon_dep_'+data_id).attr('fill',colors[new_label])
-      d3.select('#label_dep_'+index_label).classed('input_item_checked', true)
-
-      if index_label == 0
-        d3.select('#department-input').html('')
-      else 
-        d3.select('#department-input').html("<span class='dep_circle dep_#{node_data.temp_department}'></span>#{node_data.temp_department}")
    
-    d3.select('#edit_department').attr('style', 'display:none;')
-    d3.select('#department-input').attr('style', 'display:block;')
-
-
-  root.changeFields = (leaveEditMode) ->
-    # Change data
-    data_id = d3.select('#active_node_id').attr('active_node_id')
-    node_data = d3.select('#node_'+data_id).data()[0]
-
-    # Leave edit mode
-    if(leaveEditMode)
-      node_data.keyword = d3.select('#keywords-input').html().replace(/,/g,';')
-      node_data.indicator = d3.select('#indic-input').html().replace(/,/g,';')
-      node_data.time = d3.select('#time-input').html().replace(/,/g,';')
-      node_data.name = d3.select('#title-input').html()
-      node_data.description = d3.select('#description-input').html()
-      node_data.size = d3.select('#size-input').html()
-      node_data.publication = d3.select('#publication-input').html()
-      node_data.contact = d3.select('#contact-input').html()
-
-      node_data.geo = ''
-      for i in [1..10]
-        if d3.select('#label_geo_'+i).classed('input_item_checked')
-          node_data.geo = d3.select('#label_geo_'+i).attr('value')
-
-      node_data.level = ''
-      for i in [1..5]
-        if d3.select('#label_level_'+i).classed('input_item_checked')
-          node_data.level = d3.select('#label_level_'+i).attr('value')
-
-      node_data.department = '-'
-      for i in [1..9]
-        if d3.select('#label_dep_'+i).classed('input_item_checked')
-          node_data.department = d3.select('#label_dep_'+i).attr('value')
-
-      temp = []
-      for i in [1..4]
-        if d3.select('#label_pop_'+i).classed('input_item_checked')
-          temp.push( d3.select('#label_pop_'+i).attr('value') )
-      node_data.population = temp.join(';')
-
-      temp = []
-      for i in [1..5]
-        if d3.select('#label_type_'+i).classed('input_item_checked')
-          temp.push( d3.select('#label_type_'+i).attr('value') )
-      node_data.type = temp.join(';')
-
-      if(node_data.keyword == '') 
-        node_data.keyword = '-'
-      if(node_data.indicator == '') 
-        node_data.indicator = '-'
-      if(node_data.time == '') 
-        node_data.time = '-'
-      if(node_data.name == '') 
-        node_data.name = '-'
-      if(node_data.description == '') 
-        node_data.description = '-'
-      if(node_data.size == '' | (!Number.isInteger(node_data.size*1)) )
-        node_data.size = '0'
-      if(node_data.publication == '') 
-        node_data.publication = '-'
-      if(node_data.contact == '') 
-        node_data.contact = '-'
-
-      node_to_update = d3.select('#node_'+data_id)
-      node_to_update
-        .selectAll("circle")
-        .attr('r', (d) -> Math.max(minRadius-3.5, rScale(rValue(d))-3.5 ))
-      node_to_update
-       .each( (d) -> d.forceR = Math.max(minRadius, rScale(rValue(d))) )
-        .selectAll(".pie")
-            .attr("transform", (d) -> "scale(" + rScale(rValue(d))/100 + "," + rScale(rValue(d))/100 + ")" )
-      node_to_update
-        .selectAll("image")
-          .attr("width",  (d) -> rScale(rValue(d)) * 1.15 )
-          .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
-          .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)' )
-
-      d3.selectAll('.bubble-node').attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
-
-      if data_id != 0
-        resetTempValues()
-
-      node_data = d3.select('#node_'+data_id).data()[0]
-      sendData(node_data)
-
-    else
-      node_data.temp_keyword = d3.select('#keywords-input').html().replace(/,/g,';')
-      node_data.temp_indicator = d3.select('#indic-input').html().replace(/,/g,';')
-      node_data.temp_time = d3.select('#time-input').html().replace(/,/g,';')
-      node_data.temp_name = d3.select('#title-input').html()
-      node_data.temp_description = d3.select('#description-input').html()
-      node_data.temp_size = d3.select('#size-input').html()
-      node_data.temp_publication = d3.select('#publication-input').html()
-      node_data.temp_contact = d3.select('#contact-input').html()
-
-    hashchange()
-
-  root.deleteDataset = () ->
-    # Change data
-    data_id = d3.select('#active_node_id').attr('active_node_id')
-
-    d3.select('#node_'+data_id)
-      .each( (d) ->
-              d.ui_scale = 0
-              d.forceR = 0
-      )
-      .classed('bubble-visible',false)
-    redraw()
-
-    d3.select('#confirm_delete').attr('style','display:none;');
-    d3.selectAll(".edit_field").attr('contentEditable', 'false')
-    document.getElementById("edit-top-bar").style.display = "none"
-    document.getElementById("edit-top-bar-new").style.display = "none"
-    d3.selectAll('.bubble-node').attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
-    
-    location.replace("#")
-    d3.select('#active_node_id').attr('active_node_id', null)
-
-    node_data = d3.select('#node_'+data_id).data()[0]
-    deleteData(node_data)
-    
 
   root.restoreTempValues = () ->
     data_id = d3.select('#active_node_id').attr('active_node_id')
@@ -1192,13 +1039,6 @@ root.Bubbles = () ->
         d3.select('#svg_icon_pop_'+new_label+'_'+data_id).attr('href','')
     
 
-  root.restoreDep = (text_field, data_id) ->
-    dim_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG']
-    for i in [1..9]
-      node_to_update = d3.select('#label_dep_'+i)
-      node_to_update.classed('input_item_checked',  text_field.split(';').includes(dim_label[i-1]) != -1 )
-
-
   # ---
   # adds mouse events to element
   # ---
@@ -1211,10 +1051,8 @@ root.Bubbles = () ->
   # clears currently selected bubble
   # ---
   clear = () ->
-    # Does not apply in edit mode
-    if document.getElementById("edit-top-bar").style.display == "none" & document.getElementById("edit-top-bar-new").style.display == "none"
-      location.replace("#")
-      d3.select('#active_node_id').attr('active_node_id', null)
+    location.replace("#")
+    d3.select('#active_node_id').attr('active_node_id', null)
       
   # ---
   # changes clicked bubble by modifying url
@@ -1241,7 +1079,7 @@ root.Bubbles = () ->
   # ---
   root.updateActive = (id) ->
     
-    if true #document.getElementById("edit-top-bar").style.display == "none"
+    if true # Test would be applied if edit mode were on
       node.classed("bubble-selected", (d) -> id == idValue(d))
       node.classed("bubble-tone-down", (d) -> id != idValue(d))
       keywords = ''
