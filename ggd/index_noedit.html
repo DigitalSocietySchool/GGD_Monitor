@@ -85,9 +85,11 @@
                 $('#toolbar-icon-' + toolbar).attr('collapsed', 'false');
                 if(toolbar == 'meta'){
                     d3.select('#vis').attr('shift_bubble_right','200');
+                    redraw();
                 }
                 else if(toolbar == 'bottom'){
-                    d3.select('#vis').attr('shift_bubble_up','80');
+                    d3.select('#vis').attr('shift_bubble_up','60');
+                    redraw();
                 }
             } else {
                 $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
@@ -98,6 +100,7 @@
                 }
                 if(toolbar == 'bottom'){
                     d3.select('#vis').attr('shift_bubble_up','0');
+                    redraw();
                 }
             }
         }
@@ -109,6 +112,7 @@
             $('#toolbar-icon-' + toolbar).attr('collapsed', 'true');
             if(toolbar == 'meta'){
                 d3.select('#vis').attr('shift_bubble_right','0');
+                    redraw();
             }
         }
 
