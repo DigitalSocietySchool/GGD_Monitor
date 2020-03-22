@@ -52,12 +52,12 @@ root.Bubbles = () ->
     #.attr("height", height + margin.top + margin.bottom )
 
   # this scale will be used to size our bubbles
-  root.rScale = d3.scale.sqrt().range([0,maxRadius])
+  root.rScale = d3.scale.sqrt().range([minRadius,maxRadius])
   
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
-  cap_size = 30000
+  cap_size = 50000
   floor_size = 100
 
   root.scale_bub = d3.scaleSqrt()
@@ -1010,9 +1010,6 @@ root.Bubbles = () ->
           .attr("height", (d) -> rScale(rValue(d)) * 1.15 )
           .style("transform", (d) -> "translate(-"+ rScale(rValue(d))*0.555 +'px,-'+ rScale(rValue(d))*0.6 +'px)' )
 
-      d3.selectAll(".edit_field").attr('contentEditable', 'false')
-      document.getElementById("edit-top-bar").style.display = "none"
-      document.getElementById("edit-top-bar-new").style.display = "none"
       d3.selectAll('.bubble-node').attr("xlink:href", (d) -> "##{encodeURIComponent(idValue(d))}")
 
       if data_id != 0
@@ -1218,26 +1215,20 @@ root.Bubbles = () ->
     if document.getElementById("edit-top-bar").style.display == "none" & document.getElementById("edit-top-bar-new").style.display == "none"
       location.replace("#")
       d3.select('#active_node_id').attr('active_node_id', null)
-      d3.select('#edit_btn').attr('style', 'display:none;')
-
+      
   # ---
   # changes clicked bubble by modifying url
   # ---
   click = (d) ->
-    # Does not apply in edit mode
-    if document.getElementById("edit-top-bar").style.display == "none" & document.getElementById("edit-top-bar-new").style.display == "none"
-      id = decodeURIComponent(location.hash.substring(1)).trim()
-      if id != idValue(d)
-        location.replace("#" + encodeURIComponent(idValue(d)))
-        d3.event.preventDefault()
-        d3.select('#edit_btn').attr('style', 'display:inline;')
-
-      else
-        console.log 'here'
-        location.replace("#")
-        d3.event.preventDefault()
-        d3.select('#edit_btn').attr('style', 'display:none;')
-
+    id = decodeURIComponent(location.hash.substring(1)).trim()
+    if id != idValue(d)
+      location.replace("#" + encodeURIComponent(idValue(d)))
+      d3.event.preventDefault()
+      
+    else
+      location.replace("#")
+      d3.event.preventDefault()
+        
   # ---
   # called when url after the # changes
   # ---
@@ -1432,10 +1423,7 @@ root.Bubbles = () ->
   # hover event
   # ---
   mouseover = (d) ->
-    # Save edits
-    if document.getElementById("edit-top-bar").style.display == "block" | document.getElementById("edit-top-bar-new").style.display == "block"
-      changeFields(false)
-
+    
     node.classed("bubble-hover", (p) -> p == d)
     node.classed("bubble-tone-down", (p) -> p != d)
 

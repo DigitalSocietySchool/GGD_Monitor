@@ -827,36 +827,42 @@
                 <div class="row collapse" id="toolbar-bottom">
 
                     <div class="Zcol" id="size_btn">
-                        <div id="caseGraph" style="display: block" class="toolbar-items">
+                        <div id="size_filter_svg" style="display: block" class="toolbar-items">
                             <svg width="97%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97"xml:space="preserve">
                                <style type="text/css">
-                                   .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
+                                   .st0{fill:#f7f7f7;stroke:#666;stroke-miterlimit:10;}
                                    .st1{font-family:'OpenSans';}
                                    .st2{font-size:22px;margin-left:4px;}
                                </style>
-                               <g class="size" data-size="more" id="size_5" value="more">
-                                   <circle class="st0" cx="138.54" cy="131.83" r="125"/>
-                                   <text transform="matrix(1 0 0 1 111.3019 36.1381)" class="st1 st2">More</text>
-                               </g>
-                               <g class="size" data-size="2000" id="size_4" value="2000">
-                                   <circle class="st0" cx="138.54" cy="158.6" r="100" />
-                                   <text transform="matrix(1 0 0 1 113.3809 87.7564)" class="st1 st2">2000</text>
-                               </g>
-                               <g class="size" data-size="1000" id="size_3" value="1000">
-                                   <circle class="st0" cx="138.54" cy="183.6" r="75" />
-                                   <text transform="matrix(1 0 0 1 113.381 139.375)" class="st1 st2">1000</text>
-                               </g>
-                               <g class="size" data-size="500" id="size_2" value="500">
-                                   <circle class="st0" cx="138.54" cy="208.6" r="50" />
-                                   <text transform="matrix(1 0 0 1 119.6702 188.9935)" class="st1 st2">500</text>
-                               </g>
-                               <g class="size" data-size="100" id="size_1" value="100">
-                                   <circle class="st0" cx="138.54" cy="226.83" r="30" />
-                                   <text transform="matrix(1 0 0 1 119.6704 234.6115)" class="st1 st2">100</text>
+                               <g transform="translate(0 -34)">
+                                   <!--g class="size" data-size="more" id="size_5" value="more">
+                                       <circle class="st0" cx="138.54" cy="131.83" r="125"/>
+                                       <text transform="matrix(1 0 0 1 111.3019 36.1381)" class="st1 st2">More</text>
+                                   </g-->
+                                   <g class="size" data-size="more" id="size_4" value="more">
+                                       <circle class="st0" cx="138.54" cy="158.6" r="100" />
+                                       <rect fill="#f7f7f7" x='112' y='50' width='55' height='25'></rect>
+                                       <text transform="matrix(1 0 0 1 113 70)" class="st1 st2">more</text>
+                                   </g>
+                                   <g class="size" data-size="10000" id="size_3" value="10000">
+                                       <circle class="st0" cx="138.54" cy="183.6" r="75" />
+                                       <rect fill="#f7f7f7" x='120' y='95' width='40' height='30'></rect>
+                                       <text transform="matrix(1 0 0 1 120 120)" class="st1 st2">10K</text>
+                                   </g>
+                                   <g class="size" data-size="5000" id="size_2" value="5000">
+                                       <circle class="st0" cx="138.54" cy="208.6" r="50" />
+                                       <rect fill="#f7f7f7" x='115' y='150' width='50' height='30'></rect>
+                                       <text transform="matrix(1 0 0 1 115 175)" class="st1 st2">5000</text>
+                                   </g>
+                                   <g class="size" data-size="500" id="size_1" value="500">
+                                       <circle class="st0" cx="138.54" cy="226.83" r="30" />
+                                       <g></g>
+                                       <text transform="matrix(1 0 0 1 120 235)" class="st1 st2">500</text>
+                                   </g>
                                </g>
                            </svg>
                         </div>
-                        <div id="size_6" value="unknown" class="size">
+                        <div id="size_5" value="unknown" class="size">
                             (unknown)
                         </div>
                     </div>
@@ -1025,7 +1031,7 @@
 
     <script defer src="assets/js/plugins.js"></script>
     <script src="assets/js/libs/coffee-script.js"></script>
-    <script type="text/coffeescript" src="assets/coffee/vis.coffee"></script>
+    <script type="text/coffeescript" src="assets/coffee/vis_edit.coffee"></script>
 
     <script type="text/javascript">
 
@@ -1141,15 +1147,16 @@
                     });
 
                     size_test = false;
-                    if(d.size > 2000 & keep_size_label.indexOf("more") != -1){
+                    if(d.size > 10000 & keep_size_label.indexOf("more") != -1){
                         size_test = true;
                     } else if(d.size <= 0 & keep_size_label.indexOf("unknown") != -1){
                         size_test = true;
                     } else if(
-                        (keep_size_label.indexOf("2000") != -1 && d.size <= 2000 && d.size > 1000 ) ||
-                        (keep_size_label.indexOf("1000") != -1 && d.size <= 1000 && d.size > 500 ) ||
-                        (keep_size_label.indexOf("500") != -1 && d.size <= 500 && d.size > 100 ) ||
-                        (keep_size_label.indexOf("100") != -1 && d.size <= 100 )
+                        (keep_size_label.indexOf("10000") != -1 && d.size <= 10000 && d.size > 5000 ) ||
+                        (keep_size_label.indexOf("5000") != -1 && d.size <= 5000 && d.size > 500 ) ||
+                        (keep_size_label.indexOf("500") != -1 && d.size <= 500 )
+                        //(keep_size_label.indexOf("500") != -1 && d.size <= 500 && d.size > 100 ) ||
+                        //(keep_size_label.indexOf("100") != -1 && d.size <= 100 )
                     ){
                         size_test = true;
                     }
@@ -1394,7 +1401,7 @@
             });
             $(this).mouseout(function() {
                 if(keep_size_label.length == max_size){
-                    $(this).find(".st0").css("fill", "#fff");
+                    $(this).find(".st0").css("fill", "#f7f7f7");
                     $(this).find(".st1").css("fill", "#000");
                 } else {
                     selected = keep_size_label.indexOf( $(this).attr("value") ) > -1;
@@ -1407,7 +1414,7 @@
             });
         });
         
-        var keep_size_label = ['100', '500', '1000', '2000', 'more', 'unknown'];
+        var keep_size_label = ['500', '5000', '10000', 'more', 'unknown'];
         max_size = keep_size_label.length;
 
         //Filter Number of Cases
@@ -1423,7 +1430,7 @@
                 keep_size_label.push(label);
             }
             if(keep_size_label.length == 0){
-                keep_size_label = ['100', '500', '1000', '2000', 'more','unknown'];
+                keep_size_label = ['500', '5000', '10000', 'more','unknown'];
             }
 
             ////////////// Show/Hide Hide/Show UI buttons
@@ -1433,17 +1440,18 @@
 
                 if(i != max_size){
                     if ( in_keep_size_label > -1 ){
-                        btn.children[0].setAttribute('style',(keep_size_label.length == max_size) ? 'fill:#fff;' : 'fill:#d4d4d4;');
-                        btn.children[1].setAttribute('style','fill:#000;');
+                        btn.children[0].setAttribute('style',(keep_size_label.length == max_size) ? 'fill:#f7f7f7;' : 'fill:#d4d4d4;');
+                        btn.children[2].setAttribute('style','fill:#000;font-weight:700;');
                     } else {
                         btn.children[0].setAttribute('style','fill:#f7f7f7;');
-                        btn.children[1].setAttribute('style', 'fill:#888;' );               
+                        //btn.children[0].setAttribute('style','fill:#fff;');
+                        btn.children[2].setAttribute('style', 'fill:#999;font-weight:normal;' );               
                     }
                 } else {
                     if ( in_keep_size_label > -1 ){
-                        btn.setAttribute('style','color:#000;');
+                        btn.setAttribute('style','color:#000;font-weight:700;');
                     } else {
-                        btn.setAttribute('style','color:#999;');            
+                        btn.setAttribute('style','color:#999;font-weight:normal;');            
                     }
                 }
             }
