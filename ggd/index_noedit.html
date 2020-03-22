@@ -112,7 +112,7 @@
             $('#toolbar-icon-' + toolbar).attr('collapsed', 'true');
             if(toolbar == 'meta'){
                 d3.select('#vis').attr('shift_bubble_right','0');
-                    redraw();
+                redraw();
             }
         }
 
@@ -123,6 +123,7 @@
             $('#toolbar-icon-' + toolbar).attr('collapsed', 'false');
             if(toolbar == 'meta'){
                 d3.select('#vis').attr('shift_bubble_right','200');
+                redraw();
             }
         }
 
