@@ -1,0 +1,1632 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"-->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/custom_style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/font.css">
+    <!--link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&display=swap" rel="stylesheet"-->
+    <!-- Font Awesome -->
+    <script src="assets/js/libs/all.min.js"></script>
+    <title>GGD Dashboard</title>
+    <script src="assets/js/libs/modernizr-2.0.6.min.js"></script>
+    <script src="assets/js/libs/d3.min.js"></script>
+    <script src="assets/js/libs/crossfilter.min.js"></script>
+    <script src="assets/js/libs/jquery-3.3.1.slim.min.js"></script>
+    <script src="assets/js/libs/jquery-3.4.1.min.js"></script>
+    <script>
+        var size_values = [100, 500, 1000, 2000, 0];
+        var time_values = [];
+        var today = new Date().getFullYear();
+        for(var i = 0; i < 18; i++ ){
+            time_values.push(today - i);
+        }
+        var categories = ["keywords", "geo", "population", "type", "level"];
+        var tagsInCategories = []; 
+        var editMode = false;
+
+        function changeView(view) {
+            if(categories.indexOf(view) != -1) {
+                for (category in categories) {
+                    cat = categories[category];
+                    if ( cat == view & $('#eye_' + view).attr('collapsed') == 'true' ) {
+                        $('.cat_' + cat).show();
+                        toggleEye(cat, 'show');
+                    } else {
+                        $('.cat_' + cat).hide();
+                        toggleEye(cat, 'hide');
+                    }
+                }
+            } else if ( $('#eye_' + view).attr('collapsed') == 'false' ) {
+                $('.cat_' + view).hide();
+                toggleEye(view);
+            } else if ( $('#eye_' + view).attr('collapsed') == 'true' ) {
+                $('.cat_' + view).show();
+                toggleEye(view);
+            }
+
+            if(view == 'time'){
+                $('.pie').toggle();
+            } 
+        }
+
+        function toggleEye(view, showhide = false) {
+            if (!showhide) {
+                if ($('#eye_' + view).attr('collapsed') == 'false') {
+                    $('#eye_' + view).attr('src', 'assets/img/icon/eye_hide.png');
+                    $('#eye_' + view).attr('collapsed', 'true');
+                } else {
+                    $('#eye_' + view).attr('src', 'assets/img/icon/eye_show.png');
+                    $('#eye_' + view).attr('collapsed', 'false');
+                }
+            } else {
+                if (showhide == 'show' && $('#eye_' + view).attr('collapsed') == 'true') {
+                    $('#eye_' + view).attr('src', 'assets/img/icon/eye_show.png');
+                    $('#eye_' + view).attr('collapsed', 'false');
+                } else if (showhide == 'hide' && $('#eye_' + view).attr('collapsed') == 'false') {
+                    $('#eye_' + view).attr('src', 'assets/img/icon/eye_hide.png');
+                    $('#eye_' + view).attr('collapsed', 'true');
+                }
+            }
+        }
+
+        function collapseToolbar(toolbar) {
+            $('#toolbar-' + toolbar).collapse('toggle');
+            
+            if ($('#toolbar-icon-' + toolbar).attr('collapsed') == 'true') {
+                $('#toolbar-icon-' + toolbar).removeClass('fa-plus');
+                $('#toolbar-icon-' + toolbar).addClass('fa-minus');
+                $('#toolbar-icon-' + toolbar).attr('collapsed', 'false');
+                if(toolbar == 'meta'){
+                    d3.select('#vis').attr('shift_bubble_right','200');
+                    if(typeof(redraw) === typeof(Function)) {
+                        redraw();
+                    }
+                }
+                else if(toolbar == 'bottom'){
+                    d3.select('#vis').attr('shift_bubble_up','80');
+                    redraw();
+                }
+            } else {
+                $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
+                $('#toolbar-icon-' + toolbar).addClass('fa-plus');
+                $('#toolbar-icon-' + toolbar).attr('collapsed', 'true');
+                if(toolbar == 'meta'){
+                    d3.select('#vis').attr('shift_bubble_right','0');
+                    redraw();
+                }
+                if(toolbar == 'bottom'){
+                    d3.select('#vis').attr('shift_bubble_up','0');
+                    redraw();
+                }
+            }
+        }
+
+        function closeToolbar(toolbar) {
+            $('#toolbar-' + toolbar).collapse('toggle');
+            $('#toolbar-icon-' + toolbar).removeClass('fa-minus');
+            $('#toolbar-icon-' + toolbar).addClass('fa-plus');
+            $('#toolbar-icon-' + toolbar).attr('collapsed', 'true');
+            if(toolbar == 'meta'){
+                d3.select('#vis').attr('shift_bubble_right','0');
+                redraw();
+            }
+        }
+
+        function openToolbar(toolbar) {
+            $('#toolbar-' + toolbar).collapse('toggle');
+            $('#toolbar-icon-' + toolbar).removeClass('fa-plus');
+            $('#toolbar-icon-' + toolbar).addClass('fa-minus');
+            $('#toolbar-icon-' + toolbar).attr('collapsed', 'false');
+            if(toolbar == 'meta'){
+                d3.select('#vis').attr('shift_bubble_right','200');
+                redraw();
+            }
+        }
+
+        function toggleFill() {
+            if ($('#eye_dep').attr('collapsed') == 'true') {
+                $('a.bubble-node').each(function() {
+                    $(this).css("fill", $(this).attr("fill"));
+                });
+                toggleEye('dep');
+            } else {
+                $('a.bubble-node').css("fill", "#ccc");
+                toggleEye('dep');
+            }
+        }
+
+        function showEditDep(){  
+            d3.select('#edit_department').attr('style', 'display:block;');
+            d3.select('#department-input').attr('style', 'display:none;');
+        }
+        function hideEditDep(){  
+            d3.select('#edit_department').attr('style', 'display:none;');
+            d3.select('#department-input').attr('style', 'display:block;');
+        }
+
+        function showEditMode() {
+            resetTempValues();
+             
+            if (d3.select('#active_node_id').attr('active_node_id') == null) {
+                //d3.select('#status').html('First select the dataset you wish to edit.')
+
+            } else {
+                d3.select('#confirm_delete').attr('style','display:none;');
+                document.getElementById("edit-top-bar").style.display = "block";
+                d3.selectAll(".edit_field").attr('contentEditable', 'true');
+                d3.select('#status').html('')
+                d3.selectAll('.bubble-node').attr("xlink:href",null) // "##{encodeURIComponent(idValue(d))}"
+                
+                for (var i = 1; i < 6; i++) {
+                    btn = document.getElementById('label_level_' + i);
+                    btn.setAttribute("onclick", 'changeLevel("' + btn.getAttribute('value') + '")');
+                }
+                for (var i = 1; i < 10; i++) {
+                    btn = document.getElementById('label_dep_' + i);
+                    btn.setAttribute("onclick", 'changeDep("' + btn.getAttribute('value') + '")');
+                }
+                for (var i = 1; i < 11; i++) {
+                    btn = document.getElementById('label_geo_' + i);
+                    btn.setAttribute("onclick", 'changeGeo("' + btn.getAttribute('value') + '")');
+                }
+                d3.select('#department-input').attr('onclick',"showEditDep()")
+                for (var i = 1; i < 6; i++) {
+                    btn = document.getElementById('label_type_' + i);
+                    btn.setAttribute("onclick", 'changeType("' + btn.getAttribute('value') + '")');
+                }
+                for (var i = 1; i < 5; i++) {
+                    btn = document.getElementById('label_pop_' + i);
+                    btn.setAttribute("onclick", 'changePop("' + btn.getAttribute('value') + '")');
+                }
+            }
+            hideEditDep();
+        }
+
+        function showEditNewMode() {
+            document.getElementById("edit-top-bar-new").style.display = "block";
+
+            d3.selectAll(".edit_field").attr('contentEditable', 'true');
+            d3.select('#status').html('');
+            d3.selectAll('.bubble-node').attr("xlink:href",null); 
+            
+            for (var i = 1; i < 6; i++) {
+                btn = document.getElementById('label_level_' + i);
+                btn.setAttribute("onclick", 'changeLevel("' + btn.getAttribute('value') + '")');
+            }
+            for (var i = 1; i < 10; i++) {
+                btn = document.getElementById('label_dep_' + i);
+                btn.setAttribute("onclick", 'changeDep("' + btn.getAttribute('value') + '")');
+            }
+            for (var i = 1; i < 11; i++) {
+                btn = document.getElementById('label_geo_' + i);
+                btn.setAttribute("onclick", 'changeGeo("' + btn.getAttribute('value') + '")');
+            }
+            d3.select('#department-input').attr('onclick',"showEditDep()")
+            for (var i = 1; i < 6; i++) {
+                btn = document.getElementById('label_type_' + i);
+                btn.setAttribute("onclick", 'changeType("' + btn.getAttribute('value') + '")');
+            }
+            for (var i = 1; i < 5; i++) {
+                btn = document.getElementById('label_pop_' + i);
+                btn.setAttribute("onclick", 'changePop("' + btn.getAttribute('value') + '")');
+            }
+
+            hideEditDep();
+            showNewBubble();
+        }
+        
+
+        function hideEditMode() {
+            d3.select('#confirm_delete').attr('style','display:none;');
+            document.getElementById("edit-top-bar").style.display = "none";
+            d3.selectAll('.bubble-node').attr("xlink:href", function(d){ 
+                return '#' + encodeURIComponent(idValue(d));
+            });
+
+            for (var i = 1; i < 6; i++) {
+                document.getElementById('label_level_' + i).setAttribute("onclick", '');
+            }
+            for (var i = 1; i < 10; i++) {
+                document.getElementById('label_dep_' + i).setAttribute("onclick", '');
+            }
+            for (var i = 1; i < 11; i++) {
+                document.getElementById('label_geo_' + i).setAttribute("onclick", '');
+            }
+            d3.select('#edit_department').attr('onclick',"")
+            for (var i = 1; i < 6; i++) {
+                document.getElementById('label_type_' + i).setAttribute("onclick", '');
+            }
+            for (var i = 1; i < 5; i++) {
+                document.getElementById('label_pop_' + i).setAttribute("onclick", '');
+            }
+            hideEditDep();
+        }
+
+        function hideEditNewMode() {
+            document.getElementById("confirm_delete").style.display = "none";
+            document.getElementById("edit-top-bar-new").style.display = "none";
+            d3.selectAll(".edit_field").attr('contentEditable', 'false');
+            d3.selectAll('.bubble-node').attr("xlink:href", function(d){ 
+                return '#' + encodeURIComponent(idValue(d));
+            });
+
+            for (var i = 1; i < 6; i++) {
+                document.getElementById('label_level_' + i).setAttribute("onclick", '');
+            }
+            for (var i = 1; i < 10; i++) {
+                document.getElementById('label_dep_' + i).setAttribute("onclick", '');
+            }
+            for (var i = 1; i < 11; i++) {
+                document.getElementById('label_geo_' + i).setAttribute("onclick", '');
+            }
+            d3.select('#edit_department').attr('onclick',"")
+            for (var i = 1; i < 6; i++) {
+                document.getElementById('label_type_' + i).setAttribute("onclick", '');
+            }
+            for (var i = 1; i < 5; i++) {
+                document.getElementById('label_pop_' + i).setAttribute("onclick", '');
+            }
+            hideEditDep();
+            hideNewBubble();
+        }
+
+        function resetEdit(){
+            d3.select('#confirm_delete').attr('style','display:none;');
+            //resetTempValues();
+            restorePreviousValues();
+        }
+
+        function cancelEdit(){
+            d3.select('#confirm_delete').attr('style','display:none;');
+            resetEdit();
+            hideEditDep();
+            hideEditMode();
+        }
+
+        function cancelEditNew(){
+            hideEditDep();
+            hideEditNewMode();
+            collapseToolbar('meta');
+        }
+
+        function sendData(data){
+            $.post("data/db_save_simu.php", data);
+        }
+        function deleteData(data){
+            $.post("data/db_delete_simu.php", data);
+            d3.select('#confirm_delete').attr('style','display:none;');
+        }
+
+        function insertNew(){
+            changeFields(true);
+            updateWithNewBubble();
+            changeView('population');
+        }
+
+        function confirmDelete(){
+            d3.select('#confirm_delete').attr('style','display:inline;');
+        }
+
+    </script>
+</head>
+
+<body onresize="replaceLayout()" id="body"> <!--   -->
+
+    <div class="" id="vizContainer">
+    <!-- VISUALIZATION -->
+        <div class="vizbar" id="vizbar">
+            <div id="data_main" style="display:none;"></div>
+            <div id="vis"></div>
+        </div>
+    </div>
+
+    <div class="topbar">
+        <input id="searchInput" name="targetNode" type="text" />
+        <button class="button" id="searchStart">Search</button>
+        <button class="button reset">Reset</button>
+        <span id="status" style="display: none;"></span>
+        <span onmouseup="showEditNewMode();" class="button">New</span> 
+        <span onmouseup="showEditMode();" class="button" id='edit_btn' style='display:none;'>Edit</span>
+    </div>
+
+
+    <div id="edit-top-bar" class="topbar" style="display:none">
+        <div class="row toolbar-header" id="edit_mode">
+            <div class="col" style="flex-grow:0.5;margin-left:-5px;color:#C33;">
+                EDIT
+            </div>
+            <div class="col button" onclick="confirmDelete()"  style="flex-grow:2;text-align: left;">
+                <span class="col button" id="start_delete" style="display:inline;">[!] Delete</span>
+                <span class="col button" id="confirm_delete" onclick="deleteDataset();" style="display:none;">
+                    &nbsp;[Confirm]
+                </span>
+            </div>
+            <div class="col button" onclick="cancelEdit();" style="flex-grow:1.1;">
+                <img class="eyecon" id="cancel" src="assets/img/cancel.svg"> 
+                Cancel
+            </div>
+            <div class="col button" onclick="resetEdit();">
+                <img class="eyecon" id="reset" src="assets/img/cancel.svg"> 
+                Reset
+            </div>
+            <div class="col button" onclick="changeFields(true);">
+                <img class="eyecon" id="save" src="assets/img/save.svg"> 
+                Save
+            </div>
+        </div>
+    </div>
+
+
+    <div id="edit-top-bar-new" class="topbar" style="display:none">
+        <div class="row toolbar-header" id="edit_mode">
+            <div class="col"  style="flex-grow:1.7;color:#C33;">
+                NEW DATASET
+            </div>
+            <div class="col button" onclick="cancelEditNew();">
+                <img class="eyecon" id="cancel_new" src="assets/img/cancel.svg"> 
+                Cancel
+            </div>
+            <div class="col button" onclick="resetEdit();">
+                <img class="eyecon" id="reset_new" src="assets/img/cancel.svg"> 
+                Reset
+            </div>
+            <div class="col button" onclick="insertNew();">
+                <img class="eyecon" id="save_new" src="assets/img/save.svg"> 
+                Save
+            </div>
+        </div>
+    </div>
+
+    <!-- begin bubble-specific toolbar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header" id="sidebar-header">
+            <div style="float:left;margin-left:10px;">
+                <!--span class="dim_val">Title:</span!-->
+                <div class="edit_field" id="title-input" contenteditable="false">
+                </div>
+            </div>
+            <div class="collapse_btn">
+                <i class="fa fa-plus" aria-hidden="true" id="toolbar-icon-meta" collapsed="true" onmouseup="collapseToolbar('meta')"></i>
+            </div>
+            <div class="col-auto">
+            </div>
+        </div>
+        <div class="row collapse" id="toolbar-meta" style="clear:both;">
+            <div class="col" style="padding-left: 10px;padding-right: 0px;padding-top: 6px;padding-bottom: 6px;">
+
+                <span id="active_node_id"></span>
+
+                <div class="sidebar-items" style="overflow: hidden;">
+                    <!--div><b>Description:&nbsp;</b></div-->
+                    <span class="edit_field" contentEditable="false" id="description-input" style="border:0px;"></span>
+                    <!--i class="arrow_down"></i-->
+                </div>
+
+                <div class="sidebar-items">
+                    <span class="sidebar_field_big">Department:</span> 
+                    <span id="department-input" contenteditable="false"></span>
+
+                    <div id="edit_department" class="dropdown_department" style="display: none;">
+                        
+                            <label id="label_dep_1" value="EGZ" class="dep_label">
+                                <span class="dep_circle dep_EGZ"></span> 
+                                <span>EGZ</span>
+                            </label>
+                            <label id="label_dep_6" value="FGMA" class="dep_label">
+                                <span class="dep_circle dep_FGMA"></span> 
+                                <span>FGMA</span>
+                            </label>
+
+
+                            <label id="label_dep_2" value="IZ" class="dep_label">
+                                <span class="dep_circle dep_IZ"></span> 
+                                <span>IZ</span>
+                            </label>
+                            <label id="label_dep_7" value="GHOR" class="dep_label">
+                                <span class="dep_circle dep_GHOR"></span> 
+                                <span>GHOR</span>
+                            </label>
+
+
+                            <label id="label_dep_3" value="JGZ" class="dep_label">
+                                <span class="dep_circle dep_JGZ"></span> 
+                                <span>JGZ</span>
+                            </label>
+                            <label id="label_dep_8" value="LO" class="dep_label">
+                                <span class="dep_circle dep_LO"></span> 
+                                <span>LO</span>
+                            </label>
+
+
+                            <label id="label_dep_4" value="VT" class="dep_label">
+                                <span class="dep_circle dep_VT"></span> 
+                                <span>VT</span>
+                            </label>
+                            <label id="label_dep_9" value="AAGG" class="dep_label">
+                                <span class="dep_circle dep_AAGG"></span> 
+                                <span>AAGG</span>
+                            </label>
+
+
+                            <label id="label_dep_5" value="MGGZ" class="dep_label">
+                                <span class="dep_circle dep_MGGZ"></span> 
+                                <span>MGGZ</span>
+                            </label>
+                    </div>
+                <!--/div>
+
+                <div class="sidebar-items"-->
+                    <span style="float:left;">Size:&nbsp;&nbsp;</span>
+                    <span class="edit_field" contentEditable="false" id="size-input"></span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span class="sidebar_field_big">Keywords: </span>
+                    <span class="edit_field" contentEditable="false" id="keywords-input" style="float: right;font-weight:100;width: 317px;"></span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span class="sidebar_field_big">Indicators: </span>
+                    <span class="edit_field" contentEditable="false" id="indic-input" style="float: right;font-weight:100;width: 317px;margin-left:-3px"></span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span class="sidebar_field_big">Contact:</span> 
+                    <span class="edit_field" id="contact-input" contenteditable="false"  style="float:left;font-weight:100;width:331px;"></span>
+                </div>
+
+
+                <div class="sidebar-items">
+                    <span class="sidebar_field_small">Time: </span>
+                    <span class="edit_field" contentEditable="false" id="time-input" style="float:left;font-weight:100;width:350px;"></span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span class="sidebar_field_small">Area:</span> 
+                    <span id="geo-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
+                        <input type="radio" id="edit_geo_1" name="edit_geo" value="straat" style="display:none;">
+                        <input type="radio" id="edit_geo_2" name="edit_geo" value="buurt" style="display:none;">
+                        <input type="radio" id="edit_geo_3" name="edit_geo" value="wijk" style="display:none;">
+                        <input type="radio" id="edit_geo_4" name="edit_geo" value="gebied" style="display:none;">
+                        <input type="radio" id="edit_geo_5" name="edit_geo" value="stadsdeel" style="display:none;">
+                        <input type="radio" id="edit_geo_6" name="edit_geo" value="stad" style="display:none;">
+                        <input type="radio" id="edit_geo_7" name="edit_geo" value="amstelland" style="display:none;">
+                        <input type="radio" id="edit_geo_8" name="edit_geo" value="adam" style="display:none;">
+                        <input type="radio" id="edit_geo_9" name="edit_geo" value="g4" style="display:none;">
+                        <input type="radio" id="edit_geo_10" name="edit_geo" value="national" style="display:none;">
+                        
+                        <label id="label_geo_1" class="item_input" value="straat" for="edit_geo_1" >
+                            Straat
+                        </label>
+                        <label id="label_geo_2" class="item_input" value="buurt" for="edit_geo_2" >
+                            Buurt
+                        </label>
+                        <label id="label_geo_3" class="item_input" value="wijk" for="edit_geo_3" >
+                            Wijk
+                        </label>
+                        <label id="label_geo_4" class="item_input" value="gebied" for="edit_geo_4" >
+                            Gebied
+                        </label>
+                        <label id="label_geo_5" class="item_input" value="stadsdeel" for="edit_geo_5" >
+                            Stadsdeel
+                        </label>
+                        <label id="label_geo_6" class="item_input" value="stad" for="edit_geo_6" >
+                            Stad
+                        </label>
+                        <label id="label_geo_7" class="item_input" value="amstelland" for="edit_geo_7" >
+                            Amstelland&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <label id="label_geo_8" class="item_input" value="adam" for="edit_geo_8" >
+                            Metro. A'dam&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <label id="label_geo_9" class="item_input" value="g4" for="edit_geo_9" >
+                            G4&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <label id="label_geo_10" class="item_input" value="national" for="edit_geo_10" >
+                            National
+                        </label>
+
+                    </span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span class="sidebar_field_small">Age:</span> 
+                    <span id="pop-input" contenteditable="false">
+                        <input type="checkbox" id="edit_pop_1" name="edit_pop[]" value="youth" style="display:none;">
+                        <input type="checkbox" id="edit_pop_2" name="edit_pop[]" value="young" style="display:none;">
+                        <input type="checkbox" id="edit_pop_3" name="edit_pop[]" value="adult" style="display:none;">
+                        <input type="checkbox" id="edit_pop_4" name="edit_pop[]" value="elderly" style="display:none;">
+                        <label id="label_pop_1" class="pop-input-item" value="youth" for="edit_pop_1">
+                            <img src="assets/img/youth.svg" class="icon">
+                            <br>Youth
+                        </label>
+                        <label id="label_pop_2" class="pop-input-item" value="young" for="edit_pop_2">
+                            <img src="assets/img/young_adult.svg" class="icon">
+                            <br>Young Adult
+                        </label>
+                        <label id="label_pop_3" class="pop-input-item" value="adult" for="edit_pop_3">
+                            <img src="assets/img/adult.svg" class="icon">
+                            <br>Adult
+                        </label>
+                        <label id="label_pop_4" class="pop-input-item" value="elderly" for="edit_pop_4">
+                            <img src="assets/img/old_person.svg" class="icon">
+                            <br>Elderly
+                        </label>
+                    </span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span class="sidebar_field_small">Type:</span> 
+                    <span id="type-input" contenteditable="false"  style="float:left;font-weight:100;width:370px;">
+                        <input type="checkbox" id="edit_type_1" name="edit_type[]" value="questionnaire" style="display:none;">
+                        <input type="checkbox" id="edit_type_2" name="edit_type[]" value="registry" style="display:none;">
+                        <input type="checkbox" id="edit_type_3" name="edit_type[]" value="monitor" style="display:none;">
+                        <input type="checkbox" id="edit_type_4" name="edit_type[]" value="socialmedia" style="display:none;">
+                        <input type="checkbox" id="edit_type_5" name="edit_type[]" value="promotion" style="display:none;">
+                        
+                        <label id="label_type_5" class="item_input" value="monitor" for="edit_type_5">
+                            Monitor&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <label id="label_type_1" class="item_input" value="questionnaire" for="edit_type_1">
+                            Questionnaire&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <label id="label_type_2" class="item_input" value="socialmedia" for="edit_type_2">
+                            Social Media
+                        </label>
+                        <br>
+                        <label id="label_type_4" class="item_input" value="registry" for="edit_type_4">
+                            Registry&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <label id="label_type_3" class="item_input" value="promotion" for="edit_type_3">
+                            Health Promotion
+                        </label>
+
+                    </span>
+                </div>
+
+                <div class="sidebar-items">
+                    <span class="sidebar_field_small">Level:</span> 
+                    <span id="level-input" contenteditable="false"  style="float:left;font-weight:100;width:450px;height:50px;overflow:visible;">
+                        <input type="checkbox" id="edit_level_1" name="edit_level[]" value="individual" style="display:none;">
+                        <input type="checkbox" id="edit_level_2" name="edit_level[]" value="family" style="display:none;">
+                        <input type="checkbox" id="edit_level_3" name="edit_level[]" value="group" style="display:none;">
+                        <input type="checkbox" id="edit_level_4" name="edit_level[]" value="orga" style="display:none;">
+                        <input type="checkbox" id="edit_level_5" name="edit_level[]" value="geographic" style="display:none;">
+                        
+                        <label class="level-input-item" id="label_level_1" value="individual" for="edit_level_1">
+                            <img src="assets/img/icon/level_1_individual.png" class="icon">
+                            <br>Individual
+                        </label>
+                        <label class="level-input-item" id="label_level_2" value="family" for="edit_level_2">
+                            <img src="assets/img/icon/level_2_family.png" class="icon">
+                            <br>Family
+                        </label>
+                        <label class="level-input-item" id="label_level_3" value="group" for="edit_level_3">
+                            <img src="assets/img/icon/level_3_group.png" class="icon">
+                            <br>Group
+                        </label>
+                        <label class="level-input-item" id="label_level_4" value="orga" for="edit_level_4">
+                            <img src="assets/img/icon/level_4_orga.png" class="icon">
+                            <br>Organization
+                        </label>
+                        <label class="level-input-item" id="label_level_5" value="geographic" for="edit_level_5">
+                            <img src="assets/img/icon/level_5_geographic.png" class="icon">
+                            <br>Geo
+                        </label>
+
+                    </span>
+                </div>
+
+                <div class="sidebar-items" style="border: none;">
+                    <span class="sidebar_field_big">Publication:</span> 
+                    <span class="edit_field" id="publication-input" contenteditable="false"  style="float:left;font-weight:100;width:300px;"></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="toolbar_container">
+
+        <div class='toolbar_sizer' id="toolbar_inside">
+            <!-- begin first toolbar -->
+            <div class="toolbar">
+                <div class="row toolbar-header">
+                    <div class="col dim_label" onmouseup="changeView('geo');">
+                        <img class="eyecon button" id="eye_geo" collapsed="true" src="assets/img/icon/eye_hide.png"> 
+                        <span class="button">Area</span>
+                    </div>
+                    <div class="col dim_label" onmouseup="changeView('population');">
+                        <img class="eyecon button" collapsed="true" id="eye_population" src="assets/img/icon/eye_hide.png">  
+                        <span class="button" >Age</span>
+                    </div>
+                    <div class="col dim_label" onmouseup="changeView('level');">
+                        <img class="eyecon button" collapsed="true" id="eye_level" src="assets/img/icon/eye_hide.png"> 
+                        <span class="button">Level</span>
+                    </div>
+                    <div class="col dim_label" onmouseup="changeView('type');">
+                        <img class="eyecon button" collapsed="true" id="eye_type" src="assets/img/icon/eye_hide.png" style="margin-left: 25px;"> 
+                        <span class="button">Type</span>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa fa-plus button" aria-hidden="true" id="toolbar-icon-top" collapsed="true" onmouseup="collapseToolbar('top')"></i>
+                    </div>
+                </div>
+                <div class="row collapse" id="toolbar-top">
+                    <div class="Zcol" id="geo_btn">
+                        <span class="geolevel toolbar-items">
+                            <div style="float:left;">
+                                <img src="assets/img/icon/geo_1.png" class="icon">
+                            </div>
+                            <div style="float:right;">
+                                <div id="geo_1" class="item_geo" value="straat">
+                                    Straat
+                                </div>
+                                <div id="geo_2" class="item_geo" value="buurt">
+                                    Buurt
+                                </div>
+                                <div id="geo_3" class="item_geo" value="wijk">
+                                    Wijk
+                                </div>
+                            </div>
+                        </span>
+                        <span class="geolevel toolbar-items">
+                            <div style="float:left;">
+                                <img src="assets/img/icon/geo_2.png" class="icon" style="padding-right: 3px;">
+                            </div>
+                            <div style="float:right;">
+                                <div id="geo_4" class="item_geo" value="gebied">
+                                    Gebied
+                                </div>
+                                <div id="geo_5" class="item_geo" value="stadsdeel">
+                                    Stadsdeel
+                                </div>
+                                <div id="geo_6" class="item_geo" value="stad">
+                                    Stad
+                                </div>
+                            </div>
+                        </span>
+                        <span class="geolevel toolbar-items">
+                            <div style="padding-right: 3px;padding-bottom: 40px;"><img src="assets/img/icon/geo_3.png" class="icon"></div>
+                            <div style="float:right;">
+                                <div id="geo_7" class="item_geo" value="amstelland">
+                                    Amstelland
+                                </div>
+                                <div id="geo_8" class="item_geo" value="adam">
+                                    A'dam
+                                </div>
+                                <div id="geo_9" class="item_geo" value="g4">
+                                    G4
+                                </div>
+                                <div id="geo_10" class="item_geo" value="national">
+                                    National
+                                </div>
+                                <div id="geo_11" class="item_geo" value="unknown">
+                                    (unknown)<br>&nbsp;<br>
+                                </div>
+                            </div> 
+                        </span>
+                    </div>
+
+                    <div class="Zcol" id="pop_btn">
+                        <div class="toolbar-items">
+                            <div style="float:left;" id="pop_1" class="item_population" value="youth">
+                                <img src="assets/img/youth.svg" class="icon">
+                                <br>Youth<br><br>
+                            </div>
+                            <div style="float:right;" id="pop_2" class="item_population" value="young">
+                                <img src="assets/img/young_adult.svg" class="icon">
+                                <br>Young Adult
+                            </div>
+                        </div>
+                        <div class="toolbar-items">
+                            <div style="float:left;" id="pop_3" class="item_population" value="adult">
+                                <img src="assets/img/adult.svg" class="icon">
+                                <br>Adult
+                            </div>
+                            <div style="float:right;" id="pop_4" class="item_population" value="elderly">
+                                <img src="assets/img/old_person.svg" class="icon">
+                                <br>Elderly
+                            </div>
+                        </div>    
+                        <div id="pop_5" class="item_population" value="unknown">
+                            (unknown)
+                        </div>
+                    </div>
+
+                    <div class="Zcol" id="level_btn">
+                        <div class="toolbar-items level">
+                            <div style="float:left;margin-left:10px;margin-top:-2px;">
+                                <div class="item_level" id="level_1" value="individual">
+                                    <img src="assets/img/icon/level_1_individual.png" class="icon">
+                                    <br>Individual
+                                </div>
+                                <div class="item_level" id="level_2" value="family">
+                                    <img src="assets/img/icon/level_2_family.png" class="icon">
+                                    <br>Family
+                                </div>
+                                <div class="item_level" id="level_3" value="group">
+                                    <img src="assets/img/icon/level_3_group.png" class="icon">
+                                    <br>Group
+                                </div>
+                            </div>
+                            <div style="float:right;margin-left:10px;">
+                                <div class="item_level" id="level_4" value="orga">
+                                    <img src="assets/img/icon/level_4_orga.png" class="icon">
+                                    <br>Organization
+                                </div>
+                                <div class="item_level" id="level_5" value="geographic">
+                                    <img src="assets/img/icon/level_5_geographic.png" class="icon">
+                                    <br>Geography
+                                </div>
+                                <div class="item_level" id="level_6" class="" value="unknown">
+                                    (unknown)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="Zcol" id="type_btn">
+                        <div class="toolbar-items" id="glyph_type_filter">
+                            <svg height="330px" width="390px">
+                               <g style="transform: translate(0px, 10px);">
+                                 <ellipse cx="196.92" cy="81.52" rx="8.74" ry="41.07" id="type_shape_1" value="questionnaire"/>
+                                 <ellipse cx="160.19" cy="108.38" rx="8.74" ry="41.07" transform="translate(7.61 227.24) rotate(-72)" id="type_shape_5" value="socialmedia"/>
+                                 <ellipse cx="174.33" cy="151.68" rx="41.07" ry="8.74" transform="translate(-50.86 203.56) rotate(-54)" id="type_shape_4" value="promotion" />
+                                 <ellipse cx="219.71" cy="151.68" rx="8.74" ry="41.07" transform="matrix(0.81, -0.59, 0.59, 0.81, -47.2, 158.11)" id="type_shape_3" value="registry" />
+                                 <ellipse cx="233.86" cy="108.38" rx="41.07" ry="8.74" transform="translate(-22.05 77.57) rotate(-18)" id="type_shape_2" value="monitor" />
+                                 <text transform="translate(90 15)" id="type_1" value="questionnaire">
+                                    <tspan>Questionnaire</tspan>
+                                 </text>
+                                 <text transform="translate(286.87 80)" id="type_2" value="socialmedia">
+                                    <tspan>Social</tspan>
+                                    <tspan x="0" y="30">Media</tspan>
+                                 </text>
+                                 <text transform="translate(210 183.13)" id="type_3" value="promotion">
+                                    <tspan x="0" y="30">Promotion</tspan>
+                                 </text>
+                                 <text transform="translate(44.52 212.13)" id="type_4" value="registry">
+                                    <tspan>Registry</tspan>
+                                 </text>
+                                 <text transform="translate(20 80)" id="type_5" value="monitor">
+                                    <tspan>Monitor</tspan>
+                                 </text>
+                                 <text transform="translate(100 300)" id="type_6" value="unknown">
+                                    <tspan>(unknown)</tspan>
+                                 </text>
+                               </g>
+                            </svg>
+                        </div>  
+                        <!--div id="type_6" class="" value="unknown">
+                            (unknown)
+                        </div-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbar_sizer" id="toolbar_outside">
+            <!-- begin second toolbar -->
+            <div class="toolbar">
+                <div class="row toolbar-header">
+                    <div class="col dim_label" id="toggle_size" onmouseup="removeSize();">
+                        <img class="eyecon button" collapsed="false" id="eye_size" src="assets/img/icon/eye_show.png">
+                        <span class="button">Size</span>
+                    </div>
+                    <div class="col dim_label" onmouseup="toggleFill();" style="flex-grow: 1.7;">
+                        <img class="eyecon button" id="eye_dep" collapsed="false" src="assets/img/icon/eye_show.png">
+                        <span class="button">Department</span>
+                    </div>
+                    <div class="col dim_label" onmouseup="changeView('time');"> <!-- ,'.arc' -->
+                        <img class="eyecon button" id="eye_time" collapsed="false" src="assets/img/icon/eye_show.png">
+                        <span class="button">Years</span>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa fa-plus button" aria-hidden="true" id="toolbar-icon-bottom" collapsed="true" onmouseup="collapseToolbar('bottom')"></i>
+                    </div>
+                </div>
+                <div class="row collapse" id="toolbar-bottom">
+
+                    <div class="Zcol" id="size_btn">
+                        <div id="size_filter_svg" style="display: block" class="toolbar-items">
+                            <svg width="97%" version="1.1" id="Layer_1_Size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 272.83 264.97"xml:space="preserve">
+                               <style type="text/css">
+                                   .st0{fill:#f7f7f7;stroke:#666;stroke-miterlimit:10;}
+                                   .st1{font-family:'OpenSans';}
+                                   .st2{font-size:22px;margin-left:4px;}
+                               </style>
+                               <g transform="translate(0 -34)">
+                                   <g class="size" data-size="more" id="size_4" value="more">
+                                       <circle class="st0" cx="138.54" cy="158.6" r="100" />
+                                       <rect fill="#f7f7f7" x='112' y='50' width='55' height='25'></rect>
+                                       <text transform="matrix(1 0 0 1 113 70)" class="st1 st2">more</text>
+                                   </g>
+                                   <g class="size" data-size="10000" id="size_3" value="100K">
+                                       <circle class="st0" cx="138.54" cy="183.6" r="75" />
+                                       <rect fill="#f7f7f7" x='110' y='95' width='55' height='30'></rect>
+                                       <text transform="matrix(1 0 0 1 113 120)" class="st1 st2">100K</text>
+                                   </g>
+                                   <g class="size" data-size="5000" id="size_2" value="50K">
+                                       <circle class="st0" cx="138.54" cy="208.6" r="50" />
+                                       <rect fill="#f7f7f7" x='115' y='150' width='40' height='30'></rect>
+                                       <text transform="matrix(1 0 0 1 118 175)" class="st1 st2">50K</text>
+                                   </g>
+                                   <g class="size" data-size="500" id="size_1" value="10K">
+                                       <circle class="st0" cx="138.54" cy="226.83" r="30" />
+                                       <g></g>
+                                       <text transform="matrix(1 0 0 1 118 235)" class="st1 st2">10K</text>
+                                   </g>
+                               </g>
+                           </svg>
+                        </div>
+                        <div id="size_5" value="unknown" class="size">
+                            (unknown)
+                        </div>
+                    </div>
+
+                    <div class="Zcol" id="dep_btn">
+                        <div class="toolbar-items ownership">
+                            <div style="float:left;" class="dep_btn_col">
+                                <div id="dep_1" value="EGZ">
+                                    <span class="dep_circle dep_EGZ"></span> 
+                                    <span>EGZ</span>
+                                </div>
+                                <div id="dep_2" value="IZ">
+                                    <span class="dep_circle dep_IZ"></span> 
+                                    <span>IZ</span>
+                                </div>
+                                <div id="dep_3" value="JGZ">
+                                    <span class="dep_circle dep_JGZ"></span> 
+                                    <span>JGZ</span>
+                                </div>
+                                <div id="dep_4" value="VT">
+                                    <span class="dep_circle dep_VT"></span> 
+                                    <span>VT</span>
+                                </div>
+                                <div id="dep_5" value="MGGZ">
+                                    <span class="dep_circle dep_MGGZ"></span> 
+                                    <span>MGGZ</span>
+                                </div>
+                            </div>
+                            <div style="float:right; margin-left:-20px" class="dep_btn_col">
+                                <div id="dep_6" value="FGMA">
+                                    <span class="dep_circle dep_FGMA"></span> 
+                                    <span>FGMA</span>
+                                </div>
+                                <div id="dep_7" value="GHOR">
+                                    <span class="dep_circle dep_GHOR"></span> 
+                                    <span>GHOR</span>
+                                </div>
+                                <div id="dep_8" value="LO">
+                                    <span class="dep_circle dep_LO"></span> 
+                                    <span>LO</span>
+                                </div>
+                                <div id="dep_9" value="AAGG">
+                                    <span class="dep_circle dep_AAGG"></span> 
+                                    <span>AAGG</span>
+                                </div>
+                                <div id="dep_10" value="unknown">
+                                    (unknown)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="Zcol" id="time_btn">
+                        <div class="toolbar-items">
+                            <svg id="timedimsvg">
+                                <style type="text/css">
+                                    .time_st0{fill:none;}
+                                    .time_st1{fill:none;stroke:#231F20;stroke-width:5;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st2{fill:none;stroke:#231F20;stroke-width:4.694;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st3{fill:none;stroke:#231F20;stroke-width:4.388;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st4{fill:none;stroke:#231F20;stroke-width:4.083;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st5{fill:none;stroke:#231F20;stroke-width:3.777;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st6{fill:none;stroke:#231F20;stroke-width:3.472;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st7{fill:none;stroke:#231F20;stroke-width:3.166;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st8{fill:none;stroke:#231F20;stroke-width:2.861;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st9{fill:none;stroke:#231F20;stroke-width:2.555;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st10{fill:none;stroke:#231F20;stroke-width:2.25;stroke-linecap:round;stroke-dasharray:0,6.5;}
+                                    .time_st11{display:none;}
+                                    .time_st12{display:inline;fill:none;stroke:#000000;stroke-width:24;stroke-miterlimit:10;}
+                                    .time_st13{display:inline;fill:none;stroke:#FFFFFF;stroke-width:6;stroke-miterlimit:10;}
+                                    .time_st14{display:inline;fill:none;stroke:#FFFFFF;stroke-width:11;stroke-miterlimit:10;}
+                                    .time_st15{fill:url(#Undulating_Coarse_Dots);}
+                                    .time_st16{fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
+                                    .time_st17{font-family:'OpenSans';}
+                                    .time_font{font-size:32px;font-weight: normal;}
+                                    .left_labels{margin-right:-5px;}
+                                </style>
+                                <pattern  x="-647.91" y="-473.44" width="83" height="65" patternUnits="userSpaceOnUse" id="Undulating_Coarse_Dots" viewBox="2.5 -133 83 65" style="overflow:visible;">
+                                    <g>
+                                        <line class="time_st1" x1="2.5" y1="-133" x2="2.5" y2="-67.5"/>
+                                        <line class="time_st2" x1="7.11" y1="-136.25" x2="7.11" y2="-67.5"/>
+                                        <line class="time_st3" x1="11.72" y1="-133" x2="11.72" y2="-67.5"/>
+                                        <line class="time_st4" x1="16.33" y1="-136.25" x2="16.33" y2="-67.5"/>
+                                        <line class="time_st5" x1="20.94" y1="-133" x2="20.94" y2="-67.5"/>
+                                        <line class="time_st6" x1="25.56" y1="-136.25" x2="25.56" y2="-67.5"/>
+                                        <line class="time_st7" x1="30.17" y1="-133" x2="30.17" y2="-67.5"/>
+                                        <line class="time_st8" x1="34.78" y1="-136.25" x2="34.78" y2="-67.5"/>
+                                        <line class="time_st9" x1="39.39" y1="-133" x2="39.39" y2="-67.5"/>
+                                        <line class="time_st10" x1="44" y1="-136.25" x2="44" y2="-67.5"/>
+                                        <line class="time_st1" x1="85.5" y1="-133" x2="85.5" y2="-67.5"/>
+                                        <line class="time_st2" x1="80.89" y1="-136.25" x2="80.89" y2="-67.5"/>
+                                        <line class="time_st3" x1="76.28" y1="-133" x2="76.28" y2="-67.5"/>
+                                        <line class="time_st4" x1="71.67" y1="-136.25" x2="71.67" y2="-67.5"/>
+                                        <line class="time_st5" x1="67.06" y1="-133" x2="67.06" y2="-67.5"/>
+                                        <line class="time_st6" x1="62.44" y1="-136.25" x2="62.44" y2="-67.5"/>
+                                        <line class="time_st7" x1="57.83" y1="-133" x2="57.83" y2="-67.5"/>
+                                        <line class="time_st8" x1="53.22" y1="-136.25" x2="53.22" y2="-67.5"/>
+                                        <line class="time_st9" x1="48.61" y1="-133" x2="48.61" y2="-67.5"/>
+                                    </g>
+                                </pattern>
+                                <g style="transform: translate(15px,15px) scale(0.845);">
+                                    <path class="year_1" d="M251.97,68.36l8.21-22.57c-12.84-4.34-26.53-6.82-40.75-7.13v24C230.77,62.97,241.7,64.95,251.97,68.36z"/>
+                                    <path class="year_2"  d="M286.28,86.86l15.42-18.38c-10.76-8.58-22.84-15.58-35.88-20.64l-8.21,22.55C268.01,74.48,277.65,80.06,286.28,86.86z"/>
+                                    <path class="year_3"  d="M312.34,115.94l20.79-12c-7.31-11.85-16.36-22.51-26.81-31.61L290.89,90.7C299.21,98.01,306.45,106.51,312.34,115.94z"/>
+                                    <path class="year_4"  d="M326.99,152.23l23.66-4.17c-2.84-13.86-7.79-26.95-14.48-38.95l-20.78,12C320.7,130.72,324.66,141.18,326.99,152.23z"/>
+                                    <path class="year_5"  d="M329.44,175.63c0,5.37-0.39,10.65-1.11,15.82l23.65,4.17c0.96-6.53,1.46-13.2,1.46-19.99c0-7.37-0.59-14.61-1.72-21.67
+                                        l-23.64,4.17C328.97,163.84,329.44,169.68,329.44,175.63z"/>
+                                    <path class="year_6"  d="M316.1,228.84l20.79,12.01c6.59-12.12,11.39-25.35,14.08-39.31l-23.64-4.17C325.15,208.53,321.31,219.11,316.1,228.84z"/>
+                                    <path class="year_7"  d="M291.72,259.82l15.42,18.38c10.47-9.27,19.52-20.11,26.76-32.15l-20.78-12C307.29,243.68,300.06,252.36,291.72,259.82z"/>
+                                    <path class="year_8"  d="M258.16,280.64l8.21,22.56c13.18-5.18,25.36-12.34,36.19-21.12l-15.42-18.38C278.45,270.7,268.69,276.44,258.16,280.64z"/>
+                                    <path class="year_9"  d="M219.44,288.59v24c14.42-0.31,28.3-2.86,41.31-7.32l-8.21-22.56C242.1,286.25,230.98,288.29,219.44,288.59z"/>
+                                    <path class="year_10"  d="M180.34,282.72l-8.21,22.56c13,4.46,26.88,7.01,41.31,7.32v-24C201.89,288.29,190.78,286.25,180.34,282.72z"/>
+                                    <path class="year_11"  d="M145.73,263.7l-15.42,18.38c10.83,8.78,23.01,15.95,36.19,21.12l8.21-22.56C164.18,276.45,154.43,270.7,145.73,263.7z"/>
+                                    <path class="year_12"  d="M119.75,234.06l-20.78,12c7.25,12.04,16.29,22.88,26.76,32.15l15.42-18.38C132.81,252.36,125.58,243.68,119.75,234.06z"/>
+                                    <path class="year_13"  d="M105.54,197.37l-23.64,4.17c2.68,13.97,7.49,27.19,14.08,39.31l20.79-12.01C111.56,219.11,107.73,208.53,105.54,197.37z"/>
+                                    <path class="year_14"  d="M103.44,175.63c0-5.95,0.47-11.8,1.36-17.5l-23.64-4.17c-1.13,7.06-1.72,14.3-1.72,21.67c0,6.79,0.5,13.46,1.46,19.99
+                                        l23.65-4.17C103.82,186.28,103.44,181,103.44,175.63z"/>
+                                    <path class="year_15"  d="M117.49,121.11l-20.78-12c-6.69,12-11.64,25.09-14.48,38.95l23.66,4.17C108.22,141.18,112.17,130.72,117.49,121.11z"/>
+                                    <path class="year_16"  d="M141.98,90.7l-15.42-18.38c-10.45,9.1-19.51,19.76-26.81,31.61l20.79,12C126.42,106.51,133.66,98.01,141.98,90.7z"/>
+                                    <path class="year_17"  d="M175.26,70.4l-8.21-22.55c-13.04,5.06-25.12,12.05-35.88,20.64l15.42,18.38C155.22,80.06,164.87,74.48,175.26,70.4z"/>
+                                    <path class="time_st15 year_18" d="M213.44,62.67v-24c-14.22,0.31-27.91,2.79-40.75,7.13l8.21,22.57C191.18,64.95,202.1,62.97,213.44,62.67z"/>
+                                    <path class="time_st16 year_18" d="M172.69,45.79l8.21,22.57"/>
+                                    <text transform="matrix(1 0 0 1 235 28)" class="time_font year_1" id='year_1'>2020</text>
+                                    <text transform="matrix(1 0 0 1 288.203 55)" class="time_font year_2" id='year_2'>2019</text>
+                                    <text transform="matrix(1 0 0 1 324.1019 90)" class="time_font year_3" id='year_3'>2018</text>
+                                    <text transform="matrix(1 0 0 1 350.9763 129.6168)" class="time_font year_4" id='year_4'>2017</text>
+                                    <text transform="matrix(1 0 0 1 360.2678 181.1421)" class="time_font year_5" id='year_5'>2016</text>
+                                    <text transform="matrix(1 0 0 1 351.2869 232.2453)" class="time_font year_6" id='year_6'>2015</text>
+                                    <text transform="matrix(1 0 0 1 329.8593 277.4357)" class="time_font year_7" id='year_7'>2014</text>
+                                    <text transform="matrix(1 0 0 1 291.1594 317)" class="time_font year_8" id='year_8'>2013</text>
+                                    <text transform="matrix(1 0 0 1 225.2744 345)" class="time_font year_9" id='year_9'>2012</text>
+                                    <text transform="matrix(1 0 0 1 140 345)" class="time_font year_10 left_labels" id='year_10'>2011</text>
+                                    <text transform="matrix(1 0 0 1 72 317)" class="time_font year_11 left_labels" id='year_11'>2010</text>
+                                    <text transform="matrix(1 0 0 1 30 277.4355)" class="time_font year_12 left_labels" id='year_12'>2009</text>
+                                    <text transform="matrix(1 0 0 1 6 232.2451)" class="time_font year_13 left_labels" id='year_13'>2008</text>
+                                    <text transform="matrix(1 0 0 1 0 181.1423)" class="time_font year_14 left_labels" id='year_14'>2007</text>
+                                    <text transform="matrix(1 0 0 1 7 129.6168)" class="time_font year_15 left_labels" id='year_15'>2006</text>
+                                    <text transform="matrix(1 0 0 1 35 90)" class="time_font year_16 left_labels" id='year_16'>2005</text>
+                                    <text transform="matrix(1 0 0 1 72 55)" class="time_font year_17 left_labels" id='year_17'>2004</text>
+                                    <text transform="matrix(1 0 0 1 120 25)" class="time_font year_18 left_labels" id='year_18'>earlier</text>
+                                </g>
+                            </svg>
+                        </div>
+                        <div id="year_19" class="year_19" value="unknown" onclick="filterByYear('unknown')">
+                            (unknown)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!--script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script-->
+    <script src="assets/js/libs/popper.min.js"></script>
+    <script src="assets/js/libs/bootstrap.min.js"></script>
+
+    <!-- D3 JS -->
+    <script src="assets/js/libs/d3.min.js"></script>
+    <script src="assets/js/libs/d3-scale.v3.min.js"></script>
+    <script src="assets/js/libs/d3-path.v1.min.js"></script>
+    <script src="assets/js/libs/d3-shape.v1.min.js"></script>
+
+    <script defer src="assets/js/plugins.js"></script>
+    <script src="assets/js/libs/coffee-script.js"></script>
+    <script type="text/coffeescript" src="assets/coffee/vis_simulation.coffee"></script>
+
+    <script type="text/javascript">
+
+
+        function removeSize(){
+
+            visible_nodes = d3.selectAll(".bubble-visible");
+
+            // Reset circles
+            visible_nodes
+                .selectAll("circle")
+                .attr('r', 30);
+
+            // Reset pies
+            visible_nodes
+                .each(function(d) {
+                    d.forceR = 33;
+                })
+                .selectAll(".pie")
+                .attr('transform','scale(0.33,0.33)');
+
+            // Reset images
+            visible_nodes
+                .selectAll("image")
+                .attr('width',43)
+                .attr('height',43)
+                .style("transform", "translate(-"+ 35*0.555 +'px,-'+ 35*0.6 +'px)');
+
+            document.getElementById('toggle_size').setAttribute('onmouseup','restoreSize()');
+
+            toggleEye('size');
+
+            redraw();
+            
+        }
+
+        function restoreSize(){
+
+            visible_nodes = d3.selectAll(".bubble-visible");
+
+            // Reset circles
+            visible_nodes
+                .selectAll("circle")
+                .attr('r', function(d) {
+                    return Math.max(minRadius-3.5, rScale(rValue(d))-3.5 );
+                });
+
+            // Reset pies
+            visible_nodes
+                .each(function(d) {
+                    d.forceR = Math.max(minRadius, rScale(rValue(d)));
+                })
+                .selectAll(".pie")
+                    .attr("transform", function(d) {
+                        return "scale(" + Math.max(minRadius,rScale(rValue(d)))/100 + "," + Math.max(minRadius,rScale(rValue(d)))/100 + ")";
+                    });
+
+            // Reset images
+            visible_nodes
+                .selectAll("image")
+                  .attr("width",  function(d) {
+                        return Math.max(minRadius,rScale(rValue(d))) * 1.15 ;
+                    })
+                  .attr("height", function(d) {
+                        return Math.max(minRadius,rScale(rValue(d))) * 1.15 ;
+                    })
+                  .style("transform", function(d) {
+                        return "translate(-"+ Math.max(minRadius,rScale(rValue(d)))*0.555 +'px,-'+ Math.max(minRadius,rScale(rValue(d)))*0.6 +'px)' ;
+                    });
+
+            document.getElementById('toggle_size').setAttribute('onmouseup','removeSize()');
+
+            toggleEye('size');
+
+            redraw();
+            
+        }
+
+        //////////////////////////////////////////
+        // FILTER BUBBLES
+        //////////////////////////////////////////
+        // Filter bubbles using environment variables
+        // that store the selected filters for each dimension,
+        // e.g.: keep_geo_label, keep_dep_label ...
+
+        var default_db_value = '-';
+
+        function filterBubbles(){
+
+            // Hide all
+            d3.selectAll(".bubble-node")
+                .each(function(d) {
+                    d.ui_scale = 0;
+                    d.forceR = 0;
+                })
+                .classed('bubble-visible',false);
+
+            // Select Bubbles to show
+            d3.selectAll(".bubble-node")
+                .filter(function(d) { 
+                    pop_values = d.population.split(";").map( function(currentValue, index, arr){
+                        return ( keep_pop_label.includes(currentValue) );
+                    });
+                    type_values = d.type.split(";").map( function(currentValue, index, arr){
+                        return keep_type_label.includes(currentValue);
+                    });
+                    year_values = d.time.split(";").map( function(currentValue, index, arr){
+                        currentValue = currentValue * 1;
+                        if(currentValue < new Date().getFullYear() - 17){
+                            currentValue = new Date().getFullYear() - 17;
+                        }
+                        return keep_year_label.includes(currentValue+'');
+                    });
+
+                    size_test = false;
+                    if(d.size > 100000 & keep_size_label.indexOf("more") != -1){
+                        size_test = true;
+                    } else if(d.size <= 0 & keep_size_label.indexOf("unknown") != -1){
+                        size_test = true;
+                    } else if(
+                        (keep_size_label.indexOf("100K") != -1 && d.size <= 100000 && d.size > 50000 ) ||
+                        (keep_size_label.indexOf("50K") != -1 && d.size <= 50000 && d.size > 10000 ) ||
+                        (keep_size_label.indexOf("10K") != -1 && d.size <= 10000 )
+                    ){
+                        size_test = true;
+                    }
+
+                    return (
+                        ( keep_geo_label.indexOf(d.geo) != -1 || ( keep_geo_label.includes('unknown') && d.geo == '')) &
+                        ( keep_level_label.indexOf(d.level) != -1  || ( keep_level_label.includes('unknown') && d.level == '')) &
+                        ( keep_dep_label.indexOf(d.department) != -1  || ( keep_dep_label.includes('unknown') && d.department == '-')) &
+                        ( pop_values.includes(true) || ( keep_pop_label.includes('unknown') && d.population == '') ) &
+                        ( type_values.includes(true) || ( keep_type_label.includes('unknown') && d.type == '') ) &
+                        ( year_values.includes(true) || ( keep_year_label.includes('unknown') && d.time == '') ) &
+                        size_test
+                        );  
+                }).each(function(d) {
+                    d.ui_scale = 1;
+                    d.forceR = Math.max(minRadius, rScale(rValue(d)));
+                }).classed('bubble-visible',true);
+
+            // Animate graph
+            redraw();
+            
+        }
+        
+        //////////////////////////////////////////
+        // FILTER GEO
+        //////////////////////////////////////////
+
+        btn = document.getElementsByClassName('item_geo');
+        for (var i = 0; i < btn.length; i++) {
+            btn[i].setAttribute("onclick", "filterByGeo('" + btn[i].getAttribute('value') + "')");
+        }
+
+        var keep_geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national','unknown'];
+        max_geo = keep_geo_label.length;
+        
+        function filterByGeo(label){
+            font = '700;';
+
+            ////////// Get the labels to filter on
+            index_label = keep_geo_label.indexOf(label);
+            if(keep_geo_label.length == max_geo){
+                keep_geo_label = [label];
+            } else if(index_label > -1){
+                keep_geo_label.splice(index_label, 1);
+            } else {
+                keep_geo_label.push(label);
+            }
+            if(keep_geo_label.length == 0){
+                keep_geo_label = ['straat','buurt','wijk','gebied','stadsdeel','stad','amstelland','adam','g4','national','unknown'];
+                font = 'normal;';
+            }
+
+            ////////////// Show/Hide Hide/Show UI buttons
+            var item_geo = document.getElementsByClassName('item_geo');
+            for (var i = 0; i < item_geo.length; i++) {
+                
+                in_keep_geo_label = keep_geo_label.indexOf( item_geo[i].getAttribute('value') );
+
+                if ( in_keep_geo_label > -1){
+                    item_geo[i].setAttribute('style','color:#000;font-weight:'+font);
+                } else {
+                    item_geo[i].setAttribute('style','color:#999;font-weight:normal;');
+                }
+            }
+
+            //////////// Filter the Bubbles
+            filterBubbles();
+        }
+
+        //////////////////////////////////////////
+        // FILTER POPULATION
+        //////////////////////////////////////////
+        
+        var keep_pop_label = ['youth', 'young', 'adult', 'elderly','unknown'];
+        max_pop = keep_pop_label.length;
+
+        for (var i = 1; i < max_pop + 1; i++) {
+            btn = document.getElementById('pop_' + i);
+            btn.setAttribute("onclick", 'filterByPop("' + btn.getAttribute('value') + '")');
+        }
+        
+        function filterByPop(label){
+            ////////// Get the labels to filter on
+            index_label = keep_pop_label.indexOf(label);
+            font = '700;';
+
+            if(keep_pop_label.length == max_pop){
+                keep_pop_label = [label];
+            } else if(index_label > -1){
+                keep_pop_label.splice(index_label, 1);
+            } else {
+                keep_pop_label.push(label);
+            }
+            if(keep_pop_label.length == 0){
+                keep_pop_label = ['youth', 'young', 'adult', 'elderly','unknown'];
+                font = 'normal;';
+            }
+            
+            ////////////// Show/Hide Hide/Show UI buttons
+            for (var i = 1; i < max_pop+1; i++) {
+                btn = document.getElementById('pop_' + i);
+                in_keep_pop_label = keep_pop_label.indexOf( btn.getAttribute('value') );
+
+                if ( in_keep_pop_label > -1){
+                    btn.setAttribute('style','color:#000;font-weight:'+font);
+                    if(i != max_pop){
+                        btn.children[0].setAttribute('style','opacity:1;');
+                    }
+                } else {
+                    btn.setAttribute('style','color:#999;font-weight: normal;');
+                    if(i != max_pop){
+                        btn.children[0].setAttribute('style','opacity:0.5;');
+                    }
+                }
+                
+            }
+
+            //////////// Filter the Bubbles
+            filterBubbles();
+        }
+
+        //////////////////////////////////////////
+        // FILTER TYPE
+        //////////////////////////////////////////
+        
+        var keep_type_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor','unknown'];
+        max_type = keep_type_label.length;
+
+
+        for (var i = 1; i < max_type+1; i++) {
+            btn = document.getElementById('type_' + i);
+            btn.setAttribute("onclick", 'filterByType("' + btn.getAttribute('value') + '")');
+            if(i != max_type){
+                btn = document.getElementById('type_shape_' + i);
+                btn.setAttribute("onclick", 'filterByType("' + btn.getAttribute('value') + '")');
+            }
+        }
+        
+        function filterByType(label){
+            ////////// Get the labels to filter on
+            index_label = keep_type_label.indexOf(label);
+            font = '700;';
+
+            if(keep_type_label.length == max_type){
+                keep_type_label = [label];
+            } else if(index_label > -1){
+                keep_type_label.splice(index_label, 1);
+            } else {
+                keep_type_label.push(label);
+            }
+            if(keep_type_label.length == 0){
+                keep_type_label = ['questionnaire', 'socialmedia', 'promotion', 'registry', 'monitor','unknown'];
+                font = 'normal;';
+            }
+
+            ////////////// Show/Hide Hide/Show UI buttons
+            for (var i = 1; i < max_type+1; i++) {
+                btn = document.getElementById('type_' + i);
+                in_keep_type_label = keep_type_label.indexOf( btn.getAttribute('value') );
+
+                if ( in_keep_type_label > -1){
+                    if(i != max_type){
+                        btn.setAttribute('style','fill:#000;font-weight:'+font);
+                        document.getElementById('type_shape_' + i).setAttribute('style','fill:#000;');
+                    } else {
+                        btn.setAttribute('style','fill:#000;font-weight:'+font);
+                    }
+                } else {
+                    if(i != max_type){
+                        btn.setAttribute('style','fill:#999;font-weight: normal;');
+                        document.getElementById('type_shape_' + i).setAttribute('style','fill:#ccc;');
+                    } else {
+                        btn.setAttribute('style','fill:#999;font-weight: normal;');
+                    }
+                }
+                
+            }
+
+            //////////// Filter the Bubbles
+            filterBubbles();
+        }
+
+        //////////////////////////////////////////
+        // FILTER LEVELS
+        //////////////////////////////////////////
+        
+        keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic','unknown'];
+        max_level = keep_level_label.length;
+
+        for (var i = 1; i < max_level+1; i++) {
+            btn = document.getElementById('level_' + i);
+            btn.setAttribute("onclick", 'filterByLevel("' + btn.getAttribute('value') + '")');
+        }
+        
+        function filterByLevel(label){
+            ////////// Get the labels to filter on
+            index_label = keep_level_label.indexOf(label);
+            font = '700;';
+
+            if(keep_level_label.length == max_level){
+                keep_level_label = [label];
+            } else if(index_label > -1){
+                keep_level_label.splice(index_label, 1);
+            } else {
+                keep_level_label.push(label);
+            }
+            if(keep_level_label.length == 0){
+                keep_level_label = ['individual', 'family', 'group', 'orga', 'geographic','unknown'];
+                font = 'normal;';
+            }
+
+            ////////////// Show/Hide Hide/Show UI buttons
+            for (var i = 1; i < max_level+1; i++) {
+                btn = document.getElementById('level_' + i);
+                in_keep_level_label = keep_level_label.indexOf( btn.getAttribute('value') );
+
+                if ( in_keep_level_label > -1){
+                    btn.setAttribute('style','color:#000;font-weight:'+font);
+                    if(i != max_level){
+                        btn.children[0].setAttribute('style','opacity:1;');
+                    }
+                } else {
+                    btn.setAttribute('style','color:#999;font-weight: normal;');
+                    if(i != max_level){
+                        btn.children[0].setAttribute('style','opacity:0.5;');
+                    }
+                }
+            }
+
+            //////////// Filter the Bubbles
+            filterBubbles();
+        }
+
+        //////////////////////////////////////////
+        // FILTER SIZE
+        //////////////////////////////////////////
+        $(".size").each(function() {
+
+            $(this).mouseover(function() {
+                $(this).find(".st0").css("fill", "#d4d4d4");
+                $(this).find(".st1").css("fill", "#000");
+            });
+            $(this).mouseout(function() {
+                if(keep_size_label.length == max_size){
+                    $(this).find(".st0").css("fill", "#f7f7f7");
+                    $(this).find(".st1").css("fill", "#000");
+                } else {
+                    selected = keep_size_label.indexOf( $(this).attr("value") ) > -1;
+                    $(this).find(".st0").css("fill", selected ? "#d4d4d4" : "#f7f7f7");
+                    $(this).find(".st1").css("fill", selected ? "#000" : "#888");
+                }
+            });
+            $(this).click(function() {
+                filterBySize($(this).attr("value"));
+            });
+        });
+        
+        var keep_size_label = ['10K', '50K', '100K', 'more', 'unknown'];
+        max_size = keep_size_label.length;
+
+        //Filter Number of Cases
+        function filterBySize(label) {
+            ////////// Get the labels to filter on
+            index_label = keep_size_label.indexOf(label);
+
+            if(keep_size_label.length == max_size){
+                keep_size_label = [label];
+            } else if(index_label > -1){
+                keep_size_label.splice(index_label, 1);
+            } else {
+                keep_size_label.push(label);
+            }
+            if(keep_size_label.length == 0){
+                keep_size_label = ['10K', '50K', '100K', 'more','unknown'];
+            }
+
+            ////////////// Show/Hide Hide/Show UI buttons
+            for (var i = 1; i < max_size+1; i++) {
+                btn = document.getElementById('size_' + i);
+                in_keep_size_label = keep_size_label.indexOf( btn.getAttribute('value') );
+
+                if(i != max_size){
+                    if ( in_keep_size_label > -1 ){
+                        btn.children[0].setAttribute('style',(keep_size_label.length == max_size) ? 'fill:#f7f7f7;' : 'fill:#d4d4d4;');
+                        btn.children[2].setAttribute('style','fill:#000;font-weight:700;');
+                    } else {
+                        btn.children[0].setAttribute('style','fill:#f7f7f7;');
+                        //btn.children[0].setAttribute('style','fill:#fff;');
+                        btn.children[2].setAttribute('style', 'fill:#999;font-weight:normal;' );               
+                    }
+                } else {
+                    if ( in_keep_size_label > -1 ){
+                        btn.setAttribute('style','color:#000;font-weight:700;');
+                    } else {
+                        btn.setAttribute('style','color:#999;font-weight:normal;');            
+                    }
+                }
+            }
+
+            //////////// Filter the Bubbles
+            filterBubbles();
+        }
+        
+
+        //////////////////////////////////////////
+        // FILTER DEPARTMENT
+        //////////////////////////////////////////
+        var keep_dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG','unknown'];
+        var max_dep = keep_dep_label.length;
+
+        for (var i = 1; i < max_dep+1; i++) {
+            btn = document.getElementById('dep_' + i);
+            btn.setAttribute("onclick", 'filterByDep("' + btn.getAttribute('value') + '")');
+        }
+        
+        
+        function filterByDep(label){
+            ////////// Get the labels to filter on
+            index_label = keep_dep_label.indexOf(label);
+
+            if(keep_dep_label.length == max_dep){
+                keep_dep_label = [label];
+            } else if(index_label > -1){
+                keep_dep_label.splice(index_label, 1);
+            } else {
+                keep_dep_label.push(label);
+            }
+            if(keep_dep_label.length == 0){
+                keep_dep_label = ['EGZ', 'IZ', 'JGZ', 'VT', 'MGGZ', 'FGMA', 'GHOR', 'LO', 'AAGG','unknown'];
+            }
+
+            ////////////// Show/Hide Hide/Show UI buttons
+            for (var i = 1; i < max_dep+1; i++) {
+                btn = document.getElementById('dep_' + i);
+                in_keep_dep_label = keep_dep_label.indexOf( btn.getAttribute('value') );
+
+                if ( in_keep_dep_label > -1){
+                    if(keep_dep_label.length == max_dep){
+                        btn.setAttribute('style','color:#000;font-weight:normal;');
+                    } else {
+                        btn.setAttribute('style','color:#000;font-weight:bold;');
+                    }
+                    if(i != max_dep){
+                        btn.children[0].setAttribute('style','opacity:1;');
+                    }
+                } else {
+                    btn.setAttribute('style','color:#999;font-weight:normal;');
+                    if(i != max_dep){
+                        btn.children[0].setAttribute('style','opacity:0.5;');
+                    }
+                }
+                
+            }
+
+            //////////// Filter the Bubbles
+            filterBubbles();
+        }
+
+        //////////////////////////////////////////
+        // FILTER YEARS
+        //////////////////////////////////////////
+
+        // Fill in years, starting with current year.
+        function updateYears(xml_id, year_gap){
+            var fill_year = new Date().getFullYear() - year_gap ;
+            document.getElementById(xml_id).textContent = fill_year;
+            //document.getElementById(xml_id).setAttribute("value", new Date().getFullYear() - year_gap);
+            var class_elem = document.getElementsByClassName(xml_id);
+            for (var i = 0; i < class_elem.length; i++) {
+                class_elem[i].setAttribute("value", fill_year);
+                class_elem[i].setAttribute("onclick", 'filterByYear("' + fill_year + '")');
+            }
+        }
+
+        for (var i = 1; i < 19; i++) {
+            updateYears("year_" + i, i-1);
+        }
+
+        document.getElementById("year_18").textContent = 'earlier';
+
+        var keep_year_label = [];
+        var today = new Date().getFullYear();
+        for(var i = 0; i < 18; i++){
+            keep_year_label.push((today - i)+'');
+        }
+        keep_year_label.push('unknown');
+        max_year = keep_year_label.length;
+
+        function filterByYear(label){
+            ////////// Get the labels to filter on
+            index_label = keep_year_label.indexOf(label);
+
+            if(keep_year_label.length == max_year){
+                keep_year_label = [label];
+            } else if(index_label > -1){
+                keep_year_label.splice(index_label, 1);
+            } else {
+                keep_year_label.push(label);
+            }
+            if(keep_year_label.length == 0){
+                keep_year_label = [];
+                for(var i = 0; i < 18; i++){
+                    keep_year_label.push((today - i)+'');
+                }
+                keep_year_label.push('unknown');
+            }
+            
+            ////////////// Show/Hide Hide/Show UI buttons
+            for(var y = 1; y < max_year+1; y++){
+                var class_elem = document.getElementsByClassName("year_" + y);
+                for (var i = 0; i < class_elem.length; i++) {
+
+                    in_keep_year_label = keep_year_label.indexOf( class_elem[i].getAttribute('value') );
+
+                    if ( in_keep_year_label > -1){
+                        class_elem[i].setAttribute('style','opacity:1;');
+                    } else {
+                        class_elem[i].setAttribute('style','opacity:0.3;');
+                    }
+                }
+                
+            }
+
+            //////////// Filter the Bubbles
+            filterBubbles();
+        }
+
+        // Get the input field
+        var input = document.getElementById("searchInput");
+
+        // Execute a function when the user releases a key on the keyboard
+        input.addEventListener("keyup", function(event) {
+              // Number 13 is the "Enter" key on the keyboard
+              if (event.keyCode === 13) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById("searchStart").click();
+              }
+        });
+
+
+        function replaceLayout(){
+
+            element = document.getElementById('vis');
+            style = window.getComputedStyle(element);
+            w = style.getPropertyValue('width').replace('px','')*1;
+            h = style.getPropertyValue('height').replace('px','')*1;
+
+            if(w < 1150){
+                document.getElementById('vizbar').style = 'width:1150px;';
+                document.getElementById('vis').style = 'width:1150px;';
+                document.getElementById('vis').width = '1150px;';
+            } else {
+                document.getElementById('vizbar').style = 'width:100%;';
+                document.getElementById('vis').style = 'width:100%;';
+                document.getElementById('vis').width = '100%;';
+            }
+            
+            if(typeof(redraw) === typeof(Function)) {
+                redraw();
+            }
+
+        }
+        replaceLayout();
+
+        collapseToolbar('meta');
+    </script>
+</body>
+
+</html>
