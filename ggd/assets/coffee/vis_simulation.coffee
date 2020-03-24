@@ -862,6 +862,26 @@ root.Bubbles = () ->
     for i in [1..5]
       d3.select('#label_type_'+i).classed('input_item_checked', node_data.temp_type.includes(dim_label[i-1]))
 
+  root.changeTime = () ->
+    # Get data
+    data_id = d3.select('#active_node_id').attr('active_node_id')
+    node_data = d3.select('#node_'+data_id).data()[0]
+
+    new_time = d3.select('#time-input').html().replace(/,/g,';')
+    # console.log(new_time)
+    
+    node_data.temp_time = new_time
+    node_data.time = new_time
+
+    d3.select('#g_'+data_id)
+      .attr('data_col', (d) -> getBorderColors(new_time))
+      .attr('data_opac', (d) -> getBorderOpacity(new_time))
+ 
+    # Fix color of pie chart    
+    node.select('#g_'+data_id)
+      .selectAll(".arc")
+        .attr("fill", (d,i) -> d3.select(this.parentNode).attr("data_col").split(",")[i] )
+        .attr("opacity", (d,i) -> d3.select(this.parentNode).attr("data_opac").split(",")[i] )
 
   root.changeGeo = (new_label, restore=false) ->
     # Change data
@@ -944,6 +964,9 @@ root.Bubbles = () ->
     # Change data
     data_id = d3.select('#active_node_id').attr('active_node_id')
     node_data = d3.select('#node_'+data_id).data()[0]
+
+    # Update pie chart
+    changeTime()
 
     # Leave edit mode
     if(leaveEditMode)
@@ -1237,7 +1260,6 @@ root.Bubbles = () ->
         d3.select('#edit_btn').attr('style', 'display:inline;')
 
       else
-        console.log 'here'
         location.replace("#")
         d3.event.preventDefault()
         d3.select('#edit_btn').attr('style', 'display:none;')
