@@ -3,7 +3,7 @@
 	//echo "ID,name,description,keywords,contact,department,size,years,geo,type,pop,level\n";
 
 
-	$query = "SELECT * FROM datasets_simulation LIMIT 110"; #  ORDER BY `ID` DESC LIMIT 3
+	$query = "SELECT * FROM datasets_simulation"; #  ORDER BY `ID` DESC LIMIT 3
 
 	$result = $conn->query($query);
 
