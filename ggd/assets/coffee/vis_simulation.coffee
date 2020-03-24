@@ -868,7 +868,6 @@ root.Bubbles = () ->
     node_data = d3.select('#node_'+data_id).data()[0]
 
     new_time = d3.select('#time-input').html().replace(/,/g,';')
-    # console.log(new_time)
     
     node_data.temp_time = new_time
     node_data.time = new_time
