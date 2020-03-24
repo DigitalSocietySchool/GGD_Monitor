@@ -104,10 +104,10 @@ root.Bubbles = () ->
     JGZ: "#ADC499"
     VT: "#C69C6D"
     MGGZ: "#f384a3"
-    FGMA: "#EA948B"
+    FGMA: "#F3A14C"
     GHOR: "#E3ACE5"
     LO: "#B3B3B3"
-    AAGG: "#D9E021"
+    AAGG: "#B1DE26"
     unknown: "#dddddd"
 
   # constants to control how
