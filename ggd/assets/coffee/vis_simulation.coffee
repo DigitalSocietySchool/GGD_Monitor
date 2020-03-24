@@ -7,12 +7,13 @@ getBorderColors = (year) ->
   for x in [0..17] by 1
     arcFill[x] = "#FFFFFF"
 
-  current_year = (new Date).getFullYear()
-  for y in year.split(";")
-    if y < current_year - 17
-      y = current_year - 17
-    index = current_year - parseInt(y)
-    arcFill[index] = "#000000"
+  if(year != '')
+    current_year = (new Date).getFullYear()
+    for y in year.split(";")
+      if y < current_year - 17
+        y = current_year - 17
+      index = current_year - parseInt(y)
+      arcFill[index] = "#000000"
   return (val for key, val of arcFill)
 
 getBorderOpacity = (year) ->
@@ -20,12 +21,14 @@ getBorderOpacity = (year) ->
   for x in [0..17] by 1
     arcOpacity[x] = 0
 
-  current_year = (new Date).getFullYear()
-  for y in year.split(";")
-    if y < current_year - 17
-      y = current_year - 17
-    index = current_year - parseInt(y)
-    arcOpacity[index] = 1
+  if(year != '')
+    current_year = (new Date).getFullYear()
+    for y in year.split(";")
+      if y < current_year - 17
+        y = current_year - 17
+      index = current_year - parseInt(y)
+      arcOpacity[index] = 1
+
   return (val for key, val of arcOpacity)
 
 root.Bubbles = () ->
