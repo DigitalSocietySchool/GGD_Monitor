@@ -14,7 +14,7 @@
 			`type` = '" . str_replace(' ', '', $_POST["type"]) . "',
 			`population` = '" . str_replace(' ', '', $_POST["population"]) . "',
 			`level` = '" . $_POST["level"] . "',
-			`indicator` = '" . mysqli_real_escape_string($conn, str_replace(' ', '', $_POST["indicator"]) ). "',
+			`indicator` = '" . mysqli_real_escape_string($conn, $_POST["indicator"] ). "',
 			`publication` = '" . mysqli_real_escape_string($conn, $_POST["publication"]) . "'
 			WHERE `datasets`.`ID` =" . $_POST["ID"];
 	} else {
