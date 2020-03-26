@@ -143,8 +143,10 @@
         }
 
         function showEditDep(){  
-            d3.select('#edit_department').attr('style', 'display:block;');
-            d3.select('#department-input').attr('style', 'display:none;');
+            if( document.getElementById("edit-top-bar").style.display == "none" & document.getElementById("edit-top-bar-new").style.display == "none"){
+                d3.select('#edit_department').attr('style', 'display:block;');
+                d3.select('#department-input').attr('style', 'display:none;');
+            }
         }
         function hideEditDep(){  
             d3.select('#edit_department').attr('style', 'display:none;');

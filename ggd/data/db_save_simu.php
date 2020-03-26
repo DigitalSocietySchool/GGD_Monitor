@@ -5,7 +5,7 @@
 		$query = "UPDATE `datasets_simulation` SET 
 			`name` = '" . mysqli_real_escape_string($conn, $_POST["name"]) . "',
 			`description` = '" . mysqli_real_escape_string($conn, $_POST["description"] ). "',
-			`keyword` = '" . mysqli_real_escape_string($conn, str_replace(' ', '', $_POST["keyword"]) ). "',
+			`keyword` = '" . mysqli_real_escape_string($conn, $_POST["keyword"]). "',
 			`contact` = '" . mysqli_real_escape_string($conn, $_POST["contact"]) . "',
 			`department` = '" . $_POST["department"] . "',
 			`size` = '" . $_POST["size"] . "',
